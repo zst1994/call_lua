@@ -1,0 +1,221 @@
+{
+    "params": [{
+                    "type": "Label",
+                    "text": "注册脚本",
+                    "size": 18,
+                    "align": "center",
+                    "color": "0,168,233"
+                },{
+                    "type": "Label",
+                    "text": "====================",
+                    "size": 18,
+                    "align": "center",
+                    "color": "0,168,233"
+                },{
+                    "type": "Label",
+                    "text": "滑块滑动方式",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "move_type",
+                    "type": "RadioGroup",
+                    "list": "自动,手动",
+                    "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "跳马注册次数",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "login_times",
+                    "type": "RadioGroup",
+                    "list": "单次,多次",
+                    "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "选择网络连接方式",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "content_type",
+                    "type": "RadioGroup",
+                    "list": "vpn,流量,国内vpn,全程vpn",
+                    "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "网页切换ip账号",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "content_user",
+                    "type": "Edit",
+                    "prompt": "请输入网页切换ip账号",
+                    "text": "默认值",
+                    "kbtype": "ascii"
+                },{
+                    "type": "Label",
+                    "text": "网页切换ip国家代码",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "content_country",
+                    "type": "Edit",
+                    "prompt": "请输入网页切换ip国家代码",
+                    "text": "默认值",
+                    "kbtype": "ascii"
+                },{
+                    "type": "Label",
+                    "text": "选择卡商平台",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "vpn_stauts",
+                    "type": "RadioGroup",
+                    "list": "柠檬,卡农注册,奥迪,52,俄罗斯1,东帝汶,服务器取号,俄罗斯2,各国API",
+                    "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "卡农注册/奥迪/52/东帝汶/服务器取号/各国API的区号",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "kn_country",
+                    "type": "Edit",
+                    "prompt": "请输入卡农注册/奥迪/52/东帝汶/服务器取号/各国API的区号",
+                    "text": "默认值",
+                    "kbtype": "ascii"
+                },{
+                    "type": "Label",
+                    "text": "卡农注册/奥迪的项目ID",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "kn_id",
+                    "type": "Edit",
+                    "prompt": "请输入卡农注册/奥迪的项目ID",
+                    "text": "默认值",
+                    "kbtype": "ascii"
+                },{
+                    "type": "Label",
+                    "text": "设置柠檬/52/俄罗斯1/俄罗斯2/各国API的国家代码",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "countryId",
+                    "type": "Edit",
+                    "prompt": "请输入您要设置的国家代码",
+                    "text": "默认值",
+                    "kbtype": "ascii"
+                },{
+                    "type": "Label",
+                    "text": "选择国家区号位数",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "country_len",
+                    "type": "RadioGroup",
+                    "list": "1,2,3",
+                    "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "选择注册方式",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "login_type",
+                    "type": "RadioGroup",
+                    "list": "跳马注册,二维码辅助注册,手机号辅助注册,滑块链接注册",
+                    "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "选择需要辅助的平台",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "fz_terrace",
+                    "type": "RadioGroup",
+                    "list": "薄荷,马力,捍卫者",
+                    "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "设置昵称",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "nickName",
+                    "type": "Edit",
+                    "prompt": "请输入您要设置的昵称",
+                    "text": "默认值",
+                    "kbtype": "ascii"
+                },{
+                    "type": "Label",
+                    "text": "设置密码",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "password",
+                    "type": "Edit",
+                    "prompt": "请输入您要设置的密码",
+                    "text": "默认值",
+                    "kbtype": "ascii"
+                },{
+                    "type": "Label",
+                    "text": "上传服务器标识",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "operator",
+                    "type": "Edit",
+                    "prompt": "请输入您要设置的服务器标识",
+                    "text": "默认值",
+                    "kbtype": "ascii"
+                },{
+                    "type": "Label",
+                    "text": "奥迪卡农拉黑释放选择",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "addBlack",
+                    "type": "RadioGroup",
+                    "list": "释放,拉黑",
+                    "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "随机昵称",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "diff_user",
+                    "type": "RadioGroup",
+                    "list": "不加特殊字符,特殊字符",
+                    "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "随机密码",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "ran_pass",
+                    "type": "RadioGroup",
+                    "list": "不随机,随机",
+                    "select": "0"
+                }]
+    }

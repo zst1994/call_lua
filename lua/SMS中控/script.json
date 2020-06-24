@@ -1,0 +1,288 @@
+{
+    "params": [{
+                    "type": "Label",
+                    "text": "注册脚本",
+                    "size": 18,
+                    "align": "center",
+                    "color": "0,168,233"
+                },{
+                    "type": "Label",
+                    "text": "====================",
+                    "size": 18,
+                    "align": "center",
+                    "color": "0,168,233"
+                },{
+                    "type": "Label",
+                    "text": "选择网络",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "vpn_country",
+                    "type": "RadioGroup",
+                    "list": "国内,国外",
+                    "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "国外切IP国家",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "ip_country",
+                    "type": "Edit",
+                    "prompt": "国外切IP国家",
+                    "text": "默认值", 
+                    "kbtype": "ascii"
+                },{
+                    "type": "Label",
+                    "text": "国内切IP地区",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "place_id",
+                    "type": "Edit",
+                    "prompt": "国内切IP地区",
+                    "text": "默认值",
+                    "kbtype": "ascii"
+                },{
+                    "type": "Label",
+                    "text": "IP时长",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "iptimes",
+                    "type": "Edit",
+                    "prompt": "IP时长",
+                    "text": "默认值",
+                    "kbtype": "ascii"
+                },{
+                    "type": "Label",
+                    "text": "选择注册次数",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "login_times",
+                    "type": "RadioGroup",
+                    "list": "单次,多次",
+                    "select": "0"
+                },{
+                    "id": "login_times_set",
+                    "type": "Edit",
+                    "prompt": "请输入注册次数",
+                    "text": "默认值",
+                    "kbtype": "ascii"
+                },{
+                    "type": "Label",
+                    "text": "辅助失败次数",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "fz_error_times",
+                    "type": "Edit",
+                    "prompt": "请输入辅助失败次数",
+                    "text": "默认值",
+                    "kbtype": "ascii"
+                },{
+                    "type": "Label",
+                    "text": "选择微信版本",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "wc_version",
+                    "type": "RadioGroup",
+                    "list": "7.0.3,7.0.7",
+                    "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "选择滑块方式",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "hk_way",
+                    "type": "RadioGroup",
+                    "list": "脚本,手动",
+                    "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "选择辅助平台",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "fz_type",
+                    "type": "RadioGroup",
+                    "list": "二维码辅助,go下单,蚂蚁手机辅助,跳马注册,fz,showdoc滑块辅助,蚂蚁滑块辅助,手动辅助,马力滑块辅助,马力二维码辅助",
+                    "select": "0"
+                },{
+                    "id": "fz_key",
+                    "type": "Edit",
+                    "prompt": "请输入手机号辅助key",
+                    "text": "默认值",
+                    "kbtype": "ascii"
+                },{
+                    "id": "fz_province",
+                    "type": "Edit",
+                    "prompt": "请输入手机号辅助省份",
+                    "text": "默认值",
+                    "kbtype": "ascii"
+                },{
+                    "type": "Label",
+                    "text": "选择接码平台",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "api_change",
+                    "type": "RadioGroup",
+                    "list": "自己服务器,SMS,奥迪,卡农,香蕉,柠檬,东帝汶,美码",
+                    "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "SMS/香蕉国家代码",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "SMS_country",
+                    "type": "Edit",
+                    "prompt": "请输入SMS/香蕉/柠檬的国家代码",
+                    "text": "默认值",
+                    "kbtype": "ascii"
+                },{
+                    "type": "Label",
+                    "text": "奥迪,卡农,香蕉,柠檬,东帝汶设置",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "username",
+                    "type": "Edit",
+                    "prompt": "请输入奥迪/卡农/香蕉/柠檬/东帝汶的账号",
+                    "text": "默认值",
+                    "kbtype": "ascii"
+                },{
+                    "id": "user_pass",
+                    "type": "Edit",
+                    "prompt": "请输入奥迪/卡农/香蕉/柠檬的密码",
+                    "text": "默认值",
+                    "kbtype": "ascii"
+                },{
+                    "id": "work_id",
+                    "type": "Edit",
+                    "prompt": "请输入奥迪/卡农/香蕉的项目id",
+                    "text": "默认值",
+                    "kbtype": "ascii"
+                },{
+                    "id": "phone_country",
+                    "type": "Edit",
+                    "prompt": "请输入奥迪/卡农/香蕉/柠檬/美码的号码区号",
+                    "text": "默认值",
+                    "kbtype": "ascii"
+                },{
+                    "type": "Label",
+                    "text": "====================",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "type": "Label",
+                    "text": "设置国家",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "country_id",
+                    "type": "RadioGroup",
+                    "list": "乌克兰,英国,波兰",
+                    "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "设置昵称",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "nickName",
+                    "type": "RadioGroup",
+                    "list": "符号,中文,英文,数字,RFG,特殊符号",
+                    "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "设置密码",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "password",
+                    "type": "RadioGroup",
+                    "list": "3+5,4+4,wypn+手机后四位",
+                    "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "设置辅助订单省份",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "provinceId",
+                    "type": "Edit",
+                    "prompt": "请输入您要的省份编号",
+                    "text": "默认值",
+                    "kbtype": "ascii"
+                },{
+                    "type": "Label",
+                    "text": "设置接码平台key(／东帝汶)",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "getPhone_key",
+                    "type": "Edit",
+                    "prompt": "请输入您要设置的接码平台key(／东帝汶)",
+                    "text": "默认值",
+                    "kbtype": "ascii"
+                },{
+                    "type": "Label",
+                    "text": "设置辅助平台key",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "sumbit_key",
+                    "type": "Edit",
+                    "prompt": "请输入您要设置的辅助平台key",
+                    "text": "默认值",
+                    "kbtype": "ascii"
+                },{
+                    "type": "Label",
+                    "text": "设置短信接收几次",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "messGetTime",
+                    "type": "Edit",
+                    "prompt": "请输入您要设置短信接收几次",
+                    "text": "默认值",
+                    "kbtype": "ascii"
+                },{
+                    "type": "Label",
+                    "text": "设置重新获取短信几次",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "messSendTime",
+                    "type": "Edit",
+                    "prompt": "请输入您要设置重新获取短信几次",
+                    "text": "默认值",
+                    "kbtype": "ascii"
+                }]
+    }
