@@ -91,6 +91,7 @@ function model:wechat()
 		end
 	end
 
+
 	wait = 0
 	while (true) do
 		mSleep(500)
@@ -270,7 +271,7 @@ function model:main()
 		setVPNEnable(false)
 		self:clear_App()
 		if content_type == "0" then
-			self:change_IP(content_user,content_country)
+--			self:change_IP(content_user,content_country)
 			setVPNEnable(true)
 		end
 	
@@ -279,20 +280,20 @@ function model:main()
 			six_data = self:getData()
 			mSleep(500)
 			wx = "00"..string.sub(wx,2,#wx)
-			all_data = wx.."----Aa112233----"..six_data
+			all_data = wx.."----aaaaqqqq----"..six_data
 			toast(all_data,1)
 			mSleep(1200)
 			writeFileString(userPath().."/res/toIOSData.txt",all_data,"a",1)
 --			self:write_data("toIOSData.txt",tostring(all_data))
 			if getData_type == "1" then
 				time = getNetTime()
-				sj = os.date("%Y年%m月%d日%H点%M分%S秒",time)
+				sj = os.date("%Y-%m-%d-%H-%M-%S",time)
 				mSleep(200)
 				
 				::send::
 				local sz = require("sz")       
 				local http = require("szocket.http")
-				local res, code = http.request("http://39.100.23.169/import_data?phone="..wx.."&password=Aa112233&token="..six_data.."&is_normal=true&operator=toIOSData&link=null&time="..sj)
+				local res, code = http.request("http://39.100.23.169/import_data?phone="..wx.."&password=aaaaqqqq&token="..six_data.."&is_normal=true&operator=toIOSData&link=null&time="..urlEncoder(sj))
 				if code == 200 then
 					tmp = json.decode(res)
 					if tmp.code == 200 then

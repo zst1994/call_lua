@@ -72,32 +72,32 @@ end
 
 --下面是子程序
 function model:change_IP(content_user,content_country)--换IP
-	while true do
-		::change_ip::
-		mSleep(500)
-		status_resp, header_resp,body_resp = ts.httpGet("http://www.luminati-cn.net/changeip/8.210.91.214/"..content_user)
-		if status_resp == 200 then
-			tmp = json.decode(body_resp)
-			if tmp.state == "ok" then
-				toast("切换成功",1)
-				mSleep(1000)
-				break
-			else
-				toast("切换失败",1)
-				mSleep(3000)
-				goto change_ip
-			end
-		else
-			toast("切换失败",1)
-			mSleep(2000)
-			goto change_ip
-		end
+--	while true do
+--		::change_ip::
+--		mSleep(500)
+--		status_resp, header_resp,body_resp = ts.httpGet("http://refresh.rola-ip.co/refresh?user="..content_user.."&country="..content_country)
+--		if status_resp == 200 then
+--			tmp = json.decode(body_resp)
+--			if tmp.Ret == "SUCCESS" then
+--				toast("切换成功",1)
+--				mSleep(1000)
+--				break
+--			else
+--				toast("切换失败",1)
+--				mSleep(3000)
+--				goto change_ip
+--			end
+--		else
+--			toast("切换失败",1)
+--			mSleep(2000)
+--			goto change_ip
+--		end
 
-		if (status_resp==502) then--打开网站失败
-			toast("打开网站失败等待3秒")
-			mSleep(3000)
-		end
-	end
+--		if (status_resp==502) then--打开网站失败
+--			toast("打开网站失败等待3秒")
+--			mSleep(3000)
+--		end
+--	end
 end
 
 function model:vpn()
@@ -509,7 +509,201 @@ function model:ewm(phone,country_id,ewm_url,fz_terrace,load_ewm_bool,base_six_fo
 
 end
 
-function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_country,content_type,vpn_stauts,phone_token,kn_country,kn_id,countryId,nickName,password,country_len,login_type,addBlack,diff_user,ran_pass,ddwGet,airplaneStatus,updateNickName,sixTwoPushWay)
+function model:idCard()
+	while true do
+		mSleep(500)
+		if getColor(654,1279) == 0x7c160 then
+			mSleep(500)
+			x,y = findMultiColorInRegionFuzzy( 0x00c777, "19|-10|0x00c777,-7|9|0x00c777,79|-15|0x191919,122|-2|0x191919", 90, 0, 0, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(500)
+				randomTap(x,y,2)
+				mSleep(1000)
+			end
+			toast("支付",1)
+			break
+		else
+			mSleep(500)
+			randomTap(654,1279,2)
+			mSleep(500)
+		end
+	end
+
+	while (true) do
+		--收付款
+		mSleep(500)
+		if getColor(113,  266) == 0x3cb371 then
+			mSleep(500)
+			randomTap(199,266,2)
+			mSleep(1000)
+		end
+		--二维码收款
+		mSleep(500)
+		if getColor(359,  769) == 0x509863 and getColor(137, 768) == 0xffffff then
+			mSleep(500)
+			randomTap(359,  769,2)
+			mSleep(1000)
+		end
+
+		mSleep(500)
+		if getColor(118, 1125) == 0xededed and getColor(116,  938) == 0x000000 then
+			mSleep(500)
+			randomTap(116,  938,2)
+			mSleep(1000)
+			break
+		end
+	end
+
+	while (true) do
+		mSleep(500)
+		x,y = findMultiColorInRegionFuzzy( 0x1aad19, "31|-1|0x1aad19,-405|-1198|0x000000,-344|-1199|0x000000,-301|-1198|0x000000", 90, 0, 0, 749, 1333)
+		if x~=-1 and y~=-1 then
+			mSleep(500)
+			randomTap(x,y,2)
+			mSleep(1000)
+		end
+
+		mSleep(500)
+		if getColor(259,  707) == 0x9ce6bf then
+			mSleep(500)
+			randomTap(324,  231,2)
+			mSleep(1000)
+			inputText("李元芳")
+			mSleep(1000)
+			randomTap(326,  322,2)
+			mSleep(1000)
+			inputText("4405827455855")
+			mSleep(1000)
+			randomTap(316,  405,2)
+			mSleep(1000)
+			while (true) do
+				mSleep(500)
+				if getColor(87, 1041) == 0x191919 and getColor(223, 1043) == 0xffffff then
+					mSleep(500)
+					randomTap(223, 1043,2)
+					mSleep(1000)
+					break
+				end
+			end
+
+			while (true) do
+				mSleep(500)
+				if getColor(200,  604) == 0x576b95 or getColor(200,  621) == 0x576b95 then
+					mSleep(1000)
+					randomTap(289,  511,2)
+					mSleep(1000)
+					break
+				end
+
+				mSleep(500)
+				if getColor(36, 83) == 0x181818 then
+					mSleep(500)
+					randomTap(46, 83,2)
+					mSleep(1000)
+				end
+			end
+			--地区选择
+			while (true) do
+				mSleep(500)
+				if getColor(380,   79) == 0x181818 and getColor(361,  178) == 0xffffff then
+					mSleep(500)
+					randomTap(156,  802,2)
+					mSleep(2000)
+					randomTap(156,  802,2)
+					mSleep(1000)
+					break
+				end
+			end
+
+			while (true) do
+				mSleep(500)
+				if getColor(200,  604) == 0x576b95 or getColor(200,  621) == 0x576b95 then
+					mSleep(500)
+					randomTap(354,  720,2)
+					mSleep(1000)
+					toast("下一步",1)
+					mSleep(1000)
+					break
+				end
+
+				mSleep(500)
+				if getColor(36, 83) == 0x181818 then
+					mSleep(500)
+					randomTap(46, 83,2)
+					mSleep(1000)
+				end
+			end
+			break
+		end
+	end
+	
+	while (true) do
+		mSleep(500)
+		if getColor(616, 1280) == 0x464646 then
+			mSleep(500)
+			for var= 1, 3 do
+				mSleep(500)
+				randomTap(125,  950 + (var - 1)* 110,2)
+				mSleep(1000)
+			end
+
+			for var= 1, 3 do
+				mSleep(500)
+				randomTap(373,  950 + (var - 1)* 110,2)
+				mSleep(1000)
+			end
+
+			toast("设置密码",1)
+			mSleep(1000)
+			break
+		end
+	end
+
+	while (true) do
+		mSleep(500)
+		if getColor(616, 1280) == 0x464646 and getColor(259,  695) == 0x9ce6bf then
+			mSleep(500)
+			for var= 1, 3 do
+				mSleep(500)
+				randomTap(125,  950 + (var - 1)* 110,2)
+				mSleep(1000)
+			end
+
+			for var= 1, 3 do
+				mSleep(500)
+				randomTap(373,  950 + (var - 1)* 110,2)
+				mSleep(1000)
+			end
+			mSleep(500)
+			randomsTap(259,  695,4)
+			mSleep(1000)
+			toast("再次设置密码",1)
+			mSleep(1000)
+			break
+		end
+	end
+
+	while (true) do
+		mSleep(500)
+		if getColor(390,  777) == 0x576b95 and getColor(421,  612) == 0x000000 then
+			mSleep(500)
+			randomTap(390,  777,2)
+			mSleep(1000)
+		end
+
+		mSleep(500)
+		if getColor(654,1279) == 0x7c160 then
+			toast("我的",1)
+			break
+		else
+			mSleep(500)
+			randomTap(46, 83,1)
+			mSleep(500)
+		end
+	end
+end
+
+function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_country,content_type,vpn_stauts,phone_token,kn_country,kn_id,countryId,nickName,password,country_len,login_type,addBlack,diff_user,ran_pass,ddwGet,airplaneStatus)
 	account_len = 0
 	old_mess_yzm = ""
 	login_diff_bool = false
@@ -566,7 +760,6 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 				randomsTap(79,88,3)
 				mSleep(math.random(500, 700))
 			end
-
 		end
 	end
 
@@ -603,6 +796,14 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 			mSleep(math.random(500, 700))
 			randomsTap(536,1266,3)
 			mSleep(math.random(500, 700))
+		end
+
+		mSleep(math.random(500, 700))
+		x,y = findMultiColorInRegionFuzzy( 0x07c160, "171|-1|0x07c160,57|-5|0xffffff,-163|-3|0xf2f2f2,-411|1|0xf2f2f2,-266|-6|0x06ae56", 90, 0, 0, 749, 1333)
+		if x~=-1 and y~=-1 then
+			mSleep(math.random(200, 500))
+			randomsTap(549, 1240,10)
+			mSleep(math.random(200, 500))
 		end
 
 		if getColor(393,1170) == 0 then
@@ -1393,7 +1594,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 					mSleep(500)
 				else
 					if ddwGet == "1" then
---						writeFileString(userPath().."/res/savePhone.txt",ddwData,"a",1)jiuss
+						--						writeFileString(userPath().."/res/savePhone.txt",ddwData,"a",1)jiuss
 						::import_platform::
 						local sz = require("sz")       
 						local http = require("szocket.http")
@@ -2306,11 +2507,11 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 					if reTxtUtf8(data[1]) == "OK" then
 						mess_yzm = string.match(data[2], '%d+%d+%d+%d+%d+%d+')
 						if ddwGet == "0" then
---							datatable = readFile(userPath().."/res/savePhone.txt")
---							table.remove(datatable, savePhone)
---							writeFile(userPath().."/res/test.txt",datatable,"w",1)
---							toast("获取验证码成功，删除文件里面这个号码",1)
---							mSleep(1000)
+							--							datatable = readFile(userPath().."/res/savePhone.txt")
+							--							table.remove(datatable, savePhone)
+							--							writeFile(userPath().."/res/test.txt",datatable,"w",1)
+							--							toast("获取验证码成功，删除文件里面这个号码",1)
+							--							mSleep(1000)
 							::update_platform::
 							local sz = require("sz")       
 							local http = require("szocket.http")
@@ -2358,7 +2559,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 
 						if restart_time > 2 then
 							if ddwGet == "1" then
---								writeFileString(userPath().."/res/savePhone.txt",ddwData,"a",1)
+								--								writeFileString(userPath().."/res/savePhone.txt",ddwData,"a",1)
 								::import_platform::
 								local sz = require("sz")       
 								local http = require("szocket.http")
@@ -3068,108 +3269,37 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 						mSleep(100)
 					end
 					mSleep(math.random(1000, 1700))
-					if updateNickName == "0" then
-						State={
-							["随机常量"] = 0,
-							["姓氏"]="赵钱孙李周吴郑王冯陈褚卫蒋沈韩杨朱秦尤许何吕施张孔曹严华金魏陶" ..
-							"姜戚谢邹喻柏水窦章云苏潘葛奚范彭郎鲁韦昌马苗凤花方俞任袁柳酆鲍" ..
-							"史唐费廉岑薛雷贺倪汤滕殷罗毕郝邬安常乐于时傅皮卞齐康伍余元卜顾" ..
-							"孟平黄和穆萧尹姚邵湛汪祁毛禹狄米贝明臧计伏成戴谈宋茅庞熊纪舒屈" ..
-							"项祝董梁杜阮蓝闵席季麻强贾路娄危江童颜郭梅盛林刁钟徐邱骆高夏蔡" ..
-							"田樊胡凌霍虞万支柯咎管卢莫经房裘缪干解应宗宣丁贲邓郁单杭洪包诸" ..
-							"左石崔吉钮龚程嵇邢滑裴陆荣翁荀羊於惠甄曲家封芮羿储靳汲邴糜松井" ..
-							"段富巫乌焦巴弓牧隗山谷车侯宓蓬全郗班仰秋仲伊宫宁仇栾暴甘钭厉戎" ..
-							"祖武符刘景詹束龙叶幸司韶郜黎蓟薄印宿白怀蒲邰从鄂索咸籍赖卓蔺屠" ..
-							"蒙池乔阴鬱胥能苍双闻莘党翟谭贡劳逄姬申扶堵冉宰郦雍却璩桑桂濮牛" ..
-							"寿通边扈燕冀郟浦尚农温别庄晏柴瞿阎充慕连茹习宦艾鱼容向古易慎戈" ..
-							"廖庾终暨居衡步都耿满弘匡国文寇广禄阙东欧殳沃利蔚越夔隆师巩厍聂" ..
-							"晁勾敖融冷訾辛阚那简饶空曾毋沙乜养鞠须丰巢关蒯相查后荆红游竺权" ..
-							"逯盖益桓公万俟司马上官欧阳夏侯诸葛闻人东方赫连皇甫尉迟公羊澹台" ..
-							"公冶宗政濮阳淳于单于太叔申屠公孙仲孙轩辕令狐钟离宇文长孙慕容鲜" ..
-							"于闾丘司徒司空亓官司寇仉督子车颛孙端木巫马公西漆雕乐正壤驷公良" ..
-							"拓拔夹谷宰父谷粱晋楚闫法汝鄢涂钦段干百里东郭南门呼延归海羊舌微" ..
-							"生岳帅缑亢况后有琴梁丘左丘东门西门商牟佘佴伯赏南宫墨哈谯笪年爱" ..
-							"阳佟第五言福百家姓终",
-							["名字"]="安彤含祖赩涤彰爵舞深群适渺辞莞延稷桦赐帅适亭濮存城稷澄添悟绢绢澹迪婕箫识悟舞添剑深禄延涤" ..
-							"濮存罡禄瑛瑛嗣嫚朵寅添渟黎臻舞绢城骥彰渺禾教祖剑黎莞咸浓芦澹帅臻渟添禾亭添亭霖深策臻稷辞" ..
-							"悟悟澄涉城鸥黎悟乔恒黎鲲涉莞霖甲深婕乔程澹男岳深涉益澹悟箫乔多职适芦瑛澄婕朵适祖霖瑛坤嫚" ..
-							"涉男珂箫芦黎珹绢芦程识嗣珂瑰枝允黎庸嗣赐罡纵添禄霖男延甲彰咸稷箫岳悟职祖恒珂庸琅男莞庸浓" ..
-							"多罡延瑛濮存爵添剑益骥澄延迪寅婕程霖识瑰识程群教朵悟舞岳浓箫城适程禾嫚罡咸职铃爵渺添辞嫚" ..
-							"浓寅鲲嗣瑛鸥多教瑛迪坤铃珹群黎益澄程莞深坤澹禄职澹赩澄藉群箫骥定彰寅臻渟枝允珹深群黎甲鲲" ..
-							"亭黎藏浓涤渟莞寅辞嗣坤迪嫚添策庸策藉瑰彰箫益莞渺乔彰延舞祖婕澹渺鸥纵嗣瑛藏濮存婕职程芦群" ..
-							"禾嫚程辞祖黎职浓桦藏渟禾彰帅辞铃铃黎允绢濮存剑辞禾瑰添延添悟赐祖咸莞男绢策婕藉禾浓珹涤祖" ..
-							"汉骥舞瑛多稷赐莞渟黎舞桦黎群藏渺黎坤桦咸迪澈舞允稷咸剑定亭澄濮存鲲臻全鸥多赐程添瑛亭帅悟" ..
-							"甲男帅涤适纵渟鲲亭悟琅亭添允舞禾庸咸瑛教鲲允箫芦允瑛咸鸥帅悟延珂黎珹箫爵剑霖剑霖禄鸥悟涉" ..
-							"彰群悟辞帅渺莞澄桦瑛适臻益霖珹亭澹辞坤程嗣铃箫策澈枝赐莞爵渟禄群枝添芦群浓赐职益城澄赩琅" ..
-							"延群乔珹鲲祖群悟黎定庸澄芦延霖罡鲲咸渺纵亭禄鸥赩涤剑澹藏纵濮存澄芦剑延瑰稷黎益赩澄允悟澈" ..
-							"甲嗣绢朵益甲悟涤婕群咸臻箫鲲寅鸥桦益珂舞允庸芦藉寅渺咸赐澄程剑瑰霖瑰铃帅男铃悟识瑰仕仕城" ..
-							"允莞全朵涤铃剑渺稷剑珂铃箫全仕益纵芦桦珂濮存城朵朵咸程剑澄定澈爵寅庸定莞瑛教彰黎箫仕黎桦" ..
-							"赩深赩爵迪悟珹涤琅添箫桦帅瑛黎黎策识寅嫚涉迪策汉舞定彰允男祖教澄群瑛濮存男禾教莞禾鸥澈濮" ..
-							"存岳城嫚深舞教岳澄亭禾坤朵亭职莞稷寅瑰城庸亭舞禾瑛恒坤浓彰莞澄澈鸥臻稷教琅辞益剑藉黎添瑛" ..
-							"延舞坤仕岳多婕骥迪帅黎悟全澄识益甲桦纵适罡彰澄禾婕程黎城涤浓枝箫咸渟岳渟澹臻珹识珹澄箫辞" ..
-							"浓鲲识悟允悟禾识群祖迪渟鲲群庸莞珹悟澹瑰悟鸥汉群甲莞庸职琅莞桦鲲朵深乔辞允彰渺朵瑰亭瑰朵" ..
-							"定深男识群职霖益男舞城允舞爵赩枝罡罡群澹芦藉爵悟渟澹禾多庸箫坤乔芦甲濮存多渟藉珹赐汉纵亭" ..
-							"禾城枝剑露以玉春飞慧娜悠亦元晔曜霜宁桃彦仪雨琴青筠逸曼代菀孤昆秋蕊语莺丝红羲盛静南淑震晴" ..
-							"彭祯山霞凝柔隽松翠高骊雅念皓双洛紫瑞英思歆蓉娟波芸荷笑云若宏夏妍嘉彩如鹏寄芝柳凌莹蝶舒恬" ..
-							"虹清爽月巧乾勋翰芳罗刚鸿运枫阳葳杰怀悦凡哲瑶凯然尚丹奇弘顺依雪菡君畅白振馨寻涵问洁辉忆傲" ..
-							"伟经润志华兰芹修晨木宛俊博韶天锐溪燕家沈放明光千永溶昊梅巍真尔馥莲怜惜佳广香宇槐珺芷帆秀" ..
-							"理柏书沛琪仙之竹向卉欣旻晓冬幻和雁淳浩歌荣懿文幼岚昕牧绿轩工旭颜醉玑卓觅叶夜灵胜晗恨流佁" ..
-							"乐火音采睿翎萱民画梦寒泽怡丽心石邵玮佑旺壮名一学谷韵宜冰赫新蕾美晖项琳平树又炳骏气海毅敬" ..
-							"曦婉爰伯珊影鲸容晶婷林子昌梧芙澍诗星冉初映善越原茂国腾孟水烟半峯莉绮德慈敏才戈梓景智盼霁" ..
-							"琇苗熙姝从谊风发钰玛忍婀菲昶可荌小倩妙涛姗方图迎惠晤宣康娅玟奕锦濯穆禧伶丰良祺珍曲喆扬拔" ..
-							"驰绣烁叡长雯颖辰慕承远彬斯薇成聪爱朋萦田致世实愫进瀚朝强铭煦朗精艺熹建忻晏冷佩东古坚滨菱" ..
-							"囡银咏正儿瑜宝蔓端蓓芬碧人开珠昂琬洋璠桐舟姣琛亮煊信今年庄淼沙黛烨楠桂斐胤骄兴尘河晋卿易" ..
-							"愉蕴雄访湛蓝媛骞娴儒妮旋友娇泰基礼芮羽妞意翔岑苑暖玥尧璇阔燎偲靖行瑾资漪晟冠同齐复吉豆唱" ..
-							"韫素盈密富其翮熠绍澎淡韦诚滢知鹍苒抒艳义婧闳琦壤杨芃洲阵璟茵驹涆来捷嫒圣吟恺璞西旎俨颂灿" ..
-							"情玄利痴蕙力潍听磊宸笛中好任轶玲螺郁畴会暄峻略琼琰默池温炫季雰司杉觉维饮湉许宵茉贤昱蕤珑" ..
-							"锋纬渊超萍嫔大霏楚通邈飙霓谧令厚本邃合宾沉昭峰业豪达彗纳飒壁施欢姮甫湘漾闲恩莎祥启煜鸣品" ..
-							"希融野化钊仲蔚生攸能衍菁迈望起微鹤荫靓娥泓金琨筱赞典勇斌媚寿喜飇濡宕茜魁立裕弼翼央莘绚焱" ..
-							"奥萝米衣森荃航璧为跃蒙庆琲倚穹武甜璐俏茹悌格穰皛璎龙材湃农福旷童亘苇范寰瓃忠虎颐蓄霈言禹" ..
-							"章花健炎籁暮升葛贞侠专懋澜量纶布皎源耀鸾慨曾优栋妃游乃用路余珉藻耘军芊日赡勃卫载时三闵姿" ..
-							"麦瑗泉郎怿惬萌照夫鑫樱琭钧掣芫侬丁育浦磬献苓翱雍婵阑女北未陶干自作伦珧溥桀州荏举杏茗洽焕" ..
-							"吹甘硕赋漠颀妤诺展俐朔菊秉苍津空洮济尹周江荡简莱榆贝萧艾仁漫锟谨魄蔼豫纯翊堂嫣誉邦果暎珏" ..
-							"临勤墨薄颉棠羡浚兆环铄"
-						}
-						State["随机常量"] = tonumber(self:Rnd_Word("0123456789",5))
-
-						newNickname = self:Rnd_Word(State["姓氏"],1,3)..self:Rnd_Word(State["名字"],1,3)
-
-						mSleep(500)
-						inputStr(newNickname)
-					else 
-						mSleep(500)
-						randomsTap(49, 1283,8)
+					randomsTap(49, 1283,8)
+					mSleep(math.random(500, 700))
+					for i = 1, #phone do
 						mSleep(math.random(500, 700))
-						for i = 1, #phone do
-							mSleep(math.random(500, 700))
-							num = string.sub(phone,i,i)
-							if num == "0" then
-								randomsTap(713,  965, 8)
-							elseif num == "1" then
-								randomsTap(38,  964, 8)
-							elseif num == "2" then
-								randomsTap(112,  965, 8)
-							elseif num == "3" then
-								randomsTap(185,  965, 8)
-							elseif num == "4" then
-								randomsTap(264,  963, 8)
-							elseif num == "5" then
-								randomsTap(338,  964, 8)
-							elseif num == "6" then
-								randomsTap(414,  962, 8)
-							elseif num == "7" then
-								randomsTap(495,  964, 8)
-							elseif num == "8" then
-								randomsTap(566,  966, 8)
-							elseif num == "9" then
-								randomsTap(642,  961, 8)
-							end
+						num = string.sub(phone,i,i)
+						if num == "0" then
+							randomsTap(713,  965, 8)
+						elseif num == "1" then
+							randomsTap(38,  964, 8)
+						elseif num == "2" then
+							randomsTap(112,  965, 8)
+						elseif num == "3" then
+							randomsTap(185,  965, 8)
+						elseif num == "4" then
+							randomsTap(264,  963, 8)
+						elseif num == "5" then
+							randomsTap(338,  964, 8)
+						elseif num == "6" then
+							randomsTap(414,  962, 8)
+						elseif num == "7" then
+							randomsTap(495,  964, 8)
+						elseif num == "8" then
+							randomsTap(566,  966, 8)
+						elseif num == "9" then
+							randomsTap(642,  961, 8)
 						end
 					end
 					mSleep(math.random(1000, 1500))
 					randomsTap(659, 84,8)
 					mSleep(math.random(500, 700))
-					toast(newNickname,1)
+					toast("设置名字",1)
 					break
 				end
 			end
@@ -3203,57 +3333,54 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 					end 
 				end 
 			end 
+			six_data = getData()
+			mSleep(500)
+			toast(six_data);
+			mSleep(500)
+			time = getNetTime()
+			sj=os.date("%Y年%m月%d日%H点%M分%S秒",time)
+			mSleep(200)
+			toast(sj)       --或这样
+			mSleep(1000)
+			user = "00"..country_id..phone
+			mSleep(500)
+			if data_six_two then
+				file_path = "完成的账号.ini"
+				is_normal = "true"
+			elseif error_wechat then 
+				file_path = "秒封的账号.ini"
+				is_normal = "false"
+			end
 
-			if sixTwoPushWay == "0" then
-				six_data = getData()
-				mSleep(500)
-				toast(six_data);
-				mSleep(500)
-				time = getNetTime()
-				sj=os.date("%Y年%m月%d日%H点%M分%S秒",time)
+			write_data(file_path,user.."----"..password.."----"..six_data.."----"..sj)
+			mSleep(500)
+
+			if vpn_stauts == "6" then
 				mSleep(200)
-				toast(sj)       --或这样
-				mSleep(1000)
-				user = "00"..country_id..phone
-				mSleep(500)
-				if data_six_two then
-					file_path = "完成的账号.ini"
-					is_normal = "true"
-				elseif error_wechat then 
-					file_path = "秒封的账号.ini"
-					is_normal = "false"
-				end
+				api = code_url
+			else
+				mSleep(200)
+				api = "null"
+			end
 
-				write_data(file_path,user.."----"..password.."----"..six_data.."----"..sj)
-				mSleep(500)
-
-				if vpn_stauts == "6" then
-					mSleep(200)
-					api = code_url
-				else
-					mSleep(200)
-					api = "null"
-				end
-
-				::send::
-				local sz = require("sz")       
-				local http = require("szocket.http")
-				local res, code = http.request("http://39.99.192.160/import_data?phone="..user.."&password="..password.."&token="..six_data.."&is_normal="..is_normal.."&operator="..operator.."&link="..urlEncoder(api).."&time="..sj)
-				if code == 200 then
-					tmp = json.decode(res)
-					if tmp.code == 200 then
-						toast(tmp.message,1)
-						mSleep(1000)
-					else
-						toast("重新上传",1)
-						mSleep(1000)
-						goto send
-					end
+			::send::
+			local sz = require("sz")       
+			local http = require("szocket.http")
+			local res, code = http.request("http://39.99.192.160/import_data?phone="..user.."&password="..password.."&token="..six_data.."&is_normal="..is_normal.."&operator="..operator.."&link="..urlEncoder(api).."&time="..sj)
+			if code == 200 then
+				tmp = json.decode(res)
+				if tmp.code == 200 then
+					toast(tmp.message,1)
+					mSleep(1000)
 				else
 					toast("重新上传",1)
 					mSleep(1000)
 					goto send
 				end
+			else
+				toast("重新上传",1)
+				mSleep(1000)
+				goto send
 			end
 
 			if content_type == "3" then
@@ -3283,6 +3410,9 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 					else
 						toast("第"..account_len.."个注册完成",1)
 						mSleep(1000)
+
+						self:idCard()
+
 						while true do
 							mSleep(500)
 							if getColor(654,1279) == 0x7c160 then
@@ -3333,58 +3463,9 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 								fh_bool = true
 								break
 							end
-
 						end
 
 						if not fh_bool then
-							--修改密码
-							updatePass = false
-							while (true) do
-								mSleep(500)
-								if getColor(40,  182) == 0x191919 and getColor(198,  198) == 0x191919 then
-									mSleep(500)
-									randomsTap(198,  198,4)
-									mSleep(1000)
-								end
-
-								mSleep(500)
-								if getColor(146,  429) == 0x1a1a1a and getColor(155,  432) == 0x1a1a1a then
-									if updatePass then
-										mSleep(500)
-										randomsTap(42,  86,4)
-										mSleep(1000)
-										break
-									else
-										mSleep(1000)
-										randomsTap(525,  426,4)
-										mSleep(1000)
-										toast("微信密码",1)
-									end
-								end
-
-								mSleep(500)
-								if getColor(277,   85) == 0x181818 and getColor(221,  123) == 0xededed then
-									mSleep(500)
-									randomsTap(551,  416,4)
-									mSleep(1000)
-									inputText(password)
-									mSleep(1000)
-									randomsTap(549,  504,4)
-									mSleep(1000)
-									inputText("qqqqaaaa")
-									mSleep(1000)
-									randomsTap(565,  590,4)
-									mSleep(1000)
-									inputText("qqqqaaaa")
-									mSleep(1000)
-									randomsTap(657,  82,4)
-									mSleep(1000)
-									updatePass = true
-								end
-							end
-							
-							
-							--退出登录
 							while true do
 								mSleep(500)
 								if getColor(356,1167) == 0x191919 then
@@ -3451,113 +3532,6 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 						end
 						goto reset
 					end
-				else
-					if data_six_two then
-						mSleep(500)
-						randomsTap(42,82,3)
-						mSleep(500)
-					end
-
-					while true do
-						mSleep(500)
-						if getColor(654,1279) == 0x7c160 then
-							mSleep(500)
-							x,y = findMultiColorInRegionFuzzy( 0x191919, "5|13|0x191919,38|-7|0x191919,21|4|0x191919,57|8|0x191919,39|10|0x191919,54|18|0x444444,-77|5|0x1485ee", 90, 0, 680, 749, 1333)
-							if x~=-1 and y~=-1 then
-								mSleep(500)
-								randomTap(x,y,2)
-								mSleep(1000)
-							end
-							toast("我的",1)
-							break
-						else
-							mSleep(500)
-							randomTap(654,1279,2)
-							mSleep(500)
-						end
-
-						mSleep(math.random(500, 700))
-						if getColor(492, 1266) == 0x576b95 and getColor(561, 1262) == 0x576b95 then
-							mSleep(500)
-							randomsTap(362,797,4)
-							mSleep(500)
-							toast("封号1",1)
-							mSleep(500)
-							fh_bool = true
-							break
-						end
-
-						mSleep(math.random(500, 700))
-						if getColor(346, 803) == 0x576b95 and getColor(390, 796) == 0x576b95 then
-							mSleep(500)
-							randomsTap(362,797,4)
-							mSleep(500)
-							toast("封号2",1)
-							mSleep(500)
-							fh_bool = true
-							break
-						end
-
-						mSleep(math.random(500, 700))
-						if getColor(362,797) == 0x576b95 and getColor(391,800) == 0x576b95 then
-							mSleep(500)
-							randomsTap(362,797,4)
-							mSleep(500)
-							toast("账号状态异常",1)
-							mSleep(500)
-							fh_bool = true
-							break
-						end
-
-					end
-
-					if not fh_bool then
-						--修改密码
-						updatePass = false
-						while (true) do
-							mSleep(500)
-							if getColor(40,  182) == 0x191919 and getColor(198,  198) == 0x191919 then
-								mSleep(500)
-								randomsTap(198,  198,4)
-								mSleep(1000)
-							end
-
-							mSleep(500)
-							if getColor(146,  429) == 0x1a1a1a and getColor(155,  432) == 0x1a1a1a then
-								if updatePass then
-									mSleep(500)
-									randomsTap(42,  86,4)
-									mSleep(1000)
-									break
-								else
-									mSleep(1000)
-									randomsTap(525,  426,4)
-									mSleep(1000)
-									toast("微信密码",1)
-								end
-							end
-
-							mSleep(500)
-							if getColor(277,   85) == 0x181818 and getColor(221,  123) == 0xededed then
-								mSleep(500)
-								randomsTap(551,  416,4)
-								mSleep(1000)
-								inputText(password)
-								mSleep(1000)
-								randomsTap(549,  504,4)
-								mSleep(1000)
-								inputText("qqqqaaaa")
-								mSleep(1000)
-								randomsTap(565,  590,4)
-								mSleep(1000)
-								inputText("qqqqaaaa")
-								mSleep(1000)
-								randomsTap(657,  82,4)
-								mSleep(3000)
-								updatePass = true
-							end
-						end
-					end
 				end
 			end
 		end
@@ -3566,10 +3540,24 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 
 	::over::
 	if account_len == 0 or account_len == times then
+		if data_six_two then
+			mSleep(500)
+			randomsTap(42,82,3)
+			mSleep(500)
+			self:idCard()
+		end
+
 		mSleep(math.random(200, 500))
 		closeApp(self.wc_bid)
 		mSleep(math.random(200, 500))
 	else
+		if data_six_two then
+			mSleep(500)
+			randomsTap(42,82,3)
+			mSleep(500)
+			self:idCard()
+		end
+
 		mSleep(500)
 		closeApp(self.wc_bid, 0)
 		mSleep(5000)
@@ -3618,6 +3606,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 		end
 		goto reset
 	end
+	data_six_two = false
 end
 
 function model:main()
@@ -3894,39 +3883,13 @@ function model:main()
 				["list"] = "无,开启关闭",
 				["select"] = "0",  
 				["countperline"] = "4",
-			},
-			{
-				["type"] = "Label",
-				["text"] = "修改名称类型",
-				["size"] = 20,
-				["align"] = "center",
-				["color"] = "0,0,255",
-			},
-			{
-				["type"] = "RadioGroup",                    
-				["list"] = "随机两个中文,电话号码",
-				["select"] = "0",  
-				["countperline"] = "4",
-			},
-			{
-				["type"] = "Label",
-				["text"] = "62数据上传方式",
-				["size"] = 20,
-				["align"] = "center",
-				["color"] = "0,0,255",
-			},
-			{
-				["type"] = "RadioGroup",                    
-				["list"] = "服务器,扫一扫",
-				["select"] = "0",  
-				["countperline"] = "4",
 			}
 		}
 	}
 
 	local MyJsonString = json.encode(MyTable)
 
-	ret, move_type, login_times, content_type, content_user, content_country, vpn_stauts, kn_country, kn_id, countryId, country_len, login_type, fz_terrace, nickName, password, operator, addBlack, diff_user, ran_pass, ddwGet, airplaneStatus, updateNickName, sixTwoPushWay = showUI(MyJsonString)
+	ret, move_type, login_times, content_type, content_user, content_country, vpn_stauts, kn_country, kn_id, countryId, country_len, login_type, fz_terrace, nickName, password, operator, addBlack, diff_user, ran_pass, ddwGet, airplaneStatus = showUI(MyJsonString)
 	if ret == 0 then
 		dialog("取消运行脚本", 3)
 		luaExit()
@@ -4005,7 +3968,7 @@ function model:main()
 		end
 
 		self:clear_App()
-		self:wechat(ksUrl,move_type,operator,login_times,content_user,content_country,content_type,vpn_stauts,phone_token,kn_country,kn_id,countryId,nickName,password,country_len,login_type,addBlack,diff_user,ran_pass,ddwGet,airplaneStatus,updateNickName,sixTwoPushWay)
+		self:wechat(ksUrl,move_type,operator,login_times,content_user,content_country,content_type,vpn_stauts,phone_token,kn_country,kn_id,countryId,nickName,password,country_len,login_type,addBlack,diff_user,ran_pass,ddwGet,airplaneStatus)
 		mSleep(1000)
 	end
 end
