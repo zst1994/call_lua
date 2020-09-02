@@ -76,82 +76,90 @@ while (true) do
 	end
 end
 
+push = false
 if #list > 0 then
 	for i = tonumber(data_sel[1]) + 1, #list do
 --	for i = 51, #list do
 		nLog(i.."==="..list[i])
-		mSleep(300)
-		while true do
-			--继续签收
-			mSleep(250)
-			if getColor(556,743) == 0xff3b30 or getColor(556,727) == 0xff3b30 then
+		if #(list[i]:atrim()) > 0 then
+			mSleep(300)
+			while true do
+				--继续签收
 				mSleep(250)
-				tap(556,743)
-				mSleep(250)
-			end
-			
-			--重新扫描
-			mSleep(250)
-			if getColor(498,750) == 0x7aff then
-				mSleep(250)
-				tap(498,750)
-				mSleep(250)
-			end
-			
-			mSleep(250)
-			if getColor(270,  505) == 0x000000 and getColor(265,  464) == 0xffffff then
-				mSleep(250)
-				tap(265,  464)
-				mSleep(250)
-				while (true) do
+				if getColor(556,743) == 0xff3b30 or getColor(556,727) == 0xff3b30 then
 					mSleep(250)
-					if getColor(431,  600) == 0xbdc0c7 then
-						mSleep(250)
-						tap(520,  598)
-						mSleep(250)
-						inputStr((list[i]):atrim())
-						mSleep(250)
-					end
-					
-					if getColor(533,  716) == 0xfc9026 then
-						mSleep(250)
-						tap(533,  716)
-						mSleep(250)
-					end
-					
-					--继续签收
+					tap(556,743)
 					mSleep(250)
-					if getColor(556,743) == 0xff3b30 or getColor(556,727) == 0xff3b30 then
-						mSleep(250)
-						tap(556,743)
-						mSleep(250)
-					end
-					
-					--重新扫描
-					mSleep(250)
-					if getColor(498,750) == 0x7aff then
-						mSleep(250)
-						tap(498,750)
-						mSleep(250)
-					end
-					
-					mSleep(250)
-					if getColor(270,  505) == 0x000000 and getColor(265,  464) == 0xffffff then
-						break
-					end
 				end
-				break
+				
+				--重新扫描
+				mSleep(250)
+				if getColor(498,750) == 0x7aff then
+					mSleep(250)
+					tap(498,750)
+					mSleep(250)
+				end
+				
+				mSleep(250)
+				if getColor(270,  505) == 0x000000 and getColor(265,  464) == 0xffffff then
+					mSleep(250)
+					tap(265,  464)
+					mSleep(250)
+					while (true) do
+						mSleep(250)
+						if getColor(431,  600) == 0xbdc0c7 then
+							mSleep(250)
+							tap(520,  598)
+							mSleep(250)
+							inputStr((list[i]):atrim())
+							mSleep(250)
+							push = true
+						end
+						
+						if push then
+							mSleep(260)
+							if getColor(533,  716) == 0xfc9026 then
+								mSleep(250)
+								tap(533,  716)
+								mSleep(250)
+							end
+							
+							--继续签收
+							mSleep(250)
+							if getColor(556,743) == 0xff3b30 or getColor(556,727) == 0xff3b30 then
+								mSleep(250)
+								tap(556,743)
+								mSleep(250)
+							end
+							
+							--重新扫描
+							mSleep(250)
+							if getColor(498,750) == 0x7aff then
+								mSleep(250)
+								tap(498,750)
+								mSleep(250)
+							end
+							
+							mSleep(250)
+							if getColor(270,  505) == 0x000000 and getColor(265,  464) == 0xffffff then
+								break
+							end
+						end
+					end
+					break
+				end
 			end
-		end
-
-		if i == #list then
-			mSleep(150)
-			writeFileString(userPath().."/res/data_sel.txt","0","w",0) --将 string 内容存入文件，成功返回 true
-			toast("数据推送完成",1)
-			mSleep(2000)
-		else
-			mSleep(150)
-			writeFileString(userPath().."/res/data_sel.txt",tostring(i),"w",0) --将 string 内容存入文件，成功返回 true
+			
+			push = false
+			if i == #list then
+				mSleep(150)
+				writeFileString(userPath().."/res/data_sel.txt","0","w",0) --将 string 内容存入文件，成功返回 true
+				toast("数据推送完成",1)
+				mSleep(2000)
+			else
+				mSleep(150)
+				writeFileString(userPath().."/res/data_sel.txt",tostring(i),"w",0) --将 string 内容存入文件，成功返回 true
+			end
 		end
 	end
 end
@@ -185,81 +193,89 @@ while true do
 	end
 end
 
+push = false
 if #list1 > 0 then
 	for i = tonumber(data_sel[1]) + 1, #list1 do
 --	for i = 51, #list do
 		nLog(i.."==="..list1[i])
-		mSleep(300)
-		while true do
-			--继续签收
-			mSleep(250)
-			if getColor(556,743) == 0xff3b30 or getColor(556,727) == 0xff3b30 then
+		if #(list1[i]:atrim()) > 0 then
+			mSleep(300)
+			while true do
+				--继续签收
 				mSleep(250)
-				tap(556,743)
-				mSleep(250)
-			end
-			
-			--重新扫描
-			mSleep(250)
-			if getColor(498,750) == 0x7aff then
-				mSleep(250)
-				tap(498,750)
-				mSleep(250)
-			end
-			
-			mSleep(250)
-			if getColor(270,  505) == 0x000000 and getColor(265,  464) == 0xffffff then
-				mSleep(250)
-				tap(265,  464)
-				mSleep(250)
-				while (true) do
+				if getColor(556,743) == 0xff3b30 or getColor(556,727) == 0xff3b30 then
 					mSleep(250)
-					if getColor(431,  600) == 0xbdc0c7 then
-						mSleep(250)
-						tap(520,  598)
-						mSleep(250)
-						inputStr((list1[i]):atrim())
-						mSleep(250)
-					end
-					
-					if getColor(533,  716) == 0xfc9026 then
-						mSleep(250)
-						tap(533,  716)
-						mSleep(250)
-					end
-					
-					--继续签收
+					tap(556,743)
 					mSleep(250)
-					if getColor(556,743) == 0xff3b30 or getColor(556,727) == 0xff3b30 then
-						mSleep(250)
-						tap(556,743)
-						mSleep(250)
-					end
-					
-					--重新扫描
-					mSleep(250)
-					if getColor(498,750) == 0x7aff then
-						mSleep(250)
-						tap(498,750)
-						mSleep(250)
-					end
-					
-					mSleep(250)
-					if getColor(270,  505) == 0x000000 and getColor(265,  464) == 0xffffff then
-						break
-					end
 				end
-				break
+				
+				--重新扫描
+				mSleep(250)
+				if getColor(498,750) == 0x7aff then
+					mSleep(250)
+					tap(498,750)
+					mSleep(250)
+				end
+				
+				mSleep(250)
+				if getColor(270,  505) == 0x000000 and getColor(265,  464) == 0xffffff then
+					mSleep(250)
+					tap(265,  464)
+					mSleep(250)
+					while (true) do
+						mSleep(250)
+						if getColor(431,  600) == 0xbdc0c7 then
+							mSleep(250)
+							tap(520,  598)
+							mSleep(250)
+							inputStr((list1[i]):atrim())
+							mSleep(250)
+							push = true
+						end
+						
+						if push then
+							mSleep(260)
+							if getColor(533,  716) == 0xfc9026 then
+								mSleep(250)
+								tap(533,  716)
+								mSleep(250)
+							end
+							
+							--继续签收
+							mSleep(250)
+							if getColor(556,743) == 0xff3b30 or getColor(556,727) == 0xff3b30 then
+								mSleep(250)
+								tap(556,743)
+								mSleep(250)
+							end
+							
+							--重新扫描
+							mSleep(250)
+							if getColor(498,750) == 0x7aff then
+								mSleep(250)
+								tap(498,750)
+								mSleep(250)
+							end
+							
+							mSleep(250)
+							if getColor(270,  505) == 0x000000 and getColor(265,  464) == 0xffffff then
+								break
+							end
+						end
+					end
+					break
+				end
 			end
-		end
-
-		if i == #list1 then
-			mSleep(150)
-			writeFileString(userPath().."/res/data_sel.txt","0","w",0) --将 string 内容存入文件，成功返回 true
-			dialog("数据推送完成",60)
-		else
-			mSleep(150)
-			writeFileString(userPath().."/res/data_sel.txt",tostring(i),"w",0) --将 string 内容存入文件，成功返回 true
+			
+			push = false
+			if i == #list1 then
+				mSleep(150)
+				writeFileString(userPath().."/res/data_sel.txt","0","w",0) --将 string 内容存入文件，成功返回 true
+				dialog("数据推送完成",60)
+			else
+				mSleep(150)
+				writeFileString(userPath().."/res/data_sel.txt",tostring(i),"w",0) --将 string 内容存入文件，成功返回 true
+			end
 		end
 	end
 end

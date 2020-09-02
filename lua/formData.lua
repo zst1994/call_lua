@@ -32,7 +32,6 @@ function imgupload2(_url,path,imageName)
 		source = ltn12.source.cat(ltn12.source.string(_file),ltn12.source.file(reqfile),ltn12.source.string(_end)),
 		sink = ltn12.sink.table(respbody)
 	}
-
 	if code  == 200 then
 		return table.concat(respbody)
 	else
@@ -40,12 +39,15 @@ function imgupload2(_url,path,imageName)
 	end
 end
 
-url="http://oss.06km.com:8081/mz/oss/pic/upload/scriptImg";
-local _file1 = [[--abcd]]..'\r\n'..[[Content-Disposition: form-data; name="file"; filename="tmp.jpg"]]..'\r\n'..[[Content-Type: image/jpeg]]..'\r\n\r\n'
-aa = imgupload2(url, userPath() .. "/res/" .. "tmp.jpg",_file1);
+--url="http://oss.06km.com:8081/mz/oss/pic/upload/scriptImg";
+--local _file1 = [[--abcd]]..'\r\n'..[[Content-Disposition: form-data; name="file"; filename="tmp.jpg"]]..'\r\n'..[[Content-Type: image/jpeg]]..'\r\n\r\n'
+--aa = imgupload2(url, userPath() .. "/res/" .. "tmp.jpg",_file1);
+--local tmp = json.decode(aa)
+--dialog(tmp["data"]["url"], 0)
+url="https://upload.api.cli.im/upload.php?kid=cliim";
+local _file1 = [[--abcd]]..'\r\n'..[[Content-Disposition: form-data; name="Filedata"; filename="111.png"]]..'\r\n'..[[Content-Type: image/png]]..'\r\n\r\n'
+aa = imgupload2(url, userPath() .. "/res/" .. "111.png",_file1);
+dialog(#aa, time)
 local tmp = json.decode(aa)
-dialog(tmp["data"]["url"], 0)
-
-
-
+dialog(tmp["data"]["path"], 0)
 

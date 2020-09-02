@@ -20,8 +20,20 @@
                 },{
                     "id": "vpn_country",
                     "type": "RadioGroup",
-                    "list": "国内,国外",
+                    "list": "小火箭国内,小火箭国外,系统vpn国外,系统vpn国内",
                     "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "切IP账号",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "ip_userName",
+                    "type": "Edit",
+                    "prompt": "切IP账号",
+                    "text": "默认值", 
+                    "kbtype": "ascii"
                 },{
                     "type": "Label",
                     "text": "国外切IP国家",
@@ -118,7 +130,7 @@
                 },{
                     "id": "fz_type",
                     "type": "RadioGroup",
-                    "list": "二维码辅助,go下单,蚂蚁手机辅助,跳马注册,fz,showdoc滑块辅助,蚂蚁滑块辅助,手动辅助,马力滑块辅助,马力二维码辅助",
+                    "list": "二维码辅助,go下单,蚂蚁手机辅助,跳马注册,fz,showdoc滑块辅助,蚂蚁滑块辅助,手动辅助,马力滑块辅助,马力二维码辅助,showdoc二维码辅助,联盟二维码辅助",
                     "select": "0"
                 },{
                     "id": "fz_key",
@@ -284,5 +296,27 @@
                     "prompt": "请输入您要设置重新获取短信几次",
                     "text": "默认值",
                     "kbtype": "ascii"
+                },{
+                    "type": "Label",
+                    "text": "设置ip选择省份",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "request_ipWay",
+                    "type": "RadioGroup",
+                    "list": "固定,接口请求",
+                    "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "提取62脚本",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "getSixData",
+                    "type": "RadioGroup",
+                    "list": "无,提取",
+                    "select": "0"
                 }]
     }

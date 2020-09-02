@@ -1,0 +1,261 @@
+post请求
+
+1.登录
+
+http://zcore.zqzan.com/app/account/raw/login
+
+body参数数： username   用户名     loginpw  密码
+
+返回 token  后面接口需要用到token
+{
+    "code": 0,
+    "msg": "操作成功",
+    "data": {
+        "token": "88654fe4-4b01-476d-89ff-176262c2e09c"
+    }
+}
+
+2. 个人信息
+
+http://zcore.zqzan.com/app/douyin/mine/my/info
+
+头部传递参数 token
+
+返回信息：
+is_signed  : 签名状态
+dyin_dataid： 绑定的抖音id
+wallet： 豆数
+today_count： 今天完成数量
+
+{
+    "code": 0,
+    "msg": "操作成功",
+    "data": {
+        "exam_dycomment": 0,
+        "access": 63,
+        "wallet": 3053,
+        "exam_douyin": 13,
+        "dyin_dataid": "104477068135",
+        "dyin_status": 3,
+        "today_count": 4,
+        "is_signed": true,
+        "recent_count": "-"
+    }
+}
+
+
+没签名返回：
+{
+    "code": 0,
+    "msg": "操作成功",
+    "data": {
+        "sign_douyin_sample": "https://zqzan.oss-cn-shanghai.aliyuncs.com/sample/dy_sign.jpg@!fwidth",
+        "dyin_status": 0
+    }
+}
+
+
+
+ 
+3.获取签名参数   签名状态为false需要重新获取一下签名参数
+http://zcore.zqzan.com/app/oss/sign_img
+
+头部传递参数 token
+
+返回值：
+
+{
+    "code": 0,
+    "msg": "操作成功",
+    "data": {
+        "accessid": "LTAI4FwVNMW9yHsSHKW5mW3T",
+        "signature": "SLZCn+qaQ406q3M7EnC29QsYDP0=",
+        "prefix": "1290324936012742657_",
+        "expire": "1597463205552",
+        "host": "https://yun.zqzan.com",
+        "format": "@!fwidth",
+        "dir": "sign/08_15/",
+        "policy": "eyJleHBpcmF0aW9uIjoiMjAyMC0wOC0xNVQwMzo1MDowMC4wMDBaIiwiY29uZGl0aW9ucyI6W1siY29udGVudC1sZW5ndGgtcmFuZ2UiLDAsMzE0NTcyODBdLFsic3RhcnRzLXdpdGgiLCIka2V5Iiwic2lnbi8wOF8xNS8iXV19"
+    }
+}
+
+签名上传图片传递参数key需要组合上面返回的参数
+key：dir + "/" + prefix + expire + ".png";
+
+
+4 签名上传图片：类型form-data类型传递
+https://yun.zqzan.com 或者 https://zqzan.oss-cn-shanghai.aliyuncs.com/
+
+body参数： 从第3步获取
+
+key:                        key,
+policy:                     policy
+OSSAccessKeyId:             accessid
+signature:                  signature
+success_action_status:      "200",
+file:                       图片路径
+
+接口请求返回状态200请求接下来接口
+
+http://zcore.zqzan.com/app/douyin/do/sign
+
+头部参数   Token
+
+body参数  img_url: "https://zqzan.oss-cn-shanghai.aliyuncs.com/sign/" + 第三步的key + "@!fwidth"
+   
+
+返回值：
+{
+    "code": 0,
+    "msg": "操作成功",
+    "data": {}
+}
+
+
+http://zcore.zqzan.com/app/douyin/do/oauth
+
+头部参数   Token
+
+body参数  
+shot_img: https://yun.zqzan.com/sign/08_17//1262038372190793729_159762961644910.png@!fwidth
+short_url: https://v.douyin.com/JMsqhyb/
+
+返回值 
+{
+    "code":0,
+    "msg":"操作成功",
+    "data":{}
+}
+
+
+
+5 获取任务
+
+http://zcore.zqzan.com/app/douyin/pull/one
+
+头部参数 Token
+
+body参数：
+    b_discount:  true或false   true为特价     
+    access:   点赞： 1   关注： 3
+    exam_status: 0
+   
+
+返回值   aweme_id 抖音id  id 任务id     anchor_id 个人中心id
+
+{
+    "code": 0,
+    "msg": "操作成功",
+    "data": {
+        "aweme_id": "6860828578003651853",
+        "sample_img": "https://zqzan.oss-cn-shanghai.aliyuncs.com/sample/dy_digger.jpg@!fwidth",
+        "b_discount": true,
+        "anchor_id": "166760231238125",
+        "id": "1294492116837101569",
+        "type": 1,
+        "earning": 11
+    }
+}
+
+6.提交任务
+
+获取提交参数
+
+http://zcore.zqzan.com/app/oss/shot_img
+
+头部参数 Token
+
+返回值   提交任务传递参数key需要组合返回的参数 key：dir + "/" + prefix + expire + ".png";
+
+{
+    "code": 0,
+    "msg": "操作成功",
+    "data": {
+        "accessid": "LTAI4FwVNMW9yHsSHKW5mW3T",
+        "signature": "D4DNq9er9q9DtUI6sNnXyI4FcIM=",
+        "prefix": "1290324936012742657_",
+        "expire": "1597467064697",
+        "host": "https://yun.zqzan.com",
+        "format": "@!fwidth",
+        "dir": "app/08_15/",
+        "policy": "eyJleHBpcmF0aW9uIjoiMjAyMC0wOC0xNVQwNDo1NjowMC4wMjNaIiwiY29uZGl0aW9ucyI6W1siY29udGVudC1sZW5ndGgtcmFuZ2UiLDAsMzE0NTcyODBdLFsic3RhcnRzLXdpdGgiLCIka2V5IiwiYXBwLzA4XzE1LyJdXX0="
+    }
+}
+
+
+提交任务      form-data类型传递
+
+https://yun.zqzan.com/
+
+body参数： 从获取提交参数获取
+
+key:                        key,
+policy:                     policy
+OSSAccessKeyId:             accessid
+signature:                  signature
+success_action_status:      "200",
+file:                       截图保存的图片路径
+
+接口请求返回状态200请求接下来接口
+
+http://zcore.zqzan.com/app/douyin/submit/task
+
+头部参数   Token
+
+body参数   
+    doit_id: 第五部获取任务的任务id
+    shot_img: https://zqzan.oss-cn-shanghai.aliyuncs.com/" + 获取提交参数的组合key + "@!fwidth
+
+
+返回值：
+{
+    "code": 0,
+    "msg": "操作成功",
+    "data": {}
+}
+
+7 放弃任务
+
+http://zcore.zqzan.com/app/douyin/giveup/task
+
+头部参数 Token
+
+body参数     doit_id    获取任务的任务id
+ 
+返回值：
+{
+    "code": 0,
+    "msg": "操作成功",
+    "data": {}
+}
+
+
+8 解绑
+http://zcore.zqzan.com/app/douyin/undo/oauth
+
+头部参数  Token
+
+返回值
+{
+    "code": 1000,
+    "msg": "解绑申请已提交，请稍后查看",
+    "data": {}
+}
+
+
+9 绑定支付宝
+
+http://zcore.zqzan.com/app/cash/alipay
+
+头部参数  Token
+
+body参数  alipay_account: 支付宝账号    alipay_realname: 真实姓名
+
+
+返回值
+
+{
+    "code":1000,
+    "msg":"已经设置过了",
+    "data":{}
+}
