@@ -3,7 +3,6 @@ local ts 				= require('ts')
 local json 				= ts.json
 
 local model 				= {}
---local qr 				= require("tsqr")
 
 model.awz_bid 			= "AWZ"
 model.wc_bid 			= "com.tencent.xin"
@@ -39,6 +38,42 @@ function model:file_exists(file_name)
 	return f ~= nil and f:close()
 end
 
+--[[检查网络方法]]
+function model:Net()
+--	::check_net::
+--	mSleep(1000)
+--	--ping 3次测试网络连接情况
+--	status = ts.ping("www.baidu.com",3)
+--	if status then
+--		local n = 0
+--		for i=1,#status do
+--			n = n + status[i]
+--		end
+--		if n >= 100 then
+--			toast("网络延迟高，重新飞行")
+--			mSleep(1000)
+--			setAirplaneMode(true);    --打开飞行模式
+--			mSleep(3000)
+--			setAirplaneMode(false);    --关闭飞行模式
+--			mSleep(5000)
+--			goto check_net
+--		else
+--			toast("网络良好")
+--			mSleep(1000)
+--		end
+--	else
+--		--无网络，窗口提示并退出程序
+--		toast("无网络，请检查网络")
+--		mSleep(1000)
+--		setAirplaneMode(true);    --打开飞行模式
+--		mSleep(3000)
+--		setAirplaneMode(false);    --关闭飞行模式
+--		mSleep(5000)
+--		goto check_net
+--	end
+end
+
+
 function model:changeIP(content_user,content_country)
 	if content_country == "0" then
 		change_url = "http://refresh.come-ip.site/refresh?token=c1568ade&time=600&protocol=socks5&isp=0&user="..content_user.."&province="
@@ -72,32 +107,32 @@ end
 
 --下面是子程序
 function model:change_IP(content_user,content_country)--换IP
---	while true do
---		::change_ip::
---		mSleep(500)
---		status_resp, header_resp,body_resp = ts.httpGet("http://refresh.rola-ip.co/refresh?user="..content_user.."&country="..content_country)
---		if status_resp == 200 then
---			tmp = json.decode(body_resp)
---			if tmp.Ret == "SUCCESS" then
---				toast("切换成功",1)
---				mSleep(1000)
---				break
---			else
---				toast("切换失败",1)
---				mSleep(3000)
---				goto change_ip
---			end
---		else
---			toast("切换失败",1)
---			mSleep(2000)
---			goto change_ip
---		end
+	while true do
+		::change_ip::
+		mSleep(500)
+		status_resp, header_resp,body_resp = ts.httpGet("http://refresh.rola-ip.co/refresh?user="..content_user.."&country="..content_country)
+		if status_resp == 200 then
+			tmp = json.decode(body_resp)
+			if tmp.Ret == "SUCCESS" then
+				toast("切换成功",1)
+				mSleep(1000)
+				break
+			else
+				toast("切换失败",1)
+				mSleep(3000)
+				goto change_ip
+			end
+		else
+			toast("切换失败",1)
+			mSleep(2000)
+			goto change_ip
+		end
 
---		if (status_resp==502) then--打开网站失败
---			toast("打开网站失败等待3秒")
---			mSleep(3000)
---		end
---	end
+		if (status_resp==502) then--打开网站失败
+			toast("打开网站失败等待3秒")
+			mSleep(3000)
+		end
+	end
 end
 
 function model:vpn()
@@ -156,7 +191,7 @@ function model:vpn()
 
 end
 
-function model:clear_App()
+function model:clear_App(connect_vpn)
 	::run_again::
 	closeApp(self.awz_bid)
 	mSleep(math.random(200, 500))
@@ -185,6 +220,9 @@ function model:clear_App()
 		if result == 3 then
 			toast("新机成功，不过ip重复了",1)
 			mSleep(1000)
+			if connect_vpn == "0" then
+				self:vpn()
+			end
 		elseif result == 1 then
 			toast("成功",1)
 		else 
@@ -509,45 +547,118 @@ function model:ewm(phone,country_id,ewm_url,fz_terrace,load_ewm_bool,base_six_fo
 
 end
 
-function model:idCard()
-	while true do
-		mSleep(500)
-		if getColor(654,1279) == 0x7c160 then
+function model:idCard(countryCode)
+	if countryCode == "60" then
+		while true do
 			mSleep(500)
-			x,y = findMultiColorInRegionFuzzy( 0x00c777, "19|-10|0x00c777,-7|9|0x00c777,79|-15|0x191919,122|-2|0x191919", 90, 0, 0, 749, 1333)
-			if x~=-1 and y~=-1 then
+			if getColor(654,1279) == 0x7c160 then
 				mSleep(500)
-				randomTap(x,y,2)
-				mSleep(1000)
+				while true do
+					--设置
+					mSleep(1000)
+					x, y = findMultiColorInRegionFuzzy(0x1485ee,"0|13|0x1485ee,58|2|0x191919,63|13|0x191919,77|6|0x191919,97|11|0x191919,116|13|0x191919,106|20|0x444444", 90, 0, 0, 749, 1333)
+					if x~=-1 and y~=-1 then
+						mSleep(1000)
+						randomTap(x + 300,y,2)
+						mSleep(1000)
+					end
+					
+					--帮助与反馈
+					mSleep(1000)
+					if getColor(153,661) == 0x272727 and getColor(49,675) == 0x191919 then
+						mSleep(2500)
+						randomTap(153,661,2)
+						mSleep(4000)
+						break
+					end
+				end
+				
+				while true do
+					mSleep(1000)
+					if getColor(602,88) == 0 and getColor(276,344) == 0x191919 then
+						mSleep(3000)
+						randomTap(4276,344,2)
+						mSleep(3000)
+					end
+					
+					--实名问题
+					mSleep(1000)
+					x, y = findMultiColorInRegionFuzzy(0x191919,"21|0|0x191919,11|10|0x191919,34|12|0x191919,41|-3|0x191919,57|7|0x191919,78|7|0x191919,92|7|0x191919,102|0|0x191919,-40|37|0xf6b460", 90, 0, 0, 749, 1333)
+					if x~=-1 and y~=-1 then
+						mSleep(3000)
+						randomTap(x + 10,y + 10,2)
+						mSleep(3000)
+					end
+					
+					mSleep(1000)
+					if getColor(71,250) == 0x29ae68 and getColor(106,242) == 0xf6b460 then
+						mSleep(3000)
+						randomTap(456,227,2)
+						mSleep(3000)
+						toast("实名认证",1)
+						mSleep(1500)
+						break
+					end
+				end
+				break
+			else
+				mSleep(500)
+				randomTap(654,1279,2)
+				mSleep(500)
 			end
-			toast("支付",1)
-			break
-		else
+		end
+	else
+		while true do
 			mSleep(500)
-			randomTap(654,1279,2)
-			mSleep(500)
+			if getColor(654,1279) == 0x7c160 then
+				mSleep(500)
+				randomTap(92,1269,2)
+				mSleep(1000)
+				while true do
+					mSleep(500)
+					if getColor(693,89) == 0x181818 and getColor(685,75) == 0xededed then
+						mSleep(500)
+						randomTap(693,89,2)
+						mSleep(1000)
+						break
+					end
+				end
+				
+				while true do
+					mSleep(500)
+					if getColor(700,417) == 0x4c4c4c and getColor(483,535) == 0xffffff then
+						mSleep(500)
+						randomTap(575,530,2)
+						mSleep(1000)
+						toast("收付款",1)
+						mSleep(3000)
+						break
+					end
+				end
+				break
+			else
+				mSleep(500)
+				randomTap(654,1279,2)
+				mSleep(500)
+			end
 		end
 	end
 
 	while (true) do
-		--收付款
-		mSleep(500)
-		if getColor(113,  266) == 0x3cb371 then
-			mSleep(500)
-			randomTap(199,266,2)
-			mSleep(1000)
-		end
 		--二维码收款
-		mSleep(500)
-		if getColor(359,  769) == 0x509863 and getColor(137, 768) == 0xffffff then
-			mSleep(500)
-			randomTap(359,  769,2)
+		mSleep(2000)
+		x, y = findMultiColorInRegionFuzzy(0x509863,"-225|-9|0xffffff,-206|-13|0xffffff,-187|3|0xffffff,-173|-4|0xffffff,-399|-6|0x509863,96|-67|0x439057", 100, 0, 0, 749, 1333)
+		if x~=-1 and y~=-1 then
+			mSleep(3000)
+			randomTap(x + 100, y, 2)
+			mSleep(1000)
+			toast("二维码收款",1)
 			mSleep(1000)
 		end
 
 		mSleep(500)
 		if getColor(118, 1125) == 0xededed and getColor(116,  938) == 0x000000 then
-			mSleep(500)
+			mSleep(3000)
 			randomTap(116,  938,2)
 			mSleep(1000)
 			break
@@ -572,7 +683,7 @@ function model:idCard()
 			mSleep(1000)
 			randomTap(326,  322,2)
 			mSleep(1000)
-			inputText("4405827455855")
+			inputText("341126199301216243")
 			mSleep(1000)
 			randomTap(316,  405,2)
 			mSleep(1000)
@@ -692,8 +803,8 @@ function model:idCard()
 		end
 
 		mSleep(500)
-		if getColor(654,1279) == 0x7c160 then
-			toast("我的",1)
+		if getColor(90,1267) == 0x7c160 or getColor(654,1279) == 0x7c160 then
+			toast("微信",1)
 			break
 		else
 			mSleep(500)
@@ -703,7 +814,7 @@ function model:idCard()
 	end
 end
 
-function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_country,content_type,vpn_stauts,phone_token,kn_country,kn_id,countryId,nickName,password,country_len,login_type,addBlack,diff_user,ran_pass,ddwGet,airplaneStatus)
+function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_country,content_type,vpn_stauts,phone_token,kn_country,kn_id,countryId,nickName,password,country_len,login_type,addBlack,diff_user,ran_pass,ddwGet,airplaneStatus,connect_vpn,EU_countries,tmFailBack)
 	account_len = 0
 	old_mess_yzm = ""
 	login_diff_bool = false
@@ -1093,6 +1204,29 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 			mSleep(1000)
 			goto get_phone
 		end
+	elseif vpn_stauts == "10" then
+		::get_phone::
+		local sz = require("sz")        --登陆
+		local http = require("szocket.http")
+		local res, code = http.request("http://simsms.org/priemnik.php?metod=get_number&country="..countryId.."&service=opt67&apikey=pRv27lOtdWjwW8xlLZm54NAgZLQwZr")
+
+		if code == 200 then
+			tmp = json.decode(res)
+			if tmp.response == "1" then
+				telphone = tmp.number
+				country_code = string.sub(tmp.CountryCode,2,#tmp.CountryCode)
+				pay_id = tmp.id
+				toast(telphone, 1)
+			else
+				toast("获取不到国家取号，重新取号:"..res,1)
+				mSleep(30000)
+				goto get_phone
+			end
+		else
+			toast("获取手机号码失败，重新获取:"..res,1)
+			mSleep(30000)
+			goto get_phone
+		end
 	else
 		::get_phone::
 		local sz = require("sz")        --登陆
@@ -1119,7 +1253,6 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 				mSleep(2000)
 				lua_exit()
 			end
-
 		else
 			toast("获取手机号码失败，重新获取",1)
 			mSleep(3000)
@@ -1129,7 +1262,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 
 	if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "3" or vpn_stauts == "5" or vpn_stauts == "6" or vpn_stauts == "7" or vpn_stauts == "8" or vpn_stauts == "9"  then
 		country_id = kn_country
-	elseif vpn_stauts == "4" then
+	elseif vpn_stauts == "4" or vpn_stauts == "10" then
 		country_id = country_code
 	else
 		if country_len == "0" then
@@ -1146,7 +1279,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 		mSleep(math.random(200, 300))
 	end
 
-	if vpn_stauts == "1" or vpn_stauts == "3" or vpn_stauts == "4" or vpn_stauts == "6" then
+	if vpn_stauts == "1" or vpn_stauts == "3" or vpn_stauts == "4" or vpn_stauts == "6" or vpn_stauts == "10" then
 		phone = telphone
 	elseif vpn_stauts == "5" or vpn_stauts == "8" then
 		phone = string.sub(telphone, #country_id + 1,#telphone)
@@ -1160,27 +1293,29 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 	else
 		phone = string.sub(telphone, lens+2, #telphone)
 	end
-
-	--昵称
-	while (true) do
-		--707版本
-		mSleep(math.random(200, 500))
-		x, y = findMultiColorInRegionFuzzy(0,"21|17|0,36|21|0,41|4|0,-15|12|0", 90, 0, 0, 749, 701)
-		if x~=-1 and y~=-1 then
+	
+	if EU_countries == "1" then
+		--昵称
+		while (true) do
+			--707版本
 			mSleep(math.random(200, 500))
-			randomsTap(348, 518, 8)
-			mSleep(math.random(200, 500))
-			--	if login_type == "0" then
-			if diff_user == "0" then
-				nickName = self:randomStr("1234567890QWERTYUIOPASDF1234567890GHJKLZXCVBNM1234567890qwertyuiopasd1234567890fghjklzxcvbnm1234567890", math.random(8, 15))
-			else
-				nickName = self:randomStr("`~#^&*-=!@$;/|1234567890QWERTYUIOPASDF`~#^&*-=!@$;/|1234567890GHJKLZXCVBNM`~#^&*-=!@$;/|1234567890qwertyuiopasd`~#^&*-=!@$;/|1234567890fghjklzxcvbnm1234567890`~#^&*-=!@$;/|", math.random(8, 15))
+			x, y = findMultiColorInRegionFuzzy(0,"21|17|0,36|21|0,41|4|0,-15|12|0", 90, 0, 0, 749, 701)
+			if x~=-1 and y~=-1 then
+				mSleep(math.random(200, 500))
+				randomsTap(348, 518, 8)
+				mSleep(math.random(200, 500))
+				--	if login_type == "0" then
+				if diff_user == "0" then
+					nickName = self:randomStr("1234567890QWERTYUIOPASDF1234567890GHJKLZXCVBNM1234567890qwertyuiopasd1234567890fghjklzxcvbnm1234567890", math.random(8, 15))
+				else
+					nickName = self:randomStr("`~#^&*-=!@$;/|1234567890QWERTYUIOPASDF`~#^&*-=!@$;/|1234567890GHJKLZXCVBNM`~#^&*-=!@$;/|1234567890qwertyuiopasd`~#^&*-=!@$;/|1234567890fghjklzxcvbnm1234567890`~#^&*-=!@$;/|", math.random(8, 15))
+				end
+				--	end
+				mSleep(500)
+				inputStr(nickName)
+				mSleep(math.random(200, 500))
+				break
 			end
-			--	end
-			mSleep(500)
-			inputStr(nickName)
-			mSleep(math.random(200, 500))
-			break
 		end
 	end
 
@@ -1306,10 +1441,14 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 
 	cheack_bool = true
 	set_vpn = false
+	tmFailBack_bool = true
+	
 	::tiaoma::
-	if set_vpn then
-		if content_type == "0" or content_type == "2" or content_type == "3" then
-			self:vpn()
+	if connect_vpn == "1" then
+		if set_vpn then
+			if content_type == "0" or content_type == "2" or content_type == "3" then
+				self:vpn()
+			end
 		end
 	end
 
@@ -1334,30 +1473,71 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 			break
 		end
 	end
-
+	
+	--欧盟隐秘政策多一个下一步
+	if EU_countries == "0" then
+		while (true) do
+			mSleep(math.random(500, 700))
+			x, y = findMultiColorInRegionFuzzy(0x7c160,"309|7|0x7c160,304|54|0x7c160,-12|57|0x7c160,-49|31|0xededed,382|32|0xededed,156|25|0xffffff", 90, 0, 0, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(math.random(200, 500))
+				randomsTap(x,y,10)
+				mSleep(math.random(200, 500))
+				toast("欧盟。。。",1)
+				mSleep(1000)
+				break
+			end
+		end
+	end
+	
 	--隐秘政策
 	::ymzc::
 	time = 0
 	while (true) do
-		mSleep(math.random(500, 700))
-		x,y = findMultiColorInRegionFuzzy( 0xcdcdcd, "48|13|0xcdcdcd,80|4|0xcdcdcd,-87|11|0xfafafa,186|13|0xfafafa,50|34|0xfafafa,265|13|0xffffff", 100, 0, 966, 749, 1333)
-		if x~=-1 and y~=-1 then
-			mSleep(math.random(200, 500))
-			randomsTap(x-240, y-98,2)
-			mSleep(math.random(200, 500))
-			break
-		else
+		if EU_countries == "0" then
 			mSleep(math.random(500, 700))
-			x,y = findMultiColorInRegionFuzzy( 0xc2c2c2, "-148|-7|0xf2f2f2,140|2|0xf2f2f2,245|2|0xededed,-175|6|0xf2f2f2", 100, 0, 1145, 749, 1333)
+			x, y = findMultiColorInRegionFuzzy(0x7c160,"309|7|0x7c160,304|54|0x7c160,-12|57|0x7c160,-49|31|0xededed,382|32|0xededed,156|25|0xffffff", 90, 0, 0, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(math.random(200, 500))
+				randomsTap(x,y,10)
+				mSleep(math.random(200, 500))
+				toast("欧盟。。。",1)
+				mSleep(1000)
+			end
+			
+			mSleep(math.random(500, 700))
+			x, y = findMultiColorInRegionFuzzy(0xc2c2c2,"13|19|0xc2c2c2,52|12|0xc2c2c2,83|0|0xc2c2c2,84|16|0xc2c2c2,-111|-5|0xf2f2f2,219|43|0xf2f2f2,274|18|0xededed,-172|9|0xededed", 100, 0, 924, 749, 1333)
 			if x~=-1 and y~=-1 then
 				mSleep(math.random(500, 1000))
-				randomsTap(x, y-112,1)
+				randomsTap(x - 240, y-95,1)
 				mSleep(math.random(3000, 5000))
 				break
 			else
 				time = time + 1
-				toast("等待隐秘政策"..time,1)
+				toast("欧盟等待隐秘政策"..time,1)
 				mSleep(math.random(2000, 3000))
+			end
+		else
+			mSleep(math.random(500, 700))
+			x,y = findMultiColorInRegionFuzzy( 0xcdcdcd, "48|13|0xcdcdcd,80|4|0xcdcdcd,-87|11|0xfafafa,186|13|0xfafafa,50|34|0xfafafa,265|13|0xffffff", 100, 0, 966, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(math.random(200, 500))
+				randomsTap(x-240, y-98,2)
+				mSleep(math.random(200, 500))
+				break
+			else
+				mSleep(math.random(500, 700))
+				x,y = findMultiColorInRegionFuzzy( 0xc2c2c2, "-148|-7|0xf2f2f2,140|2|0xf2f2f2,245|2|0xededed,-175|6|0xf2f2f2", 100, 0, 1145, 749, 1333)
+				if x~=-1 and y~=-1 then
+					mSleep(math.random(500, 1000))
+					randomsTap(x, y-112,1)
+					mSleep(math.random(3000, 5000))
+					break
+				else
+					time = time + 1
+					toast("等待隐秘政策"..time,1)
+					mSleep(math.random(2000, 3000))
+				end
 			end
 		end
 
@@ -1387,12 +1567,22 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 
 	--隐秘政策：下一步
 	while (true) do
-		mSleep(math.random(200, 500))
-		if getColor(300, 1201) == 0x07c160 then
-			mSleep(math.random(300, 600))
-			randomsTap(370, 1204,10)
+		if EU_countries == "0" then
 			mSleep(math.random(200, 500))
-			toast("隐秘政策同意：下一步",1)
+			if getColor(300, 1107) == 0x07c160 then
+				mSleep(math.random(300, 600))
+				randomsTap(370, 1107,10)
+				mSleep(math.random(200, 500))
+				toast("欧盟隐秘政策同意：下一步",1)
+			end
+		else
+			mSleep(math.random(200, 500))
+			if getColor(300, 1201) == 0x07c160 then
+				mSleep(math.random(300, 600))
+				randomsTap(370, 1204,10)
+				mSleep(math.random(200, 500))
+				toast("隐秘政策同意：下一步",1)
+			end
 		end
 
 		mSleep(math.random(500, 700))
@@ -1409,6 +1599,22 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 				mSleep(1000)
 				goto ymzc
 			end
+		end
+		
+		--欧盟
+		mSleep(math.random(500, 700))
+		x, y = findMultiColorInRegionFuzzy(0xc2c2c2,"13|19|0xc2c2c2,52|12|0xc2c2c2,83|0|0xc2c2c2,84|16|0xc2c2c2,-111|-5|0xf2f2f2,219|43|0xf2f2f2,274|18|0xededed,-172|9|0xededed", 100, 0, 924, 749, 1333)
+		if x~=-1 and y~=-1 then
+			toast("欧盟再次勾选隐秘政策",1)
+			mSleep(1000)
+			goto ymzc
+		end
+		
+		mSleep(math.random(500, 700))
+		if getColor(118,  948) == 0x007aff then
+			mSleep(math.random(500, 1000))
+			randomsTap(690, 1032,10)
+			mSleep(math.random(3000, 6000))
 		end
 
 		mSleep(math.random(200, 500))
@@ -1461,31 +1667,42 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 			mSleep(math.random(1000, 1700))
 			toast("下一步",1)
 		end
+		
+		mSleep(math.random(200, 500))
+		if getColor(300, 1107) == 0x07c160 then
+			mSleep(math.random(300, 600))
+			randomsTap(370, 1107,10)
+			mSleep(math.random(200, 500))
+			toast("欧盟隐秘政策同意：下一步",1)
+		end
+			
 	end
 
 	if cheack_bool then
 		if login_type == "0" then
-			while (true) do
-				mSleep(math.random(500, 700))
-				if getColor(118,  948) == 0x007aff then
+			if EU_countries == "1" then
+				while (true) do
 					mSleep(math.random(500, 700))
-					randomsTap(56, 81, 8)
-					mSleep(math.random(500, 700))
-					break
-				end
+					if getColor(118,  948) == 0x007aff then
+						mSleep(math.random(500, 700))
+						randomsTap(56, 81, 8)
+						mSleep(math.random(500, 700))
+						break
+					end
 
-				mSleep(math.random(700, 900))
-				x, y = findMultiColorInRegionFuzzy(0x10aeff,"55|8|0x10aeff,-79|817|0x7c160,116|822|0x7c160", 100, 0, 0, 749, 1333)
-				if x~=-1 and y~=-1 then
-					mSleep(math.random(1000, 1500))
-					randomsTap(372, 1105,6)
-					mSleep(math.random(1000, 1500))
+					mSleep(math.random(700, 900))
+					x, y = findMultiColorInRegionFuzzy(0x10aeff,"55|8|0x10aeff,-79|817|0x7c160,116|822|0x7c160", 100, 0, 0, 749, 1333)
+					if x~=-1 and y~=-1 then
+						mSleep(math.random(1000, 1500))
+						randomsTap(372, 1105,6)
+						mSleep(math.random(1000, 1500))
+					end
 				end
+				toast("跳马注册",1)
+				cheack_bool = false
+				set_vpn = true
+				goto tiaoma
 			end
-			toast("跳马注册",1)
-			cheack_bool = false
-			set_vpn = true
-			goto tiaoma
 		elseif login_type == "1" or login_type == "3" then
 			toast("辅助注册",1)
 			::hk::
@@ -1936,18 +2153,31 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 					mSleep(1000)
 					goto send_message
 				end
-
 			end
-
 			break
 		end
 
 		mSleep(math.random(500, 700))
 		if getColor(132,  766) == 0x000000 and getColor(159,  784) == 0x000000 then
-			mSleep(math.random(500, 700))
-			toast("跳马失败",1)
-			tiaoma_next = true
-			break
+			if tmFailBack_bool then
+				if tmFailBack == "1" then
+					mSleep(math.random(500, 700))
+					toast("跳马失败",1)
+					tiaoma_next = true
+					break
+				else
+					mSleep(math.random(500, 700))
+					randomsTap(56, 81, 8)
+					mSleep(math.random(500, 700))
+					tmFailBack_bool = false
+					goto tiaoma
+				end
+			else
+				mSleep(math.random(500, 700))
+				toast("跳马失败",1)
+				tiaoma_next = true
+				break
+			end
 		end
 
 		mSleep(math.random(500,700))
@@ -2179,8 +2409,11 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 					mSleep(500)
 					randomsTap(213,770,5)
 					mSleep(500)
-					setVPNEnable(false)
-					setVPNEnable(false)
+					if content_type ~= "3" then
+						setVPNEnable(false)
+						setVPNEnable(false)
+					end
+					
 					mSleep(500)
 					if content_type == "2" then
 						self:changeIP(content_user,content_country)
@@ -2235,7 +2468,9 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 									mSleep(math.random(1000, 1500))
 									randomsTap(368, 1039,5)
 									mSleep(math.random(5000, 6000))
-									setVPNEnable(false)
+									if content_type ~= "3" then
+										setVPNEnable(false)
+									end
 								end
 								get_time = 1
 								restart_time = restart_time + 1
@@ -2347,7 +2582,9 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 								mSleep(math.random(1000, 1500))
 								randomsTap(368, 1039,5)
 								mSleep(math.random(5000, 6000))
-								setVPNEnable(false)
+								if content_type ~= "3" then
+									setVPNEnable(false)
+								end
 							end
 							get_time = 1
 							restart_time = restart_time + 1
@@ -2551,7 +2788,9 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 								mSleep(math.random(1000, 1500))
 								randomsTap(368, 1039,5)
 								mSleep(math.random(5000, 6000))
-								setVPNEnable(false)
+								if content_type ~= "3" then
+									setVPNEnable(false)
+								end
 							end
 							get_time = 1
 							restart_time = restart_time + 1
@@ -2624,7 +2863,9 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 								mSleep(math.random(1000, 1500))
 								randomsTap(368, 1039,5)
 								mSleep(math.random(5000, 6000))
-								setVPNEnable(false)
+								if content_type ~= "3" then
+									setVPNEnable(false)
+								end
 							end
 							toast("重新获取验证码"..again_time,1)
 							res_time = 0
@@ -2743,7 +2984,9 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 								mSleep(math.random(1000, 1500))
 								randomsTap(368, 1039,5)
 								mSleep(math.random(5000, 6000))
-								setVPNEnable(false)
+								if content_type ~= "3" then
+									setVPNEnable(false)
+								end
 							end
 							get_time = 1
 							restart_time = restart_time + 1
@@ -2761,6 +3004,81 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 					toast("获取验证码失败，重新获取",1)
 					mSleep(15000)
 					get_time = get_time + 1
+					goto get_mess
+				end
+			elseif vpn_stauts == "10" then
+				::get_mess::
+				mSleep(500)
+				local sz = require("sz")        --登陆
+				local http = require("szocket.http")
+				local res, code = http.request("http://simsms.org/priemnik.php?metod=get_sms&country="..countryId.."&service=opt67&apikey=pRv27lOtdWjwW8xlLZm54NAgZLQwZr&id="..pay_id)
+				if code == 200 then
+					tmp = json.decode(res)
+					if tmp.response == "1" then
+						toast(tmp.sms, 1)
+						mess_yzm = tmp.sms
+					else
+						toast("暂未查询到验证码，请稍后再试"..get_time,1)
+						mSleep(2000)
+						get_time = get_time + 1
+						if get_time > 15 then
+							if country_id == "886" then
+								mSleep(math.random(2000, 3000))
+								randomsTap(372,  749, 3)
+								mSleep(math.random(1000, 1500))
+								randomsTap(368, 1039,5)
+								mSleep(math.random(5000, 6000))
+							else
+								if content_type == "1" then
+									mSleep(math.random(2000, 3000))
+									randomsTap(372,  749, 3)
+									mSleep(math.random(1000, 1500))
+									randomsTap(368, 1039,5)
+									mSleep(math.random(5000, 6000))
+								else
+									mSleep(500)
+									setVPNEnable(true)
+									mSleep(math.random(2000, 3000))
+									randomsTap(372,  749, 3)
+									mSleep(math.random(1000, 1500))
+									randomsTap(368, 1039,5)
+									mSleep(math.random(5000, 6000))
+									if content_type ~= "3" then
+										setVPNEnable(false)
+									end
+								end
+							end
+							get_time = 1
+							restart_time = restart_time + 1
+							caozuo_more = true
+							toast("重新获取验证码"..restart_time,1)
+							goto caozuo_more
+						end
+
+						if restart_time > 1 then
+							::black::
+							local sz = require("sz")        --登陆
+							local http = require("szocket.http")
+							local res, code = http.request("http://simsms.org/priemnik.php?metod=ban&service=opt67&apikey=pRv27lOtdWjwW8xlLZm54NAgZLQwZr&id="..pay_id)
+							if code == 200 then
+								tmp = json.decode(res)
+								if tmp.response == "1" then
+									toast("手机号码拉黑成功", 1)
+								else
+									toast("拉黑失败",1)
+									goto black
+								end
+							else
+								toast("拉黑失败",1)
+								goto black
+							end
+							goto over
+						end
+						goto get_mess
+					end
+				else
+					toast("获取手机号码失败，重新获取",1)
+					mSleep(3000)
 					goto get_mess
 				end
 			else
@@ -2802,7 +3120,9 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 									mSleep(math.random(1000, 1500))
 									randomsTap(368, 1039,5)
 									mSleep(math.random(5000, 6000))
-									setVPNEnable(false)
+									if content_type ~= "3" then
+										setVPNEnable(false)
+									end
 								end
 							end
 							get_time = 1
@@ -2888,6 +3208,56 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 		data_six_two = false
 		error_wechat = false
 		while true do
+			if EU_countries == "0" then
+				mSleep(500)
+				x, y = findMultiColorInRegionFuzzy(0x343434,"49|-24|0x343434,2|547|0x9de7bf,326|537|0x9de7bf", 90, 0, 0, 749, 1333)
+				if x~=-1 and y~=-1 then
+					mSleep(math.random(500, 700))
+					randomsTap(355,590,8)
+					mSleep(math.random(500, 700))
+					if diff_user == "0" then
+						nickName = self:randomStr("1234567890QWERTYUIOPASDF1234567890GHJKLZXCVBNM1234567890qwertyuiopasd1234567890fghjklzxcvbnm1234567890", math.random(8, 15))
+					else
+						nickName = self:randomStr("`~#^&*-=!@$;/|1234567890QWERTYUIOPASDF`~#^&*-=!@$;/|1234567890GHJKLZXCVBNM`~#^&*-=!@$;/|1234567890qwertyuiopasd`~#^&*-=!@$;/|1234567890fghjklzxcvbnm1234567890`~#^&*-=!@$;/|", math.random(8, 15))
+					end
+					--	end
+					mSleep(500)
+					inputStr(nickName)
+					mSleep(math.random(500, 700))
+					randomsTap(369,740,8)
+					mSleep(math.random(500, 700))
+					while true do
+						--填写生日
+						mSleep(math.random(500, 700))
+						x, y = findMultiColorInRegionFuzzy(0,"49|-16|0,-5|344|0x9ed99d,365|339|0x9ed99d", 100, 0, 0, 749, 800)
+						if x~=-1 and y~=-1 then
+							mSleep(math.random(1000, 1700))
+							randomsTap(384,447,8)
+							mSleep(math.random(500, 700))
+							toast("点击生日",1)
+						end
+						
+						mSleep(math.random(500, 700))
+						if getColor(701,813) == 0x1aad19 then
+							mSleep(math.random(1000, 1700))
+							randomsTap(685,813,3)
+							mSleep(math.random(500, 700))
+							toast("确定",1)
+						end
+						
+						mSleep(math.random(500, 700))
+						if getColor(276,660) == 0x1aad19 then
+							mSleep(math.random(1000, 1700))
+							randomsTap(378,659,8)
+							mSleep(math.random(500, 700))
+							toast("下一步",1)
+							break
+						end
+					end
+					toast("欧盟昵称生日",1)
+				end
+			end
+			
 			--不是我的，继续注册
 			mSleep(math.random(500, 700))
 			x, y = findMultiColorInRegionFuzzy(0x6ae56,"36|1|0x6ae56,136|5|0x6ae56,181|-7|0x6ae56,294|-7|0x6ae56,371|0|0xf2f2f2,-98|-3|0xf2f2f2", 90, 0, 0, 749,  1333)
@@ -3076,6 +3446,56 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 
 		mSleep(10000)
 		while true do
+			if EU_countries == "0" then
+				mSleep(500)
+				x, y = findMultiColorInRegionFuzzy(0x343434,"49|-24|0x343434,2|547|0x9de7bf,326|537|0x9de7bf", 90, 0, 0, 749, 1333)
+				if x~=-1 and y~=-1 then
+					mSleep(math.random(500, 700))
+					randomsTap(355,590,8)
+					mSleep(math.random(500, 700))
+					if diff_user == "0" then
+						nickName = self:randomStr("1234567890QWERTYUIOPASDF1234567890GHJKLZXCVBNM1234567890qwertyuiopasd1234567890fghjklzxcvbnm1234567890", math.random(8, 15))
+					else
+						nickName = self:randomStr("`~#^&*-=!@$;/|1234567890QWERTYUIOPASDF`~#^&*-=!@$;/|1234567890GHJKLZXCVBNM`~#^&*-=!@$;/|1234567890qwertyuiopasd`~#^&*-=!@$;/|1234567890fghjklzxcvbnm1234567890`~#^&*-=!@$;/|", math.random(8, 15))
+					end
+					--	end
+					mSleep(500)
+					inputStr(nickName)
+					mSleep(math.random(500, 700))
+					randomsTap(369,740,8)
+					mSleep(math.random(500, 700))
+					while true do
+						--填写生日
+						mSleep(math.random(500, 700))
+						x, y = findMultiColorInRegionFuzzy(0,"49|-16|0,-5|344|0x9ed99d,365|339|0x9ed99d", 100, 0, 0, 749, 800)
+						if x~=-1 and y~=-1 then
+							mSleep(math.random(1000, 1700))
+							randomsTap(384,447,8)
+							mSleep(math.random(500, 700))
+							toast("点击生日",1)
+						end
+						
+						mSleep(math.random(500, 700))
+						if getColor(701,813) == 0x1aad19 then
+							mSleep(math.random(1000, 1700))
+							randomsTap(685,813,3)
+							mSleep(math.random(500, 700))
+							toast("确定",1)
+						end
+						
+						mSleep(math.random(500, 700))
+						if getColor(276,660) == 0x1aad19 then
+							mSleep(math.random(1000, 1700))
+							randomsTap(378,659,8)
+							mSleep(math.random(500, 700))
+							toast("下一步",1)
+							break
+						end
+					end
+					toast("欧盟昵称生日",1)
+				end
+			end
+			
 			--不是我的，继续注册
 			mSleep(math.random(500, 700))
 			x, y = findMultiColorInRegionFuzzy(0x6ae56,"36|1|0x6ae56,136|5|0x6ae56,181|-7|0x6ae56,294|-7|0x6ae56,371|0|0xf2f2f2,-98|-3|0xf2f2f2", 90, 0, 0, 749,  1333)
@@ -3271,31 +3691,98 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 					mSleep(math.random(1000, 1700))
 					randomsTap(49, 1283,8)
 					mSleep(math.random(500, 700))
-					for i = 1, #phone do
-						mSleep(math.random(500, 700))
-						num = string.sub(phone,i,i)
-						if num == "0" then
-							randomsTap(713,  965, 8)
-						elseif num == "1" then
-							randomsTap(38,  964, 8)
-						elseif num == "2" then
-							randomsTap(112,  965, 8)
-						elseif num == "3" then
-							randomsTap(185,  965, 8)
-						elseif num == "4" then
-							randomsTap(264,  963, 8)
-						elseif num == "5" then
-							randomsTap(338,  964, 8)
-						elseif num == "6" then
-							randomsTap(414,  962, 8)
-						elseif num == "7" then
-							randomsTap(495,  964, 8)
-						elseif num == "8" then
-							randomsTap(566,  966, 8)
-						elseif num == "9" then
-							randomsTap(642,  961, 8)
-						end
-					end
+					State={
+						["随机常量"] = 0,
+						["姓氏"]="赵钱孙李周吴郑王冯陈褚卫蒋沈韩杨朱秦尤许何吕施张孔曹严华金魏陶" ..
+						"姜戚谢邹喻柏水窦章云苏潘葛奚范彭郎鲁韦昌马苗凤花方俞任袁柳酆鲍" ..
+						"史唐费廉岑薛雷贺倪汤滕殷罗毕郝邬安常乐于时傅皮卞齐康伍余元卜顾" ..
+						"孟平黄和穆萧尹姚邵湛汪祁毛禹狄米贝明臧计伏成戴谈宋茅庞熊纪舒屈" ..
+						"项祝董梁杜阮蓝闵席季麻强贾路娄危江童颜郭梅盛林刁钟徐邱骆高夏蔡" ..
+						"田樊胡凌霍虞万支柯咎管卢莫经房裘缪干解应宗宣丁贲邓郁单杭洪包诸" ..
+						"左石崔吉钮龚程嵇邢滑裴陆荣翁荀羊於惠甄曲家封芮羿储靳汲邴糜松井" ..
+						"段富巫乌焦巴弓牧隗山谷车侯宓蓬全郗班仰秋仲伊宫宁仇栾暴甘钭厉戎" ..
+						"祖武符刘景詹束龙叶幸司韶郜黎蓟薄印宿白怀蒲邰从鄂索咸籍赖卓蔺屠" ..
+						"蒙池乔阴鬱胥能苍双闻莘党翟谭贡劳逄姬申扶堵冉宰郦雍却璩桑桂濮牛" ..
+						"寿通边扈燕冀郟浦尚农温别庄晏柴瞿阎充慕连茹习宦艾鱼容向古易慎戈" ..
+						"廖庾终暨居衡步都耿满弘匡国文寇广禄阙东欧殳沃利蔚越夔隆师巩厍聂" ..
+						"晁勾敖融冷訾辛阚那简饶空曾毋沙乜养鞠须丰巢关蒯相查后荆红游竺权" ..
+						"逯盖益桓公万俟司马上官欧阳夏侯诸葛闻人东方赫连皇甫尉迟公羊澹台" ..
+						"公冶宗政濮阳淳于单于太叔申屠公孙仲孙轩辕令狐钟离宇文长孙慕容鲜" ..
+						"于闾丘司徒司空亓官司寇仉督子车颛孙端木巫马公西漆雕乐正壤驷公良" ..
+						"拓拔夹谷宰父谷粱晋楚闫法汝鄢涂钦段干百里东郭南门呼延归海羊舌微" ..
+						"生岳帅缑亢况后有琴梁丘左丘东门西门商牟佘佴伯赏南宫墨哈谯笪年爱" ..
+						"阳佟第五言福百家姓终",
+						["名字"]="安彤含祖赩涤彰爵舞深群适渺辞莞延稷桦赐帅适亭濮存城稷澄添悟绢绢澹迪婕箫识悟舞添剑深禄延涤" ..
+						"濮存罡禄瑛瑛嗣嫚朵寅添渟黎臻舞绢城骥彰渺禾教祖剑黎莞咸浓芦澹帅臻渟添禾亭添亭霖深策臻稷辞" ..
+						"悟悟澄涉城鸥黎悟乔恒黎鲲涉莞霖甲深婕乔程澹男岳深涉益澹悟箫乔多职适芦瑛澄婕朵适祖霖瑛坤嫚" ..
+						"涉男珂箫芦黎珹绢芦程识嗣珂瑰枝允黎庸嗣赐罡纵添禄霖男延甲彰咸稷箫岳悟职祖恒珂庸琅男莞庸浓" ..
+						"多罡延瑛濮存爵添剑益骥澄延迪寅婕程霖识瑰识程群教朵悟舞岳浓箫城适程禾嫚罡咸职铃爵渺添辞嫚" ..
+						"浓寅鲲嗣瑛鸥多教瑛迪坤铃珹群黎益澄程莞深坤澹禄职澹赩澄藉群箫骥定彰寅臻渟枝允珹深群黎甲鲲" ..
+						"亭黎藏浓涤渟莞寅辞嗣坤迪嫚添策庸策藉瑰彰箫益莞渺乔彰延舞祖婕澹渺鸥纵嗣瑛藏濮存婕职程芦群" ..
+						"禾嫚程辞祖黎职浓桦藏渟禾彰帅辞铃铃黎允绢濮存剑辞禾瑰添延添悟赐祖咸莞男绢策婕藉禾浓珹涤祖" ..
+						"汉骥舞瑛多稷赐莞渟黎舞桦黎群藏渺黎坤桦咸迪澈舞允稷咸剑定亭澄濮存鲲臻全鸥多赐程添瑛亭帅悟" ..
+						"甲男帅涤适纵渟鲲亭悟琅亭添允舞禾庸咸瑛教鲲允箫芦允瑛咸鸥帅悟延珂黎珹箫爵剑霖剑霖禄鸥悟涉" ..
+						"彰群悟辞帅渺莞澄桦瑛适臻益霖珹亭澹辞坤程嗣铃箫策澈枝赐莞爵渟禄群枝添芦群浓赐职益城澄赩琅" ..
+						"延群乔珹鲲祖群悟黎定庸澄芦延霖罡鲲咸渺纵亭禄鸥赩涤剑澹藏纵濮存澄芦剑延瑰稷黎益赩澄允悟澈" ..
+						"甲嗣绢朵益甲悟涤婕群咸臻箫鲲寅鸥桦益珂舞允庸芦藉寅渺咸赐澄程剑瑰霖瑰铃帅男铃悟识瑰仕仕城" ..
+						"允莞全朵涤铃剑渺稷剑珂铃箫全仕益纵芦桦珂濮存城朵朵咸程剑澄定澈爵寅庸定莞瑛教彰黎箫仕黎桦" ..
+						"赩深赩爵迪悟珹涤琅添箫桦帅瑛黎黎策识寅嫚涉迪策汉舞定彰允男祖教澄群瑛濮存男禾教莞禾鸥澈濮" ..
+						"存岳城嫚深舞教岳澄亭禾坤朵亭职莞稷寅瑰城庸亭舞禾瑛恒坤浓彰莞澄澈鸥臻稷教琅辞益剑藉黎添瑛" ..
+						"延舞坤仕岳多婕骥迪帅黎悟全澄识益甲桦纵适罡彰澄禾婕程黎城涤浓枝箫咸渟岳渟澹臻珹识珹澄箫辞" ..
+						"浓鲲识悟允悟禾识群祖迪渟鲲群庸莞珹悟澹瑰悟鸥汉群甲莞庸职琅莞桦鲲朵深乔辞允彰渺朵瑰亭瑰朵" ..
+						"定深男识群职霖益男舞城允舞爵赩枝罡罡群澹芦藉爵悟渟澹禾多庸箫坤乔芦甲濮存多渟藉珹赐汉纵亭" ..
+						"禾城枝剑露以玉春飞慧娜悠亦元晔曜霜宁桃彦仪雨琴青筠逸曼代菀孤昆秋蕊语莺丝红羲盛静南淑震晴" ..
+						"彭祯山霞凝柔隽松翠高骊雅念皓双洛紫瑞英思歆蓉娟波芸荷笑云若宏夏妍嘉彩如鹏寄芝柳凌莹蝶舒恬" ..
+						"虹清爽月巧乾勋翰芳罗刚鸿运枫阳葳杰怀悦凡哲瑶凯然尚丹奇弘顺依雪菡君畅白振馨寻涵问洁辉忆傲" ..
+						"伟经润志华兰芹修晨木宛俊博韶天锐溪燕家沈放明光千永溶昊梅巍真尔馥莲怜惜佳广香宇槐珺芷帆秀" ..
+						"理柏书沛琪仙之竹向卉欣旻晓冬幻和雁淳浩歌荣懿文幼岚昕牧绿轩工旭颜醉玑卓觅叶夜灵胜晗恨流佁" ..
+						"乐火音采睿翎萱民画梦寒泽怡丽心石邵玮佑旺壮名一学谷韵宜冰赫新蕾美晖项琳平树又炳骏气海毅敬" ..
+						"曦婉爰伯珊影鲸容晶婷林子昌梧芙澍诗星冉初映善越原茂国腾孟水烟半峯莉绮德慈敏才戈梓景智盼霁" ..
+						"琇苗熙姝从谊风发钰玛忍婀菲昶可荌小倩妙涛姗方图迎惠晤宣康娅玟奕锦濯穆禧伶丰良祺珍曲喆扬拔" ..
+						"驰绣烁叡长雯颖辰慕承远彬斯薇成聪爱朋萦田致世实愫进瀚朝强铭煦朗精艺熹建忻晏冷佩东古坚滨菱" ..
+						"囡银咏正儿瑜宝蔓端蓓芬碧人开珠昂琬洋璠桐舟姣琛亮煊信今年庄淼沙黛烨楠桂斐胤骄兴尘河晋卿易" ..
+						"愉蕴雄访湛蓝媛骞娴儒妮旋友娇泰基礼芮羽妞意翔岑苑暖玥尧璇阔燎偲靖行瑾资漪晟冠同齐复吉豆唱" ..
+						"韫素盈密富其翮熠绍澎淡韦诚滢知鹍苒抒艳义婧闳琦壤杨芃洲阵璟茵驹涆来捷嫒圣吟恺璞西旎俨颂灿" ..
+						"情玄利痴蕙力潍听磊宸笛中好任轶玲螺郁畴会暄峻略琼琰默池温炫季雰司杉觉维饮湉许宵茉贤昱蕤珑" ..
+						"锋纬渊超萍嫔大霏楚通邈飙霓谧令厚本邃合宾沉昭峰业豪达彗纳飒壁施欢姮甫湘漾闲恩莎祥启煜鸣品" ..
+						"希融野化钊仲蔚生攸能衍菁迈望起微鹤荫靓娥泓金琨筱赞典勇斌媚寿喜飇濡宕茜魁立裕弼翼央莘绚焱" ..
+						"奥萝米衣森荃航璧为跃蒙庆琲倚穹武甜璐俏茹悌格穰皛璎龙材湃农福旷童亘苇范寰瓃忠虎颐蓄霈言禹" ..
+						"章花健炎籁暮升葛贞侠专懋澜量纶布皎源耀鸾慨曾优栋妃游乃用路余珉藻耘军芊日赡勃卫载时三闵姿" ..
+						"麦瑗泉郎怿惬萌照夫鑫樱琭钧掣芫侬丁育浦磬献苓翱雍婵阑女北未陶干自作伦珧溥桀州荏举杏茗洽焕" ..
+						"吹甘硕赋漠颀妤诺展俐朔菊秉苍津空洮济尹周江荡简莱榆贝萧艾仁漫锟谨魄蔼豫纯翊堂嫣誉邦果暎珏" ..
+						"临勤墨薄颉棠羡浚兆环铄"
+					}
+					State["随机常量"] = tonumber(self:Rnd_Word("0123456789",5))
+
+					Nickname = self:Rnd_Word(State["姓氏"],1,3)..self:Rnd_Word(State["名字"],1,3)
+					mSleep(math.random(500, 700))
+					inputStr(Nickname)
+--					mSleep(math.random(500, 700))
+--					for i = 1, #phone do
+--						mSleep(math.random(500, 700))
+--						num = string.sub(phone,i,i)
+--						if num == "0" then
+--							randomsTap(713,  965, 8)
+--						elseif num == "1" then
+--							randomsTap(38,  964, 8)
+--						elseif num == "2" then
+--							randomsTap(112,  965, 8)
+--						elseif num == "3" then
+--							randomsTap(185,  965, 8)
+--						elseif num == "4" then
+--							randomsTap(264,  963, 8)
+--						elseif num == "5" then
+--							randomsTap(338,  964, 8)
+--						elseif num == "6" then
+--							randomsTap(414,  962, 8)
+--						elseif num == "7" then
+--							randomsTap(495,  964, 8)
+--						elseif num == "8" then
+--							randomsTap(566,  966, 8)
+--						elseif num == "9" then
+--							randomsTap(642,  961, 8)
+--						end
+--					end
 					mSleep(math.random(1000, 1500))
 					randomsTap(659, 84,8)
 					mSleep(math.random(500, 700))
@@ -3411,7 +3898,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 						toast("第"..account_len.."个注册完成",1)
 						mSleep(1000)
 
-						self:idCard()
+						self:idCard(country_id)
 
 						while true do
 							mSleep(500)
@@ -3544,7 +4031,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 			mSleep(500)
 			randomsTap(42,82,3)
 			mSleep(500)
-			self:idCard()
+			self:idCard(country_id)
 		end
 
 		mSleep(math.random(200, 500))
@@ -3555,7 +4042,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 			mSleep(500)
 			randomsTap(42,82,3)
 			mSleep(500)
-			self:idCard()
+			self:idCard(country_id)
 		end
 
 		mSleep(500)
@@ -3704,7 +4191,7 @@ function model:main()
 			},
 			{
 				["type"] = "RadioGroup",                    
-				["list"] = "柠檬,卡农注册,奥迪,52,俄罗斯1,东帝汶,服务器取号,俄罗斯2,各国API,老友",
+				["list"] = "柠檬,卡农注册,奥迪,52,俄罗斯1,东帝汶,服务器取号,俄罗斯2,各国API,老友,SMS",
 				["select"] = "0",  
 				["countperline"] = "4",
 			},
@@ -3883,13 +4370,52 @@ function model:main()
 				["list"] = "无,开启关闭",
 				["select"] = "0",  
 				["countperline"] = "4",
+			},
+			{
+				["type"] = "Label",
+				["text"] = "是否新机连vpn",
+				["size"] = 20,
+				["align"] = "center",
+				["color"] = "0,0,255",
+			},
+			{
+				["type"] = "RadioGroup",                    
+				["list"] = "连接,不连接",
+				["select"] = "0",  
+				["countperline"] = "4",
+			},
+			{
+				["type"] = "Label",
+				["text"] = "是否是欧盟国家注册",
+				["size"] = 20,
+				["align"] = "center",
+				["color"] = "0,0,255",
+			},
+			{
+				["type"] = "RadioGroup",                    
+				["list"] = "欧盟,非欧盟",
+				["select"] = "0",  
+				["countperline"] = "4",
+			},
+			{
+				["type"] = "Label",
+				["text"] = "跳马失败是否返回",
+				["size"] = 20,
+				["align"] = "center",
+				["color"] = "0,0,255",
+			},
+			{
+				["type"] = "RadioGroup",                    
+				["list"] = "返回,不返回",
+				["select"] = "0",  
+				["countperline"] = "4",
 			}
 		}
 	}
 
 	local MyJsonString = json.encode(MyTable)
 
-	ret, move_type, login_times, content_type, content_user, content_country, vpn_stauts, kn_country, kn_id, countryId, country_len, login_type, fz_terrace, nickName, password, operator, addBlack, diff_user, ran_pass, ddwGet, airplaneStatus = showUI(MyJsonString)
+	ret, move_type, login_times, content_type, content_user, content_country, vpn_stauts, kn_country, kn_id, countryId, country_len, login_type, fz_terrace, nickName, password, operator, addBlack, diff_user, ran_pass, ddwGet, airplaneStatus, connect_vpn, EU_countries, tmFailBack = showUI(MyJsonString)
 	if ret == 0 then
 		dialog("取消运行脚本", 3)
 		luaExit()
@@ -3919,7 +4445,7 @@ function model:main()
 			ksUrl = "http://www.3cpt.com"
 			ApiName = "huqianjin54"
 		elseif vpn_stauts == "9" then
-			ksUrl = "http://web.888ylsc.com"
+			ksUrl = "http://web.lyf5.com"
 			ApiName = "huqianjin42"
 		end
 
@@ -3967,8 +4493,9 @@ function model:main()
 			end
 		end
 
-		self:clear_App()
-		self:wechat(ksUrl,move_type,operator,login_times,content_user,content_country,content_type,vpn_stauts,phone_token,kn_country,kn_id,countryId,nickName,password,country_len,login_type,addBlack,diff_user,ran_pass,ddwGet,airplaneStatus)
+		self:clear_App(connect_vpn)
+		self:Net()
+		self:wechat(ksUrl,move_type,operator,login_times,content_user,content_country,content_type,vpn_stauts,phone_token,kn_country,kn_id,countryId,nickName,password,country_len,login_type,addBlack,diff_user,ran_pass,ddwGet,airplaneStatus,connect_vpn,EU_countries,tmFailBack)
 		mSleep(1000)
 	end
 end
