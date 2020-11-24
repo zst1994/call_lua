@@ -1228,7 +1228,6 @@ function _写入62数据()
 	end
 	
 	local data =  _文件查找读取写入("62数据.txt","已经读取","----已经读取")
-	dialog(data, time)
 	data = TryRemoveUtf8BOM(data)
 	if data ~= "" and data ~= nil then
 		local data = strSplit(data,"----")
