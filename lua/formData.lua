@@ -28,6 +28,7 @@ function imgupload2(_url,path,imageName)
 		headers = {
 			["Content-Type"] =  "multipart/form-data;boundary=abcd",
 			["Content-Length"] = #_file + size + #_end,
+			["origin"] = "https://cli.im",
 		},
 		source = ltn12.source.cat(ltn12.source.string(_file),ltn12.source.file(reqfile),ltn12.source.string(_end)),
 		sink = ltn12.sink.table(respbody)
@@ -47,7 +48,20 @@ end
 url="https://upload.api.cli.im/upload.php?kid=cliim";
 local _file1 = [[--abcd]]..'\r\n'..[[Content-Disposition: form-data; name="Filedata"; filename="111.png"]]..'\r\n'..[[Content-Type: image/png]]..'\r\n\r\n'
 aa = imgupload2(url, userPath() .. "/res/" .. "111.png",_file1);
-dialog(#aa, time)
-local tmp = json.decode(aa)
-dialog(tmp["data"]["path"], 0)
+local tmp = json.decode(aa)["data"]["path"]
+dialog(tmp, 0)
 
+
+header_send = {
+	["Content-Type"] = "application/x-www-form-urlencoded; charset=UTF-8",
+}
+body_send = {
+	["img"] = tmp,
+}
+ts.setHttpsTimeOut(60)
+code,header_resp, body_resp = ts.httpsPost("https://cli.im/apis/up/deqrimg", header_send,body_send)
+dialog(body_resp, time)
+local tmp = json.decode(body_resp)
+data = tmp["info"]["data"][1]
+dialog(data, time)
+nLog(data)

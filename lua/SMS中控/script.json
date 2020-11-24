@@ -13,6 +13,17 @@
                     "color": "0,168,233"
                 },{
                     "type": "Label",
+                    "text": "是否选择本地网络",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "localNetwork",
+                    "type": "RadioGroup",
+                    "list": "本地网络,非本地网络",
+                    "select": "0"
+                },{
+                    "type": "Label",
                     "text": "选择网络",
                     "size": 16,
                     "align": "left",
@@ -130,7 +141,7 @@
                 },{
                     "id": "fz_type",
                     "type": "RadioGroup",
-                    "list": "二维码辅助,go下单,蚂蚁手机辅助,跳马注册,fz,showdoc滑块辅助,蚂蚁滑块辅助,手动辅助,马力滑块辅助,马力二维码辅助,showdoc二维码辅助,联盟二维码辅助",
+                    "list": "二维码辅助,go下单,蚂蚁手机辅助,跳马注册,fz,showdoc滑块辅助,蚂蚁滑块辅助,手动辅助,马力滑块辅助,马力二维码辅助,showdoc二维码辅助,联盟二维码辅助,赤兔二维码辅助",
                     "select": "0"
                 },{
                     "id": "fz_key",
@@ -153,7 +164,7 @@
                 },{
                     "id": "api_change",
                     "type": "RadioGroup",
-                    "list": "自己服务器,SMS,奥迪,卡农,香蕉,柠檬,东帝汶,美码",
+                    "list": "自己服务器,SMS,奥迪,卡农,香蕉,柠檬,东帝汶,美码,短信码,幻影,奶茶",
                     "select": "0"
                 },{
                     "type": "Label",
@@ -223,7 +234,7 @@
                 },{
                     "id": "nickName",
                     "type": "RadioGroup",
-                    "list": "符号,中文,英文,数字,RFG,特殊符号",
+                    "list": "英文,特殊符号",
                     "select": "0"
                 },{
                     "type": "Label",
@@ -318,5 +329,73 @@
                     "type": "RadioGroup",
                     "list": "无,提取",
                     "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "上传62数据接口",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "sendSixDataApi",
+                    "type": "Edit",
+                    "prompt": "请输入您要上传的api接口",
+                    "text": "默认值",
+                    "kbtype": "ascii"
+                },{
+                    "type": "Label",
+                    "text": "是否使用头像注册",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "addHeaderPicLogin",
+                    "type": "RadioGroup",
+                    "list": "使用,不使用",
+                    "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "是否修改昵称",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "updateNickName",
+                    "type": "RadioGroup",
+                    "list": "修改,不修改",
+                    "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "是否需要收付款(只有选择了改昵称才有效)",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "needPay",
+                    "type": "RadioGroup",
+                    "list": "需要,不需要",
+                    "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "是否需要联动",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "needConnetMove",
+                    "type": "RadioGroup",
+                    "list": "需要,不需要",
+                    "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "联动名字",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "liandongName",
+                    "type": "Edit",
+                    "prompt": "请输入您要设置的联动名字",
+                    "text": "默认值",
+                    "kbtype": "ascii"
                 }]
     }

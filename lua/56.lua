@@ -984,7 +984,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 			mSleep(1000)
 			goto get_phone
 		end
-	elseif vpn_stauts == "2" or vpn_stauts == "9"  then
+	elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13"  then
 		::get_phone::
 		mSleep(500)
 		local sz = require("sz")        --登陆
@@ -995,8 +995,12 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 			data = strSplit(res, "|")
 			if data[1] == "1" then
 				mSleep(200)
-				telphone = data[5]
-				pid = data[2]
+				if vpn_stauts == "13" then
+					telphone = data[4]
+				else
+					telphone = data[5]
+					pid = data[2]
+				end
 				toast(telphone,1)
 			elseif data[1] == "0" then
 				toast("获取手机号码失败，重新获取",1)
@@ -1380,7 +1384,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 		end
 	end
 
-	if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "3" or vpn_stauts == "5" or vpn_stauts == "6" or vpn_stauts == "7" or vpn_stauts == "8" or vpn_stauts == "9" or vpn_stauts == "11" or vpn_stauts == "12" then
+	if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "3" or vpn_stauts == "5" or vpn_stauts == "6" or vpn_stauts == "7" or vpn_stauts == "8" or vpn_stauts == "9" or vpn_stauts == "11" or vpn_stauts == "12" or vpn_stauts == "13" then
 		country_id = kn_country
 	elseif vpn_stauts == "4" or vpn_stauts == "10" then
 		country_id = country_code
@@ -1403,7 +1407,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 		phone = telphone
 	elseif vpn_stauts == "5" or vpn_stauts == "8" or vpn_stauts == "12" then
 		phone = string.sub(telphone, #country_id + 1,#telphone)
-	elseif vpn_stauts == "2" or vpn_stauts == "7" or vpn_stauts == "9"  then
+	elseif vpn_stauts == "2" or vpn_stauts == "7" or vpn_stauts == "9" or vpn_stauts == "13"  then
 		b,c = string.find(string.sub(telphone,1,#country_id),country_id)
 		if c ~= nil then
 			phone = string.sub(telphone,c+1,#telphone)
@@ -2431,13 +2435,19 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 					end
 				end
 			end
-		elseif vpn_stauts == "2" or vpn_stauts == "9"  then		--奥迪
+		elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13"  then		--奥迪
 			if addBlack == "0" then
+			    if vpn_stauts == "13" then
+					setRel_url = ksUrl.."/yhapi.ashx?act=setRel&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone
+				else
+					setRel_url = ksUrl.."/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
+			    end
+			
 				::open_phone::
 				mSleep(500)
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
-				local res, code = http.request(ksUrl.."/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid)
+				local res, code = http.request(setRel_url)
 				mSleep(500)
 				if code == 200 then
 					data = strSplit(res, "|")
@@ -2469,10 +2479,17 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 				end
 			else
 				black_time = 0
+				
+				if vpn_stauts == "13" then
+					black_url = ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
+				else
+					black_url = ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&pid="..pid.."&reason="..urlEncoder("获取失败")
+				end
+				
 				::addblack::
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
-				local res, code = http.request(ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&pid="..pid.."&reason="..urlEncoder("获取失败"))
+				local res, code = http.request(black_url)
 				mSleep(500)
 				if code == 200 then
 					data = strSplit(res, "|")
@@ -2712,7 +2729,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 					mSleep(3000)
 					goto get_mess
 				end
-			elseif vpn_stauts == "2" or vpn_stauts == "9"  then
+			elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" then
 				if country_id == "60" then
 					all_time = 15
 				else
@@ -2764,10 +2781,16 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 
 				if restart_time > 2 then
 					if addBlack == "0" then
+					    if vpn_stauts == "13" then
+							setRel_url = ksUrl.."/yhapi.ashx?act=setRel&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone
+						else
+							setRel_url = ksUrl.."/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
+					    end
+					
 						::addblack::
 						local sz = require("sz")        --登陆
 						local http = require("szocket.http")
-						local res, code = http.request(ksUrl.."/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid)
+						local res, code = http.request(setRel_url)
 						mSleep(500)
 						if code == 200 then
 							data = strSplit(res, "|")
@@ -2781,10 +2804,16 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 							goto addblack
 						end
 					else
+					    if vpn_stauts == "13" then
+							black_url = ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
+						else
+							black_url = ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&pid="..pid.."&reason="..urlEncoder("获取失败")
+					    end
+					
 						::addblack::
 						local sz = require("sz")        --登陆
 						local http = require("szocket.http")
-						local res, code = http.request(ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&pid="..pid.."&reason="..urlEncoder("获取失败"))
+						local res, code = http.request(black_url)
 						mSleep(500)
 						if code == 200 then
 							data = strSplit(res, "|")
@@ -2800,11 +2829,17 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 					end
 					goto over
 				end
+				
+				if vpn_stauts == "13" then
+					getPhoneCode_url = ksUrl.."/yhapi.ashx?act=getPhoneCode&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone
+				else
+					getPhoneCode_url = ksUrl.."/yhapi.ashx?act=getPhoneCode&token="..phone_token.."&pid="..pid
+				end
 
 				mSleep(500)
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
-				local res, code = http.request(ksUrl.."/yhapi.ashx?act=getPhoneCode&token="..phone_token.."&pid="..pid)
+				local res, code = http.request(getPhoneCode_url)
 				mSleep(500)
 				if code == 200 then
 					data = strSplit(res, "|")
@@ -3962,8 +3997,8 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 			x, y = findMultiColorInRegionFuzzy(0x1565fc,"6|13|0x1565fc,17|-5|0x1565fc,19|6|0x1565fc,17|20|0x1565fc", 90, 0, 0, 749,  1333)
 			if x~=-1 and y~=-1 then
 				mSleep(math.random(500, 700))
-				randomsTap(x-250,y,8)
-				mSleep(math.random(500, 700))
+--				randomsTap(x-250,y,8)
+--				mSleep(math.random(500, 700))
 				toast("通讯录",1)
 				break
 			end
@@ -4039,6 +4074,17 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 
 		while true do
 			mSleep(math.random(500, 700))
+			x, y = findMultiColorInRegionFuzzy(0x1565fc,"6|13|0x1565fc,17|-5|0x1565fc,19|6|0x1565fc,17|20|0x1565fc", 90, 0, 0, 749,  1333)
+			if x~=-1 and y~=-1 then
+				mSleep(math.random(500, 700))
+--				randomsTap(x-250,y,8)
+--				mSleep(math.random(500, 700))
+				toast("10秒后通讯录",1)
+				data_six_two = true
+				break
+			end
+			
+			mSleep(math.random(500, 700))
 			x, y = findMultiColorInRegionFuzzy(0x7c160,"483|-9|0x7c160,155|2|0xffffff,159|95|0x576b95,225|92|0x576b95,246|99|0x576b95", 90, 0, 1013, 749,  1333)
 			if x~=-1 and y~=-1 then    
 				mSleep(math.random(500, 700))
@@ -4066,181 +4112,181 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 			end
 		end
 
-		if data_six_two then
-			while true do
-				mSleep(700)
-				if getColor(653,1277) == 0x7c160 then
-					mSleep(math.random(1000, 1700))
-					randomsTap(359,430,6)
-					mSleep(math.random(500, 700))
-					toast("修改昵称",1)
-					break
-				else
-					mSleep(math.random(1000, 1700))
-					randomsTap(653,1278,6)
-					mSleep(math.random(500, 700))
-				end
+--		if data_six_two then
+--			while true do
+--				mSleep(700)
+--				if getColor(653,1277) == 0x7c160 then
+--					mSleep(math.random(1000, 1700))
+--					randomsTap(359,430,6)
+--					mSleep(math.random(500, 700))
+--					toast("修改昵称",1)
+--					break
+--				else
+--					mSleep(math.random(1000, 1700))
+--					randomsTap(653,1278,6)
+--					mSleep(math.random(500, 700))
+--				end
 
-				--通过siri
-				mSleep(700)
-				if getColor(513,833) == 0x7aff then
-					mSleep(math.random(1000, 1700))
-					randomsTap(513,833,6)
-					mSleep(math.random(500, 700))
-					toast("通过siri打开微信",1)
-				end
-			end
+--				--通过siri
+--				mSleep(700)
+--				if getColor(513,833) == 0x7aff then
+--					mSleep(math.random(1000, 1700))
+--					randomsTap(513,833,6)
+--					mSleep(math.random(500, 700))
+--					toast("通过siri打开微信",1)
+--				end
+--			end
 
-			while true do
-				mSleep(math.random(500, 700))
-				x, y = findMultiColorInRegionFuzzy(0x181818,"36|-14|0x181818,60|5|0x181818,102|-2|0x181818,267|-1|0xf2f2f2", 90, 0, 0, 749,  1333)
-				if x~=-1 and y~=-1 then
-					mSleep(math.random(500, 700))
-					randomsTap(653,350,6)
-					mSleep(math.random(500, 700))
-					toast("个人信息",1)
-					break
-				end
+--			while true do
+--				mSleep(math.random(500, 700))
+--				x, y = findMultiColorInRegionFuzzy(0x181818,"36|-14|0x181818,60|5|0x181818,102|-2|0x181818,267|-1|0xf2f2f2", 90, 0, 0, 749,  1333)
+--				if x~=-1 and y~=-1 then
+--					mSleep(math.random(500, 700))
+--					randomsTap(653,350,6)
+--					mSleep(math.random(500, 700))
+--					toast("个人信息",1)
+--					break
+--				end
 
-				mSleep(700)
-				if getColor(653,1277) == 0x7c160 then
-					mSleep(math.random(1000, 1700))
-					randomsTap(359,430,6)
-					mSleep(math.random(500, 700))
-				end
-			end
+--				mSleep(700)
+--				if getColor(653,1277) == 0x7c160 then
+--					mSleep(math.random(1000, 1700))
+--					randomsTap(359,430,6)
+--					mSleep(math.random(500, 700))
+--				end
+--			end
 
-			while true do
-				mSleep(500)
-				if getColor(617,82) == 0x9ce6bf then
-					mSleep(math.random(1000, 1700))
-					randomsTap(555,188,6)
-					mSleep(math.random(1000, 1700))
-					for var= 1, 20 do
-						mSleep(100)
-						keyDown("DeleteOrBackspace")
-						mSleep(100)
-						keyUp("DeleteOrBackspace")
-						mSleep(100)
-					end
-					mSleep(math.random(1000, 1700))
-					randomsTap(49, 1283,8)
-					mSleep(math.random(500, 700))
-					State={
-						["随机常量"] = 0,
-						["姓氏"]="赵钱孙李周吴郑王冯陈褚卫蒋沈韩杨朱秦尤许何吕施张孔曹严华金魏陶" ..
-						"姜戚谢邹喻柏水窦章云苏潘葛奚范彭郎鲁韦昌马苗凤花方俞任袁柳酆鲍" ..
-						"史唐费廉岑薛雷贺倪汤滕殷罗毕郝邬安常乐于时傅皮卞齐康伍余元卜顾" ..
-						"孟平黄和穆萧尹姚邵湛汪祁毛禹狄米贝明臧计伏成戴谈宋茅庞熊纪舒屈" ..
-						"项祝董梁杜阮蓝闵席季麻强贾路娄危江童颜郭梅盛林刁钟徐邱骆高夏蔡" ..
-						"田樊胡凌霍虞万支柯咎管卢莫经房裘缪干解应宗宣丁贲邓郁单杭洪包诸" ..
-						"左石崔吉钮龚程嵇邢滑裴陆荣翁荀羊於惠甄曲家封芮羿储靳汲邴糜松井" ..
-						"段富巫乌焦巴弓牧隗山谷车侯宓蓬全郗班仰秋仲伊宫宁仇栾暴甘钭厉戎" ..
-						"祖武符刘景詹束龙叶幸司韶郜黎蓟薄印宿白怀蒲邰从鄂索咸籍赖卓蔺屠" ..
-						"蒙池乔阴鬱胥能苍双闻莘党翟谭贡劳逄姬申扶堵冉宰郦雍却璩桑桂濮牛" ..
-						"寿通边扈燕冀郟浦尚农温别庄晏柴瞿阎充慕连茹习宦艾鱼容向古易慎戈" ..
-						"廖庾终暨居衡步都耿满弘匡国文寇广禄阙东欧殳沃利蔚越夔隆师巩厍聂" ..
-						"晁勾敖融冷訾辛阚那简饶空曾毋沙乜养鞠须丰巢关蒯相查后荆红游竺权" ..
-						"逯盖益桓公万俟司马上官欧阳夏侯诸葛闻人东方赫连皇甫尉迟公羊澹台" ..
-						"公冶宗政濮阳淳于单于太叔申屠公孙仲孙轩辕令狐钟离宇文长孙慕容鲜" ..
-						"于闾丘司徒司空亓官司寇仉督子车颛孙端木巫马公西漆雕乐正壤驷公良" ..
-						"拓拔夹谷宰父谷粱晋楚闫法汝鄢涂钦段干百里东郭南门呼延归海羊舌微" ..
-						"生岳帅缑亢况后有琴梁丘左丘东门西门商牟佘佴伯赏南宫墨哈谯笪年爱" ..
-						"阳佟第五言福百家姓终",
-						["名字"]="安彤含祖赩涤彰爵舞深群适渺辞莞延稷桦赐帅适亭濮存城稷澄添悟绢绢澹迪婕箫识悟舞添剑深禄延涤" ..
-						"濮存罡禄瑛瑛嗣嫚朵寅添渟黎臻舞绢城骥彰渺禾教祖剑黎莞咸浓芦澹帅臻渟添禾亭添亭霖深策臻稷辞" ..
-						"悟悟澄涉城鸥黎悟乔恒黎鲲涉莞霖甲深婕乔程澹男岳深涉益澹悟箫乔多职适芦瑛澄婕朵适祖霖瑛坤嫚" ..
-						"涉男珂箫芦黎珹绢芦程识嗣珂瑰枝允黎庸嗣赐罡纵添禄霖男延甲彰咸稷箫岳悟职祖恒珂庸琅男莞庸浓" ..
-						"多罡延瑛濮存爵添剑益骥澄延迪寅婕程霖识瑰识程群教朵悟舞岳浓箫城适程禾嫚罡咸职铃爵渺添辞嫚" ..
-						"浓寅鲲嗣瑛鸥多教瑛迪坤铃珹群黎益澄程莞深坤澹禄职澹赩澄藉群箫骥定彰寅臻渟枝允珹深群黎甲鲲" ..
-						"亭黎藏浓涤渟莞寅辞嗣坤迪嫚添策庸策藉瑰彰箫益莞渺乔彰延舞祖婕澹渺鸥纵嗣瑛藏濮存婕职程芦群" ..
-						"禾嫚程辞祖黎职浓桦藏渟禾彰帅辞铃铃黎允绢濮存剑辞禾瑰添延添悟赐祖咸莞男绢策婕藉禾浓珹涤祖" ..
-						"汉骥舞瑛多稷赐莞渟黎舞桦黎群藏渺黎坤桦咸迪澈舞允稷咸剑定亭澄濮存鲲臻全鸥多赐程添瑛亭帅悟" ..
-						"甲男帅涤适纵渟鲲亭悟琅亭添允舞禾庸咸瑛教鲲允箫芦允瑛咸鸥帅悟延珂黎珹箫爵剑霖剑霖禄鸥悟涉" ..
-						"彰群悟辞帅渺莞澄桦瑛适臻益霖珹亭澹辞坤程嗣铃箫策澈枝赐莞爵渟禄群枝添芦群浓赐职益城澄赩琅" ..
-						"延群乔珹鲲祖群悟黎定庸澄芦延霖罡鲲咸渺纵亭禄鸥赩涤剑澹藏纵濮存澄芦剑延瑰稷黎益赩澄允悟澈" ..
-						"甲嗣绢朵益甲悟涤婕群咸臻箫鲲寅鸥桦益珂舞允庸芦藉寅渺咸赐澄程剑瑰霖瑰铃帅男铃悟识瑰仕仕城" ..
-						"允莞全朵涤铃剑渺稷剑珂铃箫全仕益纵芦桦珂濮存城朵朵咸程剑澄定澈爵寅庸定莞瑛教彰黎箫仕黎桦" ..
-						"赩深赩爵迪悟珹涤琅添箫桦帅瑛黎黎策识寅嫚涉迪策汉舞定彰允男祖教澄群瑛濮存男禾教莞禾鸥澈濮" ..
-						"存岳城嫚深舞教岳澄亭禾坤朵亭职莞稷寅瑰城庸亭舞禾瑛恒坤浓彰莞澄澈鸥臻稷教琅辞益剑藉黎添瑛" ..
-						"延舞坤仕岳多婕骥迪帅黎悟全澄识益甲桦纵适罡彰澄禾婕程黎城涤浓枝箫咸渟岳渟澹臻珹识珹澄箫辞" ..
-						"浓鲲识悟允悟禾识群祖迪渟鲲群庸莞珹悟澹瑰悟鸥汉群甲莞庸职琅莞桦鲲朵深乔辞允彰渺朵瑰亭瑰朵" ..
-						"定深男识群职霖益男舞城允舞爵赩枝罡罡群澹芦藉爵悟渟澹禾多庸箫坤乔芦甲濮存多渟藉珹赐汉纵亭" ..
-						"禾城枝剑露以玉春飞慧娜悠亦元晔曜霜宁桃彦仪雨琴青筠逸曼代菀孤昆秋蕊语莺丝红羲盛静南淑震晴" ..
-						"彭祯山霞凝柔隽松翠高骊雅念皓双洛紫瑞英思歆蓉娟波芸荷笑云若宏夏妍嘉彩如鹏寄芝柳凌莹蝶舒恬" ..
-						"虹清爽月巧乾勋翰芳罗刚鸿运枫阳葳杰怀悦凡哲瑶凯然尚丹奇弘顺依雪菡君畅白振馨寻涵问洁辉忆傲" ..
-						"伟经润志华兰芹修晨木宛俊博韶天锐溪燕家沈放明光千永溶昊梅巍真尔馥莲怜惜佳广香宇槐珺芷帆秀" ..
-						"理柏书沛琪仙之竹向卉欣旻晓冬幻和雁淳浩歌荣懿文幼岚昕牧绿轩工旭颜醉玑卓觅叶夜灵胜晗恨流佁" ..
-						"乐火音采睿翎萱民画梦寒泽怡丽心石邵玮佑旺壮名一学谷韵宜冰赫新蕾美晖项琳平树又炳骏气海毅敬" ..
-						"曦婉爰伯珊影鲸容晶婷林子昌梧芙澍诗星冉初映善越原茂国腾孟水烟半峯莉绮德慈敏才戈梓景智盼霁" ..
-						"琇苗熙姝从谊风发钰玛忍婀菲昶可荌小倩妙涛姗方图迎惠晤宣康娅玟奕锦濯穆禧伶丰良祺珍曲喆扬拔" ..
-						"驰绣烁叡长雯颖辰慕承远彬斯薇成聪爱朋萦田致世实愫进瀚朝强铭煦朗精艺熹建忻晏冷佩东古坚滨菱" ..
-						"囡银咏正儿瑜宝蔓端蓓芬碧人开珠昂琬洋璠桐舟姣琛亮煊信今年庄淼沙黛烨楠桂斐胤骄兴尘河晋卿易" ..
-						"愉蕴雄访湛蓝媛骞娴儒妮旋友娇泰基礼芮羽妞意翔岑苑暖玥尧璇阔燎偲靖行瑾资漪晟冠同齐复吉豆唱" ..
-						"韫素盈密富其翮熠绍澎淡韦诚滢知鹍苒抒艳义婧闳琦壤杨芃洲阵璟茵驹涆来捷嫒圣吟恺璞西旎俨颂灿" ..
-						"情玄利痴蕙力潍听磊宸笛中好任轶玲螺郁畴会暄峻略琼琰默池温炫季雰司杉觉维饮湉许宵茉贤昱蕤珑" ..
-						"锋纬渊超萍嫔大霏楚通邈飙霓谧令厚本邃合宾沉昭峰业豪达彗纳飒壁施欢姮甫湘漾闲恩莎祥启煜鸣品" ..
-						"希融野化钊仲蔚生攸能衍菁迈望起微鹤荫靓娥泓金琨筱赞典勇斌媚寿喜飇濡宕茜魁立裕弼翼央莘绚焱" ..
-						"奥萝米衣森荃航璧为跃蒙庆琲倚穹武甜璐俏茹悌格穰皛璎龙材湃农福旷童亘苇范寰瓃忠虎颐蓄霈言禹" ..
-						"章花健炎籁暮升葛贞侠专懋澜量纶布皎源耀鸾慨曾优栋妃游乃用路余珉藻耘军芊日赡勃卫载时三闵姿" ..
-						"麦瑗泉郎怿惬萌照夫鑫樱琭钧掣芫侬丁育浦磬献苓翱雍婵阑女北未陶干自作伦珧溥桀州荏举杏茗洽焕" ..
-						"吹甘硕赋漠颀妤诺展俐朔菊秉苍津空洮济尹周江荡简莱榆贝萧艾仁漫锟谨魄蔼豫纯翊堂嫣誉邦果暎珏" ..
-						"临勤墨薄颉棠羡浚兆环铄"
-					}
-					State["随机常量"] = tonumber(self:Rnd_Word("0123456789",5))
+--			while true do
+--				mSleep(500)
+--				if getColor(617,82) == 0x9ce6bf then
+--					mSleep(math.random(1000, 1700))
+--					randomsTap(555,188,6)
+--					mSleep(math.random(1000, 1700))
+--					for var= 1, 20 do
+--						mSleep(100)
+--						keyDown("DeleteOrBackspace")
+--						mSleep(100)
+--						keyUp("DeleteOrBackspace")
+--						mSleep(100)
+--					end
+--					mSleep(math.random(1000, 1700))
+--					randomsTap(49, 1283,8)
+--					mSleep(math.random(500, 700))
+--					State={
+--						["随机常量"] = 0,
+--						["姓氏"]="赵钱孙李周吴郑王冯陈褚卫蒋沈韩杨朱秦尤许何吕施张孔曹严华金魏陶" ..
+--						"姜戚谢邹喻柏水窦章云苏潘葛奚范彭郎鲁韦昌马苗凤花方俞任袁柳酆鲍" ..
+--						"史唐费廉岑薛雷贺倪汤滕殷罗毕郝邬安常乐于时傅皮卞齐康伍余元卜顾" ..
+--						"孟平黄和穆萧尹姚邵湛汪祁毛禹狄米贝明臧计伏成戴谈宋茅庞熊纪舒屈" ..
+--						"项祝董梁杜阮蓝闵席季麻强贾路娄危江童颜郭梅盛林刁钟徐邱骆高夏蔡" ..
+--						"田樊胡凌霍虞万支柯咎管卢莫经房裘缪干解应宗宣丁贲邓郁单杭洪包诸" ..
+--						"左石崔吉钮龚程嵇邢滑裴陆荣翁荀羊於惠甄曲家封芮羿储靳汲邴糜松井" ..
+--						"段富巫乌焦巴弓牧隗山谷车侯宓蓬全郗班仰秋仲伊宫宁仇栾暴甘钭厉戎" ..
+--						"祖武符刘景詹束龙叶幸司韶郜黎蓟薄印宿白怀蒲邰从鄂索咸籍赖卓蔺屠" ..
+--						"蒙池乔阴鬱胥能苍双闻莘党翟谭贡劳逄姬申扶堵冉宰郦雍却璩桑桂濮牛" ..
+--						"寿通边扈燕冀郟浦尚农温别庄晏柴瞿阎充慕连茹习宦艾鱼容向古易慎戈" ..
+--						"廖庾终暨居衡步都耿满弘匡国文寇广禄阙东欧殳沃利蔚越夔隆师巩厍聂" ..
+--						"晁勾敖融冷訾辛阚那简饶空曾毋沙乜养鞠须丰巢关蒯相查后荆红游竺权" ..
+--						"逯盖益桓公万俟司马上官欧阳夏侯诸葛闻人东方赫连皇甫尉迟公羊澹台" ..
+--						"公冶宗政濮阳淳于单于太叔申屠公孙仲孙轩辕令狐钟离宇文长孙慕容鲜" ..
+--						"于闾丘司徒司空亓官司寇仉督子车颛孙端木巫马公西漆雕乐正壤驷公良" ..
+--						"拓拔夹谷宰父谷粱晋楚闫法汝鄢涂钦段干百里东郭南门呼延归海羊舌微" ..
+--						"生岳帅缑亢况后有琴梁丘左丘东门西门商牟佘佴伯赏南宫墨哈谯笪年爱" ..
+--						"阳佟第五言福百家姓终",
+--						["名字"]="安彤含祖赩涤彰爵舞深群适渺辞莞延稷桦赐帅适亭濮存城稷澄添悟绢绢澹迪婕箫识悟舞添剑深禄延涤" ..
+--						"濮存罡禄瑛瑛嗣嫚朵寅添渟黎臻舞绢城骥彰渺禾教祖剑黎莞咸浓芦澹帅臻渟添禾亭添亭霖深策臻稷辞" ..
+--						"悟悟澄涉城鸥黎悟乔恒黎鲲涉莞霖甲深婕乔程澹男岳深涉益澹悟箫乔多职适芦瑛澄婕朵适祖霖瑛坤嫚" ..
+--						"涉男珂箫芦黎珹绢芦程识嗣珂瑰枝允黎庸嗣赐罡纵添禄霖男延甲彰咸稷箫岳悟职祖恒珂庸琅男莞庸浓" ..
+--						"多罡延瑛濮存爵添剑益骥澄延迪寅婕程霖识瑰识程群教朵悟舞岳浓箫城适程禾嫚罡咸职铃爵渺添辞嫚" ..
+--						"浓寅鲲嗣瑛鸥多教瑛迪坤铃珹群黎益澄程莞深坤澹禄职澹赩澄藉群箫骥定彰寅臻渟枝允珹深群黎甲鲲" ..
+--						"亭黎藏浓涤渟莞寅辞嗣坤迪嫚添策庸策藉瑰彰箫益莞渺乔彰延舞祖婕澹渺鸥纵嗣瑛藏濮存婕职程芦群" ..
+--						"禾嫚程辞祖黎职浓桦藏渟禾彰帅辞铃铃黎允绢濮存剑辞禾瑰添延添悟赐祖咸莞男绢策婕藉禾浓珹涤祖" ..
+--						"汉骥舞瑛多稷赐莞渟黎舞桦黎群藏渺黎坤桦咸迪澈舞允稷咸剑定亭澄濮存鲲臻全鸥多赐程添瑛亭帅悟" ..
+--						"甲男帅涤适纵渟鲲亭悟琅亭添允舞禾庸咸瑛教鲲允箫芦允瑛咸鸥帅悟延珂黎珹箫爵剑霖剑霖禄鸥悟涉" ..
+--						"彰群悟辞帅渺莞澄桦瑛适臻益霖珹亭澹辞坤程嗣铃箫策澈枝赐莞爵渟禄群枝添芦群浓赐职益城澄赩琅" ..
+--						"延群乔珹鲲祖群悟黎定庸澄芦延霖罡鲲咸渺纵亭禄鸥赩涤剑澹藏纵濮存澄芦剑延瑰稷黎益赩澄允悟澈" ..
+--						"甲嗣绢朵益甲悟涤婕群咸臻箫鲲寅鸥桦益珂舞允庸芦藉寅渺咸赐澄程剑瑰霖瑰铃帅男铃悟识瑰仕仕城" ..
+--						"允莞全朵涤铃剑渺稷剑珂铃箫全仕益纵芦桦珂濮存城朵朵咸程剑澄定澈爵寅庸定莞瑛教彰黎箫仕黎桦" ..
+--						"赩深赩爵迪悟珹涤琅添箫桦帅瑛黎黎策识寅嫚涉迪策汉舞定彰允男祖教澄群瑛濮存男禾教莞禾鸥澈濮" ..
+--						"存岳城嫚深舞教岳澄亭禾坤朵亭职莞稷寅瑰城庸亭舞禾瑛恒坤浓彰莞澄澈鸥臻稷教琅辞益剑藉黎添瑛" ..
+--						"延舞坤仕岳多婕骥迪帅黎悟全澄识益甲桦纵适罡彰澄禾婕程黎城涤浓枝箫咸渟岳渟澹臻珹识珹澄箫辞" ..
+--						"浓鲲识悟允悟禾识群祖迪渟鲲群庸莞珹悟澹瑰悟鸥汉群甲莞庸职琅莞桦鲲朵深乔辞允彰渺朵瑰亭瑰朵" ..
+--						"定深男识群职霖益男舞城允舞爵赩枝罡罡群澹芦藉爵悟渟澹禾多庸箫坤乔芦甲濮存多渟藉珹赐汉纵亭" ..
+--						"禾城枝剑露以玉春飞慧娜悠亦元晔曜霜宁桃彦仪雨琴青筠逸曼代菀孤昆秋蕊语莺丝红羲盛静南淑震晴" ..
+--						"彭祯山霞凝柔隽松翠高骊雅念皓双洛紫瑞英思歆蓉娟波芸荷笑云若宏夏妍嘉彩如鹏寄芝柳凌莹蝶舒恬" ..
+--						"虹清爽月巧乾勋翰芳罗刚鸿运枫阳葳杰怀悦凡哲瑶凯然尚丹奇弘顺依雪菡君畅白振馨寻涵问洁辉忆傲" ..
+--						"伟经润志华兰芹修晨木宛俊博韶天锐溪燕家沈放明光千永溶昊梅巍真尔馥莲怜惜佳广香宇槐珺芷帆秀" ..
+--						"理柏书沛琪仙之竹向卉欣旻晓冬幻和雁淳浩歌荣懿文幼岚昕牧绿轩工旭颜醉玑卓觅叶夜灵胜晗恨流佁" ..
+--						"乐火音采睿翎萱民画梦寒泽怡丽心石邵玮佑旺壮名一学谷韵宜冰赫新蕾美晖项琳平树又炳骏气海毅敬" ..
+--						"曦婉爰伯珊影鲸容晶婷林子昌梧芙澍诗星冉初映善越原茂国腾孟水烟半峯莉绮德慈敏才戈梓景智盼霁" ..
+--						"琇苗熙姝从谊风发钰玛忍婀菲昶可荌小倩妙涛姗方图迎惠晤宣康娅玟奕锦濯穆禧伶丰良祺珍曲喆扬拔" ..
+--						"驰绣烁叡长雯颖辰慕承远彬斯薇成聪爱朋萦田致世实愫进瀚朝强铭煦朗精艺熹建忻晏冷佩东古坚滨菱" ..
+--						"囡银咏正儿瑜宝蔓端蓓芬碧人开珠昂琬洋璠桐舟姣琛亮煊信今年庄淼沙黛烨楠桂斐胤骄兴尘河晋卿易" ..
+--						"愉蕴雄访湛蓝媛骞娴儒妮旋友娇泰基礼芮羽妞意翔岑苑暖玥尧璇阔燎偲靖行瑾资漪晟冠同齐复吉豆唱" ..
+--						"韫素盈密富其翮熠绍澎淡韦诚滢知鹍苒抒艳义婧闳琦壤杨芃洲阵璟茵驹涆来捷嫒圣吟恺璞西旎俨颂灿" ..
+--						"情玄利痴蕙力潍听磊宸笛中好任轶玲螺郁畴会暄峻略琼琰默池温炫季雰司杉觉维饮湉许宵茉贤昱蕤珑" ..
+--						"锋纬渊超萍嫔大霏楚通邈飙霓谧令厚本邃合宾沉昭峰业豪达彗纳飒壁施欢姮甫湘漾闲恩莎祥启煜鸣品" ..
+--						"希融野化钊仲蔚生攸能衍菁迈望起微鹤荫靓娥泓金琨筱赞典勇斌媚寿喜飇濡宕茜魁立裕弼翼央莘绚焱" ..
+--						"奥萝米衣森荃航璧为跃蒙庆琲倚穹武甜璐俏茹悌格穰皛璎龙材湃农福旷童亘苇范寰瓃忠虎颐蓄霈言禹" ..
+--						"章花健炎籁暮升葛贞侠专懋澜量纶布皎源耀鸾慨曾优栋妃游乃用路余珉藻耘军芊日赡勃卫载时三闵姿" ..
+--						"麦瑗泉郎怿惬萌照夫鑫樱琭钧掣芫侬丁育浦磬献苓翱雍婵阑女北未陶干自作伦珧溥桀州荏举杏茗洽焕" ..
+--						"吹甘硕赋漠颀妤诺展俐朔菊秉苍津空洮济尹周江荡简莱榆贝萧艾仁漫锟谨魄蔼豫纯翊堂嫣誉邦果暎珏" ..
+--						"临勤墨薄颉棠羡浚兆环铄"
+--					}
+--					State["随机常量"] = tonumber(self:Rnd_Word("0123456789",5))
 
-					Nickname = self:Rnd_Word(State["姓氏"],1,3)..self:Rnd_Word(State["名字"],1,3)
+--					Nickname = self:Rnd_Word(State["姓氏"],1,3)..self:Rnd_Word(State["名字"],1,3)
 
-					--检测是否有删除按钮
-					mSleep(math.random(500, 700))
-					while (true) do
-						mSleep(500)
-						x,y = findMultiColorInRegionFuzzy( 0xcccccc, "11|-9|0xcccccc,20|0|0xcccccc,11|10|0xcccccc,10|-1|0xffffff,5|-5|0xffffff,15|4|0xffffff,15|-5|0xffffff,7|4|0xffffff", 90, 630, 89, 749, 1333)
-						toast(y, 1)
-						if x~=-1 and y~=-1 then
-							break
-						else
-							mSleep(500)
-							inputStr(Nickname)
-							mSleep(500)
-							toast("输入昵称",1)
-						end
-					end
+--					--检测是否有删除按钮
+--					mSleep(math.random(500, 700))
+--					while (true) do
+--						mSleep(500)
+--						x,y = findMultiColorInRegionFuzzy( 0xcccccc, "11|-9|0xcccccc,20|0|0xcccccc,11|10|0xcccccc,10|-1|0xffffff,5|-5|0xffffff,15|4|0xffffff,15|-5|0xffffff,7|4|0xffffff", 90, 630, 89, 749, 1333)
+--						toast(y, 1)
+--						if x~=-1 and y~=-1 then
+--							break
+--						else
+--							mSleep(500)
+--							inputStr(Nickname)
+--							mSleep(500)
+--							toast("输入昵称",1)
+--						end
+--					end
 
-					--					mSleep(math.random(500, 700))
-					--					for i = 1, #phone do
-					--						mSleep(math.random(500, 700))
-					--						num = string.sub(phone,i,i)
-					--						if num == "0" then
-					--							randomsTap(713,  965, 8)
-					--						elseif num == "1" then
-					--							randomsTap(38,  964, 8)
-					--						elseif num == "2" then
-					--							randomsTap(112,  965, 8)
-					--						elseif num == "3" then
-					--							randomsTap(185,  965, 8)
-					--						elseif num == "4" then
-					--							randomsTap(264,  963, 8)
-					--						elseif num == "5" then
-					--							randomsTap(338,  964, 8)
-					--						elseif num == "6" then
-					--							randomsTap(414,  962, 8)
-					--						elseif num == "7" then
-					--							randomsTap(495,  964, 8)
-					--						elseif num == "8" then
-					--							randomsTap(566,  966, 8)
-					--						elseif num == "9" then
-					--							randomsTap(642,  961, 8)
-					--						end
-					--					end
-					mSleep(math.random(1000, 1500))
-					randomsTap(659, 84,8)
-					mSleep(math.random(500, 700))
-					toast("设置名字",1)
-					break
-				end
-			end
-		end
+--					--					mSleep(math.random(500, 700))
+--					--					for i = 1, #phone do
+--					--						mSleep(math.random(500, 700))
+--					--						num = string.sub(phone,i,i)
+--					--						if num == "0" then
+--					--							randomsTap(713,  965, 8)
+--					--						elseif num == "1" then
+--					--							randomsTap(38,  964, 8)
+--					--						elseif num == "2" then
+--					--							randomsTap(112,  965, 8)
+--					--						elseif num == "3" then
+--					--							randomsTap(185,  965, 8)
+--					--						elseif num == "4" then
+--					--							randomsTap(264,  963, 8)
+--					--						elseif num == "5" then
+--					--							randomsTap(338,  964, 8)
+--					--						elseif num == "6" then
+--					--							randomsTap(414,  962, 8)
+--					--						elseif num == "7" then
+--					--							randomsTap(495,  964, 8)
+--					--						elseif num == "8" then
+--					--							randomsTap(566,  966, 8)
+--					--						elseif num == "9" then
+--					--							randomsTap(642,  961, 8)
+--					--						end
+--					--					end
+--					mSleep(math.random(1000, 1500))
+--					randomsTap(659, 84,8)
+--					mSleep(math.random(500, 700))
+--					toast("设置名字",1)
+--					break
+--				end
+--			end
+--		end
 
 		if data_six_two or error_wechat then
 			function write_data(inifile,key)
@@ -4641,7 +4687,7 @@ function model:main()
 			},
 			{
 				["type"] = "RadioGroup",                    
-				["list"] = "柠檬,卡农注册,奥迪,52,俄罗斯1,东帝汶,服务器取号,俄罗斯2,各国API,老友,SMS,越南,各国API2",
+				["list"] = "柠檬,卡农注册,奥迪,52,俄罗斯1,东帝汶,服务器取号,俄罗斯2,各国API,老友,SMS,越南,各国API2,奶茶",
 				["select"] = "0",  
 				["countperline"] = "4",
 			},
@@ -4897,9 +4943,12 @@ function model:main()
 		elseif vpn_stauts == "9" then
 			ksUrl = "http://web.lyf5.com"
 			ApiName = "huqianjin42"
+		elseif vpn_stauts == "13" then
+			ksUrl = "http://web.jiaotai56.com"
+			ApiName = "huqianjin89"
 		end
 
-		if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "9" then
+		if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" then
 			mSleep(500)
 			if kn_country == "" or kn_country == "默认值" then
 				dialog("国家区号不能为空，请重新运行脚本设置国家区号", 3)
@@ -4925,7 +4974,7 @@ function model:main()
 			end
 		end
 
-		if vpn_stauts == "2" or vpn_stauts == "9" then
+		if vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" then
 			::get_token::
 			local sz = require("sz");
 			local http = require("szocket.http")
@@ -4952,4 +5001,3 @@ end
 
 model:main()
 
---https://admin.smscodes.io/api/sms/RentSMSNumber?key=3edcec83-89e0-4c13-a1a4-c2a12018422f&sid=05a2666f-850c-41dd-bdc9-48548243f4d9&period=1

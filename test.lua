@@ -4,8 +4,8 @@ local sz = require("sz")
 local socket = require ("socket");
 local http = require("szocket.http")
 require("TSLib")
-
-
+a= {1,2,3}
+nLog(table.concat(a))
 --local sz = require("sz")
 --local cjson = sz.json
 --local http = sz.i82.http
@@ -25,50 +25,657 @@ require("TSLib")
 
 
 
-function HttpUtil()
-	local self = {}
-	-- get请求
-	self.httpget = function(u)
-		local t = {}
-		local r, c, h = http.request{
-			url = u,
-			-- 20160708 如果传入的是table的话， 就需要用一个容器来接收http body的内容， 也就是sink那个参数
-			sink = ltn12.sink.table(t)}
-		for k,v in pairs(h) do
-			dialog(k..v, time)
+--code,header_resp, body_resp = ts.httpsGet("https://jiema.wwei.cn/", header_send,body_send)
+--a = strSplit(body_resp,"token=")
+--token = strSplit(a[2], "\";")
+--dialog(token[1], time)
+--nLog(token[1])
+
+function ifIsJson(jsonString)
+	local head
+	local pos1,pos2
+	jsonString =jsonString:atrim()
+	local String1=string.sub(jsonString,1,1)  --最外部大括号
+	local String2 = string.sub(jsonString,#jsonString)
+	if String1=="{" and String2 =="}" then
+		String1=jsonString
+		jsonString=string.sub(jsonString,2,-2)  --去掉最外部括号
+		pos1,_=string.find(jsonString,"%[")  
+		if pos1 then
+			pos2,_ = string.find(jsonString,"%]")
+			if pos2 then
+				head=string.sub(jsonString,2,pos1-1)
+				local a,b=string.gsub(head,"(\"-)(.-)(\"-):","")
+				if a =="" and b==1 then
+					head=string.sub(jsonString,pos1+1,pos2-1)
+					while true do
+						if (pos2)==#jsonString then  --没有后续的了
+--							local result= ContinueCheck(head)  --传入 []里的内容
+							if result then return true else return false end
+						else --还有
+							local result= ContinueCheck(head)  --传入 []里的内容
+							if result== false then return false end
+							jsonString=string.sub(jsonString,pos2+1,#jsonString) --记录下后面部分
+							pos1,_=string.find(jsonString,"%[")  
+							if pos1 then
+								pos2,_ = string.find(jsonString,"%]")
+								if pos2 then
+									head=string.sub(jsonString,2,pos1-1)
+									local a,b=string.gsub(head,"(\"-)(.-)(\"-):","")
+									if a ~="" and b~=1 then return false end  -- "head":[{....},{.....},{.....}]  其中的head格式不正确
+									head=string.sub(jsonString,pos1+1,pos2-1)  --下一次循环传入的参数
+								else
+									return false--缺少]
+								end
+							else
+								return false --[]缺少[]
+							end
+						end
+					end
+				else
+					return false -- "head":[{....},{.....},{.....}]  其中的head格式不正确
+				end
+			else
+				return false  --不匹配[]
+			end
+		else --没有中括号,简单的单个{}json处理
+--			local result =ContinueCheck(String1)
+			if result then return true else return false end
 		end
-		
-		return r, c, h, table.concat(t)
+	else
+		return false  --不匹配{}
 	end
+end
+--精准滑动的原理就是通过向滑动方向的垂直线方向移动 1 像素来终止滑动惯性
+--简单的垂直精准滑动
+--mSleep(math.random(500, 700))
+--x, y = findMultiColorInRegionFuzzy(0xc2c2c2,"13|19|0xc2c2c2,52|12|0xc2c2c2,83|0|0xc2c2c2,84|16|0xc2c2c2,-111|-5|0xf2f2f2,219|43|0xf2f2f2,274|18|0xededed,-172|9|0xededed", 100, 0, 920, 749, 1333)
+--dialog(x..y, time)
+--if x~=-1 and y~=-1 then
+--	mSleep(math.random(500, 1000))
+--	randomsTap(x - 240, y-95,1)
+--	mSleep(math.random(3000, 5000))
+--else
+--	mSleep(math.random(500, 700))
+--	x,y = findMultiColorInRegionFuzzy( 0xc2c2c2, "-148|-7|0xf2f2f2,140|2|0xf2f2f2,245|2|0xededed,-175|6|0xf2f2f2", 100, 0, 920, 749, 1333)
+--	if x~=-1 and y~=-1 then
+--		mSleep(math.random(500, 1000))
+--		randomsTap(x, y-112,1)
+--		mSleep(math.random(3000, 5000))
+--	else
+--		time = time + 1
+--		toast("等待隐秘政策"..time,1)
+--		mSleep(math.random(2000, 3000))
+--	end
+--end
 
-	self.httpPost = function(u,inParam)
-		-- 参考 http://www.stutostu.com/?p=1285
---        ngx.log(ngx.WARN,"url:"..u)
---        ngx.log(ngx.WARN,"inParam:"..inParam)
-		local response_body = {}
-		local post_data = inParam
-		local res, code = http.request{
-			url = u,
-			method = "POST",
-			headers =
-			{
-				["Content-Type"] = "application/json",
-				["Content-Length"] = #post_data,
-			},
-			source = ltn12.source.string(post_data),
-			sink = ltn12.sink.table(response_body)
-		}
-		res = table.concat(response_body)
---		ngx.log(ngx.WARN,"res:"..res)
---		ngx.log(ngx.WARN,"code:"..code)
-
-		return res,code
-
-	end
-
-	return self
+function readFileBase64(path) 
+	f = io.open(path,"rb")
+	if f == null then
+		toast("no file")
+		mSleep(3000);
+		return null;
+	end 
+	bytes = f:read("*all");
+	f:close();
+	return bytes:base64_encode();
 end
 
+--openURL("snssdk1128://aweme/detail/6864869537918045453")
+--mSleep(math.random(500,700))
+--x,y = findMultiColorInRegionFuzzy( 0xfe2c55, "32|3|0xffffff,-112|-24|0xfe2c55,242|-21|0xfe2c55,239|26|0xfe2c55,68|0|0xffffff,102|4|0xffffff,277|-16|0x393a44,326|27|0x393a44,302|6|0xffffff", 90, 0, 0, 749, 1333)
+--if x~=-1 and y~=-1 then
+--	dialog(x..y, time)
+--	mSleep(math.random(500,700))
+--	randomTap(x,y,5)
+--	mSleep(math.random(500,700))
+--else
+--	dialog("gg", time)
+--end
+
+
+
+
+
+function getWord(copyWord)
+	local m = TSVersions()
+	local a = ts.version()
+	local API = "Hk8Ve2Duh6QCR5XUxLpRxPyv"
+	local Secret  = "fD0az8pW8lNhGptCZC4TPfMWX5CyVtnh"
+	local tp = getDeviceType()
+	if m <= "1.2.7" then
+		dialog("请使用 v1.2.8 及其以上版本 TSLib",0)
+		lua_exit()
+	end
+
+	if  tp >= 0  and tp <= 2 then
+		if a <= "1.3.9" then
+			dialog("请使用 iOS v1.4.0 及其以上版本 ts.so",0)
+			lua_exit()
+		end
+	elseif  tp >= 3 and tp <= 4 then
+		if a <= "1.1.0" then
+			dialog("请使用安卓 v1.1.1 及其以上版本 ts.so",0)
+			lua_exit()
+		end
+	end
+
+	local tab={
+		paragraph="true",
+		probability="true",
+		ocrType = 2
+	}
+
+	local code1,access_token = getAccessToken(API,Secret)
+	if code1 then
+		local content_name1 = userPath() .. "/res/baiduAI_content_name1.jpg"
+		--内容
+		snapshot(content_name1, 0,0,749,1333) 
+		mSleep(1000)
+
+		local code2, body = baiduAI(access_token,content_name1,tab)
+		nLog(body)
+		if code2 then
+			local tmp = json.decode(body)
+			for i=1,#tmp.words_result,1 do
+				mSleep(200)
+				x, y = string.find(tmp.words_result[i].words, copyWord)
+				toast(x, 1)
+				if x ~= nil then
+					dialog(tmp.words_result[i].location.top, time)
+					return tmp.words_result[i]
+				end
+			end
+		else
+			dialog("识别失败\n" .. body,5)
+		end 
+	else
+		dialog("识别失败\n" .. access_token,5)
+	end
+	return nil
+end
+
+function getData() 
+	dataPath = appDataPath("com.wemomo.momoappdemo1"); 
+	local getList = function(path)
+		local a = io.popen("ls "..path)
+		local f = {};
+		for l in a:lines() do
+			table.insert(f,l)
+		end
+		return f
+	end 
+	local Wildcard = getList("var/mobile/Containers/Data/Application")
+	for var = 1,#Wildcard do
+		local file = io.open(dataPath.."/Library/Preferences/com.wemomo.momoappdemo1.plist","rb")
+		if file then 
+			local ts = require("ts")
+			local plist = ts.plist
+			local plfilename =appDataPath("com.wemomo.momoappdemo1").."/Library/Preferences/com.wemomo.momoappdemo1.plist" --设置plist路径
+			local tmp2 = plist.read(plfilename)                --读取 PLIST 文件内容并返回一个 TABLE
+			for k, v in pairs(tmp2) do
+				if string.match(k,"Key(%d+)") then
+					k=string.match(k,"%d+")
+					nLog(k)
+					toast(k,1)
+					return k
+				end
+			end 
+		end 
+	end 
+end
+
+
+
+
+--getData()
+
+function getData() --获取62数据 (可以用的)
+	dataPath = appDataPath("com.ss.iphone.ugc.Aweme");  
+	local getList = function(path) 
+		local a = io.popen("ls "..path) 
+		local f = {}; 
+		for l in a:lines() do 
+			table.insert(f,l) 
+		end 
+		return f 
+	end 
+
+	local file = io.open(dataPath.."/Library/loginData.dat","rb") 
+	if file then 
+		local str = file:read("*a") 
+		file:close() 
+		require"sz" 
+		local str = string.tohex(str) --16进制编码 
+		return str 
+	end 
+end 
+
+function getData()  ----获取火山uid
+	dataPath = appDataPath("com.ss.iphone.ugc.Live"); 
+	
+	local file = io.open(dataPath.."/Library/Preferences/com.ss.iphone.ugc.Live.plist","rb")
+	if file then 
+		local ts = require("ts")
+		local plist = ts.plist
+		local plfilename = appDataPath("com.ss.iphone.ugc.Live").."/Library/Preferences/com.ss.iphone.ugc.Live.plist" --设置plist路径
+		local tmp2 = plist.read(plfilename)                --读取 PLIST 文件内容并返回一个 TABLE
+		for k, v in pairs(tmp2) do
+			if k == "kHTSLastLoginedUserId" then
+				nLog(v)
+				toast(v,1)
+				return v
+			end
+		end 
+	end 
+end
+
+--MS4wLjABAAAAiRqZ36GT_Wu0U1aO0UFU93w3j1BXYhSi22bQcJHMXNY
+--six_data = getData()
+--dialog(six_data, 0)
+
+--dataPath = appDataPath("com.tencent.xin");  
+--a =  appDataPath("com.ss.iphone.ugc.Aweme")
+--nLog(dataPath.."\r\n"..a)
+
+--require "TSLib"--使用本函数库必须在脚本开头引用并将文件放到设备 lua 目录下    J57HaeH
+--local file = appDataPath("com.ss.iphone.ugc.Aweme").."/Library/AWEStorage/UnifyStorage.sqlite-wal"
+--table=readFile(file) 
+--if table then 
+--    for k,v in ipairs(table) do
+--		i, j = string.find(v, "https", 1) 
+--		if i > 0 then
+--			dialog(v, time)
+--		end
+
+--		nLog(tostring(k).."==="..tostring(v))
+--	end
+
+--else
+--    dialog("文件不存在")
+--end
+--if txt then
+--    dialog("文件内容："..txt)
+--else
+--    dialog("文件不存在")
+--end
+
+--for var= 1, 10 do
+--	mSleep(500)
+----	moveTo(200,1000,201, 500,{["step"] = 15,["ms"] = 70,["index"] = 1,["stop"] = true}) 
+--	touch():Step(15):on(200,1000):move(200,500):off()
+--end
+
+
+
+--local ts = require("ts")
+--time = ts.ms() 
+--str = tostring(time * 1000)
+--newtime = strSplit(str,".")
+--sign = "1oTzLwB5sB7KEk2w"
+--pass = sign:md5()
+
+--header_send = {ContentType = "application/x-www-form-urlencoded"}
+--body_send = {
+--	["account"] = "18239773375",
+--	["password"] = "123456qq",
+--}
+--ts.setHttpsTimeOut(60) 
+--code,status_resp, body_resp = ts.httpsPost("http://jb.06km.com/mz/scriptApi/script/login/", header_send, body_send)
+--if code == 200 then
+--	tmp = json.decode(body_resp)
+--	token = tmp.data.token
+--end
+
+--body_send = {
+--	["token"] = token,
+--	["ids"] = {
+--		authorizedHs="1"
+--	},
+--}
+--ts.setHttpsTimeOut(60) 
+--code,header_resp, body_resp = ts.httpsPost("http://jb.06km.com/mz/scriptApi/get/subList", header_send,body_send)
+--if code == 200 then
+--	local tmp = json.decode(body_resp)
+--	data = tmp.data
+--	for k,v in ipairs(data) do
+--		if v.title=="神杖-关注" and v.openSelection==true then
+--			id=v.id
+--			nLog(id)
+--		end
+--	end
+--end
+
+
+--header_send = {ContentType = "application/x-www-form-urlencoded"}--获取任务
+--body_send = {
+--	["token"] = token,
+--	["ids"] = id,
+--	["tjStatus"]= "1",
+--	["timestamp"] = newtime[1],
+--	["scriptUid"] = "ujh",
+--	["sign"]= pass,
+
+--}
+--ts.setHttpsTimeOut(60) 
+--code,status_resp, body_resp = ts.httpsPost("http://jb.06km.com/mz/scriptApi/get/sign/task", header_send, body_send)
+--nLog(code)
+--dialog(code, time)
+--dialog(body_resp, time)
+--if code == 200 then
+--	nLog(body_resp, time)
+--	tmp = json.decode(body_resp)
+----	token = tmp.status
+----	nLog(token)
+----	nLog("\r\n")
+--end
+
+
+
+--local ts = require("ts")--使用扩展库前必须插入这一句
+--local cjson = ts.json--使用 JSON 模块前必须插入这一句
+--local str = [[ {  "id":"243125b4-5cf9-4ad9-827b-37698f6b98f0" }]]
+--dialog(tostring(ifIsJson(str)), time)
+----把 json 字符串转换成 table
+--local tmp = json.decode(str)
+--if tostring(type(tmp)) == "table" then
+--	dialog(tmp.meme[5],0);
+--	dialog(tostring(tmp.nullvalue),0);
+--else
+--	toast("fff",1)
+--end
+
+--function ContinueCheck(jsonString)
+--	local stringLength=#jsonString
+--	local pos1,pos2=0,0
+--	local JsonTable={}
+--	local i=1
+--	while (true) do   --截取{....}并且存入表JsonTable中
+--		pos1,_=string.find(jsonString,"{",pos1+1)
+--		if pos1 then
+--			pos2,_=string.find(jsonString,"}",pos2+1)
+--			if pos2 then
+--				JsonTable[i]=string.sub(jsonString,pos1+1,pos2-1)
+--			else
+--				return false
+--			end
+--		else
+--			return false
+--		end
+--		if pos2==#jsonString then break end 
+--		i=i+1
+--	end
+--	local a,b
+--	local j=1
+--	while (true) do
+--		jsonString=JsonTable[j]  --一个一个值检查
+--		while (true) do
+--			local q,_=string.find(jsonString,",")
+--			if q~= nil then --"a":"i","b":"j"找这之间的逗号
+--				local jsonString2=string.sub(jsonString,1,q-1)  --,号前
+--				jsonString=string.sub(jsonString,q+1,#jsonString)  --,号后
+--				a,b=string.gsub(jsonString2,"(\"-)(.-)(\"-):","")
+--			else   --没有则为key:value 的最后一个
+--				a,b=string.gsub(jsonString,"(\"-)(.-)(\"-):","")
+--			end
+--			if  b==1 then 
+--				a,b=string.gsub(a,"(\"-)(.+)(\"+)","")
+--				if a==""  then
+--					mSleep(10)
+--				else
+--					a=tonumber(a)
+--					if type(a) == "number" then
+--						mSleep(10)
+--					else
+--						return false
+--					end
+--				end
+--			else
+--				return false
+--			end
+--			if q == nil then --找到最后啦
+--				break
+--			end
+--		end
+--		if j==i then return true end
+--		j=j+1
+--	end
+
+--end
+
+
+--function ifIsJson(JsonString)
+--	local pos1,pos2,pos3,pos4=0,0,0,0
+--	local counter1,counter2,counter3,counter4=0,0,0,0
+--	local string1,string2
+--	local Mytable,Mytable2={},{}
+--	local i,j=1,1
+--	JsonString=JsonString:atrim()
+--	string1=string.sub(JsonString,1,1)
+--	string2=string.sub(JsonString,-1,-1)
+--	if string1=="{" and string2=="}" then --查看各种括号是否成对存在
+--		_,pos1=string.gsub(JsonString,"{","{")  
+--		_,pos2=string.gsub(JsonString,"}","}")
+--		_,pos3=string.gsub(JsonString,"%[","[")
+--		_,pos4=string.gsub(JsonString,"%]","]")
+--		if pos1~=pos2 or pos3~=pos4 then return false end
+--	else return false end
+--	while (true) do
+--		pos1,pos2=string.find(JsonString,",%[{",pos1)-- 找 ,[{ 找到后找 }]
+--		if pos1 then
+--			pos3,pos4=string.find(JsonString,"}]",pos4)
+--			if pos3 then
+--				string1=string.sub(JsonString,pos1,pos4)
+--				_,counter1=string.gsub(string1,"{","{")  --查看各种括号是否成对存在
+--				_,counter2=string.gsub(string1,"}","}")
+--				_,counter3=string.gsub(string1,"%[","[")
+--				_,counter4=string.gsub(string1,"%]","]")
+--				if counter1 == counter2 and counter3== counter4 then
+--					Mytable[i]=string.sub(JsonString,pos2,pos3) --{....}
+--					i=i+1
+--					string1=string.sub(JsonString,1,pos1-1)
+--					string2=string.sub(JsonString,pos4+1)
+--					JsonString=string1..string2 -- 去掉,{[..}]
+--					pos4=pos1
+--				end
+--			else return false end
+--		else 
+--			pos1,pos2,pos3,pos4=1,1,1,1
+--			pos1,pos2=string.find(JsonString,"%[{") --找[{ 找到后找 }]没有则跳出
+--			if pos1 then
+--				pos3,pos4=string.find(JsonString,"}]")
+--				if pos3 then
+--					string1=string.sub(JsonString,pos1,pos4)
+--					_,counter1=string.gsub(string1,"{","{")  --查看各种括号是否成对存在
+--					_,counter2=string.gsub(string1,"}","}")
+--					_,counter3=string.gsub(string1,"%[","[")
+--					_,counter4=string.gsub(string1,"%]","]")
+--					if counter1 == counter2 and counter3== counter4 then
+--						Mytable[i]=string.sub(JsonString,pos2,pos3) --{....}
+--						i=i+1
+--						string1=string.sub(JsonString,1,pos1-1)
+--						string2=string.sub(JsonString,pos4+1)
+--						JsonString=string1.."\"\""..string2 -- 去掉,[{..}]
+--						pos4=pos1
+--					end
+--				else return false end
+--			else break end
+--		end
+--	end
+--	i=i-1
+--	if Mytable[i]~= nil then
+--		pos1,pos2,pos3,pos4=1,1,1,1
+--		while (true) do  --截取嵌套n层的最里面的[{.....}]
+--			repeat       -- 找table[]中[{最靠后的这符号,
+--				pos1,pos2=string.find(Mytable[i],"%[{",pos2)
+--				if pos1 then pos3,pos4=pos1,pos2  end
+--			until pos1==nil
+--			pos1,pos2=string.find(Mytable[i],"}]",pos4)  --找串中pos4之后}]最靠前的这个符号
+--			if pos1 then
+--				Mytable2[j]=string.sub(Mytable[i],pos4,pos1) --[ {....} ]
+--				j=j+1
+--				string1=string.sub(Mytable[i],1,pos3-1)
+--				stirng2=string.sub(Mytable[i],pos2+1)
+--				Mytable[i]=string1.."\"\""..string2
+--			else 
+--				Mytable2[j]=Mytable[i]
+--				j=j+1
+--				i=i-1
+--				if i== 0 then break end--直到找不到成对的[{}]
+--			end
+--			pos2=1
+--		end
+--	end
+
+
+--	Mytable2[j]=JsonString
+--	i=1
+--	Mytable={}
+--	pos1,pos2,pos3,pos4=0,0,1,1
+--	while (true) do
+--		repeat
+--			pos1,_=string.find(Mytable2[j],"{",pos2+1)
+--			if pos1 then pos2=pos1 end
+--		until pos1 == nil 
+--		pos3,_=string.find(Mytable2[j],"}",pos2)
+--		if pos3 and pos2~=1 then
+--			Mytable[i]=string.sub(Mytable2[j],pos2,pos3) --  {...}
+--			i=i+1
+--			string1=string.sub(Mytable2[j],1,pos2-1)
+--			string2=string.sub(Mytable2[j],pos3+1)
+--			Mytable2[j]=string1.."\"\""..string2
+--		else
+--			Mytable[i]=string.sub(Mytable2[j],1,pos3)
+--			i=i+1
+--			j=j-1
+--			if j==0 then break end
+--		end
+--		pos2=0
+--		-- 串b截取   {  "id":"243125b4-5cf9-4ad9-827b-37698f6b98f0" }  这样的格式 存进table[j]
+--		-- 剩下一个 "image":{ "id":"243125b4-5cf9-4ad9-827b-37698f6b98f0","a":"e0", "d":"2431-f6b98f0","f":"243125b98f0"--}这样的也存进table[j+1]
+--	end
+
+--	i=i-1
+--	for n=1,i do  --去除{}
+--		Mytable[n]=string.sub(Mytable[n],2,-2)
+--	end
+
+--	while (true) do
+--		pos1,_=string.find(Mytable[i],",")
+--		if pos1~= nil then --"a":"i","b":"j"找这之间的逗号
+--			string1=string.sub(Mytable[i],1,pos1-1)--,前
+--			Mytable[i]=string.sub(Mytable[i],pos1+1)
+--			pos2,_=string.find(string1,"\"")
+--			if pos2==1 then
+--				pos3,pos4=string.find(string1,"\":",2)
+--				if pos3 then
+--					string2=string.sub(string1,pos4+1)
+--				else 
+--					toast("发现错误1", 1)
+--					return false
+--				end
+--			else 
+--				toast("发现错误2", 1)
+--				return false
+--			end
+--		else
+--			pos2,_=string.find(Mytable[i],"\"")
+--			if pos2==1 then
+--				pos3,pos4=string.find(Mytable[i],"\":",2)
+--				if pos3 then
+--					string2=string.sub(Mytable[i],pos4+1)
+--				else
+--					toast("发现错误3", 1)
+--					return false
+--				end
+--			else 
+--				toast("发现错误4", 1)
+--				return false
+--			end
+--		end
+
+
+----		pos2,pos3=string.gsub(string2,"(\"-)(.+)(\"+)","")
+----		if pos2=="" or pos2 == "null" then
+----			toast("这一个串格式正确", 2)
+----		else
+----			pos2=tonumber(pos2)
+----			dialog(type(pos2), time)
+----			if type(pos2) == "number" then
+----				toast("这一个串格式正确", 2)
+----			else
+----				toast("发现错误5", 1)
+----				return false
+----			end
+----		end
+
+--		if pos1 == nil then
+--			i=i-1
+--			if i==0 then return true end
+--		end
+--	end
+
+--end
+
+--iso = "FR"
+
+--::get_phone::
+--local ts = require("ts")
+--header_send = {}
+--body_send = {}
+--ts.setHttpsTimeOut(60) 
+--code,header_resp, body_resp = ts.httpsGet("https://admin.smscodes.io/api/sms/GetServiceNumber?key=3edcec83-89e0-4c13-a1a4-c2a12018422f&iso="..iso.."&serv=bb147412-4700-44d6-a4fe-637361940f2a", header_send,body_send)
+--if code == 200 then
+--	post_data = string.gsub(body_resp,"\"{","{")
+--    post_data = string.gsub(body_resp,"}\"","}")
+--    post_data = string.gsub(body_resp,"\\","")
+--	dialog(post_data, time)
+--	tmp = json.decode(body_resp)
+--	if tmp.Number == "N/A" then
+--		toast("获取号码失败:"..body_resp,1)
+--		mSleep(5000)
+--		goto get_phone
+--	elseif tonumber(tmp.Number) > 0 then
+--		telphone = tmp.Number
+--		sid = tmp.SecurityId
+--		toast(telphone.."\r\n"..sid,1)
+--	else
+--		toast("获取号码失败:"..body_resp,1)
+--		mSleep(5000)
+--		goto get_phone
+--	end
+--else
+--	toast("获取号码失败:"..body_resp,1)
+--	mSleep(5000)
+--	goto get_phone
+--end
+
+
+--::get_code::
+--local ts = require("ts")
+--header_send = {}
+--body_send = {}
+--ts.setHttpsTimeOut(60) 
+--code,header_resp, body_resp = ts.httpsGet("https://admin.smscodes.io/api/sms/GetSMSCode?key=3edcec83-89e0-4c13-a1a4-c2a12018422f&sid="..sid.."&number="..telphone, header_send,body_send)
+--if code == 200 then
+--	tmp = json.decode(body_resp)
+--	if tmp.SMS == "Message not received yet" then
+--		toast("获取验证码失败:"..body_resp,1)
+--		mSleep(5000)
+--		goto get_code
+--	elseif tonumber(tmp.SMS) > 0 then
+--		mess_yzm = tmp.SMS
+--		toast(mess_yzm,1)
+--	else
+--		toast("获取验证码失败:"..body_resp,1)
+--		mSleep(5000)
+--		goto get_code
+--	end
+--else
+--	toast("获取号码失败:"..body_resp,1)
+--	mSleep(5000)
+--	goto get_code
+--end
 
 --local httputil = HttpUtil()
 --local url = "https://share.huoshan.com/hotsoon/s/QKAE4BhV8b8/"
@@ -82,21 +689,6 @@ end
 --resStr = res
 --dialog(resStr, 0)
 
- 
-function http.get(u)
-   local t = {}
-   local r, c, h = http.request{
-      url = u,
-      sink = ltn12.sink.table(t)}
-   return r, c, h, table.concat(t)
-end
- 
-url = "https://share.huoshan.com/hotsoon/s/QKAE4BhV8b8/"
-r,c,h,body=http.get(url)
-if c~= 301 then
-    return
-end
-dialog(body)
 
 
 --header_send = {
@@ -410,6 +1002,666 @@ dialog(body)
 --code,header_resp, body_resp = ts.httpsPost("http://zcore.zqzan.com/app/douyin/submit/task", header_send,body_send)
 --local tmp = json.decode(body_resp)
 --dialog(tmp.msg, time)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+require("TSLib")
+
+
+xgmm = asd123123
+
+
+
+function getData()  ----单线程提取
+	local getList = function(path)
+		local a = io.popen("ls "..path)
+		local f = {};
+		for l in a:lines() do
+			table.insert(f,l)
+		end
+		return f
+	end 
+	local Wildcard = getList("/var/mobile/Containers/Data/Application")
+	for var = 1,#Wildcard do
+		local file = io.open("/var/mobile/Containers/Data/Application/"..Wildcard[var].."/Library/WechatPrivate/wx.dat","rb")
+		if file then 
+			a="/private/var/mobile/Containers/Data/Application/"..Wildcard[var].."/Documents/LoginInfo2.dat"
+			require "TSLib"--使用本函数库必须在脚本开头引用并将文件放到设备 lua 目录下
+			b=readFileString(a)
+			c=strSplit(b,"",1)
+			d=strSplit(c[2],"R",1)
+			nLog(d[1])
+			wxid=d[1]
+
+			--dialog(wxid.."\r\n"..wx, 0)
+			nLog(Wildcard[var])
+			local str = file:read("*a")
+			file:close()
+			require"sz"
+			local str = string.tohex(str) --16进制编码
+			return str
+		end 
+	end 
+end
+
+function _追加写入(path,nr1,nr2,nr3,nr4,nr5,nr6,nr7)     ---以追加的方式写入文本，path是路径，nr是要写入的内容，自动换行
+	local path = userPath().."/res/"..path
+	if nr1 == nil then
+		dialog("没有要存入的内容", 0)
+	end	
+	local nr2 = nr2 or ""
+	local nr3 = nr3 or ""
+	local nr4 = nr4 or ""
+	local nr5 = nr5 or ""
+	local nr6 = nr6 or ""
+	local nr7 = nr7 or ""
+	local 文件句柄 = io.open(path,"a")
+	local 文件 = 文件句柄:write(nr1,nr2,nr3,nr4,nr5,nr6,nr7)   
+	local 文件 = 文件句柄:write("\n")   
+	文件句柄:close()
+	local 文件句柄 = io.open(path,"r")
+	local 文件 = 文件句柄:read("*all")
+	toast(文件,5)
+	文件句柄:close()
+end
+
+function 自定义提取62数据流程()
+local data = getData()
+if data then
+	if wx_id == "提取wx_id" then
+		_追加写入("备用读取62数据.txt",wxid,"----",data)
+		mSleep(1000)
+		toast("提取成功！",1)
+	else
+		_追加写入("备用读取62数据.txt",wx,"----",data)
+		mSleep(1000)
+		toast("提取成功！",1)
+	end	
+else
+	dialog("提取失败！", 0)
+end	
+local ts = require("ts")
+mSleep(500)
+status = ts.hlfs.makeDir("/private/var/mobile/Media/TouchSprite/res/微信") --新建文件夹
+writeFileString(userPath().."/res/微信/62数据wxid.txt",wxid.."----未知密码----"..data,"a",1) --将 string 内容存入文件，成功返回 true
+writeFileString(userPath().."/res/微信/62数据手机号.txt",wx.."----未知密码----"..data,"a",1) --将 string 内容存入文件，成功返回 true
+
+end
+
+
+----62数据登录流程
+function newfolder(path) --创建文件夹
+	return os.execute("mkdir "..path);
+end
+
+function _hexStringToFile(hex,file)
+	local data = '';
+	if hex==nil or string.len(hex)<2 then
+		toast('error',1)
+		return
+	end
+	hex = string.match(hex,"(%w+)");
+	for i = 1, string.len(hex),2 do
+		local code = string.sub(hex, i, i+1);
+		data =data..string.char(tonumber(code,16));
+	end
+	local file = io.open(file, 'wb');
+	file:write(data);
+	file:close();
+end
+
+function _writeData(data) --写入62
+	local wxdataPath = appDataPath('com.tencent.xin') .. '/Library/WechatPrivate/';
+	newfolder(wxdataPath)
+	os.execute('chown mobile ' .. wxdataPath)
+	_hexStringToFile(data,wxdataPath .. 'wx.dat')
+	os.execute('chown mobile ' .. wxdataPath .. 'wx.dat')
+	return true
+end
+
+function _文件查找读取写入(path,str,nr)  --path路径，str要查找的文本，nr是新增文本,返回值是行内容和行数。
+	local path = userPath().."/res/"..path
+	local result
+	if isFileExist(path) then
+	else
+		dialog("路径不存在！请检查", 0)
+	end
+	local 临时值 
+	local data = readFileString(path)
+	data = TryRemoveUtf8BOM(data)
+	if data ~= "" and data ~= nil then
+		local line = strSplit(data,"\r\n")
+		for i = 1,#line do 
+			if string.find(line[i],str) ~= nil then   ---如果真   找到，需要继续找
+				--dialog(i.."="..line[i], 0)
+			else
+				result = line[i]
+				临时值 = i
+				break
+			end	
+		end	
+		--dialog(临时值, 0)
+		writeFileString(path,"","w")
+		for k = 1,#line do
+			if k == 临时值 then
+				writeFileString(path,line[k]..nr.."\r\n","a")
+				--writeFileString(path,"\n","a")
+			else
+				writeFileString(path,line[k].."\r\n","a")
+			end	
+		end	
+	end	
+	return result,临时值
+end
+
+function writeData(data) ---旧版本写入数据
+	local getList = function(path)
+		local a = io.popen("ls "..path)
+		local f = {};
+		for l in a:lines() do  
+			table.insert(f,l) 
+		end
+		return f
+	end 
+	local Wildcard = getList("/var/mobile/Containers/Data/Application")
+	for var = 1,#Wildcard do
+		local file = io.open("/var/mobile/Containers/Data/Application/"..Wildcard[var].."/Library/WechatPrivate/wx.dat","wb") 
+		if file then 
+			require"sz"
+			data = string.fromhex(data)
+			os.execute('chown mobile '.."/var/mobile/Containers/Data/Application/"..Wildcard[var].."/Library/WechatPrivate/")
+			file:write(data)
+			file:close()
+			os.execute('chown mobile '.."/var/mobile/Containers/Data/Application/"..Wildcard[var].."/Library/WechatPrivate/wx.dat")
+			return true  
+		end  
+	end
+end
+
+function TryRemoveUtf8BOM(ret)
+	if string.byte(ret,1)==239 and string.byte(ret,2)==187 and string.byte(ret,3)==191 then
+		ret=string.char( string.byte(ret,4,string.len(ret)) )
+	end
+	return ret;
+end
+
+function _写入62数据()
+	local path = userPath().."/res/62数据.txt"
+
+	local result
+	
+	if isFileExist(path) then
+	else
+		dialog("写入文件不存在！请检查", 0)
+		lua_exit()
+	end
+	
+	local data =  _文件查找读取写入("62数据.txt","已经读取","----已经读取")
+	dialog(data, time)
+	data = TryRemoveUtf8BOM(data)
+	if data ~= "" and data ~= nil then
+		local data = strSplit(data,"----")
+		if #data > 2 then
+			wxzh = data[1]
+			wxmm = data[2]
+			lesjk=data[3]
+		end	
+		dialog(wxzh.."\r\n"..wxmm, 0)
+		_writeData(data[3])
+		toast("写入成功！") 
+		--sjkwj=data[3]
+
+		result = true
+	else
+		dialog("登录失败！原因：写入62数据无效！", 0) 
+		result = false
+	end	
+	return result
+end
+
+function _登录62流程()
+
+	if _写入62数据() then
+		mSleep(2000)
+
+	else
+		dialog("登录失败！请检查数据！", 0)
+		lua_exit()
+	end	
+end
+
+
+
+
+function 飞行模式切换IP流程()
+toast('开启飞行模式',1)
+setAirplaneMode(true);  --打开飞行模式
+mSleep(1000)
+setAirplaneMode(false); --关闭飞行模式
+mSleep(6000)
+toast('切换成功',1)
+mSleep(1000)
+end
+
+function 爱伪装一键新机()
+runApp("AWZ");
+mSleep(1 * 3000);
+local sz = require("sz");
+local http = require("szocket.http");
+local res, code = http.request("http://127.0.0.1:1688/cmd?fun=newrecord");
+if code == 200 then
+	local resJson = sz.json.decode(res);
+	local result = resJson.result;
+	if result == 1 then
+		toast('一键新机成功-网络正常',1)
+		mSleep(1000)
+	end
+	if result == 100 then
+		toast('一键新机失败-网络不正常',1)
+		closeApp('AWZ')
+		网络情况()
+		mSleep(1000)
+		runApp('AWZ')
+		mSleep(10000)
+		return 爱伪装一键新机()
+	end
+
+end 
+end
+
+function 爱立思一键新机()
+
+runApp("ALS");
+mSleep(3000)
+openURL("IGG://cmd/newrecord");
+toast('一键新机',1)
+mSleep(3000)
+end
+
+function 清理()
+closeApp('com.tencent.xin')
+mSleep(1000)
+dataPath = appDataPath("com.tencent.xin");   
+local ts = require("ts")
+status = ts.hlfs.removeDir(dataPath.."/Documents")
+status = ts.hlfs.removeDir(dataPath.."/tmp")
+status = ts.hlfs.removeDir(dataPath.."/Library")
+if status then
+	dialog("清理成功",1)
+	creatflag= ts.hlfs.makeDir(dataPath.."/Documents") 
+	creatflag= ts.hlfs.makeDir(dataPath.."/tmp") 
+	creatflag= ts.hlfs.makeDir(dataPath.."/Library")
+	creatflag= ts.hlfs.makeDir(dataPath.."/Library/Caches")
+	creatflag= ts.hlfs.makeDir(dataPath.."/Library/Preferences")
+	mSleep(2000)
+end
+end
+
+
+
+
+function 多点找色(id,x1,y1)
+
+local 启动
+
+if id == "第一登录界面"  then
+	x,y = findMultiColorInRegionFuzzy( 0xededed,"0|1|0x000000,0|3|0xa6a6a6,0|4|0xa9a9a9,0|5|0x181818,0|9|0x3a3a3a,0|11|0x454545,0|15|0x000000",90,123,1022,211,1086)
+	toast('登录',1)
+end
+
+
+if id=="用微信号登录" then
+	mSleep(500)
+	x,y = findMultiColorInRegionFuzzy( 0xadb6c9,"1|0|0x576b95,3|0|0xd4d8e0,6|0|0x909db7,7|0|0x576b95,15|0|0x576b95,18|0|0x576b95,26|0|0x62759c",90,42,524,201,573)
+	mSleep(500)
+	toast('用微信号登录',1)
+end
+if id=="输入微信号" then
+	mSleep(500)
+	x,y = findMultiColorInRegionFuzzy( 0xd2d2d2,"2|0|0xbcbcbc,7|0|0xc7c7c7,11|1|0xbcbcbc,14|1|0xbcbcbc,18|1|0xbcbcbc,21|1|0xbcbcbc",90,195,335,379,386)
+	mSleep(500)
+	toast('输入微信号',1)
+
+end
+if id=="登录上号" then
+	x,y = findMultiColorInRegionFuzzy( 0x3cb93b,"1|0|0xdff4df,6|0|0xc9ecc9,10|0|0xb0e3b0,15|-1|0x1aad19,16|-1|0x7fd17f,20|-1|0xade2ad",90,275,594,366,652)
+	mSleep(500)
+	toast('登录上号',1)
+
+end
+if id=="登录识别存活" then
+	x,y = findMultiColorInRegionFuzzy( 0x007aff,"5|-1|0x4ca1fd,19|-1|0x84bdfc,23|8|0xadd2fb,20|15|0x8fc3fb,13|23|0x3494fe,9|23|0x7bb9fc,-2|21|0xb6d7fb",90,424,672,486,723)
+	mSleep(500)
+	toast('识别存活',1)
+end
+if id == "我" then
+	x,y = findMultiColorInRegionFuzzy( 0x7a7e83,"1|3|0xe2e2e3,1|5|0x9fa2a5,1|9|0xb0b2b5,13|10|0xa0a2a6,13|11|0x7a7e83,13|14|0x8a8d92,13|17|0xa4a7ab",90,525,1053,592,1108)
+	mSleep(500)
+	toast('我',1)
+end
+
+if id == "设置" then
+	x,y = findMultiColorInRegionFuzzy( 0x95dbff,"0|1|0xd4f0ff,1|2|0x37bbff,7|2|0x4bc2ff,23|8|0x35bbff,25|7|0x4cc2ff,27|5|0xcbeeff,28|4|0xcbeeff",90,25,817,88,875)
+	mSleep(500)
+	toast('设置',1)
+end
+if id == "账号与安全" then
+	x,y = findMultiColorInRegionFuzzy( 0xc1c1c1,"2|0|0xa9a9a9,5|-5|0x6d6d6d,7|0|0x909090,17|-5|0x565656,20|6|0x8c8c8c,21|11|0x323232,22|15|0x8c8c8c",90,26,184,105,222)
+	mSleep(500)
+	toast('账号与安全',1)
+end
+
+if id == "设置密码" then
+	x,y = findMultiColorInRegionFuzzy( 0xb9b9b9,"0|-2|0xe0e0e0,1|-4|0xa9a9a9,10|-3|0xb4b4b4,18|-1|0x929292,20|-1|0x9f9f9f,21|2|0xdfdfdf,26|7|0xd2d2d2,29|12|0xc6c6c6",90,482,396,576,445)
+	mSleep(500)
+	toast('设置密码',1)
+end
+
+if id == "不能设置密码" then
+	x,y = findMultiColorInRegionFuzzy( 0xcde2f9,"1|-1|0x4aa0fd,3|-1|0x3896fe,5|2|0x84bdfb,6|2|0x84bdfb,9|2|0x3695fe,12|2|0x85befb,16|2|0x96c6fb,18|2|0x96c6fb,21|2|0x58a7fd",90,278,677,356,725)
+	mSleep(500)
+	toast('不能设置密码',1)
+end
+
+if id == "封号" then
+	x,y = findMultiColorInRegionFuzzy( 0x3e9df7,"0|1|0xa9d8ea,4|8|0x5aabf5,7|17|0x5aabf7,9|19|0x50a5f8,14|19|0x228cfc,14|26|0x59a9f9,21|26|0x459ffa",90,415,745,493,790)
+		mSleep(500)
+		toast('封号',1)
+	end
+
+if id == "旧密码" then
+	x,y = findMultiColorInRegionFuzzy( 0xe2e2e5,"0|1|0xcdcdd2,2|2|0xd0d0d5,14|2|0xccccd1,14|16|0xc7c7cc,15|16|0xd2d2d6,16|15|0xebebed",90,203,398,275,438)
+	mSleep(500)
+	toast('旧密码',1)
+end
+
+if id == "输入新密码" then
+	x,y = findMultiColorInRegionFuzzy( 0xeaeaec,"1|5|0xe8e8ea,5|17|0xdfdfe2,3|20|0xe8e8ea,9|22|0xd1d1d5,15|26|0xd5d5d9,12|26|0xd5d5d9,12|28|0xebebed",90,241,344,283,396)
+	mSleep(500)
+	toast('输入新密码',1)
+end
+
+if id == "再次输入新密码" then
+	x,y = findMultiColorInRegionFuzzy( 0xd3d3d7,"0|4|0xd6d6da,0|6|0xcfcfd4,8|11|0xccccd1,8|20|0xd6d6da,8|26|0xcfcfd4,10|27|0xd3d3d7,7|29|0xe3e3e6",90,239,432,278,481)
+	mSleep(500)
+	toast('再次输入新密码',1)
+end
+
+if id == "改密完成" then
+	x,y = findMultiColorInRegionFuzzy( 0x2f6332,"1|2|0x289c29,1|5|0x2a8a2c,1|17|0x2d802f,9|26|0x2c882e,14|25|0x335a37,17|24|0x326035,22|24|0x2d822f",90,552,65,622,108)
+	mSleep(500)
+	toast('改密完成',1)
+end
+
+
+
+
+
+
+
+
+
+	local x1=x1 or x
+	local y1=y1 or y
+	if x1==0 or y1==0 then
+		if x ~= -1  and y ~= -1 then
+			启动= true
+		else
+			启动= false
+		end
+	else	
+		if x ~= -1  and y ~= -1 then
+			tap(x1,y1)
+			mSleep(500)
+			nLog(id)
+			启动=true
+		else
+			启动=false
+			nLog('未知界面')
+			mSleep(500)
+		end	
+	end
+	return 启动,x,y
+-- body
+end
+
+
+
+
+
+
+
+
+一键清理 = function (bid)
+	local sz = require("sz")
+	local sqlite3 = sz.sqlite3	
+	del_sql = function ()
+		local db = sqlite3.open("/private/var/Keychains/keychain-2.db")
+		db:exec("delete from genp where agrp not like '%apple%'")
+		db:exec("delete from cert")
+		db:exec("delete from keys")
+		db:exec("delete from inet")
+		db:exec("delete from sqlite_sequence")
+		assert(db:close() == sqlite3.OK)
+	end
+	delFileEx = function (path)
+		os.execute("rm -rf "..path);
+	end
+	clearCache = function ()
+		os.execute("su mobile -c uicache");
+	end
+	newfolder = function (path)
+		os.execute("mkdir "..path);
+	end
+	if bid == nil or type(bid) ~= "string" then dialog("一键清理传入的bid有问题"); return false end
+	toast("一键清理,请勿中止",10);
+	mSleep(888)
+	::getDataPath::
+	local dataPath = appDataPath(bid);
+	if dataPath == nil then
+		goto getDataPath
+	end
+
+	local flag = appIsRunning(bid);
+	if flag == 1 then
+		closeApp(bid); 
+		mSleep(1500)
+	end
+	delFileEx(dataPath.."/Documents") 
+	delFileEx(dataPath.."/tmp")
+	delFileEx(dataPath.."/Library/APCfgInfo.plist") 
+	delFileEx(dataPath.."/Library/APWsjGameConfInfo.plist") 
+	delFileEx(dataPath.."/Library/Preferences/*")
+	mSleep(500)
+	newfolder(dataPath.."/Documents") 
+	newfolder(dataPath.."/tmp")
+	os.execute("chmod -R 777 ar/Keychains");
+	del_sql();
+	clearKeyChain(bid);--指定清除应用钥匙串信息Keychains
+	--	local str = clearIDFAV();
+	--	dialog(str)
+	clearCookies();
+	toast("一键清理",2);
+	os.execute("chmod -R 777 "..dataPath.."/Documents");
+	os.execute("chmod -R 777 "..dataPath.."/tmp");
+	os.execute("chmod -R 777 "..dataPath.."/Library");
+	os.execute("chmod -R 777 "..dataPath.."/Library/Preferences");
+	mSleep(500)
+	clearCache();
+end
+
+
+
+function 运行()
+一键清理("com.tencent.xin")
+mSleep(2000)
+_登录62流程()
+--mSleep(3000)
+----获取ip()
+--runApp("com.tencent.xin")
+--mSleep(5000)
+--local  key = "ReturnOrEnter"   --模拟回车键
+--while (true) do
+
+
+
+--	if	多点找色("第一登录界面",x1,y1) then
+--		mSleep(1000)
+--	end
+
+
+--	if	多点找色("用微信号登录",x1,y1) then
+--		mSleep(1000)
+--	end
+
+
+--	if 	多点找色("输入微信号",x1,y1)  then
+--		mSleep(1000)
+--		inputKey(wxzh)
+--		mSleep(1000)
+--		keyDown(key)
+--		keyUp(key)
+--		mSleep(1000)
+--		inputKey(wxmm)
+--		mSleep(1000)
+--		keyDown(key)
+--		keyUp(key)
+--		mSleep(500)
+--	end
+
+--	if	多点找色("点击确定")  then
+--		mSleep(2000)
+--		break	
+--	end
+--end
+end
+
+
+function 登录识别界面()
+while (true) do
+
+	if	多点找色("封号",x1,y1) then
+		mSleep(1000)
+		return 主控制()
+	end
+
+	if	多点找色("登录识别存活",x1,y1) then
+		mSleep(1000)
+		break
+	end
+
+end
+end
+
+
+function 运行改密()
+while (true) do
+
+	if	多点找色("我",x1,y1) then
+		mSleep(1000)
+	end
+
+	if	多点找色("设置",x1,y1) then
+		mSleep(1000)
+	end
+
+	if	多点找色("账号与安全",x1,y1) then
+		mSleep(1000)
+	end
+
+	if	多点找色("设置密码",x1,y1) then
+		mSleep(1000)
+	end
+
+	if	多点找色("不能设置密码",x1,y1) then
+		mSleep(2000)
+		return 主控制()
+	end
+	
+	if	多点找色("旧密码",x1,y1) then
+		mSleep(1000)
+		inputKey(wxmm)
+		mSleep(1000)
+		keyDown(key)
+		keyUp(key)
+		mSleep(1000)
+		break
+	end
+end
+end
+
+
+function 改密()
+while (true) do
+	if 多点找色("输入新密码",x1,y1) then
+		mSleep(1000)
+		inputText("asd1122334")
+		mSleep(1000)
+	end
+	if 多点找色("再次输入新密码",x1,y1) then	
+		mSleep(1000)
+		inputText("asd1122334")
+		mSleep(1000)
+	end
+	if 多点找色("改密完成",x1,y1) then		
+		mSleep(50000)
+		return 主控制()
+	end
+end
+end
+
+
+
+
+function 主控制()
+mSleep(1000)
+closeApp("com.tencent.xin")
+mSleep(2000)
+--飞行模式切换IP流程()
+运行()
+--登录识别界面()
+--运行改密()
+--改密()
+end
+
+
+function 无限()
+	主控制()
+	toast('运行完成',10)
+end
+无限()
+
 
 
 

@@ -158,7 +158,7 @@ function push_task(token,push_id)
 		code,header_resp, body_resp = ts.httpsPost("http://zcore.zqzan.com/app/douyin/submit/task", header_send,body_send)
 		if code == 200 then
 			local tmp = json.decode(body_resp)
-			toast(tmp.msg, 1)
+			toast("提交任务成功："..tmp.msg, 1)
 		else
 			goto push
 		end
@@ -342,7 +342,7 @@ function main()
 				end
 			end
 		end
-		
+
 		for var= 0, 300 do
 			wait = 0
 			mSleep(math.random(500,700))
@@ -372,7 +372,7 @@ function main()
 						wait = wait + 1
 					end
 				end
-				
+
 				if wait > 10 then
 					break
 				end
@@ -418,7 +418,7 @@ function main()
 					toast(id.."\r\n"..anchor_id.."\r\n"..aweme_id, 1)
 					mSleep(1000)
 
-					openURL("snssdk1128://aweme/detail/"..aweme_id.."?refer=web&gd_label=click_wap_detail_download_feature&appParam=%7B%22__type__%22%3A%22wap%22%2C%22position%22%3A%22900718067%22%2C%22parent_group_id%22%3A%226553813763982626051%22%2C%22webid%22%3A%226568996356873356814%22%2C%22gd_label%22%3A%22click_wap%22%7D&needlaunchlog=1")
+					openURL("snssdk1128://aweme/detail/"..aweme_id)
 					mSleep(math.random(3000, 4500))
 					while true do
 						if phoneType == "0" then
@@ -447,9 +447,11 @@ function main()
 							end
 						end
 
-						if dz_num > 10 then
+						if dz_num > 30 then
 							delete_task(token,id)
 							goto start
+						else
+							toast("等待："..dz_num,1)
 						end
 
 						mSleep(math.random(500,700))
@@ -467,7 +469,7 @@ function main()
 					mSleep(math.random(500,700))
 					closeApp("com.ss.iphone.ugc.Aweme")
 					mSleep(math.random(1500,3000))
-					
+
 				elseif task.data.type == 2 then
 					id = task.data.id
 					anchor_id = task.data.anchor_id
@@ -475,8 +477,20 @@ function main()
 					toast(id.."\r\n"..anchor_id.."\r\n"..aweme_id, 1)
 
 					mSleep(1000)
-					openURL("snssdk1128://user/profile/"..anchor_id)
-					mSleep(math.random(6000, 8000))
+					openURL("snssdk1128://aweme/detail/"..aweme_id)
+					mSleep(math.random(1000, 2000))
+					while (true) do
+						mSleep(500)
+						x,y = findMultiColorInRegionFuzzy( 0xfe2c55, "17|-1|0xfe2c55,15|18|0xfe2c55,-1|16|0xfe2c55,7|7|0xffffff,6|15|0xffffff,-1|9|0xffffff,13|10|0xffffff", 90, 569, 200, 749, 1333)
+						if x~=-1 and y~=-1 then
+							mSleep(math.random(500,700))
+							moveTowards(math.random(680,720), math.random(255,270), math.random(150,180), 650, math.random(20,45))
+							moveTo(705,  268, 81,  255, 50, 500)
+							mSleep(math.random(500,700))
+							break
+						end
+					end
+
 					while true do
 						if phoneType == "0" then
 							mSleep(math.random(500,700))
@@ -488,8 +502,19 @@ function main()
 								break
 							end
 						elseif phoneType == "1" then
+							--关注带箭头
 							mSleep(math.random(500,700))
-							x,y = findMultiColorInRegionFuzzy( 0xfe2c55, "-1|38|0xfe2c55,62|20|0xfe2c55,-43|13|0xfe2c55,-22|20|0xffffff,50|24|0xffffff", 90, 0, 0, 749, 1333)
+							x,y = findMultiColorInRegionFuzzy( 0xfe2c55, "32|3|0xffffff,-112|-24|0xfe2c55,242|-21|0xfe2c55,239|26|0xfe2c55,68|0|0xffffff,102|4|0xffffff,277|-16|0x393a44,326|27|0x393a44,302|6|0xffffff", 100, 0, 0, 749, 1333)
+							if x~=-1 and y~=-1 then
+								mSleep(math.random(500,700))
+								randomTap(x,y,5)
+								mSleep(math.random(500,700))
+								break
+							end
+							
+							--关注带私信
+							mSleep(math.random(500,700))
+							x,y = findMultiColorInRegionFuzzy( 0xfe2c55, "23|3|0xffffff,196|-20|0xfe2c55,-84|-25|0xfe2c55,-83|26|0xfe2c55,209|24|0xfe2c55,271|6|0xebeced,298|8|0xebeced,240|-7|0x393a44,341|8|0x393a44", 90, 0, 0, 749, 1333)
 							if x~=-1 and y~=-1 then
 								mSleep(math.random(500,700))
 								randomTap(x,y,5)
@@ -498,13 +523,13 @@ function main()
 							end
 						end
 					end
-					
+
 					snapshot_bool = true
 					if phoneType == "0" then
 						while true do
 							if snapshot_bool then
 								mSleep(math.random(500,700))
-								x,y = findMultiColorInRegionFuzzy( 0xebeced, "2|18|0xebeced,11|23|0xebeced,21|2|0xebeced,40|14|0xebeced,54|14|0xebeced,73|13|0xebeced,109|13|0xebeced,57|-15|0x393a44,63|31|0x393a44", 90, 0, 0, 639, 1135)
+								x,y = findMultiColorInRegionFuzzy( 0xebeced, "2|18|0xebeced,11|23|0xebeced,21|2|0xebeced,40|14|0xebeced,54|14|0xebeced,73|13|0xebeced,109|13|0xebeced,57|-15|0x393a44,63|31|0x393a44", 100, 0, 0, 639, 1135)
 								if x~=-1 and y~=-1 then
 									snapshot_bool = false
 									mSleep(math.random(500,700))
@@ -513,6 +538,8 @@ function main()
 									toast("关注截图成功",1)
 									mSleep(math.random(500,700))
 									push_task(token,id)
+									closeApp("com.ss.iphone.ugc.Aweme")
+									mSleep(math.random(1500,3000))
 									break
 								end
 							end
@@ -537,7 +564,7 @@ function main()
 						while true do
 							if snapshot_bool then
 								mSleep(math.random(500,700))
-								x, y = findMultiColorInRegionFuzzy(0x161823,"3|20|0x161823,11|23|0x161823,19|2|0x161823,40|15|0x161823,53|19|0x161823,69|13|0x161823,108|20|0x161823", 90, 0, 0, 749,  1333)
+								x,y = findMultiColorInRegionFuzzy( 0xebeced, "3|18|0xebeced,11|18|0xebeced,21|2|0xebeced,40|20|0xebeced,54|20|0xebeced,73|9|0xebeced,109|11|0xebeced,-16|11|0x393a44,130|9|0x393a44", 90, 0, 0, 749, 1333)
 								if x~=-1 and y~=-1 then
 									snapshot_bool = false
 									mSleep(math.random(500,700))
@@ -546,8 +573,28 @@ function main()
 									toast("关注截图成功",1)
 									mSleep(math.random(500,700))
 									push_task(token,id)
+									closeApp("com.ss.iphone.ugc.Aweme")
+									mSleep(math.random(1500,3000))
 									break
 								end
+							end
+
+							--没关注成功重新关注
+							mSleep(math.random(500,700))
+							x,y = findMultiColorInRegionFuzzy( 0xfe2c55, "32|3|0xffffff,-112|-24|0xfe2c55,242|-21|0xfe2c55,239|26|0xfe2c55,68|0|0xffffff,102|4|0xffffff,277|-16|0x393a44,326|27|0x393a44,302|6|0xffffff", 100, 0, 0, 749, 1333)
+							if x~=-1 and y~=-1 then
+								mSleep(math.random(500,700))
+								randomTap(x,y,5)
+								mSleep(math.random(500,700))
+							end
+							
+							--没关注成功重新关注
+							mSleep(math.random(500,700))
+							x,y = findMultiColorInRegionFuzzy( 0xfe2c55, "23|3|0xffffff,196|-20|0xfe2c55,-84|-25|0xfe2c55,-83|26|0xfe2c55,209|24|0xfe2c55,271|6|0xebeced,298|8|0xebeced,240|-7|0x393a44,341|8|0x393a44", 90, 0, 0, 749, 1333)
+							if x~=-1 and y~=-1 then
+								mSleep(math.random(500,700))
+								randomTap(x,y,5)
+								mSleep(math.random(500,700))
 							end
 
 							mSleep(math.random(500,700))
@@ -557,9 +604,12 @@ function main()
 								randomTap(x,y,5)
 								mSleep(math.random(500,700))
 								delete_task(token,id)
+								closeApp("com.ss.iphone.ugc.Aweme")
+								mSleep(math.random(1500,3000))
 								task_type = 1 
 								goto open_app
 							end
+
 							mSleep(math.random(500,700))
 							isfront = isFrontApp("com.ss.iphone.ugc.Aweme")
 							if isfront == 0 then
@@ -567,7 +617,7 @@ function main()
 							end
 						end
 					end
-					
+
 				elseif task.data.type == 8 then
 					dz_num = 0
 					id = task.data.id
@@ -607,9 +657,11 @@ function main()
 								dz_num = dz_num + 1
 							end
 
-							if dz_num > 10 then
+							if dz_num > 30 then
 								delete_task(token,id)
 								goto start
+							else
+								toast("等待："..dz_num,1)
 							end
 
 							mSleep(math.random(500,700))
@@ -654,9 +706,11 @@ function main()
 								dz_num = dz_num + 1
 							end
 
-							if dz_num > 10 then
+							if dz_num > 30 then
 								delete_task(token,id)
 								goto start
+							else
+								toast("等待："..dz_num,1)
 							end
 
 							mSleep(math.random(500,700))
@@ -694,7 +748,7 @@ function main()
 								tap(x + 320,y)
 								mSleep(2000)
 							end
-							
+
 							mSleep(500)
 							x,y = findMultiColorInRegionFuzzy( 0x161823, "0|8|0x161823,15|3|0x161823,23|11|0x161823,40|0|0x161823,37|18|0x161823,44|23|0x161823", 90, 0, 0, 749, 1333)
 							if x~=-1 and y~=-1 then
@@ -705,7 +759,7 @@ function main()
 							end
 						end
 					end
-					
+
 					mSleep(1000)
 					snapshot("test.jpg", 0, 0, 749, 1333,0.7);
 					mSleep(math.random(500,700))
@@ -736,9 +790,11 @@ function main()
 								plz_num = plz_num + 1
 							end
 
-							if plz_num > 10 then
+							if plz_num > 30 then
 								delete_task(token,id)
 								goto start
+							else
+								toast("等待："..plz_num,1)
 							end
 
 							mSleep(math.random(500,700))
@@ -761,9 +817,11 @@ function main()
 								plz_num = plz_num + 1
 							end
 
-							if plz_num > 10 then
+							if plz_num > 30 then
 								delete_task(token,id)
 								goto start
+							else
+								toast("等待："..plz_num,1)
 							end
 
 							mSleep(math.random(500,700))
@@ -773,7 +831,7 @@ function main()
 							end
 						end
 					end
-					
+
 					plz = 0
 					while true do
 						if phoneType == "0" then
@@ -801,7 +859,7 @@ function main()
 								plz_num = plz_num + 1
 							end
 						end
-						
+
 						if plz >= 5 then
 							mSleep(1000)
 							snapshot("test.jpg", 0, 0, 749, 1333,0.7);
@@ -811,12 +869,12 @@ function main()
 							push_task(token,id)
 							break
 						end
-						
-						if plz_num > 15 then
+
+						if plz_num > 35 then
 							mSleep(500)
 							moveTowards( 283,  844, math.random(70,90), 30,10)
 							mSleep(2000)
-						elseif plz_num > 20 then
+						elseif plz_num > 40 then
 							delete_task(token,id)
 							goto start
 						end
@@ -845,9 +903,11 @@ function main()
 								plz_num = plz_num + 1
 							end
 
-							if plz_num > 10 then
+							if plz_num > 30 then
 								delete_task(token,id)
 								goto start
+							else
+								toast("等待："..plz_num,1)
 							end
 
 							mSleep(math.random(500,700))
@@ -870,9 +930,11 @@ function main()
 								plz_num = plz_num + 1
 							end
 
-							if plz_num > 10 then
+							if plz_num > 30 then
 								delete_task(token,id)
 								goto start
+							else
+								toast("等待："..plz_num,1)
 							end
 
 							mSleep(math.random(500,700))
@@ -900,7 +962,7 @@ function main()
 								mSleep(3000)
 								break
 							end
-							
+
 							mSleep(math.random(500,700))
 							x,y = findMultiColorInRegionFuzzy( 0xfe2c55, "19|2|0xfe2c55,16|18|0xfe2c55,0|18|0xfe2c55,10|11|0xffffff", 100, 491, 241, 639,  900)
 							if x~=-1 and y~=-1 then
@@ -908,7 +970,7 @@ function main()
 								randomTap(x + 8,y + 270, 3)
 								mSleep(math.random(1500, 2500))
 							end
-							
+
 						elseif phoneType == "1" then
 							mSleep(math.random(500,700))
 							x, y = findMultiColorInRegionFuzzy(0x8a8b91,"-1|15|0x8a8b91,13|3|0x8a8b91,-27|6|0x8a8b91,5|26|0x8a8b91,80|13|0x8b8c91,74|4|0x8b8c91,88|3|0x8b8c91,-60|18|0xffffff", 90, 0, 1212, 749,  1330)
@@ -930,7 +992,7 @@ function main()
 								end
 								break
 							end
-							
+
 							mSleep(math.random(500,700))
 							x,y = findMultiColorInRegionFuzzy( 0xfe2c55, "23|3|0xfe2c55,17|19|0xfe2c55,-1|19|0xfe2c55,9|10|0xffffff", 100, 600, 336, 749,  1000)
 							if x~=-1 and y~=-1 then
@@ -940,7 +1002,7 @@ function main()
 							end
 						end
 					end
-					
+
 					mSleep(1000)
 					snapshot("test.jpg", 0, 0, 749, 1333,0.7);
 					mSleep(math.random(500,700))
@@ -963,7 +1025,7 @@ function main()
 					else
 						loveClick_bool = true
 					end
-					
+
 					if loveClick_bool then
 						while true do
 							if phoneType == "0" then
