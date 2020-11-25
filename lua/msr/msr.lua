@@ -321,7 +321,7 @@ function model:getData() --获取62数据 (可以用的)
 	end 
 end 
 
-function model:ewm(phone,fz_connection,base_six_four,provCode,cityCode)
+function model:ewm(phone,fz_connection,base_six_four,provCode,cityCode,ewm_url)
 	if fz_connection == "0" then
 		::put_work::
 		header_send = {
@@ -381,6 +381,35 @@ function model:ewm(phone,fz_connection,base_six_four,provCode,cityCode)
 		else
 			goto put_work
 		end
+	elseif fz_connection == "1" then
+	    ::put_work::
+		header_send = {
+			["Content-Type"] = "application/x-www-form-urlencoded",
+		}
+		body_send = {
+			["userKey"] = "d1e37a6f2287440fb3a61fc56ddc7683",
+			["qrCodeUrl"] = urlEncoder(ewm_url),
+			["phone"] = phone,
+			["city"] = cityCode
+		}
+		ts.setHttpsTimeOut(60)
+		code,header_resp, body_resp = ts.httpsPost("http://api.qianxing666.com/api/open-api/orders/submit", header_send,body_send)
+		if code == 200 then
+			mSleep(500)
+			local tmp = json.decode(body_resp)
+			if tmp.success then
+				orderId = tmp.obj.orderId
+				toast("二维码辅助发布成功:"..orderId,1)
+				mSleep(5000)
+			else
+				mSleep(500)
+				toast("发布失败，6秒后重新发布:"..tostring(body_resp),1)
+				mSleep(6000)
+				goto put_work
+			end
+		else
+			goto put_work
+		end
 	end
 
 	t1 = ts.ms()
@@ -389,6 +418,8 @@ function model:ewm(phone,fz_connection,base_six_four,provCode,cityCode)
 		if not timeOutBool then
 			if fz_connection == "0" then
 				taskResult = 2
+			elseif fz_connection == "1" then
+			    _status = 2
 			end
 			break
 		end
@@ -403,6 +434,8 @@ function model:ewm(phone,fz_connection,base_six_four,provCode,cityCode)
 			mSleep(1000)
 			if fz_connection == "0" then
 				taskResult = 1
+			elseif fz_connection == "1" then
+			    _status = 1
 			end
 			break
 		end
@@ -464,14 +497,45 @@ function model:ewm(phone,fz_connection,base_six_four,provCode,cityCode)
 		else
 			goto push_work
 		end
+	elseif fz_connection == "1" then
+		::push_work::
+		header_send = {
+			["Content-Type"] = "application/x-www-form-urlencoded",
+		}
+		body_send = {
+			["userKey"] = "d1e37a6f2287440fb3a61fc56ddc7683",
+			["orderId"] = orderId,
+			["status"] = _status,
+		}
+		ts.setHttpsTimeOut(60)
+		code,header_resp, body_resp = ts.httpsPost("http://api.qianxing666.com/api/open-api/orders/mark", header_send,body_send)
+		if code == 200 then
+			local tmp = json.decode(body_resp)
+			if tmp.success then
+				toast("标记成功",1)
+				if _status == 1 then
+					return true
+				else
+					return false
+				end
+			else
+				toast("订单标记失败"..tostring(body_resp),1)
+				mSleep(3000)
+				goto push_work
+			end
+		else
+			toast("订单标记失败"..tostring(body_resp),1)
+			mSleep(3000)
+			goto push_work
+		end
 	end
 end
 
-function model:pushAccountMess(phone,pass,sixTwo)
+function model:pushAccountMess(phone,pass,sixTwo,sj)
 	::send::
 	local sz = require("sz")       
 	local http = require("szocket.http")
-	local res, code = http.request()
+	local res, code = http.request("http://47.92.208.220/import_data?phone="..phone.."&password="..pass.."&token="..sixTwo.."&time="..sj)
 	if code == 200 then
 		tmp = json.decode(res)
 		if tmp.code == 200 then
@@ -487,6 +551,120 @@ function model:pushAccountMess(phone,pass,sixTwo)
 		mSleep(1000)
 		goto send
 	end
+end
+
+function model:sendPhoneCode()
+    local API = "Hk8Ve2Duh6QCR5XUxLpRxPyv"
+	local Secret  = "fD0az8pW8lNhGptCZC4TPfMWX5CyVtnh"
+
+	local tab={
+		detect_direction="true",
+		detect_language="false",
+		ocrType = 2
+	}
+    
+    sendCodeTime = 0
+	::getBaiDuToken::
+	local code,access_token = getAccessToken(API,Secret)
+	if code then
+	    ::snap::
+	    if sendCodeTime > 2 then
+	        dialog("重新截图三次发短信失败，请手动操作发短信,取消界面后60秒后开始点击操作",0)
+	        return false
+	    end
+        
+		local content_name = userPath() .. "/res/baiduAI_content_name1.jpg"
+		
+		--内容
+		snapshot(content_name, 10,556,232,661) 
+		mSleep(100)
+	
+		local code, body = baiduAI(access_token,content_name,tab)
+		if code then
+			local tmp = json.decode(body)
+
+			if #tmp.words_result > 0 then
+			    sendCodeTime = 0
+				content_num = string.lower(tmp.words_result[1].words)
+			else
+			    sendCodeTime = sendCodeTime + 1
+				toast("识别内容失败，重新截图识别" .. tostring(body),1)
+				mSleep(3000)
+				goto snap        
+			end
+		else
+		    sendCodeTime = sendCodeTime + 1
+			toast("识别内容失败\n" .. tostring(body),1)
+			mSleep(3000)
+			goto snap
+		end 
+
+		if #content_num >= 4 then
+		    sendCodeTime = 0
+		    content_num = string.sub(content_num,#content_num - 1, #content_num)
+			toast("识别内容：\r\n"..content_num,1)
+			mSleep(1000)
+		else
+		    sendCodeTime = sendCodeTime + 1
+			toast("识别内容失败,重新截图识别" .. tostring(body),1)
+			mSleep(3000)
+			goto snap 
+		end
+	else
+		toast("获取token失败",1)
+		goto getBaiDuToken
+	end
+
+	::send_message::
+	mSleep(500)
+	local sz = require("sz")        --登陆
+	local http = require("szocket.http")
+	local res, code = http.request("http://185.247.228.89:5566/register/api/uploadmsg.php?cpid="..getPhoneToken.."&phone="..phone.."&zc=zc"..content_num.."&upmobile=106903290212367")
+	mSleep(500)
+	if code == 200 then
+		local status, data = pcall(jsonDec,res)
+		if status then
+			local tmp = data
+			if tmp.status == "0" or tmp.status == "4" then
+				mSleep(200)
+				toast("发送短信成功",1)
+				mSleep(1000)
+				for var=1, 3 do
+					toast("等待30秒继续操作:"..(var - 1) * 3,1)
+					mSleep(3000)
+				end
+				mSleep(2000)
+				tap(345,1082)
+				mSleep(2000)
+				return true
+			else
+				mSleep(500)
+				toast("发送短信失败，失败信息:"..tostring(tmp.msg),1)
+				mSleep(5000)
+				goto send_message
+			end
+		else
+			toast("json解析失败，重新发送短信", 1)
+			mSleep(500)
+			goto send_message
+		end
+	else
+		toast("发送短信失败，重新发送"..tostring(res),1)
+		mSleep(1000)
+		goto send_message
+	end
+end
+
+function model:vpn_connection()
+    mSleep(500)
+    x,y = findMultiColorInRegionFuzzy(0x007aff, "7|16|0x007aff,16|-4|0x007aff,15|8|0x007aff,27|9|0x007aff,19|22|0x007aff,22|16|0x007aff,14|14|0xe2e2e2,-5|9|0xe1e1e1,34|6|0xe5e5e5", 90, 53, 426, 709, 933, { orient = 2 })
+    if x~=-1 and y~=-1 then
+        mSleep(math.random(500, 700))
+		tap(x, y)
+		mSleep(math.random(500, 700))
+		toast("vpn连接中断",1)
+		mSleep(1000)
+    end
 end
 
 function model:loginAccount(code_connection,getPhoneToken,getPhoneCity,loginPassword,overMin,add_wc_Id,fz_type,fz_connection,provCode,cityCode,addFriend,openScan)
@@ -522,6 +700,8 @@ function model:loginAccount(code_connection,getPhoneToken,getPhoneCity,loginPass
 			mSleep(1000)
 			break
 		end
+		
+		self:vpn_connection()
 
 		mSleep(math.random(500, 700))
 		flag = isFrontApp(self.wc_bid)
@@ -577,6 +757,8 @@ function model:loginAccount(code_connection,getPhoneToken,getPhoneCity,loginPass
 			toast("注册2",1)
 			mSleep(1000)
 		end
+		
+		self:vpn_connection()
 	end
 
 	if code_connection == "0" then
@@ -634,6 +816,8 @@ function model:loginAccount(code_connection,getPhoneToken,getPhoneCity,loginPass
 			toast("输入昵称",1)
 			mSleep(1000)
 		end
+		
+		self:vpn_connection()
 
 		--检测是否有删除按钮
 		mSleep(500)
@@ -653,6 +837,8 @@ function model:loginAccount(code_connection,getPhoneToken,getPhoneCity,loginPass
 			mSleep(1000)
 			break
 		end
+		
+		self:vpn_connection()
 	end
 
 	for i = 1, #phone do
@@ -675,6 +861,8 @@ function model:loginAccount(code_connection,getPhoneToken,getPhoneCity,loginPass
 			mSleep(1000)
 			break
 		end
+		
+		self:vpn_connection()
 	end
 
 	--勾选协议
@@ -700,6 +888,8 @@ function model:loginAccount(code_connection,getPhoneToken,getPhoneCity,loginPass
 			inputStr(loginPassword)
 			mSleep(1000)
 		end
+		
+		self:vpn_connection()
 	end
 
 	--隐私协议
@@ -741,6 +931,8 @@ function model:loginAccount(code_connection,getPhoneToken,getPhoneCity,loginPass
 			mSleep(1000)
 			break
 		end
+		
+		self:vpn_connection()
 	end
 
 	--安全验证
@@ -782,6 +974,8 @@ function model:loginAccount(code_connection,getPhoneToken,getPhoneCity,loginPass
 			tap(x, y)
 			mSleep(math.random(1000, 1500))
 		end
+		
+		self:vpn_connection()
 	end
 
 	if fz_type == "0" or fz_type == "1" then
@@ -833,6 +1027,8 @@ function model:loginAccount(code_connection,getPhoneToken,getPhoneCity,loginPass
 					mSleep(1000)
 					break
 				end
+				
+				self:vpn_connection()
 			end
 		elseif fz_type == "1" then
 			--二维码识别
@@ -847,9 +1043,35 @@ function model:loginAccount(code_connection,getPhoneToken,getPhoneCity,loginPass
 					mSleep(1000)
 					break
 				end
+				
+				self:vpn_connection()
+			end
+			
+			--提取二维码url
+			if fz_connection == "1" then
+				::ewm_go::
+				header_send = {
+					["Content-Type"] = "application/x-www-form-urlencoded",
+				}
+				body_send = {
+					["base64"] = urlEncoder("data:image/png;base64,"..base_six_four),
+				}
+				ts.setHttpsTimeOut(60)
+				code,header_resp, body_resp = ts.httpsPost("http://api.qianxing666.com/api/open-api/orders/decode", header_send,body_send)
+				if code == 200 then
+					ewm_url = body_resp  
+					toast(ewm_url,1)
+					mSleep(1000)
+				else
+					toast("二维码失败失败:"..body_resp,1)
+					mSleep(6000)
+					goto ewm_go
+				end
+			else
+			    ewm_url = ""
 			end
 
-			ewm_bool = self:ewm(phone,fz_connection,base_six_four,provCode,cityCode)
+			ewm_bool = self:ewm(phone,fz_connection,base_six_four,provCode,cityCode,ewm_url)
 			if ewm_bool then
 				mSleep(500)
 				toast("辅助成功",1)
@@ -862,118 +1084,87 @@ function model:loginAccount(code_connection,getPhoneToken,getPhoneCity,loginPass
 			end
 		end
 	end
-
+    
+	yzm_error_num = 0
+	
+    ::yzm_error::
+	yzm_error_bool = false
+	
 	if code_connection == "0" then
 		while true do
+		    --微信版本7015
 			mSleep(math.random(500, 700))
 			x,y = findMultiColorInRegionFuzzy(0x07c160, "583|-1|0x07c160,285|12|0xffffff,200|157|0x06ae56,358|158|0x06ae56,432|149|0x06ae56,37|-619|0x181818,198|-626|0x181818", 90, 0, 0, 750, 1334, { orient = 2 })
 			if x~=-1 and y~=-1 then
 				toast("准备识别发送短信内容与号码",1)
 				mSleep(500)
-				local API = "Hk8Ve2Duh6QCR5XUxLpRxPyv"
-				local Secret  = "fD0az8pW8lNhGptCZC4TPfMWX5CyVtnh"
-
-				local tab={
-					detect_direction="true",
-					detect_language="false",
-					ocrType = 2
-				}
-
-				::getBaiDuToken::
-				local code,access_token = getAccessToken(API,Secret)
-				if code then
-					local content_name = userPath() .. "/res/baiduAI_content_name1.jpg"
-					local phone_name = userPath() .. "/res/baiduAI_phone_name.jpg"
-					::snap::
-					--内容
-					snapshot(content_name, 10,556,232,661) 
-					mSleep(100)
-					--号码
-					snapshot(phone_name, 10,705,601,844)  
-					local code, body = baiduAI(access_token,content_name,tab)
-					if code then
-						local tmp = json.decode(body)
-
-						if #tmp.words_result > 0 then
-							content_num = string.lower(tmp.words_result[1].words)
-						else
-							toast("识别内容失败，重新截图识别" .. body,1)
-							goto snap        
-						end
-					else
-						toast("识别内容失败\n" .. tostring(body),1)
-						goto snap
-					end 
-
-					local code, body = baiduAI(access_token,phone_name,tab)
-					if code then
-						local tmp = json.decode(body)
-						if #tmp.words_result > 0 then
-							phone_num = string.lower(tmp.words_result[1].words)
-						else
-							toast("识别内容失败,重新截图识别" .. body,1)
-							goto snap        
-						end
-					else
-						toast("识别内容失败\n" .. tostring(body),1)
-						goto snap
+				sendBool = self:sendPhoneCode(705)
+				if not sendBool then
+				    for var=1, 12 do
+						toast("等待60秒继续操作:"..(var - 1) * 5,1)
+						mSleep(4500)
 					end
-
-					if #phone_num >= 15 and #content_num >= 4 then
-						toast("识别内容：\r\n"..phone_num.."\r\n"..content_num,1)
-						mSleep(1000)
-					else
-						toast("识别内容失败,重新截图识别" .. body,1)
-						goto snap 
-					end
-				else
-					toast("获取token失败",1)
-					goto getBaiDuToken
-				end
-
-				::send_message::
-				mSleep(500)
-				local sz = require("sz")        --登陆
-				local http = require("szocket.http")
-				local res, code = http.request("http://185.247.228.89:5566/register/api/uploadmsg.php?cpid="..getPhoneToken.."&phone="..phone.."&zc="..content_num.."&upmobile="..phone_num)
-				mSleep(500)
-				if code == 200 then
-					local status, data = pcall(jsonDec,res)
-					if status then
-						local tmp = data
-						if tmp.status == "0" or tmp.status == "4" then
-							mSleep(200)
-							toast("发送短信成功",1)
-							mSleep(1000)
-							for var=1, 3 do
-								toast("等待30秒继续操作:"..(var - 1) * 3,1)
-								mSleep(3000)
-							end
-							mSleep(2000)
-							tap(345,1082)
-							mSleep(2000)
-						else
-							mSleep(500)
-							toast("发送短信失败，失败信息:"..tostring(tmp.msg),1)
-							mSleep(5000)
-							goto send_message
-						end
-					else
-						toast("json解析失败，重新发送短信", 1)
-						mSleep(500)
-						goto send_message
-					end
-				else
-					toast("发送短信失败，重新发送"..tostring(res),1)
-					mSleep(1000)
-					goto send_message
+				    mSleep(2000)
+    				tap(345,1082)
+    				mSleep(2000)
 				end
 				break
 			end
+			
+			--微信版本709
+			mSleep(math.random(500, 700))
+            x,y = findMultiColorInRegionFuzzy(0x06ae56, "147|7|0x06ae56,-104|6|0xf2f2f2,386|1|0xf2f2f2,-200|-136|0x07c160,387|-121|0x07c160,27|-125|0xffffff,173|-125|0xffffff,119|-764|0x181818,-152|-771|0x181818", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x~=-1 and y~=-1 then
+                toast("准备识别发送短信内容与号码",1)
+				mSleep(500)
+				sendBool = self:sendPhoneCode(710)
+				if not sendBool then
+				    for var=1, 12 do
+						toast("等待60秒继续操作:"..(var - 1) * 5,1)
+						mSleep(4500)
+					end
+				    mSleep(2000)
+    				tap(345,1082)
+    				mSleep(2000)
+				end
+				break
+            end
+            
+            self:vpn_connection()
 		end
 	end
 
 	while true do
+	    --验证码不正确，请重新输入
+	    mSleep(math.random(500, 700))
+	    x,y = findMultiColorInRegionFuzzy(0x576b95, "17|1|0x576b95,45|-2|0x576b95,-173|-165|0x1a1a1a,-121|-165|0x1a1a1a,-60|-159|0x1a1a1a,14|-162|0x1a1a1a,176|-161|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
+       if x~=-1 and y~=-1 then
+			mSleep(math.random(500, 700))
+			tap(x, y)
+			mSleep(math.random(500, 700))
+			toast("验证码不正确，请重新输入",1)
+			if not yzm_error_bool then
+				for var=1, 4 do
+					toast("等待20秒继续操作:"..(var - 1) * 5,1)
+					mSleep(4500)
+				end
+				mSleep(2000)
+				tap(345,1082)
+				mSleep(2000)
+				yzm_error_bool = true
+			else
+				yzm_error_num = yzm_error_num + 1
+				if yzm_error_num > 1 then
+					toast("重新发送验证码两次不正确，进行下一个号码操作",1)
+					mSleep(1000)
+					goto over
+				else
+					mSleep(1000)
+					goto yzm_error
+				end
+			end
+		end
+
 		--不是我的，继续注册
 		mSleep(math.random(500, 700))
 		x, y = findMultiColorInRegionFuzzy(0x6ae56,"36|1|0x6ae56,136|5|0x6ae56,181|-7|0x6ae56,294|-7|0x6ae56,371|0|0xf2f2f2,-98|-3|0xf2f2f2", 90, 0, 0, 749,  1333)
@@ -1010,16 +1201,30 @@ function model:loginAccount(code_connection,getPhoneToken,getPhoneCity,loginPass
 			toast("好",1)
 			mSleep(1000)
 		end
-
+        
+        --微信版本7015
 		mSleep(math.random(500, 700))
 		x,y = findMultiColorInRegionFuzzy(0x576b95, "17|5|0x576b95,16|-4|0x576b95,-242|-250|0x1a1a1a,-219|-248|0x1a1a1a,-172|-245|0x1a1a1a,-11|-258|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
 			tap(x, y)
 			mSleep(math.random(500, 700))
-			toast("通讯录",1)
+			toast("通讯录1",1)
 			break
 		end
+		
+		--微信版本709
+		mSleep(math.random(500, 700))
+		x, y = findMultiColorInRegionFuzzy(0x1565fc,"6|13|0x1565fc,17|-5|0x1565fc,19|6|0x1565fc,17|20|0x1565fc", 90, 0, 0, 749,  1333)
+		if x~=-1 and y~=-1 then
+		    mSleep(math.random(500, 700))
+			tap(x, y)
+			mSleep(math.random(500, 700))
+			toast("通讯录2",1)
+			break
+		end
+		
+		self:vpn_connection()
 	end
 
 	while true do
@@ -1078,12 +1283,16 @@ function model:loginAccount(code_connection,getPhoneToken,getPhoneCity,loginPass
 			error_wc = true
 			break
 		end
+		
+		self:vpn_connection()
 	end
 
 	if data_six_two then
 		--添加朋友
 		if addFriend == "0" then
 			while true do
+			    self:vpn_connection()
+			    
 				--微信界面
 				mSleep(math.random(500, 700))
 				x, y = findMultiColorInRegionFuzzy(0x7c160,"191|19|0,565|19|0,104|13|0xfafafa,616|24|0xfafafa", 90, 0, 1013, 749,  1333)
@@ -1212,7 +1421,7 @@ function model:loginAccount(code_connection,getPhoneToken,getPhoneCity,loginPass
 		writeFileString(file_path,phone.."----"..loginPassword.."----"..six_data.."----"..sj,"a",1)
 		mSleep(500)
 		
-		self:pushAccountMess(phone,pass,sixTwo)
+		self:pushAccountMess(phone,loginPassword,six_data,sj)
 	end
 
 	if data_six_two then
@@ -1239,10 +1448,24 @@ function model:loginAccount(code_connection,getPhoneToken,getPhoneCity,loginPass
 					tap(x,y)
 					mSleep(500)
 				end
-
+                
+                --微信版本7015
 				mSleep(500)
 				x,y = findMultiColorInRegionFuzzy(0xffffff, "-149|-28|0x07c160,-155|30|0x07c160,185|-23|0x07c160,183|19|0x07c160,84|-262|0x191919,181|-287|0x191919", 90, 0, 0, 750, 1334, { orient = 2 })
 				if x ~= -1 then
+					mSleep(500)
+					tap(x,y)
+					mSleep(500)
+					for var=1, 6 do
+						toast("等待30秒继续操作:"..(var - 1) * 5,1)
+						mSleep(4500)
+					end
+					break
+				end
+				
+				--微信版本709
+				x,y = findMultiColorInRegionFuzzy(0xffffff, "-157|-26|0x07c160,-155|27|0x07c160,191|-28|0x07c160,188|17|0x07c160,-104|-483|0x000000,103|-481|0x000000,120|-484|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+                if x ~= -1 then
 					mSleep(500)
 					tap(x,y)
 					mSleep(500)
@@ -1390,7 +1613,7 @@ function model:main()
 			},
 			{
 				["type"] = "RadioGroup",                    
-				["list"] = "极速",
+				["list"] = "极速,联盟",
 				["select"] = "0",  
 				["countperline"] = "4",
 			},
@@ -1474,11 +1697,13 @@ function model:main()
 			lua_exit()
 		end
 	end
-
-	if add_wc_Id == "" or add_wc_Id == "默认值" then
-		dialog("添加的微信号不能为空，请重新运行脚本设置添加的微信号", 3)
-		luaExit()
-	end
+    
+    if addFriend == "0" then
+    	if add_wc_Id == "" or add_wc_Id == "默认值" then
+    		dialog("添加的微信号不能为空，请重新运行脚本设置添加的微信号", 3)
+    		luaExit()
+    	end
+    end
 
 	if getSixDataWay == "0" then
 		while true do
@@ -1505,7 +1730,7 @@ function model:main()
 
 			writeFileString(file_path,phone.."----qazwsx112233----"..six_data.."----"..sj,"a",1)
 			
-			self:pushAccountMess(phone,pass,sixTwo)
+			self:pushAccountMess(phone,"qazwsx112233",six_data,sj)
 			
 			toast("62数据写入成功",1)
 			mSleep(1000)
