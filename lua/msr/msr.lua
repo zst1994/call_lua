@@ -387,7 +387,7 @@ function model:ewm(phone,fz_connection,base_six_four,provCode,cityCode,ewm_url)
 			["Content-Type"] = "application/x-www-form-urlencoded",
 		}
 		body_send = {
-			["userKey"] = "d1e37a6f2287440fb3a61fc56ddc7683",
+			["userKey"] = "9826103d266d4fc1beecd3ee2cea3cf9",
 			["qrCodeUrl"] = urlEncoder(ewm_url),
 			["phone"] = phone,
 			["city"] = cityCode
@@ -503,7 +503,7 @@ function model:ewm(phone,fz_connection,base_six_four,provCode,cityCode,ewm_url)
 			["Content-Type"] = "application/x-www-form-urlencoded",
 		}
 		body_send = {
-			["userKey"] = "d1e37a6f2287440fb3a61fc56ddc7683",
+			["userKey"] = "9826103d266d4fc1beecd3ee2cea3cf9",
 			["orderId"] = orderId,
 			["status"] = _status,
 		}
@@ -1224,6 +1224,16 @@ function model:loginAccount(code_connection,getPhoneToken,getPhoneCity,loginPass
 			break
 		end
 		
+		--微信版本714
+		x,y = findMultiColorInRegionFuzzy( 0x576b95, "4|15|0x576b95,13|-5|0x576b95,19|14|0x576b95,-309|11|0x576b95,-244|4|0x576b95,-240|-256|0x000000,-171|-244|0x000000,-119|-246|0x000000,-6|-259|0x000000", 90, 0, 0, 749, 1333)
+		if x~=-1 and y~=-1 then
+		    mSleep(math.random(500, 700))
+			tap(x, y)
+			mSleep(math.random(500, 700))
+			toast("通讯录3",1)
+			break
+		end
+		
 		self:vpn_connection()
 	end
 
@@ -1248,6 +1258,16 @@ function model:loginAccount(code_connection,getPhoneToken,getPhoneCity,loginPass
 		--允许位置
 		mSleep(500)
 		x,y = findMultiColorInRegionFuzzy(0x007aff, "22|-1|0x007aff,39|-15|0x007aff,45|-4|0x007aff,37|7|0x007aff,-39|-6|0xf6f6f6", 90, 0, 0, 750, 1334, { orient = 2 })
+		if x~=-1 and y~=-1 then    
+			mSleep(math.random(500, 700))
+			tap(x, y)
+			mSleep(math.random(500, 700))
+			toast("允许访问位置",1)
+		end
+		
+		--允许位置714
+		mSleep(500)
+		x,y = findMultiColorInRegionFuzzy( 0x007aff, "9|5|0x007aff,31|0|0x007aff,47|0|0x007aff,-329|-316|0x000000,-321|-313|0x000000,19|-328|0x000000,64|-315|0x000000,-39|-278|0x000000", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then    
 			mSleep(math.random(500, 700))
 			tap(x, y)

@@ -1004,17 +1004,7 @@ end
 --dialog(tmp.msg, time)
 
 
-	mSleep(500)
-	x,y = findMultiColorInRegionFuzzy( 0xffffff, "35|9|0xffffff,-304|-34|0x07c160,-306|32|0x07c160,1|-38|0x07c160,16|34|0x07c160,334|-35|0x07c160,336|27|0x07c160", 90, 0, 0, 749, 1333)
-	if x~=-1 and y~=-1 then
-		dialog(x..y, time)
-		mSleep(math.random(500, 700))
-		randomsTap(x,y,5)
-		mSleep(math.random(500, 700))
-		toast("111",1)
-	end
-
-
+dialog(appDataPath("com.tencent.mqq"), time)
 
 
 
