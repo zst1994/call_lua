@@ -18,10 +18,10 @@ end
 function model:getConfig()
 	tb = readFile(userPath().."/res/config.txt") 
 	if table then 
-		self.awz_bid = tb[1]
-		self.wc_bid = tb[2]
-		self.awz_url = tb[3]
-		self.wc_file = tb[4]
+		self.awz_bid = string.gsub(tb[1],"%s+","")
+		self.wc_bid = string.gsub(tb[2],"%s+","")
+		self.awz_url = string.gsub(tb[3],"%s+","")
+		self.wc_file = string.gsub(tb[4],"%s+","")
 		self.nickName = self:getNickName()
 		toast("获取配置信息成功",1)
 		mSleep(1000)
@@ -124,49 +124,65 @@ function model:clear_App()
 	mSleep(1000*math.random(1, 3))
 
 	while true do
+	    --AWZ，AXJ
 		mSleep(500)
 		flag = isFrontApp(self.awz_bid)
 		if flag == 1 then
--- 			if getColor(657,1307) == 0x0950d0 or getColor(652,1198) == 0x0950d0 then
--- 			    toast("准备newApp",1)
--- 				break
--- 			end
-			mSleep(500)
-			x,y = findMultiColorInRegionFuzzy(0x007aff, "27|0|0x007aff,38|2|0x047cff,56|-1|0x007aff,77|4|0x007aff,87|-4|0x007aff,94|7|0x007aff,109|6|0x007aff,126|1|0x007aff", 90, 0, 0, 750, 1334, { orient = 2 })
-			if x ~= -1 then
-				mSleep(math.random(500, 1000))
-				tap(x,y)
-				mSleep(math.random(500, 1000))
-				while true do
-					if getColor(266,601) == 0xffffff then
-						toast("newApp成功",1)
-						break
-					end
-				end
+			if getColor(657,1307) == 0x0950d0 or getColor(652,1198) == 0x0950d0 then
+			    toast("准备newApp",1)
 				break
 			end
+            
+            --AMG新机
+-- 			mSleep(500)
+-- 			x,y = findMultiColorInRegionFuzzy(0x007aff, "27|0|0x007aff,38|2|0x047cff,56|-1|0x007aff,77|4|0x007aff,87|-4|0x007aff,94|7|0x007aff,109|6|0x007aff,126|1|0x007aff", 90, 0, 0, 750, 1334, { orient = 2 })
+-- 			if x ~= -1 then
+-- 				mSleep(math.random(500, 1000))
+-- 				tap(x,y)
+-- 				mSleep(math.random(500, 1000))
+-- 				while true do
+-- 					if getColor(266,601) == 0xffffff then
+-- 						toast("newApp成功",1)
+-- 						break
+-- 					end
+-- 				end
+-- 				break
+-- 			end
 		else
 			goto run_again
 		end
 	end
-
--- 	::new_phone::
--- 	local sz = require("sz");
--- 	local http = require("szocket.http")
--- 	local res, code = http.request(self.awz_url)
--- 	if code == 200 then
--- 		local resJson = sz.json.decode(res)
--- 		local result = resJson.result
--- 		if result == 3 then
--- 			toast("新机成功，但是ip重复了",1)
--- 		elseif result == 1 then
--- 			toast("新机成功",1)
--- 		else 
--- 			toast("失败，请手动查看问题："..tostring(res), 1)
--- 			mSleep(3000)
--- 			goto run_again
--- 		end
--- 	end 
+    
+    mSleep(1000)
+    if getColor(56,1058) == 0x6f7179 then
+        mSleep(math.random(500, 1000))
+		tap(225,826)
+		mSleep(math.random(500, 1000))
+		while true do
+			if getColor(376, 735) == 0xffffff or getColor(379, 562) == 0xffffff then
+				toast("newApp成功",1)
+				break
+			end
+		end
+    else
+    	::new_phone::
+    	local sz = require("sz");
+    	local http = require("szocket.http")
+    	local res, code = http.request(self.awz_url)
+    	if code == 200 then
+    		local resJson = sz.json.decode(res)
+    		local result = resJson.result
+    		if result == 3 then
+    			toast("新机成功，但是ip重复了",1)
+    		elseif result == 1 then
+    			toast("新机成功",1)
+    		else 
+    			toast("失败，请手动查看问题："..tostring(res), 1)
+    			mSleep(3000)
+    			goto run_again
+    		end
+    	end 
+    end
 end
 
 function model:moves()
