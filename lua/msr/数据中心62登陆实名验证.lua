@@ -1,19 +1,22 @@
 require("TSLib")
-require "TSLib"
 local ts 				= require('ts')
 local json 				= ts.json
+local ts_enterprise_lib = require("ts_enterprise_lib")
 
 local model 			= {}
 
-model.awz_bid = ""
-model.awz_url = ""
 model.wc_bid = ""
 model.wc_folder = ""
 model.wc_file = ""
+model.awz_bid = ""
+model.awz_url = ""
 
 model.account = ""
 model.password = ""
 model.six_two_data = ""
+
+model.idCard_user = ""
+model.idCard_numCode = ""
 
 function model:clear_App()
 	::run_again::
@@ -21,13 +24,15 @@ function model:clear_App()
 	closeApp(self.awz_bid) 
 	mSleep(math.random(1000, 1500))
 	runApp(self.awz_bid)
-	mSleep(1000*math.random(3, 6))
+	mSleep(1000*math.random(1, 3))
 
 	while true do
+		--AWZ，AXJ
 		mSleep(500)
 		flag = isFrontApp(self.awz_bid)
 		if flag == 1 then
-			if getColor(147,456) == 0x6f7179 then
+			if getColor(657,1307) == 0x0950d0 or getColor(652,1198) == 0x0950d0 then
+				toast("准备newApp",1)
 				break
 			end
 		else
@@ -35,58 +40,36 @@ function model:clear_App()
 		end
 	end
 
-	::new_phone::
-	local sz = require("sz");
-	local szhttp = require("szocket.http")
-	local res, code = szhttp.request()
-	if code == 200 then
-		local resJson = sz.json.decode(res)
-		local result = resJson.result
-		if result == 3 then
-			toast("newApp成功，但是ip重复了",1)
-		elseif result == 1 then
-			toast("newApp成功",1)
-		else 
-			toast("newApp失败，请手动查看问题", 1)
-			mSleep(3000)
-			goto run_again
-		end
-	end 
-end
-
-function model:file_read_write(path,str,nr)  --path路径，str要查找的文本，nr是新增文本,返回值是行内容和行数。
-	local path = userPath().."/res/"..path
-	local result
-
-	if not isFileExist(path) then
-		dialog("路径不存在！请检查", 0)
-	end
-
-	local code 
-	local data = readFileString(path)
-	data = self:TryRemoveUtf8BOM(data)
-	if data ~= "" and data ~= nil then
-		local line = strSplit(data,"\r\n")
-		for i = 1,#line do 
-			if string.find(line[i],str) ~= nil then   ---如果真   找到，需要继续找
-				--dialog(i.."="..line[i], 0)
-			else
-				result = line[i]
-				code = i
+	mSleep(1000)
+	if getColor(56,1058) == 0x6f7179 then
+		mSleep(math.random(500, 1000))
+		tap(225,826)
+		mSleep(math.random(500, 1000))
+		while true do
+			if getColor(376, 735) == 0xffffff or getColor(379, 562) == 0xffffff then
+				toast("newApp成功",1)
 				break
-			end	
-		end	
-
-		writeFileString(path,"","w")
-		for k = 1,#line do
-			if k == code then
-				writeFileString(path,line[k]..nr.."\r\n","a")
-			else
-				writeFileString(path,line[k].."\r\n","a")
-			end	
-		end	
-	end	
-	return result,code
+			end
+		end
+	else
+		::new_phone::
+		local sz = require("sz");
+		local http = require("szocket.http")
+		local res, code = http.request(self.awz_url)
+		if code == 200 then
+			local resJson = sz.json.decode(res)
+			local result = resJson.result
+			if result == 3 then
+				toast("新机成功，但是ip重复了",1)
+			elseif result == 1 then
+				toast("新机成功",1)
+			else 
+				toast("失败，请手动查看问题："..tostring(res), 1)
+				mSleep(3000)
+				goto run_again
+			end
+		end 
+	end
 end
 
 function model:TryRemoveUtf8BOM(ret)
@@ -122,17 +105,17 @@ function model:_writeData(data) --写入62
 end
 
 function model:write_six_two()
-	local path = userPath().."/res/62数据.txt"
-
-	local result
-
-	if isFileExist(path) then
+	::getSixData::
+	local category = "six-data"
+	local plugin_ok,api_ok,data = ts_enterprise_lib:plugin_api_call("DataCenter","get_data",category)
+	if plugin_ok and api_ok then
+		toast(data, 1)
+		mSleep(1000)
 	else
-		dialog("写入文件不存在！请检查", 0)
-		lua_exit()
+		dialog("62数据已经用完，请重新上传新数据", 0)
+		goto getSixData
 	end
 
-	local data =  self:file_read_write("62数据.txt","已经读取","----已经读取")
 	data = self:TryRemoveUtf8BOM(data)
 	if data ~= "" and data ~= nil then
 		local data = strSplit(data,"----")
@@ -143,8 +126,6 @@ function model:write_six_two()
 		end	
 		self:_writeData(self.six_two_data)
 		toast("写入成功！") 
-		--sjkwj=data[3]
-
 		result = true
 	else
 		dialog("登录失败！原因：写入62数据无效！", 0) 
@@ -156,7 +137,6 @@ end
 function model:six_two_login()
 	if self:write_six_two() then
 		mSleep(2000)
-
 	else
 		dialog("登录失败！请检查数据！", 0)
 		lua_exit()
@@ -291,7 +271,7 @@ function model:loginAccount()
 			break
 		end
 	end
-	
+
 	while (true) do
 		mSleep(500)
 		x,y = findMultiColorInRegionFuzzy( 0x576b95, "33|-4|0x576b95,56|3|0x576b95,72|-4|0x576b95,105|-1|0x576b95,162|3|0x576b95", 90, 0, 0, 749, 1333)
@@ -331,9 +311,9 @@ function model:loginAccount()
 			break
 		end
 	end
-	
+
 	data_six_two = false
-	
+
 	while (true) do
 		--登陆
 		mSleep(500)
@@ -343,7 +323,7 @@ function model:loginAccount()
 			randomsTap(x, y, 4)
 			mSleep(math.random(500, 700))
 		end
-		
+
 		mSleep(500)
 		x,y = findMultiColorInRegionFuzzy( 0x1a1a1a, "321|10|0x576b95,317|-11|0x576b95,39|-356|0x1a1a1a,224|-358|0x1a1a1a,259|-356|0x1a1a1a", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
@@ -362,7 +342,7 @@ function model:loginAccount()
 			data_six_two = true
 			break
 		end
-		
+
 		mSleep(math.random(500, 700))
 		x,y = findMultiColorInRegionFuzzy( 0x576b95, "28|3|0x576b95,-336|0|0x181819,-288|1|0x181819,-399|-319|0x000000,-367|-312|0x000000,-334|-317|0x000000,-6|-139|0x000000,-18|-134|0x000000,94|-112|0xf9f7fa", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
@@ -371,7 +351,7 @@ function model:loginAccount()
 			data_six_two = false
 			break
 		end
-		
+
 		mSleep(math.random(500, 700))
 		x,y = findMultiColorInRegionFuzzy( 0x1a1a1a, "44|4|0x1a1a1a,320|5|0x576b95,337|3|0x576b95,366|-4|0x576b95,374|3|0x576b95,-68|-214|0x1a1a1a,-36|-210|0x1a1a1a,0|-213|0x1a1a1a,401|-143|0x1a1a1a", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
@@ -381,22 +361,91 @@ function model:loginAccount()
 			break
 		end
 	end
-	
+
 	mSleep(500)
 	if data_six_two then
-		writeFileString(userPath().."/res/账号正常.txt",self.account.."----"..self.password.."----"..self.six_two_data.."----账号正常","a",1) 
+		::getIdCard::
+		local category = "idCard-data"
+		local plugin_ok,api_ok,data = ts_enterprise_lib:plugin_api_call("DataCenter","get_data",category)
+		if plugin_ok and api_ok then
+			toast(data, 1)
+			mSleep(1000)
+		else
+			dialog("身份信息已经用完，请重新上传新数据", 0)
+			goto getIdCard
+		end
+
+		data = self:TryRemoveUtf8BOM(data)
+		if data ~= "" and data ~= nil then
+			local data = strSplit(data,"----")
+			if #data > 0 then
+				self.idCard_user = data[1]
+				self.idCard_numCode = data[2]
+			end	
+		end
+		
+		while (true) do
+			mSleep(500)
+			x,y = findMultiColorInRegionFuzzy( 0x1a1a1a, "321|10|0x576b95,317|-11|0x576b95,39|-356|0x1a1a1a,224|-358|0x1a1a1a,259|-356|0x1a1a1a", 90, 0, 0, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(math.random(500, 700))
+				randomsTap(x, y, 4)
+				mSleep(math.random(500, 700))
+				toast("匹配通讯录",1)
+				mSleep(500)
+			end
+			
+			x,y = findMultiColorInRegionFuzzy( 0x07c160, "-4|-26|0x07c160,-569|-17|0xf5f5f5,-54|6|0xf5f5f5", 90, 0, 1190, 749, 1333)
+			if x~=-1 and y~=-1 then
+				break
+			else
+				mSleep(math.random(500, 700))
+				randomsTap(659, 1269, 4)
+				mSleep(math.random(500, 700))
+			end
+		end
+		
+		while (true) do
+			--支付
+			mSleep(500)
+			x,y = findMultiColorInRegionFuzzy( 0x00c777, "-13|-3|0x00c777,24|-2|0x00c777,66|-12|0x1a1a1a,91|-12|0x1a1a1a,79|6|0x1a1a1a,103|2|0x1a1a1a,122|-1|0x1a1a1a", 90, 0, 0, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(math.random(500, 700))
+				randomsTap(x, y, 4)
+				mSleep(math.random(500, 700))
+				toast("支付",1)
+				mSleep(500)
+			end
+			
+			--三个点
+			mSleep(500)
+			x,y = findMultiColorInRegionFuzzy( 0x181818, "16|-1|0x181818,29|0|0x181818,20|20|0xededed,-26|156|0x3cb371,31|322|0x3cb371", 90, 0, 0, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(math.random(500, 700))
+				randomsTap(x, y, 4)
+				mSleep(math.random(500, 700))
+			end
+			
+			--实名认证
+			mSleep(500)
+			x,y = findMultiColorInRegionFuzzy( 0x171717, "25|-1|0x171717,11|7|0x171717,37|13|0x171717,57|18|0x171717,82|13|0x171717,106|8|0x171717,123|5|0x171717,173|11|0xededed", 90, 0, 0, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(math.random(500, 700))
+				randomsTap(379,  192, 4)
+				mSleep(math.random(500, 700))
+				break
+			end
+		end
 	else
-		writeFileString(userPath().."/res/账号封禁.txt",self.account.."----"..self.password.."----"..self.six_two_data.."----账号封禁","a",1) 
+		toast("账号封禁或者账号密码错误了，进行下一个操作",1)
 	end
-	mSleep(500)
-	toast("数据保存成功",1)
 end
 
 function model:main()
 	self:getConfig()
 	self:run()
---	self:loginAccount()
-	toast('运行完成',10)
+	self:loginAccount()
+	toast('一个流程结束，进行下一个',1)
 end
 
 model:main()
