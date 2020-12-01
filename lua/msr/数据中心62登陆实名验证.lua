@@ -229,7 +229,7 @@ function model:run()
 	mSleep(1000)
 	closeApp(self.wc_bid)
 	mSleep(2000)
---	self:clear_App()
+	self:clear_App()
 	self:clear_data(self.wc_bid)
 	mSleep(2000)
 	self:six_two_login()
@@ -384,12 +384,12 @@ function model:loginAccount()
 			end	
 		end
 
-		while (true) do
+        while (true) do
 			mSleep(500)
 			x,y = findMultiColorInRegionFuzzy( 0x1a1a1a, "321|10|0x576b95,317|-11|0x576b95,39|-356|0x1a1a1a,224|-358|0x1a1a1a,259|-356|0x1a1a1a", 90, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
 				mSleep(math.random(500, 700))
-				randomsTap(x, y, 4)
+				tap(x, y)
 				mSleep(math.random(500, 700))
 				toast("匹配通讯录",1)
 				mSleep(500)
@@ -400,7 +400,7 @@ function model:loginAccount()
 				break
 			else
 				mSleep(math.random(500, 700))
-				randomsTap(659, 1269, 4)
+				tap(659, 1269)
 				mSleep(math.random(500, 700))
 			end
 		end
@@ -422,7 +422,7 @@ function model:loginAccount()
 			x,y = findMultiColorInRegionFuzzy( 0x181818, "-7|-2|0xededed,-14|-2|0x181818,-26|2|0xededed,7|0|0xededed,14|-2|0x181818,30|-2|0xededed,-292|5|0x171717,21|77|0x3cb371,23|319|0x3cb371", 100, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
 				mSleep(math.random(500, 700))
-				randomsTap(x, y, 4)
+				tap(x, y)
 				mSleep(math.random(500, 700))
 				toast("三个点",1)
 				mSleep(500)
@@ -433,16 +433,25 @@ function model:loginAccount()
 			x,y = findMultiColorInRegionFuzzy( 0x171717, "25|-1|0x171717,11|7|0x171717,37|13|0x171717,57|18|0x171717,82|13|0x171717,106|8|0x171717,123|5|0x171717,173|11|0xededed", 100, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
 				mSleep(math.random(500, 700))
-				randomsTap(379,  192, 4)
+				tap(379,  192)
 				mSleep(math.random(500, 700))
 				toast("实名认证",1)
 				mSleep(500)
 				break
 			end
 		end
-
+        
 		::smrz::
 		while (true) do
+		    --实名认证
+			mSleep(500)
+			x,y = findMultiColorInRegionFuzzy( 0x171717, "25|-1|0x171717,11|7|0x171717,37|13|0x171717,57|18|0x171717,82|13|0x171717,106|8|0x171717,123|5|0x171717,173|11|0xededed", 100, 0, 0, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(math.random(500, 700))
+				tap(379,  192)
+				mSleep(math.random(500, 700))
+			end
+			
 			--立即认证
 			mSleep(500)
 			x,y = findMultiColorInRegionFuzzy( 0xffffff, "110|10|0xffffff,-124|-27|0x07c160,-123|38|0x07c160,49|-23|0x07c160,55|40|0x07c160,228|-21|0x07c160,226|37|0x07c160,12|-779|0x07c160,90|-780|0x07c160", 90, 0, 0, 749, 1333)
@@ -482,7 +491,7 @@ function model:loginAccount()
 						mSleep(500)
 						tap(390, 526)
 						mSleep(math.random(500, 700))
-						inputStr("袁燕群")
+						inputStr(data[1])
 					end
 				end
 				break
@@ -511,31 +520,31 @@ function model:loginAccount()
 
 		while (true) do
 			mSleep(500)
-			if getColor(249,  270) == 0x1a1a1a  and getColor(498,  266) == 0x1a1a1a or 
-			getColor(248,  141) == 0x1a1a1a and getColor(498,  137) == 0x1a1a1a then
+			x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "0|7|0x1a1a1a,17|7|0x1a1a1a,17|0|0x1a1a1a,16|12|0x1a1a1a,9|18|0x1a1a1a,12|28|0x1a1a1a,185|405|0xc2c2c2,236|417|0xc2c2c2,280|12|0xb3b3b3", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x ~= -1 then
 				mSleep(500)
-				tap(378,  746)
+				tap(x + 150,  y)
 				mSleep(math.random(500, 700))
-				inputKey("M0111747900")
+				inputKey(data[2])
 				key = "ReturnOrEnter"
 				keyDown(key)
 				keyUp(key)
 				mSleep(100)
 				keyDown(key)
 				keyUp(key)
-			end
-
-			mSleep(500)
-			x,y = findMultiColorInRegionFuzzy( 0xffffff, "50|13|0xffffff,-126|-20|0x07c160,-124|41|0x07c160,45|-20|0x07c160,49|45|0x07c160,220|-12|0x07c160,221|47|0x07c160", 90, 0, 0, 749, 1333)
-			if x~=-1 and y~=-1 then
-				mSleep(math.random(500, 700))
-				tap(x,y - 290)
-				mSleep(math.random(500, 700))
 				break
 			end
 		end
-
+        
 		while (true) do
+		    mSleep(500)
+			x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "0|7|0x1a1a1a,17|7|0x1a1a1a,17|0|0x1a1a1a,16|12|0x1a1a1a,9|18|0x1a1a1a,12|28|0x1a1a1a,185|405|0xc2c2c2,236|417|0xc2c2c2", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x ~= -1 then
+				mSleep(math.random(500, 700))
+				tap(x + 200,y + 130)
+				mSleep(math.random(500, 700))
+            end
+		
 			mSleep(500)
 			if getColor(312,   86) == 0x171717  and getColor(428,   85) == 0x171717 then
 				mSleep(300)
