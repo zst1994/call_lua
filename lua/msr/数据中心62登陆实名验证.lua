@@ -383,7 +383,7 @@ function model:loginAccount()
 				self.idCard_numCode = data[2]
 			end	
 		end
-		
+
 		while (true) do
 			mSleep(500)
 			x,y = findMultiColorInRegionFuzzy( 0x1a1a1a, "321|10|0x576b95,317|-11|0x576b95,39|-356|0x1a1a1a,224|-358|0x1a1a1a,259|-356|0x1a1a1a", 90, 0, 0, 749, 1333)
@@ -394,7 +394,7 @@ function model:loginAccount()
 				toast("匹配通讯录",1)
 				mSleep(500)
 			end
-			
+
 			x,y = findMultiColorInRegionFuzzy( 0x07c160, "-4|-26|0x07c160,-569|-17|0xf5f5f5,-54|6|0xf5f5f5", 90, 0, 1190, 749, 1333)
 			if x~=-1 and y~=-1 then
 				break
@@ -404,36 +404,191 @@ function model:loginAccount()
 				mSleep(math.random(500, 700))
 			end
 		end
-		
+
 		while (true) do
 			--支付
 			mSleep(500)
-			x,y = findMultiColorInRegionFuzzy( 0x00c777, "-13|-3|0x00c777,24|-2|0x00c777,66|-12|0x1a1a1a,91|-12|0x1a1a1a,79|6|0x1a1a1a,103|2|0x1a1a1a,122|-1|0x1a1a1a", 90, 0, 0, 749, 1333)
+			x,y = findMultiColorInRegionFuzzy( 0x00c777, "-13|-3|0x00c777,24|-2|0x00c777,66|-12|0x1a1a1a,91|-12|0x1a1a1a,79|6|0x1a1a1a,103|2|0x1a1a1a,122|-1|0x1a1a1a", 100, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
 				mSleep(math.random(500, 700))
-				randomsTap(x, y, 4)
+				tap(x + 200, y + 20)
 				mSleep(math.random(500, 700))
 				toast("支付",1)
 				mSleep(500)
 			end
-			
+
 			--三个点
 			mSleep(500)
-			x,y = findMultiColorInRegionFuzzy( 0x181818, "16|-1|0x181818,29|0|0x181818,20|20|0xededed,-26|156|0x3cb371,31|322|0x3cb371", 90, 0, 0, 749, 1333)
+			x,y = findMultiColorInRegionFuzzy( 0x181818, "-7|-2|0xededed,-14|-2|0x181818,-26|2|0xededed,7|0|0xededed,14|-2|0x181818,30|-2|0xededed,-292|5|0x171717,21|77|0x3cb371,23|319|0x3cb371", 100, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
 				mSleep(math.random(500, 700))
 				randomsTap(x, y, 4)
 				mSleep(math.random(500, 700))
+				toast("三个点",1)
+				mSleep(500)
 			end
-			
+
 			--实名认证
 			mSleep(500)
-			x,y = findMultiColorInRegionFuzzy( 0x171717, "25|-1|0x171717,11|7|0x171717,37|13|0x171717,57|18|0x171717,82|13|0x171717,106|8|0x171717,123|5|0x171717,173|11|0xededed", 90, 0, 0, 749, 1333)
+			x,y = findMultiColorInRegionFuzzy( 0x171717, "25|-1|0x171717,11|7|0x171717,37|13|0x171717,57|18|0x171717,82|13|0x171717,106|8|0x171717,123|5|0x171717,173|11|0xededed", 100, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
 				mSleep(math.random(500, 700))
 				randomsTap(379,  192, 4)
 				mSleep(math.random(500, 700))
+				toast("实名认证",1)
+				mSleep(500)
 				break
+			end
+		end
+
+		::smrz::
+		while (true) do
+			--立即认证
+			mSleep(500)
+			x,y = findMultiColorInRegionFuzzy( 0xffffff, "110|10|0xffffff,-124|-27|0x07c160,-123|38|0x07c160,49|-23|0x07c160,55|40|0x07c160,228|-21|0x07c160,226|37|0x07c160,12|-779|0x07c160,90|-780|0x07c160", 90, 0, 0, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(math.random(500, 700))
+				tap(x, y)
+				mSleep(math.random(500, 700))
+				toast("立即认证",1)
+				mSleep(500)
+			end
+
+			--同意
+			mSleep(500)
+			x,y = findMultiColorInRegionFuzzy( 0x07c160, "-15|3|0x07c160,10|6|0x07c160,32|7|0x07c160,-605|8|0x2c2b31,-584|8|0x2c2b31,-559|4|0x2c2b31,-536|3|0x2c2b31,-297|13|0xffffff", 90, 0, 1220, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(math.random(500, 700))
+				tap(x, y)
+				mSleep(math.random(500, 700))
+				toast("同意",1)
+				mSleep(500)
+				break
+			end
+		end
+
+		while (true) do
+			mSleep(500)
+			if getColor(249,  270) == 0x1a1a1a  and getColor(498,  266) == 0x1a1a1a then
+				while (true) do
+					mSleep(500)
+					x,y = findMultiColorInRegionFuzzy( 0xcccccc, "11|-9|0xcccccc,20|0|0xcccccc,11|10|0xcccccc,10|-1|0xffffff,5|-5|0xffffff,15|4|0xffffff,15|-5|0xffffff,7|4|0xffffff", 90, 630, 89, 749, 1333)
+					if x~=-1 and y~=-1 then
+						mSleep(500)
+						tap(425,  638)
+						mSleep(500)
+						break
+					else
+						mSleep(500)
+						tap(390, 526)
+						mSleep(math.random(500, 700))
+						inputStr("袁燕群")
+					end
+				end
+				break
+			end
+		end
+
+		while (true) do
+			mSleep(500)
+			if getColor(270, 1234) == 0x07c160  and getColor(363,  654) == 0x1a1a1a then
+				mSleep(500)
+				tap(370, 1035)
+				mSleep(500)
+				while (true) do
+					mSleep(500)
+					x,y = findMultiColorInRegionFuzzy( 0x484848, "0|6|0x484848,15|6|0x484848,9|17|0x484848,33|6|0x484848,51|10|0x484848,77|4|0x484848,32|17|0x484848", 90, 0, 0, 749, 1333)
+					if x~=-1 and y~=-1 then
+						mSleep(math.random(500, 700))
+						tap(374, 1224)
+						mSleep(math.random(500, 700))
+						break
+					end
+				end
+				break
+			end
+		end
+
+		while (true) do
+			mSleep(500)
+			if getColor(249,  270) == 0x1a1a1a  and getColor(498,  266) == 0x1a1a1a or 
+			getColor(248,  141) == 0x1a1a1a and getColor(498,  137) == 0x1a1a1a then
+				mSleep(500)
+				tap(378,  746)
+				mSleep(math.random(500, 700))
+				inputKey("M0111747900")
+				key = "ReturnOrEnter"
+				keyDown(key)
+				keyUp(key)
+				mSleep(100)
+				keyDown(key)
+				keyUp(key)
+			end
+
+			mSleep(500)
+			x,y = findMultiColorInRegionFuzzy( 0xffffff, "50|13|0xffffff,-126|-20|0x07c160,-124|41|0x07c160,45|-20|0x07c160,49|45|0x07c160,220|-12|0x07c160,221|47|0x07c160", 90, 0, 0, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(math.random(500, 700))
+				tap(x,y - 290)
+				mSleep(math.random(500, 700))
+				break
+			end
+		end
+
+		while (true) do
+			mSleep(500)
+			if getColor(312,   86) == 0x171717  and getColor(428,   85) == 0x171717 then
+				mSleep(300)
+				y =  math.random(218, 1077)
+				mSleep(500)
+				tap(378, y)
+				mSleep(math.random(500, 700))
+				toast("职业选择",1)
+				mSleep(1000)
+			end
+
+			mSleep(500)
+			x,y = findMultiColorInRegionFuzzy( 0xffffff, "50|13|0xffffff,-126|-20|0x07c160,-124|41|0x07c160,45|-20|0x07c160,49|45|0x07c160,220|-12|0x07c160,221|47|0x07c160", 90, 0, 0, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(math.random(500, 700))
+				tap(x,y)
+				mSleep(math.random(500, 700))
+				break
+			end
+		end
+
+		while (true) do
+			--添加银行卡
+			mSleep(500)
+			x,y = findMultiColorInRegionFuzzy( 0x1a1a1a, "1|12|0x1a1a1a,-1|29|0x1a1a1a,9|-1|0x1a1a1a,19|8|0x1a1a1a,18|28|0x1a1a1a,201|3|0x1a1a1a,210|12|0x1a1a1a,33|155|0x576b95,165|150|0x576b95", 90, 0, 0, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(math.random(500, 700))
+				tap(65,   84)
+				mSleep(math.random(500, 700))
+				while (true) do
+					mSleep(500)
+					if getColor(535,  778) == 0x576b95 then
+						mSleep(500)
+						tap(535,  778)
+						mSleep(500)
+						break
+					end
+					toast("添加银行卡",1)
+					mSleep(1000)
+					break
+				end
+
+				while (true) do
+					mSleep(500)
+					x,y = findMultiColorInRegionFuzzy( 0xffffff, "50|13|0xffffff,-126|-20|0x07c160,-124|41|0x07c160,45|-20|0x07c160,49|45|0x07c160,220|-12|0x07c160,221|47|0x07c160", 90, 0, 0, 749, 1333)
+					if x~=-1 and y~=-1 then
+						mSleep(math.random(500, 700))
+						tap(65,   84)
+						mSleep(math.random(500, 700))
+						break
+					end
+				end
+				goto smrz
 			end
 		end
 	else
