@@ -105,7 +105,6 @@ end
 function six_two_login()
 	if write_six_two() then
 		mSleep(2000)
-
 	else
 		dialog("登录失败！请检查数据！", 0)
 		lua_exit()
