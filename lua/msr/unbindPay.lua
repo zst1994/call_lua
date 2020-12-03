@@ -210,13 +210,13 @@ function model:clear_data (bid)
 end
 
 function model:getConfig()
-	tb = readFile(userPath().."/res/config1.txt") 
-	if table then 
-		self.wc_bid = string.gsub(tb[1],"%s+","")
-		self.wc_folder = string.gsub(tb[2],"%s+","")
-		self.wc_file = string.gsub(tb[3],"%s+","")
-		self.awz_bid = string.gsub(tb[4],"%s+","")
-		self.awz_url = string.gsub(tb[5],"%s+","")
+	tab = readFile(userPath().."/res/config1.txt") 
+	if tab then 
+		self.wc_bid = string.gsub(tab[1],"%s+","")
+		self.wc_folder = string.gsub(tab[2],"%s+","")
+		self.wc_file = string.gsub(tab[3],"%s+","")
+		self.awz_bid = string.gsub(tab[4],"%s+","")
+		self.awz_url = string.gsub(tab[5],"%s+","")
 		toast("获取配置信息成功",1)
 		mSleep(1000)
 	else
@@ -234,11 +234,11 @@ function model:run()
 	self:six_two_login()
 end
 
-function model:timeOutRestart(t1,ts)
+function model:timeOutRestart(t1)
     t2 = ts.ms()
 
-    if os.difftime(t2, t1) > tonumber(ts) then
-        toast("超过"..ts.."秒退出微信重新进入", 1)
+    if os.difftime(t2, t1) > 45 then
+        toast("超过45秒退出微信重新进入", 1)
         mSleep(1000)
     	closeApp(self.wc_bid)
     	mSleep(2000)
@@ -324,9 +324,9 @@ function model:loginAccount()
 
 	data_six_two = false
     
-    t1 = ts.ms()
+    tt = ts.ms()
 	while (true) do
-	    self:timeOutRestart(t1, 45)
+	    self:timeOutRestart(tt)
 	    
 		--登陆
 		mSleep(500)
@@ -378,10 +378,10 @@ function model:loginAccount()
 
 	mSleep(500)
 	if data_six_two then
-	    t1 = ts.ms()
+	    tt = ts.ms()
 	    
         while (true) do
-            self:timeOutRestart(t1, 45)
+            self:timeOutRestart(tt)
             
 			mSleep(500)
 			x,y = findMultiColorInRegionFuzzy( 0x1a1a1a, "321|10|0x576b95,317|-11|0x576b95,39|-356|0x1a1a1a,224|-358|0x1a1a1a,259|-356|0x1a1a1a", 90, 0, 0, 749, 1333)

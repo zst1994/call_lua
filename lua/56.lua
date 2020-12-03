@@ -2296,7 +2296,9 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 		end
 
 		mSleep(math.random(500, 700))
-		if getColor(132,  766) == 0x000000 and getColor(159,  784) == 0x000000 then
+		if getColor(132,  766) == 0x000000 and getColor(159,  784) == 0x000000 or
+		getColor(351,  296) == 0xfa5151 and getColor(310, 1089) == 0x07c160 or
+		getColor(362,  799) == 0x576b95 and getColor(342,  665) == 0x000000 then
 			if tmFailBack_bool then
 				if tmFailBack == "1" then
 					mSleep(math.random(500, 700))
@@ -2437,12 +2439,12 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 			end
 		elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13"  then		--奥迪
 			if addBlack == "0" then
-			    if vpn_stauts == "13" then
+				if vpn_stauts == "13" then
 					setRel_url = ksUrl.."/yhapi.ashx?act=setRel&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone
 				else
 					setRel_url = ksUrl.."/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
-			    end
-			
+				end
+
 				::open_phone::
 				mSleep(500)
 				local sz = require("sz")        --登陆
@@ -2479,13 +2481,13 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 				end
 			else
 				black_time = 0
-				
+
 				if vpn_stauts == "13" then
 					black_url = ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
 				else
 					black_url = ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&pid="..pid.."&reason="..urlEncoder("获取失败")
 				end
-				
+
 				::addblack::
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
@@ -2496,7 +2498,14 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 					if data[1] == "1" then
 						toast("拉黑手机号码",1)
 					else
-						goto addblack
+						if data[2] ~= "-4" then
+							toast("拉黑失败"..tostring(res),1)
+							mSleep(2000)
+							goto addblack
+						else
+							toast("号码已经不存在或者释放",1)
+							mSleep(1000)
+						end
 					end
 				else
 					toast('拉黑失败，重新拉黑',1)
@@ -2781,12 +2790,12 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 
 				if restart_time > 2 then
 					if addBlack == "0" then
-					    if vpn_stauts == "13" then
+						if vpn_stauts == "13" then
 							setRel_url = ksUrl.."/yhapi.ashx?act=setRel&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone
 						else
 							setRel_url = ksUrl.."/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
-					    end
-					
+						end
+
 						::addblack::
 						local sz = require("sz")        --登陆
 						local http = require("szocket.http")
@@ -2797,19 +2806,26 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 							if data[1] == "1" then
 								toast("释放手机号码",1)
 							else
-								goto addblack
+								if data[2] ~= "-4" then
+									toast("拉黑失败"..tostring(res),1)
+									mSleep(2000)
+									goto addblack
+								else
+									toast("号码已经不存在或者释放",1)
+									mSleep(1000)
+								end
 							end
 						else
 							toast('释放失败，重新释放',1)
 							goto addblack
 						end
 					else
-					    if vpn_stauts == "13" then
+						if vpn_stauts == "13" then
 							black_url = ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
 						else
 							black_url = ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&pid="..pid.."&reason="..urlEncoder("获取失败")
-					    end
-					
+						end
+
 						::addblack::
 						local sz = require("sz")        --登陆
 						local http = require("szocket.http")
@@ -2820,7 +2836,14 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 							if data[1] == "1" then
 								toast("拉黑手机号码",1)
 							else
-								goto addblack
+								if data[2] ~= "-4" then
+									toast("拉黑失败"..tostring(res),1)
+									mSleep(2000)
+									goto addblack
+								else
+									toast("号码已经不存在或者释放",1)
+									mSleep(1000)
+								end
 							end
 						else
 							toast('拉黑失败，重新拉黑',1)
@@ -2829,7 +2852,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 					end
 					goto over
 				end
-				
+
 				if vpn_stauts == "13" then
 					getPhoneCode_url = ksUrl.."/yhapi.ashx?act=getPhoneCode&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone
 				else
@@ -4083,7 +4106,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 				data_six_two = true
 				break
 			end
-			
+
 			mSleep(math.random(500, 700))
 			x, y = findMultiColorInRegionFuzzy(0x7c160,"483|-9|0x7c160,155|2|0xffffff,159|95|0x576b95,225|92|0x576b95,246|99|0x576b95", 90, 0, 1013, 749,  1333)
 			if x~=-1 and y~=-1 then    
