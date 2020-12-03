@@ -1009,33 +1009,13 @@ end
 
 
 
+a= {1,2,3}
+b = a[1]
 
-function 登入芝麻()
-	while (true) do
-		local http = require("szocket.http")
-		local res, code = http.request("http://webapi.http.zhimacangku.com/getip?num=1&type=2&pro=&city=0&yys=0&port=1&time=1&ts=0&ys=0&cs=0&lb=1&sb=0&pb=4&mr=1&regions=");
-		toast(res, 1) 
-		if code == 200 then
-			local tmp = json.decode(res) 
-			ip= tmp.data[1].ip
-			port = tmp.data[1].port
-			mSleep(1000)
-			toast(ip.."\r\n"..port, 1)
-			break
-		end
-		mSleep(3000);
-	end
-	
-	for i = 1, #(port) do
-		mSleep(math.random(500, 700))
-		num = string.sub(port,i,i)
-		if num == "0" then
-			--点击0的坐标
-		end
-	end
+
+for var= 1, #a do
+	dialog(a[var], time)
 end
-登入芝麻()
-
 
 
 

@@ -237,12 +237,59 @@ end
 function model:timeOutRestart(t1)
     t2 = ts.ms()
 
-    if os.difftime(t2, t1) > 45 then
+    if os.difftime(t2, t1) > 60 then
         toast("超过45秒退出微信重新进入", 1)
         mSleep(1000)
     	closeApp(self.wc_bid)
     	mSleep(2000)
+		return false
+	else
+		return true
     end
+end
+
+function model:dialog_box()
+	mSleep(500)
+	x,y = findMultiColorInRegionFuzzy( 0x1a1a1a, "321|10|0x576b95,317|-11|0x576b95,39|-356|0x1a1a1a,224|-358|0x1a1a1a,259|-356|0x1a1a1a", 90, 0, 0, 749, 1333)
+	if x~=-1 and y~=-1 then
+		mSleep(math.random(500, 700))
+		tap(x, y)
+		mSleep(math.random(500, 700))
+		toast("匹配通讯录",1)
+		mSleep(500)
+	end
+	
+	--允许访问位置
+	mSleep(500)
+	x,y = findMultiColorInRegionFuzzy( 0x007aff, "22|0|0x007aff,38|-1|0x007aff,-114|-273|0x000000,-47|-277|0x000000,-93|-316|0x000000", 90, 0, 0, 749, 1333)
+	if x~=-1 and y~=-1 then
+		mSleep(math.random(500, 700))
+		randomsTap(x, y, 4)
+		mSleep(math.random(500, 700))
+		toast("允许访问位置",1)
+		mSleep(500)
+	end
+	
+	--好
+	x,y = findMultiColorInRegionFuzzy( 0x007aff, "8|-1|0x007aff,6|14|0x007aff,16|-5|0x007aff,27|8|0x007aff,18|22|0x007aff", 90, 0, 0, 749, 1333)
+	if x~=-1 and y~=-1 then
+		mSleep(math.random(500, 700))
+		randomsTap(x, y, 4)
+		mSleep(math.random(500, 700))
+		toast("好",1)
+		mSleep(500)
+	end
+	
+	--尚未绑定手机号
+	mSleep(500)
+	x,y = findMultiColorInRegionFuzzy( 0x576b95, "6|-1|0x576b95,33|4|0x576b95,69|3|0x576b95,142|-1|0x576b95,-349|-217|0x1a1a1a,-314|-224|0x1a1a1a,-122|-140|0x1a1a1a,-103|-131|0x1a1a1a,152|-187|0x1a1a1a", 90, 0, 0, 749, 1333)
+	if x~=-1 and y~=-1 then
+		mSleep(math.random(500, 700))
+		randomsTap(x - 250, y, 4)
+		mSleep(math.random(500, 700))
+		toast("尚未绑定手机号",1)
+		mSleep(500)
+	end
 end
 
 function model:loginAccount()
@@ -326,7 +373,10 @@ function model:loginAccount()
     
     tt = ts.ms()
 	while (true) do
-	    self:timeOutRestart(tt)
+	    timeOut = self:timeOutRestart(tt)
+		if not timeOut then
+			tt = ts.ms()
+		end
 	    
 		--登陆
 		mSleep(500)
@@ -337,15 +387,7 @@ function model:loginAccount()
 			mSleep(math.random(500, 700))
 		end
 
-		mSleep(500)
-		x,y = findMultiColorInRegionFuzzy( 0x1a1a1a, "321|10|0x576b95,317|-11|0x576b95,39|-356|0x1a1a1a,224|-358|0x1a1a1a,259|-356|0x1a1a1a", 90, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
-			mSleep(math.random(500, 700))
-			randomsTap(x, y, 4)
-			mSleep(math.random(500, 700))
-			toast("匹配通讯录",1)
-			mSleep(500)
-		end
+		self:dialog_box()
 
 		mSleep(math.random(500, 700))
 		x, y = findMultiColorInRegionFuzzy(0x7c160,"191|19|0,565|19|0,104|13|0xfafafa,616|24|0xfafafa", 90, 0, 1013, 749,  1333)
@@ -368,6 +410,42 @@ function model:loginAccount()
 			break
 		end
 		
+		--外挂封号
+		mSleep(500)
+		x,y = findMultiColorInRegionFuzzy( 0x576b95, "17|-2|0x576b95,46|-2|0x576b95,-388|-303|0x1a1a1a,-356|-300|0x1a1a1a,-320|-303|0x1a1a1a,-32|-145|0x1a1a1a,3|-139|0x1a1a1a,22|-152|0x1a1a1a,22|-144|0x1a1a1a", 90, 0, 0, 749, 1333)
+		if x~=-1 and y~=-1 then
+			mSleep(math.random(500, 700))
+			toast("外挂封号",1)
+			data_six_two = false
+			category = "error-data"
+			data = self.infoData.."----外挂封号"
+			break
+		end
+		
+		--恶意营销
+		mSleep(500)
+		x,y = findMultiColorInRegionFuzzy( 0x576b95, "28|3|0x576b95,-47|-286|0x1a1a1a,-21|-286|0x1a1a1a,-22|-272|0x1a1a1a,-33|-258|0x1c1c1c,-39|-264|0x1a1a1a,-195|-155|0x1a1a1a,-195|-146|0x1a1a1a,-179|-147|0x1a1a1a", 90, 0, 0, 749, 1333)
+		if x~=-1 and y~=-1 then
+			mSleep(math.random(500, 700))
+			toast("恶意营销",1)
+			data_six_two = false
+			category = "error-data"
+			data = self.infoData.."----恶意营销"
+			break
+		end
+		
+		--安全验证
+		mSleep(500)
+		x,y = findMultiColorInRegionFuzzy( 0x10aeff, "117|6|0x10aeff,53|1|0xffffff,-265|388|0x1aad19,378|387|0x1aad19,382|440|0x1aad19,-271|449|0x1aad19", 90, 0, 0, 749, 1333)
+		if x~=-1 and y~=-1 then
+			mSleep(math.random(500, 700))
+			toast("安全验证",1)
+			data_six_two = false
+			category = "error-data"
+			data = self.infoData.."----安全验证"
+			break
+		end
+		
 		mSleep(math.random(500, 700))
 		flag = isFrontApp(self.wc_bid)
 		if flag == 0 then
@@ -381,17 +459,12 @@ function model:loginAccount()
 	    tt = ts.ms()
 	    
         while (true) do
-            self:timeOutRestart(tt)
-            
-			mSleep(500)
-			x,y = findMultiColorInRegionFuzzy( 0x1a1a1a, "321|10|0x576b95,317|-11|0x576b95,39|-356|0x1a1a1a,224|-358|0x1a1a1a,259|-356|0x1a1a1a", 90, 0, 0, 749, 1333)
-			if x~=-1 and y~=-1 then
-				mSleep(math.random(500, 700))
-				tap(x, y)
-				mSleep(math.random(500, 700))
-				toast("匹配通讯录",1)
-				mSleep(500)
+            timeOut = self:timeOutRestart(tt)
+			if not timeOut then
+				tt = ts.ms()
 			end
+				
+			self:dialog_box()
             
             mSleep(500)
 			x,y = findMultiColorInRegionFuzzy( 0x07c160, "-4|-26|0x07c160,-569|-17|0xf5f5f5,-54|6|0xf5f5f5", 90, 0, 1190, 749, 1333)
@@ -459,6 +532,7 @@ function model:loginAccount()
 			end
 		end
         
+		::again::
 		while (true) do
 		    --确认注销
 			mSleep(500)
@@ -470,7 +544,7 @@ function model:loginAccount()
 				toast("确认注销",1)
 				mSleep(500)
 			end
-
+			
 			--验证pay密码
 			mSleep(500)
 			x,y = findMultiColorInRegionFuzzy(0xc8c8cd, "-427|-228|0x171717,-270|-222|0x171717,-251|-225|0x171717,-260|-6|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
@@ -520,8 +594,6 @@ function model:loginAccount()
 		    x,y = findMultiColorInRegionFuzzy(0xffffff, "30|-4|0xffffff,-228|-34|0x04be02,-230|21|0x04be02,18|-36|0x04be02,15|25|0x04be02,311|-36|0x04be02,312|26|0x04be02,6|-378|0x09bb07,25|-294|0x09bb07", 90, 0, 0, 750, 1334, { orient = 2 })
             if x~=-1 and y~=-1 then
 				mSleep(math.random(500, 700))
-				tap(x, y)
-				mSleep(math.random(500, 700))
 				toast("原身份已注销",1)
 				mSleep(500)
 				category = "success-data"
@@ -540,6 +612,30 @@ function model:loginAccount()
 				data = self.infoData.."----支付密码错误"
 				break
             end
+			
+			--账户冻结
+			mSleep(500)
+			x,y = findMultiColorInRegionFuzzy( 0xffffff, "25|9|0xffffff,50|10|0xffffff,-293|-16|0x04be02,-298|36|0x04be02,362|-17|0x04be02,355|38|0x04be02,-279|-207|0x000000,-26|-210|0x000000,9|-219|0x000000", 90, 0, 0, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(math.random(500, 700))
+				toast("账户冻结",1)
+				mSleep(500)
+				category = "error-data"
+				data = self.infoData.."----账户冻结"
+				break
+            end
+			
+			--确定
+			mSleep(500)
+			x,y = findMultiColorInRegionFuzzy( 0x02bb00, "10|0|0x02bb00,37|0|0x02bb00,-36|-122|0x000000,-25|-121|0x040404,5|-121|0x000000,34|-125|0x000000,61|-126|0x000000", 90, 0, 0, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(math.random(500, 700))
+				tap(x, y)
+				mSleep(math.random(500, 700))
+				toast("确定",1)
+				mSleep(500)
+				goto again
+			end
 		end
 		
 		::pushData::
