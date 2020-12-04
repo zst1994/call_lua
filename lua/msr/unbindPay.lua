@@ -427,12 +427,47 @@ function model:loginAccount()
 		x,y = findMultiColorInRegionFuzzy( 0x576b95, "28|3|0x576b95,-47|-286|0x1a1a1a,-21|-286|0x1a1a1a,-22|-272|0x1a1a1a,-33|-258|0x1c1c1c,-39|-264|0x1a1a1a,-195|-155|0x1a1a1a,-195|-146|0x1a1a1a,-179|-147|0x1a1a1a", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
-			toast("恶意营销",1)
+			toast("恶意营销1",1)
 			data_six_two = false
 			category = "error-data"
 			data = self.infoData.."----恶意营销"
 			break
 		end
+		
+		--恶意营销
+		mSleep(500)
+		x,y = findMultiColorInRegionFuzzy(0x576b95, "17|-1|0x576b95,44|-2|0x576b95,-184|-151|0x1a1a1a,-165|-155|0x1a1a1a,-165|-150|0x1a1a1a,-173|-140|0x1a1a1a,-143|-148|0x1a1a1a,-131|-149|0x1a1a1a,-124|-148|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x~=-1 and y~=-1 then
+			mSleep(math.random(500, 700))
+			toast("恶意营销2",1)
+			data_six_two = false
+			category = "error-data"
+			data = self.infoData.."----恶意营销"
+			break
+		end
+		
+		--被投诉限制登录
+		mSleep(500)
+		x,y = findMultiColorInRegionFuzzy(0x576b95, "18|1|0x576b95,45|-2|0x576b95,-323|-183|0x1a1a1a,-310|-188|0x1a1a1a,-305|-184|0x1a1a1a,-279|-184|0x1a1a1a,-355|-261|0x1a1a1a,-319|-262|0x1a1a1a,-82|-138|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x~=-1 and y~=-1 then
+			mSleep(math.random(500, 700))
+			toast("被投诉限制登录",1)
+			data_six_two = false
+			category = "error-data"
+			data = self.infoData.."----被投诉限制登录"
+			break
+        end
+	
+	    mSleep(500)
+	    x,y = findMultiColorInRegionFuzzy(0x576b95, "17|2|0x576b95,46|0|0x576b95,-7|-142|0x1a1a1a,6|-145|0x1a1a1a,27|-145|0x1a1a1a,69|-142|0x1a1a1a,81|-146|0x1a1a1a,89|-146|0x1a1a1a,-182|-142|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x~=-1 and y~=-1 then
+			mSleep(math.random(500, 700))
+			toast("多人投诉",1)
+			data_six_two = false
+			category = "error-data"
+			data = self.infoData.."----多人投诉"
+			break
+        end
 		
 		--安全验证
 		mSleep(500)
@@ -443,6 +478,18 @@ function model:loginAccount()
 			data_six_two = false
 			category = "error-data"
 			data = self.infoData.."----安全验证"
+			break
+		end
+		
+		--存在异常
+		mSleep(500)
+		x,y = findMultiColorInRegionFuzzy(0x576b95, "18|-1|0x576b95,45|-2|0x576b95,-145|-262|0x1a1a1a,-133|-276|0x1a1a1a,-131|-260|0x1a1a1a,-98|-266|0x1a1a1a,-67|-278|0x1a1a1a,-32|-260|0x1a1a1a,89|-149|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x~=-1 and y~=-1 then
+			mSleep(math.random(500, 700))
+			toast("存在异常",1)
+			data_six_two = false
+			category = "error-data"
+			data = self.infoData.."----存在异常"
 			break
 		end
 		
@@ -483,7 +530,8 @@ function model:loginAccount()
     	        mSleep(2000)
     		end
 		end
-
+        
+        ::networkError::
         while (true) do
 			--支付
 			mSleep(500)
@@ -556,6 +604,14 @@ function model:loginAccount()
 				mSleep(1500)
 				break
 			end
+			
+			--账户冻结
+			mSleep(500)
+			x,y = findMultiColorInRegionFuzzy( 0xffffff, "25|9|0xffffff,50|10|0xffffff,-293|-16|0x04be02,-298|36|0x04be02,362|-17|0x04be02,355|38|0x04be02,-279|-207|0x000000,-26|-210|0x000000,9|-219|0x000000", 90, 0, 0, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(math.random(500, 700))
+				break
+            end
 		end
 		
 		while true do
@@ -623,7 +679,29 @@ function model:loginAccount()
 				category = "error-data"
 				data = self.infoData.."----账户冻结"
 				break
-            end
+			end
+        
+            --网络通信出现问题
+            mSleep(500)
+            x,y = findMultiColorInRegionFuzzy(0x576b95, "34|-4|0x576b95,80|-2|0x576b95,84|12|0x576b95,110|3|0x576b95,108|-15|0x576b95,-201|-162|0x1a1a1a,-96|-160|0x1a1a1a,226|-163|0x1a1a1a,268|-174|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x~=-1 and y~=-1 then
+				mSleep(math.random(500, 700))
+				tap(x, y)
+				mSleep(math.random(500, 700))
+				while true do
+				    mSleep(500)
+				    x,y = findMultiColorInRegionFuzzy(0xc8c8cd, "-427|-228|0x171717,-270|-222|0x171717,-251|-225|0x171717,-260|-6|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+                    if x~=-1 and y~=-1 then
+        				mSleep(math.random(500, 700))
+        				tap(57, 85)
+        				mSleep(math.random(500, 700))
+        			    break
+        			end
+				end
+				toast("网络通信出现问题",1)
+				mSleep(500)
+				goto networkError
+			end
 			
 			--确定
 			mSleep(500)
