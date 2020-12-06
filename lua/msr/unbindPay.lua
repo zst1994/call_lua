@@ -111,7 +111,7 @@ function model:write_six_two()
 		toast(self.infoData, 1)
 		mSleep(1000)
 	else
-		dialog("62数据已经用完，请重新上传新数据", 0)
+		dialog("62数据已经用完，请重新上传新数据:"..tostring(plugin_ok).."----"..tostring(api_ok), 0)
 		goto getSixData
 	end
 
@@ -249,6 +249,16 @@ function model:timeOutRestart(t1)
 end
 
 function model:dialog_box()
+    mSleep(500)
+    x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "5|25|0x1a1a1a,14|7|0x1a1a1a,29|11|0x1a1a1a,45|16|0x1a1a1a,279|16|0x576b95,336|2|0x576b95,359|22|0x576b95,387|16|0x576b95,399|18|0x576b95", 90, 0, 0, 750, 1334, { orient = 2 })
+    if x~=-1 and y~=-1 then
+		mSleep(math.random(500, 700))
+		tap(x, y)
+		mSleep(math.random(500, 700))
+		toast("忽略",1)
+		mSleep(500)
+	end
+
 	mSleep(500)
 	x,y = findMultiColorInRegionFuzzy( 0x1a1a1a, "321|10|0x576b95,317|-11|0x576b95,39|-356|0x1a1a1a,224|-358|0x1a1a1a,259|-356|0x1a1a1a", 90, 0, 0, 749, 1333)
 	if x~=-1 and y~=-1 then
@@ -292,7 +302,7 @@ function model:dialog_box()
 	end
 end
 
-function model:loginAccount()
+function model:loginAccount(processWay,oldPassword,newPassword)
 	::run_app::
 	mSleep(1000)
 	runApp(self.wc_bid)
@@ -533,6 +543,16 @@ function model:loginAccount()
         
         ::networkError::
         while (true) do
+            mSleep(500)
+            x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "5|25|0x1a1a1a,14|7|0x1a1a1a,29|11|0x1a1a1a,45|16|0x1a1a1a,279|16|0x576b95,336|2|0x576b95,359|22|0x576b95,387|16|0x576b95,399|18|0x576b95", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x~=-1 and y~=-1 then
+        		mSleep(math.random(500, 700))
+        		tap(x, y)
+        		mSleep(math.random(500, 700))
+        		toast("忽略",1)
+        		mSleep(500)
+            end
+
 			--支付
 			mSleep(500)
 			x,y = findMultiColorInRegionFuzzy( 0x00c777, "-13|-3|0x00c777,24|-2|0x00c777,66|-12|0x1a1a1a,91|-12|0x1a1a1a,79|6|0x1a1a1a,103|2|0x1a1a1a,122|-1|0x1a1a1a", 100, 0, 0, 749, 1333)
@@ -559,170 +579,358 @@ function model:loginAccount()
 			mSleep(500)
 			x,y = findMultiColorInRegionFuzzy( 0x171717, "25|-1|0x171717,11|7|0x171717,37|13|0x171717,57|18|0x171717,82|13|0x171717,106|8|0x171717,123|5|0x171717,173|11|0xededed", 100, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
-				mSleep(math.random(500, 700))
-				while true do
-				    mSleep(500)
-				    x,y = findMultiColorInRegionFuzzy(0x1b1b1b, "16|11|0x262626,11|22|0x1a1a1a,45|10|0x212121,63|14|0x1a1a1a,97|14|0x1a1a1a,116|14|0x272727,148|-1|0x1a1a1a,168|20|0x1a1a1a,187|8|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
-                    if x~=-1 and y~=-1 then
-        				mSleep(math.random(500, 700))
-        				tap(x, y)
-        				mSleep(math.random(500, 700))
-        				toast("注销wcPay",1)
+				if processWay == "0" then
+    				while true do
+    				    mSleep(500)
+    				    x,y = findMultiColorInRegionFuzzy(0x1b1b1b, "16|11|0x262626,11|22|0x1a1a1a,45|10|0x212121,63|14|0x1a1a1a,97|14|0x1a1a1a,116|14|0x272727,148|-1|0x1a1a1a,168|20|0x1a1a1a,187|8|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
+                        if x~=-1 and y~=-1 then
+            				mSleep(math.random(500, 700))
+            				tap(x, y)
+            				mSleep(math.random(500, 700))
+            				toast("注销wcPay",1)
+            				mSleep(500)
+            				break
+            			else
+            			    mSleep(math.random(500, 700))
+        					moveTowards( 108,  1052, 80, 500)
+        					mSleep(3000)
+            			end
+    				end
+    			else
+    			    mSleep(math.random(500, 700))
+    			    tap(414,319)
+    			    mSleep(math.random(500, 700))
+				end
+				break
+			end
+		end
+        
+        if processWay == "0" then
+    		::again::
+    		while (true) do
+    		    --确认注销
+    			mSleep(500)
+    			x,y = findMultiColorInRegionFuzzy(0xffffff, "111|-4|0xffffff,-184|-38|0x04be02,-185|31|0x04be02,52|-38|0x04be02,52|31|0x04be02,381|-33|0x04be02,376|27|0x04be02,-36|-607|0x171717,142|-608|0x171717", 90, 0, 0, 750, 1334, { orient = 2 })
+                if x~=-1 and y~=-1 then
+    				mSleep(math.random(500, 700))
+    				tap(x, y)
+    				mSleep(math.random(500, 700))
+    				toast("确认注销",1)
+    				mSleep(500)
+    			end
+    			
+    			--验证pay密码
+    			mSleep(500)
+    			x,y = findMultiColorInRegionFuzzy(0xc8c8cd, "-427|-228|0x171717,-270|-222|0x171717,-251|-225|0x171717,-260|-6|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+    			if x~=-1 and y~=-1 then
+    				mSleep(math.random(500, 700))
+    				tap(x - 200, y)
+    				mSleep(math.random(500, 700))
+    				toast("验证pay密码",1)
+    				mSleep(1500)
+    				break
+    			end
+    			
+    			--账户冻结
+    			mSleep(500)
+    			x,y = findMultiColorInRegionFuzzy( 0xffffff, "25|9|0xffffff,50|10|0xffffff,-293|-16|0x04be02,-298|36|0x04be02,362|-17|0x04be02,355|38|0x04be02,-279|-207|0x000000,-26|-210|0x000000,9|-219|0x000000", 90, 0, 0, 749, 1333)
+    			if x~=-1 and y~=-1 then
+    				mSleep(math.random(500, 700))
+    				break
+                end
+    		end
+    		
+    		pass_index = 1
+    		while true do
+    		    --验证pay密码
+    			mSleep(500)
+    			x,y = findMultiColorInRegionFuzzy(0xc8c8cd, "-427|-228|0x171717,-270|-222|0x171717,-251|-225|0x171717,-260|-6|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+    			if x~=-1 and y~=-1 then
+    				mSleep(math.random(500, 700))
+    				tap(x - 200, y)
+    				mSleep(math.random(500, 700))
+    			end
+    			
+    		    mSleep(500)
+    		    if getColor(566,1289) == 0xededed and getColor(617,1280) == 0x181818 then
+    		        oldPasswordArr = strSplit(oldPassword,"-")
+    		        payPass = string.gsub(oldPasswordArr[pass_index],"%s+","")
+    		        mSleep(500)
+    		        for i = 1, #(payPass) do
+                		mSleep(500)
+                		num = string.sub(payPass,i,i)
+                		if num == "0" then
+                			randomsTap(373, 1281, 8)
+                		elseif num == "1" then
+                			randomsTap(132,  955, 8)
+                		elseif num == "2" then
+                			randomsTap(377,  944, 8)
+                		elseif num == "3" then
+                			randomsTap(634,  941, 8)
+                		elseif num == "4" then
+                			randomsTap(128, 1063, 8)
+                		elseif num == "5" then
+                			randomsTap(374, 1061, 8)
+                		elseif num == "6" then
+                			randomsTap(628, 1055, 8)
+                		elseif num == "7" then
+                			randomsTap(119, 1165, 8)
+                		elseif num == "8" then
+                			randomsTap(378, 1160, 8)
+                		elseif num == "9" then
+                			randomsTap(633, 1164, 8)
+                		end
+                		mSleep(100)
+                	end
+    		    end
+    		    
+    		    --原身份已注销
+    		    mSleep(500)
+    		    x,y = findMultiColorInRegionFuzzy(0xffffff, "30|-4|0xffffff,-228|-34|0x04be02,-230|21|0x04be02,18|-36|0x04be02,15|25|0x04be02,311|-36|0x04be02,312|26|0x04be02,6|-378|0x09bb07,25|-294|0x09bb07", 90, 0, 0, 750, 1334, { orient = 2 })
+                if x~=-1 and y~=-1 then
+    				mSleep(math.random(500, 700))
+    				toast("原身份已注销",1)
+    				mSleep(500)
+    				category = "success-data"
+    				data = self.infoData.."----注销成功"
+    				break
+                end
+    		    
+    		    --支付密码错误
+    		    mSleep(500)
+    		    x,y = findMultiColorInRegionFuzzy(0x576b95, "12|3|0x576b95,10|17|0x576b95,34|7|0x576b95,50|1|0x576b95,79|12|0x576b95,117|10|0x576b95,-260|-164|0x1a1a1a,-80|-161|0x1a1a1a,41|-157|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
+                if x~=-1 and y~=-1 then
+                    pass_index = pass_index + 1
+                    toast("pass_index:"..pass_index.."\r\noldPasswordArr:"..#oldPasswordArr,1)
+                    mSleep(1000)
+                    if pass_index > #oldPasswordArr then
+                        mSleep(math.random(500, 700))
+        				toast("支付密码错误",1)
         				mSleep(500)
+        				category = "error-data"
+        				data = self.infoData.."----支付密码错误"
         				break
-        			else
-        			    mSleep(math.random(500, 700))
-    					moveTowards( 108,  1052, 80, 500)
-    					mSleep(3000)
-        			end
-				end
-				break
-			end
-		end
-        
-		::again::
-		while (true) do
-		    --确认注销
-			mSleep(500)
-			x,y = findMultiColorInRegionFuzzy(0xffffff, "111|-4|0xffffff,-184|-38|0x04be02,-185|31|0x04be02,52|-38|0x04be02,52|31|0x04be02,381|-33|0x04be02,376|27|0x04be02,-36|-607|0x171717,142|-608|0x171717", 90, 0, 0, 750, 1334, { orient = 2 })
-            if x~=-1 and y~=-1 then
-				mSleep(math.random(500, 700))
-				tap(x, y)
-				mSleep(math.random(500, 700))
-				toast("确认注销",1)
-				mSleep(500)
-			end
-			
-			--验证pay密码
-			mSleep(500)
-			x,y = findMultiColorInRegionFuzzy(0xc8c8cd, "-427|-228|0x171717,-270|-222|0x171717,-251|-225|0x171717,-260|-6|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
-			if x~=-1 and y~=-1 then
-				mSleep(math.random(500, 700))
-				tap(x - 200, y)
-				mSleep(math.random(500, 700))
-				toast("验证pay密码",1)
-				mSleep(1500)
-				break
-			end
-			
-			--账户冻结
-			mSleep(500)
-			x,y = findMultiColorInRegionFuzzy( 0xffffff, "25|9|0xffffff,50|10|0xffffff,-293|-16|0x04be02,-298|36|0x04be02,362|-17|0x04be02,355|38|0x04be02,-279|-207|0x000000,-26|-210|0x000000,9|-219|0x000000", 90, 0, 0, 749, 1333)
-			if x~=-1 and y~=-1 then
-				mSleep(math.random(500, 700))
-				break
-            end
-		end
-		
-		while true do
-		    mSleep(500)
-		    if getColor(566,1289) == 0xededed and getColor(617,1280) == 0x181818 then
-		        payPass = "800000"
-		        for i = 1, #(payPass) do
-            		mSleep(500)
-            		num = string.sub(payPass,i,i)
-            		if num == "0" then
-            			randomsTap(373, 1281, 8)
-            		elseif num == "1" then
-            			randomsTap(132,  955, 8)
-            		elseif num == "2" then
-            			randomsTap(377,  944, 8)
-            		elseif num == "3" then
-            			randomsTap(634,  941, 8)
-            		elseif num == "4" then
-            			randomsTap(128, 1063, 8)
-            		elseif num == "5" then
-            			randomsTap(374, 1061, 8)
-            		elseif num == "6" then
-            			randomsTap(628, 1055, 8)
-            		elseif num == "7" then
-            			randomsTap(119, 1165, 8)
-            		elseif num == "8" then
-            			randomsTap(378, 1160, 8)
-            		elseif num == "9" then
-            			randomsTap(633, 1164, 8)
-            		end
-            	end
-		    end
-		    
-		    --原身份已注销
-		    mSleep(500)
-		    x,y = findMultiColorInRegionFuzzy(0xffffff, "30|-4|0xffffff,-228|-34|0x04be02,-230|21|0x04be02,18|-36|0x04be02,15|25|0x04be02,311|-36|0x04be02,312|26|0x04be02,6|-378|0x09bb07,25|-294|0x09bb07", 90, 0, 0, 750, 1334, { orient = 2 })
-            if x~=-1 and y~=-1 then
-				mSleep(math.random(500, 700))
-				toast("原身份已注销",1)
-				mSleep(500)
-				category = "success-data"
-				data = self.infoData.."----注销成功"
-				break
-            end
-		    
-		    --支付密码错误
-		    mSleep(500)
-		    x,y = findMultiColorInRegionFuzzy(0x576b95, "12|3|0x576b95,10|17|0x576b95,34|7|0x576b95,50|1|0x576b95,79|12|0x576b95,117|10|0x576b95,-260|-164|0x1a1a1a,-80|-161|0x1a1a1a,41|-157|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
-            if x~=-1 and y~=-1 then
-				mSleep(math.random(500, 700))
-				toast("支付密码错误",1)
-				mSleep(500)
-				category = "error-data"
-				data = self.infoData.."----支付密码错误"
-				break
-            end
-			
-			--账户冻结
-			mSleep(500)
-			x,y = findMultiColorInRegionFuzzy( 0xffffff, "25|9|0xffffff,50|10|0xffffff,-293|-16|0x04be02,-298|36|0x04be02,362|-17|0x04be02,355|38|0x04be02,-279|-207|0x000000,-26|-210|0x000000,9|-219|0x000000", 90, 0, 0, 749, 1333)
-			if x~=-1 and y~=-1 then
-				mSleep(math.random(500, 700))
-				toast("账户冻结",1)
-				mSleep(500)
-				category = "error-data"
-				data = self.infoData.."----账户冻结"
-				break
-			end
-        
-            --网络通信出现问题
-            mSleep(500)
-            x,y = findMultiColorInRegionFuzzy(0x576b95, "34|-4|0x576b95,80|-2|0x576b95,84|12|0x576b95,110|3|0x576b95,108|-15|0x576b95,-201|-162|0x1a1a1a,-96|-160|0x1a1a1a,226|-163|0x1a1a1a,268|-174|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
-            if x~=-1 and y~=-1 then
-				mSleep(math.random(500, 700))
-				tap(x, y)
-				mSleep(math.random(500, 700))
-				while true do
-				    mSleep(500)
-				    x,y = findMultiColorInRegionFuzzy(0xc8c8cd, "-427|-228|0x171717,-270|-222|0x171717,-251|-225|0x171717,-260|-6|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
-                    if x~=-1 and y~=-1 then
+                    else
+                        mSleep(math.random(500, 700))
+        				tap(x - 260, y)
         				mSleep(math.random(500, 700))
-        				tap(57, 85)
+        				while true do
+        				    mSleep(500)
+        				    if getColor(566,1289) == 0xededed and getColor(617,1280) == 0x181818 then
+        				        break
+                            else
+                                mSleep(math.random(500, 700))
+                				tap(736,689)
+                				mSleep(math.random(500, 700))
+        				    end
+        				end
+                    end
+                end
+    			
+    			--账户冻结
+    			mSleep(500)
+    			x,y = findMultiColorInRegionFuzzy( 0xffffff, "25|9|0xffffff,50|10|0xffffff,-293|-16|0x04be02,-298|36|0x04be02,362|-17|0x04be02,355|38|0x04be02,-279|-207|0x000000,-26|-210|0x000000,9|-219|0x000000", 90, 0, 0, 749, 1333)
+    			if x~=-1 and y~=-1 then
+    				mSleep(math.random(500, 700))
+    				toast("账户冻结",1)
+    				mSleep(500)
+    				category = "error-data"
+    				data = self.infoData.."----账户冻结"
+    				break
+    			end
+            
+                --网络通信出现问题
+                mSleep(500)
+                x,y = findMultiColorInRegionFuzzy(0x576b95, "34|-4|0x576b95,80|-2|0x576b95,84|12|0x576b95,110|3|0x576b95,108|-15|0x576b95,-201|-162|0x1a1a1a,-96|-160|0x1a1a1a,226|-163|0x1a1a1a,268|-174|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
+                if x~=-1 and y~=-1 then
+    				mSleep(math.random(500, 700))
+    				tap(x, y)
+    				mSleep(math.random(500, 700))
+    				while true do
+    				    mSleep(500)
+    				    x,y = findMultiColorInRegionFuzzy(0xc8c8cd, "-427|-228|0x171717,-270|-222|0x171717,-251|-225|0x171717,-260|-6|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+                        if x~=-1 and y~=-1 then
+            				mSleep(math.random(500, 700))
+            				tap(57, 85)
+            				mSleep(math.random(500, 700))
+            			    break
+            			end
+    				end
+    				toast("网络通信出现问题",1)
+    				mSleep(500)
+    				goto networkError
+    			end
+    			
+    			--确定
+    			mSleep(500)
+    			x,y = findMultiColorInRegionFuzzy( 0x02bb00, "10|0|0x02bb00,37|0|0x02bb00,-36|-122|0x000000,-25|-121|0x040404,5|-121|0x000000,34|-125|0x000000,61|-126|0x000000", 90, 0, 0, 749, 1333)
+    			if x~=-1 and y~=-1 then
+    				mSleep(math.random(500, 700))
+    				tap(x, y)
+    				mSleep(math.random(500, 700))
+    				toast("确定",1)
+    				mSleep(500)
+    				goto again
+    			end
+    		end
+    	else
+    	    pass_index = 1
+    	    while true do
+    		    mSleep(500)
+    		    if getColor(566,1289) == 0xededed and getColor(617,1280) == 0x181818 then
+    		        if getColor(288,813) == 0x07c160 then
+    		            mSleep(math.random(500, 700))
+    		            tap(288,813)
+    		            mSleep(math.random(500, 700))
+    		            while true do
+    		                mSleep(500)
+                			x,y = findMultiColorInRegionFuzzy( 0x171717, "25|-1|0x171717,11|7|0x171717,37|13|0x171717,57|18|0x171717,82|13|0x171717,106|8|0x171717,123|5|0x171717,173|11|0xededed", 100, 0, 0, 749, 1333)
+                			if x~=-1 and y~=-1 then
+                			    mSleep(500)
+                			    toast("修改支付成功",1)
+    		                    mSleep(1000)
+    		                    category = "success-data"
+    				            data = self.infoData.."----修改支付成功"
+    		                    break
+                			end
+                			
+                			--账户冻结
+                		    mSleep(500)
+                		    x,y = findMultiColorInRegionFuzzy(0x576b95, "17|1|0x576b95,45|-2|0x576b95,1|-242|0x1a1a1a,18|-232|0x1a1a1a,10|-221|0x1a1a1a,29|-235|0x1a1a1a,29|-226|0x1a1a1a,47|-237|0x1a1a1a,46|-228|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
+                            if x ~= -1 then
+                                mSleep(math.random(500, 700))
+                				toast("账户冻结",1)
+                				mSleep(500)
+                				category = "error-data"
+                				data = self.infoData.."----账户冻结"
+                				break
+                            end
+                            
+                            --账户冻结
+                            mSleep(500)
+                            x,y = findMultiColorInRegionFuzzy(0x5d7199, "17|-2|0x5d7199,44|-3|0x5d7199,3|-243|0x212121,19|-243|0x212121,10|-225|0x212121,40|-243|0x212121,52|-236|0x212121,46|-229|0x212121,52|-220|0x212121", 90, 0, 0, 750, 1334, { orient = 2 })
+                            if x ~= -1 then
+                                mSleep(math.random(500, 700))
+                				toast("账户冻结",1)
+                				mSleep(500)
+                				category = "error-data"
+                				data = self.infoData.."----账户冻结"
+                				break
+                            end
+    		            end
+    		            break
+    		        elseif getColor(345,309) == 0x1a1a1a then
+    		            oldPasswordArr = strSplit(oldPassword,"-")
+    		            payPass = string.gsub(oldPasswordArr[pass_index],"%s+","")
+    		        elseif getColor(491,325) == 0x1a1a1a then
+		                payPass = string.gsub(newPassword,"%s+","")
+    		        end
+		            
+		            mSleep(500)
+    		        for i = 1, #(payPass) do
+                		mSleep(500)
+                		num = string.sub(payPass,i,i)
+                		if num == "0" then
+                			randomsTap(373, 1281, 8)
+                		elseif num == "1" then
+                			randomsTap(132,  955, 8)
+                		elseif num == "2" then
+                			randomsTap(377,  944, 8)
+                		elseif num == "3" then
+                			randomsTap(634,  941, 8)
+                		elseif num == "4" then
+                			randomsTap(128, 1063, 8)
+                		elseif num == "5" then
+                			randomsTap(374, 1061, 8)
+                		elseif num == "6" then
+                			randomsTap(628, 1055, 8)
+                		elseif num == "7" then
+                			randomsTap(119, 1165, 8)
+                		elseif num == "8" then
+                			randomsTap(378, 1160, 8)
+                		elseif num == "9" then
+                			randomsTap(633, 1164, 8)
+                		end
+                		mSleep(100)
+                	end
+    		    end
+    		    
+    		    --账户冻结
+    		    mSleep(500)
+    		    x,y = findMultiColorInRegionFuzzy(0x576b95, "17|1|0x576b95,45|-2|0x576b95,1|-242|0x1a1a1a,18|-232|0x1a1a1a,10|-221|0x1a1a1a,29|-235|0x1a1a1a,29|-226|0x1a1a1a,47|-237|0x1a1a1a,46|-228|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
+                if x ~= -1 then
+                    mSleep(math.random(500, 700))
+    				toast("账户冻结",1)
+    				mSleep(500)
+    				category = "error-data"
+    				data = self.infoData.."----账户冻结"
+    				break
+                end
+                
+                --账户冻结
+                mSleep(500)
+                x,y = findMultiColorInRegionFuzzy(0x5d7199, "17|-2|0x5d7199,44|-3|0x5d7199,3|-243|0x212121,19|-243|0x212121,10|-225|0x212121,40|-243|0x212121,52|-236|0x212121,46|-229|0x212121,52|-220|0x212121", 90, 0, 0, 750, 1334, { orient = 2 })
+                if x ~= -1 then
+                    mSleep(math.random(500, 700))
+    				toast("账户冻结",1)
+    				mSleep(500)
+    				category = "error-data"
+    				data = self.infoData.."----账户冻结"
+    				break
+                end
+                
+                --支付密码错误
+                mSleep(500)
+                x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "24|0|0x1a1a1a,12|7|0x1a1a1a,36|15|0x1a1a1a,55|14|0x1a1a1a,80|18|0x1a1a1a,123|17|0x1a1a1a,219|17|0x1a1a1a,261|9|0x1a1a1a,294|13|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
+                if x ~= -1 then
+                    mSleep(math.random(500, 700))
+    				toast("支付密码错误",1)
+    				mSleep(500)
+    				category = "error-data"
+    				data = self.infoData.."----支付密码错误"
+    				break
+                end
+    		    
+    		    --支付密码错误
+    		    mSleep(500)
+    		    x,y = findMultiColorInRegionFuzzy(0x576b95, "12|3|0x576b95,10|17|0x576b95,34|7|0x576b95,50|1|0x576b95,79|12|0x576b95,117|10|0x576b95,-260|-164|0x1a1a1a,-80|-161|0x1a1a1a,41|-157|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
+                if x~=-1 and y~=-1 then
+                    pass_index = pass_index + 1
+                    toast("pass_index:"..pass_index.."\r\noldPasswordArr:"..#oldPasswordArr,1)
+                    mSleep(1000)
+                    if pass_index > #oldPasswordArr then
+                        mSleep(math.random(500, 700))
+        				toast("支付密码错误",1)
+        				mSleep(500)
+        				category = "error-data"
+        				data = self.infoData.."----支付密码错误"
+        				break
+                    else
+                        mSleep(math.random(500, 700))
+        				tap(x - 260, y)
         				mSleep(math.random(500, 700))
-        			    break
-        			end
-				end
-				toast("网络通信出现问题",1)
-				mSleep(500)
-				goto networkError
-			end
-			
-			--确定
-			mSleep(500)
-			x,y = findMultiColorInRegionFuzzy( 0x02bb00, "10|0|0x02bb00,37|0|0x02bb00,-36|-122|0x000000,-25|-121|0x040404,5|-121|0x000000,34|-125|0x000000,61|-126|0x000000", 90, 0, 0, 749, 1333)
-			if x~=-1 and y~=-1 then
-				mSleep(math.random(500, 700))
-				tap(x, y)
-				mSleep(math.random(500, 700))
-				toast("确定",1)
-				mSleep(500)
-				goto again
-			end
-		end
-		
+        				while true do
+        				    mSleep(500)
+        				    if getColor(566,1289) == 0xededed and getColor(617,1280) == 0x181818 then
+        				        break
+                            else
+                                mSleep(math.random(500, 700))
+                				tap(736,689)
+                				mSleep(math.random(500, 700))
+        				    end
+        				end
+                    end
+                end
+    	    end
+        end
+	
 		::pushData::
     	local plugin_ok,api_ok,data = ts_enterprise_lib:plugin_api_call("DataCenter","insert_data",category,data)
     	if plugin_ok and api_ok then
     		toast("插入数据成功", 1)
     		mSleep(1000)
     	else
-    		toast("插入数据失败，重新插入", 1)
+    		toast("插入数据失败，重新插入:"..tostring(plugin_ok).."----"..tostring(api_ok), 1)
     		mSleep(1000)
     		goto pushData
     	end
@@ -733,7 +941,7 @@ function model:loginAccount()
     		toast("插入数据成功", 1)
     		mSleep(1000)
     	else
-    		toast("插入数据失败，重新插入", 1)
+    		toast("插入数据失败，重新插入:"..tostring(plugin_ok).."----"..tostring(api_ok), 1)
     		mSleep(1000)
     		goto pushData
     	end
@@ -742,10 +950,92 @@ function model:loginAccount()
 end
 
 function model:main()
+    local w,h = getScreenSize()
+	MyTable = {
+		["style"] = "default",
+		["width"] = w,
+		["height"] = h,
+		["config"] = "save_001.dat",
+		["timer"] = 100,
+		views = {
+			{
+				["type"] = "Label",
+				["text"] = "流程脚本",
+				["size"] = 30,
+				["align"] = "center",
+				["color"] = "255,0,0",
+			},
+			{
+				["type"] = "Label",
+				["text"] = "====================",
+				["size"] = 20,
+				["align"] = "center",
+				["color"] = "255,0,0",
+			},
+			{
+				["type"] = "Label",
+				["text"] = "选择进入应用后的修改流程",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255",
+			},
+			{
+				["type"] = "RadioGroup",                    
+				["list"] = "注销支付功能,修改支付密码",
+				["select"] = "0",  
+				["countperline"] = "4",
+			},
+			{
+				["type"] = "Label",
+				["text"] = "输入原支付密码(多个密码用-隔开，单个就直接输入就可以)",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255",
+			},
+			{
+				["type"] = "Edit",        
+				["prompt"] = "请输入您的原支付密码",
+				["text"] = "默认值",       
+			},
+			{
+				["type"] = "Label",
+				["text"] = "设置修改支付密码的新密码",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255",
+			},
+			{
+				["type"] = "Edit",        
+				["prompt"] = "请输入您要设置的新密码",
+				["text"] = "默认值",       
+			},
+		}
+	}
+
+	local MyJsonString = json.encode(MyTable)
+
+	ret, processWay, oldPassword, newPassword = showUI(MyJsonString)
+	if ret == 0 then
+		dialog("取消运行脚本", 3)
+		luaExit()
+	end
+	
+	if oldPassword == "" or oldPassword == "默认值" then
+		dialog("原支付密码不能为空，请重新运行脚本设置支付密码", 0)
+		luaExit()
+	end
+	
+	if processWay == "1" then
+	    if newPassword == "" or newPassword == "默认值" then
+    		dialog("当前选择修改支付密码，新密码不能为空，请重新运行脚本设置新密码", 0)
+    		luaExit()
+    	end
+	end
+	
     while true do
     	self:getConfig()
     	self:run()
-    	self:loginAccount()
+    	self:loginAccount(processWay,oldPassword,newPassword)
     	toast('一个流程结束，进行下一个',1)
     end
 end
