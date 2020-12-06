@@ -574,6 +574,18 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				toast("三个点",1)
 				mSleep(500)
 			end
+			
+			--实名认证
+			mSleep(500)
+			x,y = findMultiColorInRegionFuzzy(0x171717, "26|12|0x171717,45|8|0x171717,63|12|0x171717,110|9|0x171717,222|120|0x808080,258|106|0x808080,275|106|0x808080,295|110|0x808080,346|109|0x808080", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x~=-1 and y~=-1 then
+				mSleep(math.random(500, 700))
+				toast("未实名",1)
+				mSleep(500)
+				category = "error-data"
+				data = self.infoData.."----未实名"
+				goto pushData
+            end
 
 			--注销wcPay
 			mSleep(500)
@@ -854,6 +866,18 @@ function model:loginAccount(processWay,oldPassword,newPassword)
                 		mSleep(100)
                 	end
     		    end
+    		    
+    		    --账户被锁定
+    		    mSleep(500)
+    		    x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "-1|19|0x1a1a1a,10|0|0x1a1a1a,21|7|0x1a1a1a,15|17|0x1a1a1a,34|13|0x1a1a1a,56|15|0x1a1a1a,87|8|0x1a1a1a,115|-2|0x1a1a1a,182|9|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
+                if x ~= -1 then
+                    mSleep(math.random(500, 700))
+    				toast("账户被锁定",1)
+    				mSleep(500)
+    				category = "error-data"
+    				data = self.infoData.."----账户被锁定"
+    				break
+                end
     		    
     		    --账户冻结
     		    mSleep(500)
