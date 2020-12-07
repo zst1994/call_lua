@@ -1008,15 +1008,32 @@ end
 
 
 
+while (true) do
+		
 
-a= {1,2,3}
-b = a[1]
+--			mSleep(500)
+--			x,y = findMultiColorInRegionFuzzy( 0x07c160, "-4|-26|0x07c160,-569|-17|0xf5f5f5,-54|6|0xf5f5f5", 90, 0, 1190, 749, 1333)
+--			if x~=-1 and y~=-1 then
+--				break
+--			else
+--				mSleep(math.random(500, 700))
+--				tap(659, 1269)
+--				mSleep(math.random(500, 700))
+--			end
+			
+			--绑定手机号码
+			mSleep(500)
+			x,y = findMultiColorInRegionFuzzy( 0x181818, "13|0|0x181818,26|0|0x181818,36|0|0x181818,50|0|0x181818,63|0|0x181818,79|-3|0x181818,109|-3|0x181818,129|-3|0x181818,124|-235|0x171717", 90, 0, 0, 749, 1333)
+			dialog(x..y, time)
+			if x~=-1 and y~=-1 then
+				mSleep(1000)
+				mSleep(2000)
+				toast("绑定手机号码",1)
+				mSleep(1000)
+				break
+			end
 
-
-for var= 1, #a do
-	dialog(a[var], time)
-end
-
+		end
 
 
 
