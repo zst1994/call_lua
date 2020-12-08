@@ -688,7 +688,13 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				mSleep(500)
 				x,y = findMultiColorInRegionFuzzy( 0xffffff, "25|9|0xffffff,50|10|0xffffff,-293|-16|0x04be02,-298|36|0x04be02,362|-17|0x04be02,355|38|0x04be02,-279|-207|0x000000,-26|-210|0x000000,9|-219|0x000000", 90, 0, 0, 749, 1333)
 				if x~=-1 and y~=-1 then
-					mSleep(math.random(500, 700))
+					break
+				end
+				
+				--原身份已注销
+				mSleep(500)
+				x,y = findMultiColorInRegionFuzzy(0xffffff, "30|-4|0xffffff,-228|-34|0x04be02,-230|21|0x04be02,18|-36|0x04be02,15|25|0x04be02,311|-36|0x04be02,312|26|0x04be02,6|-378|0x09bb07,25|-294|0x09bb07", 90, 0, 0, 750, 1334, { orient = 2 })
+				if x~=-1 and y~=-1 then
 					break
 				end
 			end
