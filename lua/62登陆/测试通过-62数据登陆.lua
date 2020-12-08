@@ -160,6 +160,7 @@ function clear_data (bid)
 	delFileEx(dataPath.."/Library/APCfgInfo.plist") 
 	delFileEx(dataPath.."/Library/APWsjGameConfInfo.plist") 
 	delFileEx(dataPath.."/Library/Preferences/*")
+	delFileEx(dataPath.."/Library/WechatPrivate/*")
 	mSleep(500)
 	newfolder(dataPath.."/Documents") 
 	newfolder(dataPath.."/tmp")
@@ -192,11 +193,11 @@ function main()
 end
 
 function getConfig()
-	tb = readFile(userPath().."/res/config.txt") 
-	if table then 
-		wc_bid = string.gsub(tb[1],"%s+","")
-		wc_folder = string.gsub(tb[2],"%s+","")
-		wc_file = string.gsub(tb[3],"%s+","")
+	tab = readFile(userPath().."/res/config1.txt") 
+	if tab then 
+		wc_bid = string.gsub(tab[1],"%s+","")
+		wc_folder = string.gsub(tab[2],"%s+","")
+		wc_file = string.gsub(tab[3],"%s+","")
 		toast("获取配置信息成功",1)
 		mSleep(1000)
 	else

@@ -1,5 +1,7 @@
 require("TSLib")
 local ts 				= require('ts')
+local sz 				= require("sz")
+local sqlite3 			= sz.sqlite3	
 local json 				= ts.json
 local ts_enterprise_lib = require("ts_enterprise_lib")
 
@@ -16,6 +18,7 @@ model.password = ""
 model.six_two_data = ""
 
 model.infoData = ""
+model.word = ""
 
 function model:clear_App()
 	::run_again::
@@ -179,6 +182,7 @@ function model:clear_data (bid)
 	delFileEx(dataPath.."/Library/APCfgInfo.plist") 
 	delFileEx(dataPath.."/Library/APWsjGameConfInfo.plist") 
 	delFileEx(dataPath.."/Library/Preferences/*")
+	delFileEx(dataPath..self.wc_folder.."*")
 	mSleep(500)
 	newfolder(dataPath.."/Documents") 
 	newfolder(dataPath.."/tmp")
@@ -198,6 +202,7 @@ function model:clear_data (bid)
 end
 
 function model:getConfig()
+	::read_file::
 	tab = readFile(userPath().."/res/config1.txt") 
 	if tab then 
 		self.wc_bid = string.gsub(tab[1],"%s+","")
@@ -208,9 +213,19 @@ function model:getConfig()
 		toast("获取配置信息成功",1)
 		mSleep(1000)
 	else
-		dialog("文件不存在")
+		dialog("文件不存在",5)
+		goto read_file
 	end
 end
+
+function model:getList(path) 
+	local a = io.popen("ls "..path) 
+	local f = {}; 
+	for l in a:lines() do 
+		table.insert(f,l) 
+	end 
+	return f 
+end 
 
 function model:run()
 	mSleep(1000)
@@ -545,7 +560,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				tap(659, 1269)
 				mSleep(math.random(500, 700))
 			end
-			
+
 			--绑定手机号码
 			mSleep(500)
 			x,y = findMultiColorInRegionFuzzy( 0x181818, "13|0|0x181818,26|0|0x181818,36|0|0x181818,50|0|0x181818,63|0|0x181818,79|-3|0x181818,109|-3|0x181818,129|-3|0x181818,124|-235|0x171717", 90, 0, 0, 749, 1333)
@@ -566,78 +581,80 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 		end
 
 		::networkError::
-		while (true) do
-			mSleep(500)
-			x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "5|25|0x1a1a1a,14|7|0x1a1a1a,29|11|0x1a1a1a,45|16|0x1a1a1a,279|16|0x576b95,336|2|0x576b95,359|22|0x576b95,387|16|0x576b95,399|18|0x576b95", 90, 0, 0, 750, 1334, { orient = 2 })
-			if x~=-1 and y~=-1 then
-				mSleep(math.random(500, 700))
-				tap(x, y)
-				mSleep(math.random(500, 700))
-				toast("忽略",1)
+		if processWay == "0" or processWay == "1" then
+			while (true) do
 				mSleep(500)
-			end
-
-			--支付
-			mSleep(500)
-			x,y = findMultiColorInRegionFuzzy( 0x00c777, "-13|-3|0x00c777,24|-2|0x00c777,66|-12|0x1a1a1a,91|-12|0x1a1a1a,79|6|0x1a1a1a,103|2|0x1a1a1a,122|-1|0x1a1a1a", 100, 0, 0, 749, 1333)
-			if x~=-1 and y~=-1 then
-				mSleep(math.random(500, 700))
-				tap(x + 200, y + 20)
-				mSleep(math.random(500, 700))
-				toast("支付",1)
-				mSleep(500)
-			end
-
-			--三个点
-			mSleep(500)
-			x,y = findMultiColorInRegionFuzzy( 0x181818, "-7|-2|0xededed,-14|-2|0x181818,-26|2|0xededed,7|0|0xededed,14|-2|0x181818,30|-2|0xededed,-292|5|0x171717,21|77|0x3cb371,23|319|0x3cb371", 100, 0, 0, 749, 1333)
-			if x~=-1 and y~=-1 then
-				mSleep(math.random(500, 700))
-				tap(x, y)
-				mSleep(math.random(500, 700))
-				toast("三个点",1)
-				mSleep(6000)
-			end
-
-			--实名认证
-			mSleep(500)
-			x,y = findMultiColorInRegionFuzzy(0x171717, "26|12|0x171717,45|8|0x171717,63|12|0x171717,110|9|0x171717,222|120|0x808080,258|106|0x808080,275|106|0x808080,295|110|0x808080,346|109|0x808080", 90, 0, 0, 750, 1334, { orient = 2 })
-			if x~=-1 and y~=-1 then
-				mSleep(math.random(500, 700))
-				toast("未实名",1)
-				mSleep(500)
-				category = "error-data"
-				data = self.infoData.."----未实名"
-				goto pushData
-			end
-
-			--注销wcPay
-			mSleep(500)
-			x,y = findMultiColorInRegionFuzzy( 0x171717, "25|-1|0x171717,11|7|0x171717,37|13|0x171717,57|18|0x171717,82|13|0x171717,106|8|0x171717,123|5|0x171717,173|11|0xededed", 100, 0, 0, 749, 1333)
-			if x~=-1 and y~=-1 then
-				if processWay == "0" then
-					while true do
-						mSleep(500)
-						x,y = findMultiColorInRegionFuzzy(0x1b1b1b, "16|11|0x262626,11|22|0x1a1a1a,45|10|0x212121,63|14|0x1a1a1a,97|14|0x1a1a1a,116|14|0x272727,148|-1|0x1a1a1a,168|20|0x1a1a1a,187|8|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
-						if x~=-1 and y~=-1 then
-							mSleep(math.random(500, 700))
-							tap(x, y)
-							mSleep(math.random(500, 700))
-							toast("注销wcPay",1)
-							mSleep(500)
-							break
-						else
-							mSleep(math.random(500, 700))
-							moveTowards( 108,  1052, 80, 500)
-							mSleep(3000)
-						end
-					end
-				else
+				x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "5|25|0x1a1a1a,14|7|0x1a1a1a,29|11|0x1a1a1a,45|16|0x1a1a1a,279|16|0x576b95,336|2|0x576b95,359|22|0x576b95,387|16|0x576b95,399|18|0x576b95", 90, 0, 0, 750, 1334, { orient = 2 })
+				if x~=-1 and y~=-1 then
 					mSleep(math.random(500, 700))
-					tap(414,319)
+					tap(x, y)
 					mSleep(math.random(500, 700))
+					toast("忽略",1)
+					mSleep(500)
 				end
-				break
+
+				--支付
+				mSleep(500)
+				x,y = findMultiColorInRegionFuzzy( 0x00c777, "-13|-3|0x00c777,24|-2|0x00c777,66|-12|0x1a1a1a,91|-12|0x1a1a1a,79|6|0x1a1a1a,103|2|0x1a1a1a,122|-1|0x1a1a1a", 100, 0, 0, 749, 1333)
+				if x~=-1 and y~=-1 then
+					mSleep(math.random(500, 700))
+					tap(x + 200, y + 20)
+					mSleep(math.random(500, 700))
+					toast("支付",1)
+					mSleep(500)
+				end
+
+				--三个点
+				mSleep(500)
+				x,y = findMultiColorInRegionFuzzy( 0x181818, "-7|-2|0xededed,-14|-2|0x181818,-26|2|0xededed,7|0|0xededed,14|-2|0x181818,30|-2|0xededed,-292|5|0x171717,21|77|0x3cb371,23|319|0x3cb371", 100, 0, 0, 749, 1333)
+				if x~=-1 and y~=-1 then
+					mSleep(math.random(500, 700))
+					tap(x, y)
+					mSleep(math.random(500, 700))
+					toast("三个点",1)
+					mSleep(6000)
+				end
+
+				--实名认证
+				mSleep(500)
+				x,y = findMultiColorInRegionFuzzy(0x171717, "26|12|0x171717,45|8|0x171717,63|12|0x171717,110|9|0x171717,222|120|0x808080,258|106|0x808080,275|106|0x808080,295|110|0x808080,346|109|0x808080", 90, 0, 0, 750, 1334, { orient = 2 })
+				if x~=-1 and y~=-1 then
+					mSleep(math.random(500, 700))
+					toast("未实名",1)
+					mSleep(500)
+					category = "error-data"
+					data = self.infoData.."----未实名"
+					goto pushData
+				end
+
+				--注销wcPay
+				mSleep(500)
+				x,y = findMultiColorInRegionFuzzy( 0x171717, "25|-1|0x171717,11|7|0x171717,37|13|0x171717,57|18|0x171717,82|13|0x171717,106|8|0x171717,123|5|0x171717,173|11|0xededed", 100, 0, 0, 749, 1333)
+				if x~=-1 and y~=-1 then
+					if processWay == "0" then
+						while true do
+							mSleep(500)
+							x,y = findMultiColorInRegionFuzzy(0x1b1b1b, "16|11|0x262626,11|22|0x1a1a1a,45|10|0x212121,63|14|0x1a1a1a,97|14|0x1a1a1a,116|14|0x272727,148|-1|0x1a1a1a,168|20|0x1a1a1a,187|8|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
+							if x~=-1 and y~=-1 then
+								mSleep(math.random(500, 700))
+								tap(x, y)
+								mSleep(math.random(500, 700))
+								toast("注销wcPay",1)
+								mSleep(500)
+								break
+							else
+								mSleep(math.random(500, 700))
+								moveTowards( 108,  1052, 80, 500)
+								mSleep(3000)
+							end
+						end
+					elseif processWay == "1" then
+						mSleep(math.random(500, 700))
+						tap(414,319)
+						mSleep(math.random(500, 700))
+					end
+					break
+				end
 			end
 		end
 
@@ -809,7 +826,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 					goto again
 				end
 			end
-		else
+		elseif processWay == "1" then
 			pass_index = 1
 			while true do
 				mSleep(500)
@@ -978,6 +995,65 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 					end
 				end
 			end
+		elseif processWay == "2" then
+			while (true) do
+				mSleep(500)
+				x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "5|25|0x1a1a1a,14|7|0x1a1a1a,29|11|0x1a1a1a,45|16|0x1a1a1a,279|16|0x576b95,336|2|0x576b95,359|22|0x576b95,387|16|0x576b95,399|18|0x576b95", 90, 0, 0, 750, 1334, { orient = 2 })
+				if x~=-1 and y~=-1 then
+					mSleep(math.random(500, 700))
+					tap(x, y)
+					mSleep(math.random(500, 700))
+					toast("忽略",1)
+					mSleep(500)
+				end
+
+				--支付
+				mSleep(500)
+				x,y = findMultiColorInRegionFuzzy( 0x00c777, "-13|-3|0x00c777,24|-2|0x00c777,66|-12|0x1a1a1a,91|-12|0x1a1a1a,79|6|0x1a1a1a,103|2|0x1a1a1a,122|-1|0x1a1a1a", 100, 0, 0, 749, 1333)
+				if x~=-1 and y~=-1 then
+					mSleep(math.random(500, 700))
+					tap(x + 200, y + 180)
+					mSleep(math.random(500, 700))
+					toast("收藏",1)
+					mSleep(500)
+				end
+
+				mSleep(500)
+				if getColor(694, 84) == 0x181818 and getColor(351, 85) == 0x171717 then
+					local Wildcard = self:getList(appDataPath(self.wc_bid)..self.wc_folder) 
+					for var = 1,#Wildcard do 
+						local bool = isFileExist(appDataPath(self.wc_bid)..self.wc_folder..Wildcard[var].."/Favorites/fav.db")
+						if bool then
+							local db = sqlite3.open(appDataPath(self.wc_bid)..self.wc_folder..Wildcard[var].."/Favorites/fav.db")
+							local open = db:isopen("fav")
+							if open then
+								for a in db:nrows('SELECT * FROM FavoritesSearchTable') do 
+									for k,v in pairs(a) do
+										v = string.gsub(v,"%s+","")
+										if k == "SearchStr" then
+											str = string.match(v, '密码:800000ID:')
+											if type(str) ~= "nil" then
+												self.word = v
+												category = "success-data"
+												data = self.infoData.."----"..self.word
+												toast("识别内容："..self.word,1)
+												mSleep(1000)
+											else
+												category = "error-data"
+												data = self.infoData.."----无关键词"
+											end
+										else
+											category = "error-data"
+											data = self.infoData.."----无关键词"
+										end
+									end
+								end
+							end
+						end
+					end
+					break
+				end
+			end
 		end
 
 		::pushData::
@@ -1030,52 +1106,72 @@ function model:main()
 --			},
 --			{
 --				["type"] = "Label",
---				["text"] = "选择进入应用后的修改流程",
---				["size"] = 15,
---				["align"] = "center",
---				["color"] = "0,0,255",
---			},
---			{
---				["type"] = "RadioGroup",                    
---				["list"] = "注销支付功能,修改支付密码",
---				["select"] = "0",  
---				["countperline"] = "4",
---			},
---			{
---				["type"] = "Label",
---				["text"] = "输入原支付密码(多个密码用-隔开，单个就直接输入就可以)",
---				["size"] = 15,
---				["align"] = "center",
---				["color"] = "0,0,255",
---			},
---			{
---				["type"] = "Edit",        
---				["prompt"] = "请输入您的原支付密码",
---				["text"] = "默认值",       
---			},
---			{
---				["type"] = "Label",
---				["text"] = "设置修改支付密码的新密码",
---				["size"] = 15,
---				["align"] = "center",
---				["color"] = "0,0,255",
---			},
---			{
---				["type"] = "Edit",        
---				["prompt"] = "请输入您要设置的新密码",
---				["text"] = "默认值",       
---			},
---		}
---	}
+	--				["text"] = "选择进入应用后的修改流程",
+	--				["size"] = 15,
+	--				["align"] = "center",
+	--				["color"] = "0,0,255",
+	--			},
+	--			{
+	--				["type"] = "RadioGroup",                    
+	--				["list"] = "注销支付功能,修改支付密码",
+	--				["select"] = "0",  
+	--				["countperline"] = "4",
+	--			},
+	--			{
+	--				["type"] = "Label",
+	--				["text"] = "输入原支付密码(多个密码用-隔开，单个就直接输入就可以)",
+	--				["size"] = 15,
+	--				["align"] = "center",
+	--				["color"] = "0,0,255",
+	--			},
+	--			{
+	--				["type"] = "Edit",        
+	--				["prompt"] = "请输入您的原支付密码",
+	--				["text"] = "默认值",       
+	--			},
+	--			{
+	--				["type"] = "Label",
+	--				["text"] = "设置修改支付密码的新密码",
+	--				["size"] = 15,
+	--				["align"] = "center",
+	--				["color"] = "0,0,255",
+	--			},
+	--			{
+	--				["type"] = "Edit",        
+	--				["prompt"] = "请输入您要设置的新密码",
+	--				["text"] = "默认值",       
+	--			},
+	--		}
+	--	}
 
---	local MyJsonString = json.encode(MyTable)
+	--	local MyJsonString = json.encode(MyTable)
 
---	ret, processWay, oldPassword, newPassword = showUI(MyJsonString)
---	if ret == 0 then
---		dialog("取消运行脚本", 3)
---		luaExit()
---	end
-	
+	--	ret, processWay, oldPassword, newPassword = showUI(MyJsonString)
+	--	if ret == 0 then
+	--		dialog("取消运行脚本", 3)
+	--		luaExit()
+	--	end
+
+	local m = TSVersions()
+	local a = ts.version()
+	local tp = getDeviceType()
+	if m <= "1.3.3" then
+		dialog("请使用 v1.3.3 及其以上版本 TSLib",0)
+		lua_exit()
+	end
+
+	if  tp >= 0  and tp <= 2 then
+		if a <= "1.3.9" then
+			dialog("请使用 iOS v1.4.0 及其以上版本 ts.so",0)
+			lua_exit()
+		end
+	elseif  tp >= 3 and tp <= 4 then
+		if a <= "1.1.0" then
+			dialog("请使用安卓 v1.1.1 及其以上版本 ts.so",0)
+			lua_exit()
+		end
+	end
+
 	if oldPassword == "" or oldPassword == "默认值" then
 		dialog("原支付密码不能为空，请重新运行脚本设置支付密码", 0)
 		luaExit()
@@ -1097,6 +1193,5 @@ function model:main()
 end
 
 model:main()
-
 
 

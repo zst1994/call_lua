@@ -1005,35 +1005,118 @@ end
 
 
 
+--os.execute("rm -rf "..appDataPath("com.tencent.xin").."/Library/WechatPrivate");
+--flag = ts.hlfs.removeDir(appDataPath("com.tencent.xin").."/Library/WechatPrivate")--删除 hello 文件夹及所有文件
+--if flag then
+--	dialog("删除成功")
+--else
+--	dialog("删除失败或没有此文件夹")
+--end
 
+--ts.binaryzation(414,924,443,964,200)
 
+local API = "Hk8Ve2Duh6QCR5XUxLpRxPyv"
+local Secret  = "fD0az8pW8lNhGptCZC4TPfMWX5CyVtnh"
 
-while (true) do
-		
+local tab={
+	language_type="ENG",
+	detect_direction="true",
+	detect_language="false",
+	ocrType = 2
+}
 
---			mSleep(500)
---			x,y = findMultiColorInRegionFuzzy( 0x07c160, "-4|-26|0x07c160,-569|-17|0xf5f5f5,-54|6|0xf5f5f5", 90, 0, 1190, 749, 1333)
---			if x~=-1 and y~=-1 then
---				break
---			else
---				mSleep(math.random(500, 700))
---				tap(659, 1269)
---				mSleep(math.random(500, 700))
---			end
-			
-			--绑定手机号码
-			mSleep(500)
-			x,y = findMultiColorInRegionFuzzy( 0x181818, "13|0|0x181818,26|0|0x181818,36|0|0x181818,50|0|0x181818,63|0|0x181818,79|-3|0x181818,109|-3|0x181818,129|-3|0x181818,124|-235|0x171717", 90, 0, 0, 749, 1333)
-			dialog(x..y, time)
-			if x~=-1 and y~=-1 then
-				mSleep(1000)
-				mSleep(2000)
-				toast("绑定手机号码",1)
-				mSleep(1000)
-				break
-			end
+::getBaiDuToken::
+local code,access_token = getAccessToken(API,Secret)
+if code then
+	::snap::
 
+	local content_name = userPath() .. "/res/baiduAI_content_name1.jpg"
+
+	--内容
+	snapshot(content_name, 416,926,443,964) 
+	mSleep(100)
+	
+	ts.img.binaryzationImg(userPath().."/res/baiduAI_content_name1.jpg",250)
+	mSleep(500)
+	local code, body = baiduAI(access_token,userPath().."/res/tmp.jpg",tab)
+	if code then
+		local tmp = json.decode(body)
+
+		if #tmp.words_result > 0 then
+			content_num = string.lower(tmp.words_result[1].words)
+		else
+			toast("识别内容失败，重新截图识别" .. tostring(body),1)
+			mSleep(3000)
+			goto snap        
 		end
+	else
+		toast("识别内容失败\n" .. tostring(body),1)
+		mSleep(3000)
+		goto snap
+	end 
+
+	if #content_num >= 1 then
+		sendCodeTime = 0
+		content_num = string.sub(content_num,#content_num - 1, #content_num)
+		toast("识别内容：\r\n"..content_num,1)
+		mSleep(1000)
+	else
+		toast("识别内容失败,重新截图识别" .. tostring(body),1)
+		mSleep(3000)
+		goto snap 
+	end
+else
+	toast("获取token失败",1)
+	goto getBaiDuToken
+end
 
 
 
+
+
+
+--local ts = require("ts")
+--					local plist = ts.plist
+--local tmp2 = plist.read(appDataPath("com.tencent.xin").."/Documents/Container/Documents/ad9c0fb01c2bdf2961e50f2140910dc7/WCPay/paymanage.info")                --读取 PLIST 文件内容并返回一个 TABLE
+--for k, v in pairs(tmp2) do
+--	dialog(k.."==="..v, 0)
+
+--end	
+
+
+
+
+--local getList = function(path) 
+--	local a = io.popen("ls "..path) 
+--	local f = {}; 
+--	for l in a:lines() do 
+--		table.insert(f,l) 
+--	end 
+--	return f 
+--end 
+
+--local Wildcard = getList(appDataPath("com.tencent.xin").."/Library/WechatPrivate") 
+
+--for var = 1,#Wildcard do 
+--	local bool = isFileExist(appDataPath("com.tencent.xin").."/Library/WechatPrivate/"..Wildcard[var].."/Favorites/fav.db")
+--	if bool then
+--		local sz = require("sz")
+--		local sqlite3 = sz.sqlite3	
+--		local db = sqlite3.open(appDataPath("com.tencent.xin").."/Library/WechatPrivate/"..Wildcard[var].."/Favorites/fav.db")
+--		local open = db:isopen("fav")
+--		if open then
+--			for a in db:nrows('SELECT * FROM FavoritesSearchTable') do 
+--				for k,v in pairs(a) do
+--					v = string.gsub(v,"%s+","")
+--					if k == "SearchStr" then
+--						str = string.match(v, '密码:800000ID:')
+--						if type(str) ~= "nil" then
+--							dialog(v, time)
+--						end
+--					end
+--				end
+
+--			end
+--		end
+--	end
+--end
