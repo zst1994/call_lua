@@ -83,6 +83,7 @@ function write_six_two()
 
 	local data =  file_read_write("62数据.txt","已经读取","----已经读取")
 	data = TryRemoveUtf8BOM(data)
+	toast(data,1)
 	if data ~= "" and data ~= nil then
 		local data = strSplit(data,"----")
 		if #data > 2 then

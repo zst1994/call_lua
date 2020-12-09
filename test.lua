@@ -1015,63 +1015,111 @@ end
 
 --ts.binaryzation(414,924,443,964,200)
 
-local API = "Hk8Ve2Duh6QCR5XUxLpRxPyv"
-local Secret  = "fD0az8pW8lNhGptCZC4TPfMWX5CyVtnh"
-
-local tab={
-	language_type="ENG",
-	detect_direction="true",
-	detect_language="false",
-	ocrType = 2
-}
-
-::getBaiDuToken::
-local code,access_token = getAccessToken(API,Secret)
-if code then
-	::snap::
-
-	local content_name = userPath() .. "/res/baiduAI_content_name1.jpg"
-
-	--内容
-	snapshot(content_name, 416,926,443,964) 
-	mSleep(100)
-	
-	ts.img.binaryzationImg(userPath().."/res/baiduAI_content_name1.jpg",250)
-	mSleep(500)
-	local code, body = baiduAI(access_token,userPath().."/res/tmp.jpg",tab)
-	if code then
-		local tmp = json.decode(body)
-
-		if #tmp.words_result > 0 then
-			content_num = string.lower(tmp.words_result[1].words)
-		else
-			toast("识别内容失败，重新截图识别" .. tostring(body),1)
-			mSleep(3000)
-			goto snap        
-		end
-	else
-		toast("识别内容失败\n" .. tostring(body),1)
-		mSleep(3000)
-		goto snap
-	end 
-
-	if #content_num >= 1 then
-		sendCodeTime = 0
-		content_num = string.sub(content_num,#content_num - 1, #content_num)
-		toast("识别内容：\r\n"..content_num,1)
-		mSleep(1000)
-	else
-		toast("识别内容失败,重新截图识别" .. tostring(body),1)
-		mSleep(3000)
-		goto snap 
-	end
-else
-	toast("获取token失败",1)
-	goto getBaiDuToken
+--注销wcPay
+mSleep(500)
+x,y = findMultiColorInRegionFuzzy( 0x171717, "25|-1|0x171717,11|7|0x171717,37|13|0x171717,57|18|0x171717,82|13|0x171717,106|8|0x171717,123|5|0x171717,173|11|0xededed", 100, 0, 0, 749, 1333)
+if x~=-1 and y~=-1 then
+	dialog(x.."=="..y, time)
 end
 
+--0123456789
+--14789
+
+--local API = "Hk8Ve2Duh6QCR5XUxLpRxPyv"
+--local Secret  = "fD0az8pW8lNhGptCZC4TPfMWX5CyVtnh"
+
+--local tab={
+--	language_type="ENG",
+--	detect_direction="true",
+--	detect_language="true",
+--	ocrType = 3
+--}
+
+--::getBaiDuToken::
+--local code,access_token = getAccessToken(API,Secret)
+--if code then
+----	::snap::
+
+--	local content_name = userPath() .. "/res/baiduAI_content_name1.jpg"
+
+--	--内容
+--	snapshot(content_name, 414,926,443,964) 
+--	mSleep(500)
+
+--	local ts = require("ts")
+--	::put_work::
+--	header_send = {
+--		["Content-Type"] = "application/x-www-form-urlencoded",
+--	}
+--	body_send = {
+--		["access_token"] = access_token,
+--		["image"] = urlEncoder(readFileBase64(content_name)),
+--		["recognize_granularity"] = "big"
+--	}
+--	ts.setHttpsTimeOut(60)
+--	code,header_resp, body_resp = ts.httpsPost("https://aip.baidubce.com/rest/2.0/ocr/v1/numbers", header_send,body_send)
+--	if code == 200 then
+--		mSleep(500)
+--		local tmp = json.decode(body_resp)
+--		if #tmp.words_result > 0 then
+--			content_num = string.lower(tmp.words_result[1].words)
+--		else
+--			mSleep(500)
+--			local code, body = baiduAI(access_token,content_name,tab)
+--			if code then
+--				local tmp = json.decode(body)
+
+--				if #tmp.words_result > 0 then
+--					content_num = string.lower(tmp.words_result[1].words)
+--				else
+
+--				end
+--			else
+--				toast("识别内容失败\n" .. tostring(body),1)
+--				mSleep(3000)
+----		goto snap
+--			end       
+--		end
+--	else
+--		goto put_work
+--	end 
 
 
+
+--	if content_num ~= nil and #content_num >= 1 then
+--		sendCodeTime = 0
+--		content_num = string.sub(content_num,#content_num - 1, #content_num)
+--		toast("识别内容：\r\n"..content_num,1)
+--		mSleep(1000)
+--	else
+--		toast("识别内容失败,重新截图识别" .. tostring(body),1)
+--		mSleep(3000)
+--		--		goto snap 
+--	end
+--else
+--	toast("获取token失败",1)
+--	goto getBaiDuToken
+--end
+
+
+--function 登入芝麻()
+--	while (true) do
+--		local http = require("szocket.http")
+--		local res, code = http.request("http://webapi.http.zhimacangku.com/getip?num=1&type=2&pro=&city=0&yys=0&port=1&time=1&ts=0&ys=0&cs=0&lb=1&sb=0&pb=4&mr=1&regions=");
+--		if code == 200 then
+--			local tmp = json.decode(res) 
+--			ip= tmp.data[1].ip
+--			port=tmp.data[1].port
+--			mSleep(2000)
+--			toast(ip.."==="..port, 1)
+--			return port
+--		end
+--		mSleep(3000);
+--	end
+--end
+
+--duankou = 登入芝麻()
+--inputKey(tostring(duankou))
 
 
 
@@ -1095,28 +1143,48 @@ end
 --	return f 
 --end 
 
---local Wildcard = getList(appDataPath("com.tencent.xin").."/Library/WechatPrivate") 
 
---for var = 1,#Wildcard do 
---	local bool = isFileExist(appDataPath("com.tencent.xin").."/Library/WechatPrivate/"..Wildcard[var].."/Favorites/fav.db")
---	if bool then
---		local sz = require("sz")
---		local sqlite3 = sz.sqlite3	
---		local db = sqlite3.open(appDataPath("com.tencent.xin").."/Library/WechatPrivate/"..Wildcard[var].."/Favorites/fav.db")
---		local open = db:isopen("fav")
---		if open then
---			for a in db:nrows('SELECT * FROM FavoritesSearchTable') do 
---				for k,v in pairs(a) do
---					v = string.gsub(v,"%s+","")
---					if k == "SearchStr" then
---						str = string.match(v, '密码:800000ID:')
---						if type(str) ~= "nil" then
---							dialog(v, time)
+--while (true) do
+--	mSleep(500)
+--	if getColor(694, 84) == 0x181818 and getColor(351, 85) == 0x171717 and getColor(371,  310) ~= 0xa6a6a6 then
+--		toast("aa",1)
+--		local Wildcard = getList(appDataPath("com.tencent.xin").."/Library/WechatPrivate") 
+--		infoData = "aaaaaaaaaa"
+--		for var = 1,#Wildcard do 
+--			local bool = isFileExist(appDataPath("com.tencent.xin").."/Library/WechatPrivate/"..Wildcard[var].."/Favorites/fav.db")
+--			if bool then
+--				local sz = require("sz")
+--				local sqlite3 = sz.sqlite3	
+--				local db = sqlite3.open(appDataPath("com.tencent.xin").."/Library/WechatPrivate/"..Wildcard[var].."/Favorites/fav.db")
+--				local open = db:isopen("fav")
+--				if open then
+--					for a in db:nrows('SELECT * FROM FavoritesSearchTable') do 
+--						for k,v in pairs(a) do
+--							v = string.gsub(v,"%s+","")
+--							if k == "SearchStr" then
+--								str = string.match(v, '密码:800000ID:')
+--								if type(str) ~= "nil" then
+--									word = v
+--									category = "success-data"
+--									data = infoData.."----"..word
+--									toast("识别内容："..word,1)
+--									mSleep(1000)
+--									break
+--								else
+--									category = "error-data"
+--									data = infoData.."----无关键词"
+--								end
+--							else
+--								category = "error-data"
+--								data = infoData.."----无关键词"
+--							end
 --						end
+
 --					end
 --				end
-
 --			end
 --		end
+--		break
+
 --	end
 --end

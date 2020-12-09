@@ -448,6 +448,17 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 			break
 		end
 
+		--连接失败
+		mSleep(500)
+		x,y = findMultiColorInRegionFuzzy( 0x576b95, "17|0|0x576b95,44|0|0x576b95,-229|-167|0x1a1a1a,-215|-167|0x1a1a1a,-195|-167|0x1a1a1a,-152|-167|0x1a1a1a,-123|-167|0x1a1a1a,198|-168|0x1a1a1a,221|-163|0x1a1a1a", 90, 0, 0, 749, 1333)
+		if x~=-1 and y~=-1 then
+			mSleep(math.random(500, 700))
+			tap(x, y)
+			mSleep(math.random(500, 700))
+			toast("连接失败",1)
+			mSleep(500)
+		end
+
 		--外挂封号
 		mSleep(500)
 		x,y = findMultiColorInRegionFuzzy( 0x576b95, "17|-2|0x576b95,46|-2|0x576b95,-388|-303|0x1a1a1a,-356|-300|0x1a1a1a,-320|-303|0x1a1a1a,-32|-145|0x1a1a1a,3|-139|0x1a1a1a,22|-152|0x1a1a1a,22|-144|0x1a1a1a", 90, 0, 0, 749, 1333)
@@ -581,7 +592,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 		end
 
 		::networkError::
-		if processWay == "0" or processWay == "1" then
+		if processWay == "0" or processWay == "1" or processWay == "3" then
 			while (true) do
 				mSleep(500)
 				x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "5|25|0x1a1a1a,14|7|0x1a1a1a,29|11|0x1a1a1a,45|16|0x1a1a1a,279|16|0x576b95,336|2|0x576b95,359|22|0x576b95,387|16|0x576b95,399|18|0x576b95", 90, 0, 0, 750, 1334, { orient = 2 })
@@ -652,6 +663,10 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 						mSleep(math.random(500, 700))
 						tap(414,319)
 						mSleep(math.random(500, 700))
+					elseif processWay == "3" then
+						mSleep(math.random(500, 700))
+						tap(414,182)
+						mSleep(math.random(500, 700))
 					end
 					break
 				end
@@ -690,11 +705,12 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				if x~=-1 and y~=-1 then
 					break
 				end
-				
+
 				--原身份已注销
 				mSleep(500)
 				x,y = findMultiColorInRegionFuzzy(0xffffff, "30|-4|0xffffff,-228|-34|0x04be02,-230|21|0x04be02,18|-36|0x04be02,15|25|0x04be02,311|-36|0x04be02,312|26|0x04be02,6|-378|0x09bb07,25|-294|0x09bb07", 90, 0, 0, 750, 1334, { orient = 2 })
 				if x~=-1 and y~=-1 then
+					toast("检测到原身份已注销",1)
 					break
 				end
 			end
@@ -1025,7 +1041,9 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				end
 
 				mSleep(500)
-				if getColor(694, 84) == 0x181818 and getColor(351, 85) == 0x171717 then
+				if getColor(694, 84) == 0x181818 and getColor(351, 85) == 0x171717 and getColor(371,  310) ~= 0xa6a6a6 then
+					mSleep(5000)
+					mSleep(5000)
 					local Wildcard = self:getList(appDataPath(self.wc_bid)..self.wc_folder) 
 					for var = 1,#Wildcard do 
 						local bool = isFileExist(appDataPath(self.wc_bid)..self.wc_folder..Wildcard[var].."/Favorites/fav.db")
@@ -1039,11 +1057,13 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 										if k == "SearchStr" then
 											str = string.match(v, '密码:800000ID:')
 											if type(str) ~= "nil" then
-												self.word = v
+												left,right = string.find(v,".+%d+.+%d+")
+												self.word = string.sub(v,left,right)
 												category = "success-data"
 												data = self.infoData.."----"..self.word
 												toast("识别内容："..self.word,1)
 												mSleep(1000)
+												break
 											else
 												category = "error-data"
 												data = self.infoData.."----无关键词"
@@ -1056,6 +1076,89 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 								end
 							end
 						end
+					end
+					break
+				end
+			end
+		elseif processWay == "3" then
+			while (true) do
+				mSleep(500)
+				if getColor(267,  276) == 0x000000 and getColor(473,  275) == 0x000000 then
+					mSleep(500)
+					local API = "Hk8Ve2Duh6QCR5XUxLpRxPyv"
+					local Secret  = "fD0az8pW8lNhGptCZC4TPfMWX5CyVtnh"
+
+					local tab={
+						language_type="ENG",
+						detect_direction="true",
+						detect_language="true",
+						ocrType = 3
+					}
+					
+					::getBaiDuToken::
+					local code,access_token = getAccessToken(API,Secret)
+					if code then
+						::snap::
+						local content_name = userPath() .. "/res/baiduAI_content_name1.jpg"
+						
+						--内容
+						snapshot(content_name, 414,926,443,964) 
+						mSleep(500)
+						
+						::put_work::
+						header_send = {
+							["Content-Type"] = "application/x-www-form-urlencoded",
+						}
+						body_send = {
+							["access_token"] = access_token,
+							["image"] = urlEncoder(readFileBase64(content_name)),
+							["recognize_granularity"] = "big"
+						}
+						ts.setHttpsTimeOut(60)
+						code,header_resp, body_resp = ts.httpsPost("https://aip.baidubce.com/rest/2.0/ocr/v1/numbers", header_send,body_send)
+						if code == 200 then
+							mSleep(500)
+							local tmp = json.decode(body_resp)
+							if #tmp.words_result > 0 then
+								content_num = string.lower(tmp.words_result[1].words)
+							else
+								mSleep(500)
+								local code, body = baiduAI(access_token,content_name,tab)
+								if code then
+									local tmp = json.decode(body)
+									if #tmp.words_result > 0 then
+										content_num = string.lower(tmp.words_result[1].words)
+									else
+										toast("识别内容失败\n" .. tostring(body),1)
+										mSleep(3000)
+										goto snap
+									end
+								else
+									toast("识别内容失败\n" .. tostring(body),1)
+									mSleep(3000)
+									goto snap
+								end       
+							end
+						else
+							toast("识别内容失败\n" .. tostring(body_resp),1)
+							mSleep(3000)
+							goto put_work
+						end 
+
+						if content_num ~= nil and #content_num >= 1 then
+							content_num = string.sub(content_num,#content_num - 1, #content_num)
+							toast("识别内容：\r\n"..content_num,1)
+							mSleep(1000)
+							category = "success-data"
+							data = self.infoData.."----"..content_num
+						else
+							toast("识别内容失败,重新截图识别" .. tostring(body),1)
+							mSleep(3000)
+							goto snap 
+						end
+					else
+						toast("获取token失败",1)
+						goto getBaiDuToken
 					end
 					break
 				end
@@ -1088,30 +1191,30 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 end
 
 function model:main()
---	local w,h = getScreenSize()
---	MyTable = {
---		["style"] = "default",
---		["width"] = w,
---		["height"] = h,
---		["config"] = "save_001.dat",
---		["timer"] = 100,
---		views = {
---			{
---				["type"] = "Label",
---				["text"] = "流程脚本",
---				["size"] = 30,
---				["align"] = "center",
---				["color"] = "255,0,0",
---			},
---			{
---				["type"] = "Label",
---				["text"] = "====================",
---				["size"] = 20,
---				["align"] = "center",
---				["color"] = "255,0,0",
---			},
---			{
---				["type"] = "Label",
+	--	local w,h = getScreenSize()
+	--	MyTable = {
+	--		["style"] = "default",
+	--		["width"] = w,
+	--		["height"] = h,
+	--		["config"] = "save_001.dat",
+	--		["timer"] = 100,
+	--		views = {
+	--			{
+	--				["type"] = "Label",
+	--				["text"] = "流程脚本",
+	--				["size"] = 30,
+	--				["align"] = "center",
+	--				["color"] = "255,0,0",
+	--			},
+	--			{
+	--				["type"] = "Label",
+	--				["text"] = "====================",
+	--				["size"] = 20,
+	--				["align"] = "center",
+	--				["color"] = "255,0,0",
+	--			},
+	--			{
+	--				["type"] = "Label",
 	--				["text"] = "选择进入应用后的修改流程",
 	--				["size"] = 15,
 	--				["align"] = "center",
