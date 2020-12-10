@@ -692,7 +692,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 		end
 
 		::networkError::
-		if processWay == "0" or processWay == "1" or processWay == "3" then
+		if processWay == "0" or processWay == "1" or processWay == "3" or processWay == "4" then
 			while (true) do
 				mSleep(500)
 				x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "5|25|0x1a1a1a,14|7|0x1a1a1a,29|11|0x1a1a1a,45|16|0x1a1a1a,279|16|0x576b95,336|2|0x576b95,359|22|0x576b95,387|16|0x576b95,399|18|0x576b95", 90, 0, 0, 750, 1334, { orient = 2 })
@@ -714,68 +714,98 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 					toast("支付",1)
 					mSleep(500)
 				end
-
-				--三个点
-				mSleep(500)
-				x,y = findMultiColorInRegionFuzzy( 0x181818, "-7|-2|0xededed,-14|-2|0x181818,-26|2|0xededed,7|0|0xededed,14|-2|0x181818,30|-2|0xededed,-292|5|0x171717,21|77|0x3cb371,23|319|0x3cb371", 100, 0, 0, 749, 1333)
-				if x~=-1 and y~=-1 then
-					mSleep(math.random(500, 700))
-					tap(x, y)
-					mSleep(math.random(500, 700))
-					toast("三个点",1)
-					mSleep(6000)
-				end
-
-				--实名认证
-				mSleep(500)
-				x,y = findMultiColorInRegionFuzzy(0x171717, "26|12|0x171717,45|8|0x171717,63|12|0x171717,110|9|0x171717,222|120|0x808080,258|106|0x808080,275|106|0x808080,295|110|0x808080,346|109|0x808080", 90, 0, 0, 750, 1334, { orient = 2 })
-				if x~=-1 and y~=-1 then
-					mSleep(math.random(500, 700))
-					toast("未实名",1)
-					mSleep(500)
-					category = "error-data"
-					data = self.infoData.."----未实名"
-					goto pushData
-				end
-
-				--注销wcPay
-				mSleep(500)
-				x,y = findMultiColorInRegionFuzzy( 0x171717, "25|-1|0x171717,11|7|0x171717,37|13|0x171717,57|18|0x171717,82|13|0x171717,106|8|0x171717,123|5|0x171717,173|11|0xededed", 100, 0, 0, 749, 1333)
-				if x~=-1 and y~=-1 then
-					if processWay == "0" then
-						while true do
-							mSleep(500)
-							x,y = findMultiColorInRegionFuzzy(0x1b1b1b, "16|11|0x262626,11|22|0x1a1a1a,45|10|0x212121,63|14|0x1a1a1a,97|14|0x1a1a1a,116|14|0x272727,148|-1|0x1a1a1a,168|20|0x1a1a1a,187|8|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
-							if x~=-1 and y~=-1 then
-								mSleep(math.random(500, 700))
-								tap(x, y)
-								mSleep(math.random(500, 700))
-								toast("注销wcPay",1)
-								mSleep(500)
-								break
-							else
-								mSleep(math.random(500, 700))
-								moveTowards( 108,  1052, 80, 500)
-								mSleep(3000)
-							end
-						end
-					elseif processWay == "1" then
-						mSleep(math.random(500, 700))
-						tap(414,319)
-						mSleep(math.random(500, 700))
-					elseif processWay == "3" then
-						mSleep(math.random(500, 700))
-						tap(414,182)
-						mSleep(math.random(500, 700))
-					end
-					break
+                
+                if processWay == "4" then
+                    --三个点:点击收付款
+    				mSleep(500)
+    				x,y = findMultiColorInRegionFuzzy( 0x181818, "-7|-2|0xededed,-14|-2|0x181818,-26|2|0xededed,7|0|0xededed,14|-2|0x181818,30|-2|0xededed,-292|5|0x171717,21|77|0x3cb371,23|319|0x3cb371", 100, 0, 0, 749, 1333)
+    				if x~=-1 and y~=-1 then
+    					mSleep(math.random(500, 700))
+    					tap(192, 272)
+    					mSleep(math.random(500, 700))
+    					toast("收付款",1)
+    					mSleep(6000)
+    				end
+    				
+    				--开启刷卡功能
+    				mSleep(500)
+    				x,y = findMultiColorInRegionFuzzy(0x07c160, "-173|-56|0x07c160,-171|-1|0x07c160,1|-57|0x07c160,173|-56|0x07c160,176|1|0x07c160,-7|-98|0xffffff,3|-423|0xb3b3b3,52|-432|0xb3b3b3,-48|-433|0xb3b3b3", 90, 0, 0, 750, 1334, { orient = 2 })
+                    if x ~= -1 then
+                        mSleep(math.random(500, 700))
+    					tap(x, y)
+    					mSleep(math.random(500, 700))
+    					toast("开启",1)
+    					mSleep(1000)
+                    end
+                    
+                    mSleep(500)
+    				if getColor(566,1289) == 0xededed and getColor(617,1280) == 0x181818 then
+    				    mSleep(500)
+    					break
+    				end
+                else
+    				--三个点
+    				mSleep(500)
+    				x,y = findMultiColorInRegionFuzzy( 0x181818, "-7|-2|0xededed,-14|-2|0x181818,-26|2|0xededed,7|0|0xededed,14|-2|0x181818,30|-2|0xededed,-292|5|0x171717,21|77|0x3cb371,23|319|0x3cb371", 100, 0, 0, 749, 1333)
+    				if x~=-1 and y~=-1 then
+    					mSleep(math.random(500, 700))
+    					tap(x, y)
+    					mSleep(math.random(500, 700))
+    					toast("三个点",1)
+    					mSleep(6000)
+    				end
+    
+    				--实名认证
+    				mSleep(500)
+    				x,y = findMultiColorInRegionFuzzy(0x171717, "26|12|0x171717,45|8|0x171717,63|12|0x171717,110|9|0x171717,222|120|0x808080,258|106|0x808080,275|106|0x808080,295|110|0x808080,346|109|0x808080", 90, 0, 0, 750, 1334, { orient = 2 })
+    				if x~=-1 and y~=-1 then
+    					mSleep(math.random(500, 700))
+    					toast("未实名",1)
+    					mSleep(500)
+    					category = "error-data"
+    					data = self.infoData.."----未实名"
+    					goto pushData
+    				end
+    
+    				--注销wcPay
+    				mSleep(500)
+    				x,y = findMultiColorInRegionFuzzy( 0x171717, "25|-1|0x171717,11|7|0x171717,37|13|0x171717,57|18|0x171717,82|13|0x171717,106|8|0x171717,123|5|0x171717,173|11|0xededed", 100, 0, 0, 749, 1333)
+    				if x~=-1 and y~=-1 then
+    					if processWay == "0" then
+    						while true do
+    							mSleep(500)
+    							x,y = findMultiColorInRegionFuzzy(0x1b1b1b, "16|11|0x262626,11|22|0x1a1a1a,45|10|0x212121,63|14|0x1a1a1a,97|14|0x1a1a1a,116|14|0x272727,148|-1|0x1a1a1a,168|20|0x1a1a1a,187|8|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
+    							if x~=-1 and y~=-1 then
+    								mSleep(math.random(500, 700))
+    								tap(x, y)
+    								mSleep(math.random(500, 700))
+    								toast("注销wcPay",1)
+    								mSleep(500)
+    								break
+    							else
+    								mSleep(math.random(500, 700))
+    								moveTowards( 108,  1052, 80, 500)
+    								mSleep(3000)
+    							end
+    						end
+    					elseif processWay == "1" then
+    						mSleep(math.random(500, 700))
+    						tap(414,319)
+    						mSleep(math.random(500, 700))
+    					elseif processWay == "3" then
+    						mSleep(math.random(500, 700))
+    						tap(414,182)
+    						mSleep(math.random(500, 700))
+    					end
+    					break
+    				end
 				end
 			end
 		end
 
 		if processWay == "0" then
 			::again::
-			while (true) do
+		    while (true) do
 				--确认注销
 				mSleep(500)
 				x,y = findMultiColorInRegionFuzzy(0xffffff, "111|-4|0xffffff,-184|-38|0x04be02,-185|31|0x04be02,52|-38|0x04be02,52|31|0x04be02,381|-33|0x04be02,376|27|0x04be02,-36|-607|0x171717,142|-608|0x171717", 90, 0, 0, 750, 1334, { orient = 2 })
@@ -814,7 +844,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 					break
 				end
 			end
-
+        
 			pass_index = 1
 			while true do
 				--验证pay密码
@@ -1273,6 +1303,96 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 					break
 				end
 			end
+		elseif processWay == "4" then
+		    pass_index = 1
+		    
+		    while true do
+		        mSleep(500)
+				if getColor(566,1289) == 0xededed and getColor(617,1280) == 0x181818 then
+					oldPasswordArr = strSplit(oldPassword,"-")
+					payPass = string.gsub(oldPasswordArr[pass_index],"%s+","")
+					mSleep(500)
+					for i = 1, #(payPass) do
+						mSleep(500)
+						num = string.sub(payPass,i,i)
+						if num == "0" then
+							tap(373, 1281)
+						elseif num == "1" then
+							tap(132,  955)
+						elseif num == "2" then
+							tap(377,  944)
+						elseif num == "3" then
+							tap(634,  941)
+						elseif num == "4" then
+							tap(128, 1063)
+						elseif num == "5" then
+							tap(374, 1061)
+						elseif num == "6" then
+							tap(628, 1055)
+						elseif num == "7" then
+							tap(119, 1165)
+						elseif num == "8" then
+							tap(378, 1160)
+						elseif num == "9" then
+							tap(633, 1164)
+						end
+						mSleep(100)
+					end
+				end
+				
+				mSleep(500)
+				if getColor(234,879) == 0x000000 and getColor(335,1145) == 0x39b472 then
+				    mSleep(500)
+				    tap(367,1006)
+				    mSleep(500)
+				    toast("零钱",1)
+				    mSleep(1000)
+				end
+				
+				--订单完成
+				mSleep(500)
+				x,y = findMultiColorInRegionFuzzy(0x07c160, "27|-1|0x07c160,17|1|0x07c160,16|8|0x07c160,37|5|0x07c160,49|-2|0x07c160,205|7|0xf2f2f2,-139|6|0xf2f2f2,36|-20|0xf2f2f2,36|-42|0xffffff", 100, 0, 800, 750, 1334, { orient = 2 })
+                if x~=-1 and y~=-1 then
+					mSleep(math.random(500, 700))
+					tap(x, y)
+					mSleep(math.random(500, 700))
+					toast("完成",1)
+					mSleep(500)
+					category = "success-data"
+					data = self.infoData.."----支付成功"
+					break
+				end
+				
+				mSleep(500)
+				x,y = findMultiColorInRegionFuzzy(0x576b95, "18|1|0x576b95,46|1|0x576b95,145|-166|0x1a1a1a,-145|-174|0x1a1a1a,-124|-166|0x1a1a1a,-108|-159|0x1a1a1a,-88|-161|0x1a1a1a,-63|-157|0x1a1a1a,-22|-157|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
+                if x ~= -1 then
+                    pass_index = pass_index + 1
+					toast("pass_index:"..pass_index.."\r\noldPasswordArr:"..#oldPasswordArr,1)
+					mSleep(1000)
+					if pass_index > #oldPasswordArr then
+						mSleep(math.random(500, 700))
+						toast("支付失败",1)
+						mSleep(500)
+						category = "error-data"
+						data = self.infoData.."----支付失败"
+						break
+					else
+						mSleep(math.random(500, 700))
+						tap(x, y)
+						mSleep(math.random(500, 700))
+						while true do
+							mSleep(500)
+							if getColor(566,1289) == 0xededed and getColor(617,1280) == 0x181818 then
+								break
+							else
+								mSleep(math.random(500, 700))
+								tap(129,675)
+								mSleep(math.random(500, 700))
+							end
+						end
+					end
+                end
+		    end
 		end
 
 		::pushData::
