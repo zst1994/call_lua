@@ -22,6 +22,11 @@ model.word = ""
 
 math.randomseed(getRndNum()) -- 随机种子初始化真随机数
 
+function randomTap(x,y,r)
+	add = math.random(1, 2)
+	
+end
+
 function model:clear_App()
 	::run_again::
 	mSleep(500)
@@ -229,73 +234,6 @@ function model:getList(path)
 	return f 
 end 
 
-function model:readFileBase64(path) 
-	f = io.open(path,"rb")
-	if f == null then
-		toast("no file")
-		mSleep(3000);
-		return null;
-	end 
-	bytes = f:read("*all");
-	f:close();
-	return bytes:base64_encode();
-end
-
-function model:vpn()
-	mSleep(math.random(500, 700))
-	setVPNEnable(false)
-	setVPNEnable(false)
-	setVPNEnable(false)
-	mSleep(math.random(500, 700))
-	old_data = getNetIP() --获取IP  
-	toast(old_data,1)
-
-	::get_vpn::
-	mSleep(math.random(200, 500))
-	flag = getVPNStatus()
-	if flag.active then
-		toast("打开状态",1)
-		setVPNEnable(false)
-		for var= 1, 10 do
-			mSleep(math.random(200, 500))
-			toast("等待vpn切换"..var,1)
-			mSleep(math.random(200, 500))
-		end
-		goto get_vpn
-	else
-		toast("关闭状态",1)
-	end
-
-	setVPNEnable(true)
-	mSleep(1000*math.random(10, 15))
-
-	new_data = getNetIP() --获取IP  
-	toast(new_data,1)
-	if new_data == old_data then
-		toast("vpn切换失败",1)
-		mSleep(math.random(200, 500))
-		setVPNEnable(false)
-		mSleep(math.random(200, 500))
-		x,y = findMultiColorInRegionFuzzy( 0x007aff, "3|15|0x007aff,19|10|0x007aff,-50|-128|0x000000,-34|-147|0x000000,3|-127|0x000000,37|-132|0x000000,59|-135|0x000000", 90, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
-			mSleep(math.random(200, 500))
-			randomsTap(x,y,10)
-			mSleep(math.random(200, 500))
-		end
-
-		--好
-		x,y = findMultiColorInRegionFuzzy( 0x007aff, "1|20|0x007aff,11|0|0x007aff,18|17|0x007aff,14|27|0x007aff", 90, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
-			mSleep(math.random(200, 500))
-			randomsTap(x,y,10)
-			mSleep(math.random(200, 500))
-		end
-		goto get_vpn
-	else
-		toast("vpn正常使用", 1)
-	end
-end
-
 function model:run()
 	mSleep(1000)
 	closeApp(self.wc_bid)
@@ -339,7 +277,7 @@ function model:dialog_box()
 	x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "5|25|0x1a1a1a,14|7|0x1a1a1a,29|11|0x1a1a1a,45|16|0x1a1a1a,279|16|0x576b95,336|2|0x576b95,359|22|0x576b95,387|16|0x576b95,399|18|0x576b95", 90, 0, 0, 750, 1334, { orient = 2 })
 	if x~=-1 and y~=-1 then
 		mSleep(math.random(500, 700))
-		tap(x, y)
+		randomTap(x,y,4)
 		mSleep(math.random(500, 700))
 		toast("忽略",1)
 		mSleep(500)
@@ -349,7 +287,7 @@ function model:dialog_box()
 	x,y = findMultiColorInRegionFuzzy( 0x1a1a1a, "321|10|0x576b95,317|-11|0x576b95,39|-356|0x1a1a1a,224|-358|0x1a1a1a,259|-356|0x1a1a1a", 90, 0, 0, 749, 1333)
 	if x~=-1 and y~=-1 then
 		mSleep(math.random(500, 700))
-		tap(x, y)
+		randomTap(x,y,4)
 		mSleep(math.random(500, 700))
 		toast("匹配通讯录",1)
 		mSleep(500)
@@ -360,7 +298,7 @@ function model:dialog_box()
 	x,y = findMultiColorInRegionFuzzy( 0x007aff, "22|0|0x007aff,38|-1|0x007aff,-114|-273|0x000000,-47|-277|0x000000,-93|-316|0x000000", 90, 0, 0, 749, 1333)
 	if x~=-1 and y~=-1 then
 		mSleep(math.random(500, 700))
-		tap(x, y)
+		randomTap(x,y,4)
 		mSleep(math.random(500, 700))
 		toast("允许访问位置",1)
 		mSleep(500)
@@ -370,7 +308,7 @@ function model:dialog_box()
 	x,y = findMultiColorInRegionFuzzy( 0x007aff, "8|-1|0x007aff,6|14|0x007aff,16|-5|0x007aff,27|8|0x007aff,18|22|0x007aff", 90, 0, 0, 749, 1333)
 	if x~=-1 and y~=-1 then
 		mSleep(math.random(500, 700))
-		tap(x, y)
+		randomTap(x,y,4)
 		mSleep(math.random(500, 700))
 		toast("好",1)
 		mSleep(500)
@@ -381,7 +319,7 @@ function model:dialog_box()
 	x,y = findMultiColorInRegionFuzzy( 0x576b95, "6|-1|0x576b95,33|4|0x576b95,69|3|0x576b95,142|-1|0x576b95,-349|-217|0x1a1a1a,-314|-224|0x1a1a1a,-122|-140|0x1a1a1a,-103|-131|0x1a1a1a,152|-187|0x1a1a1a", 90, 0, 0, 749, 1333)
 	if x~=-1 and y~=-1 then
 		mSleep(math.random(500, 700))
-		tap(x - 250, y)
+		randomTap(x - 250, y,4)
 		mSleep(math.random(500, 700))
 		toast("尚未绑定手机号",1)
 		mSleep(500)
@@ -395,10 +333,10 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 	mSleep(2000)
 	while (true) do
 		mSleep(math.random(500, 700))
-		x,y = findMultiColorInRegionFuzzy( 0x07c160, "171|-1|0x07c160,57|-5|0xffffff,-163|-3|0xf2f2f2,-411|1|0xf2f2f2,-266|-6|0x06ae56", 90, 0, 1100, 749, 1333)
+		x,y = findMultiColorInRegionFuzzy( 0x07c160, "171|-1|0x07c160,57|-5|0xffffff,-163|-3|0xf2f2f2,-411|1|0xf2f2f2,-266|-6|0x06ae56", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
-			tap(x - 350, y + 20)
+			randomTap(x - 350, y + 20,4)
 			mSleep(math.random(500, 700))
 			toast("登录",1)
 			mSleep(500)
@@ -417,7 +355,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 		x,y = findMultiColorInRegionFuzzy( 0x576b95, "31|-1|0x576b95,55|9|0x576b95,96|0|0x576b95,225|-4|0x576b95,275|7|0x576b95,295|1|0x576b95,329|4|0x576b95", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
-			tap(x, y)
+			randomTap(x,y,4)
 			mSleep(math.random(500, 700))
 			toast("微信号/QQ/邮箱登录",1)
 			mSleep(500)
@@ -430,29 +368,18 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 		x,y = findMultiColorInRegionFuzzy( 0x576b95, "31|-1|0x576b95,55|9|0x576b95,96|0|0x576b95,225|-4|0x576b95,275|7|0x576b95,295|1|0x576b95,329|4|0x576b95", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
-			tap(x, y)
+			randomTap(x,y,4)
 			mSleep(math.random(500, 700))
 		end
 
 		mSleep(500)
 		x,y = findMultiColorInRegionFuzzy( 0x576b95, "33|-4|0x576b95,56|3|0x576b95,72|-4|0x576b95,105|-1|0x576b95,162|3|0x576b95", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
-			while (true) do
-				mSleep(500)
-				x1,y1 = findMultiColorInRegionFuzzy( 0xededed, "-9|0|0xbebebe,10|0|0xbebebe,1|-8|0xbebebe,1|11|0xbebebe,-4|-4|0xededed,5|-4|0xededed,5|5|0xededed,-4|5|0xededed", 90, 647, 0, 749, 648)
-				if x1~=-1 and y1~=-1 then
-					key = "ReturnOrEnter"
-					keyDown(key)
-					keyUp(key)
-					break
-				else
-					mSleep(700)
-					tap(x + 343, y - 209)
-					mSleep(math.random(1500, 1700))
-					inputKey(self.account)
-					mSleep(500)
-				end
-			end
+			mSleep(math.random(500, 700))
+			randomTap(x + 343,y - 209,4)
+			mSleep(math.random(500, 700))
+			inputKey(self.account)
+			mSleep(500)
 			toast("输入账号",1)
 			mSleep(500)
 			break
@@ -463,20 +390,11 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 		mSleep(500)
 		x,y = findMultiColorInRegionFuzzy( 0x576b95, "33|-4|0x576b95,56|3|0x576b95,72|-4|0x576b95,105|-1|0x576b95,162|3|0x576b95", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
-			while (true) do
-				mSleep(500)
-				x1,y1 = findMultiColorInRegionFuzzy( 0xededed, "-9|0|0xbebebe,10|0|0xbebebe,1|-8|0xbebebe,1|11|0xbebebe,-4|-4|0xededed,5|-4|0xededed,5|5|0xededed,-4|5|0xededed", 90, 647, 0, 749, 648)
-				if x1~=-1 and y1~=-1 then
-					mSleep(100)
-					break
-				else
-					mSleep(700)
-					tap(x + 343, y - 121)
-					mSleep(math.random(1500, 1700))
-					inputKey(self.password)
-					mSleep(500)
-				end
-			end
+			mSleep(math.random(500, 700))
+			randomTap(x + 343,y - 121,4)
+			mSleep(math.random(1500, 1700))
+			inputKey(self.password)
+			mSleep(500)
 			toast("输入密码",1)
 			mSleep(500)
 			break
@@ -488,7 +406,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 		x,y = findMultiColorInRegionFuzzy( 0xffffff, "35|9|0xffffff,-304|-34|0x07c160,-306|32|0x07c160,1|-38|0x07c160,16|34|0x07c160,334|-35|0x07c160,336|27|0x07c160", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
-			tap(x, y)
+			randomTap(x,y,4)
 			mSleep(math.random(500, 700))
 			toast("登录",1)
 			mSleep(500)
@@ -510,7 +428,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 		x,y = findMultiColorInRegionFuzzy( 0xffffff, "35|9|0xffffff,-304|-34|0x07c160,-306|32|0x07c160,1|-38|0x07c160,16|34|0x07c160,334|-35|0x07c160,336|27|0x07c160", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
-			tap(x, y)
+			randomTap(x,y,4)
 			mSleep(math.random(500, 700))
 		end
 
@@ -668,7 +586,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				break
 			else
 				mSleep(math.random(500, 700))
-				tap(659, 1269)
+				randomTap(659,1269,4)
 				mSleep(math.random(500, 700))
 			end
 
@@ -698,7 +616,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "5|25|0x1a1a1a,14|7|0x1a1a1a,29|11|0x1a1a1a,45|16|0x1a1a1a,279|16|0x576b95,336|2|0x576b95,359|22|0x576b95,387|16|0x576b95,399|18|0x576b95", 90, 0, 0, 750, 1334, { orient = 2 })
 				if x~=-1 and y~=-1 then
 					mSleep(math.random(500, 700))
-					tap(x, y)
+					randomTap(x,y,4)
 					mSleep(math.random(500, 700))
 					toast("忽略",1)
 					mSleep(500)
@@ -709,7 +627,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				x,y = findMultiColorInRegionFuzzy( 0x00c777, "-13|-3|0x00c777,24|-2|0x00c777,66|-12|0x1a1a1a,91|-12|0x1a1a1a,79|6|0x1a1a1a,103|2|0x1a1a1a,122|-1|0x1a1a1a", 100, 0, 0, 749, 1333)
 				if x~=-1 and y~=-1 then
 					mSleep(math.random(500, 700))
-					tap(x + 200, y + 20)
+					randomTap(x + 200, y + 20,4)
 					mSleep(math.random(500, 700))
 					toast("支付",1)
 					mSleep(500)
@@ -720,7 +638,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				x,y = findMultiColorInRegionFuzzy( 0x181818, "-7|-2|0xededed,-14|-2|0x181818,-26|2|0xededed,7|0|0xededed,14|-2|0x181818,30|-2|0xededed,-292|5|0x171717,21|77|0x3cb371,23|319|0x3cb371", 100, 0, 0, 749, 1333)
 				if x~=-1 and y~=-1 then
 					mSleep(math.random(500, 700))
-					tap(x, y)
+					randomTap(x,y,4)
 					mSleep(math.random(500, 700))
 					toast("三个点",1)
 					mSleep(6000)
@@ -748,7 +666,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 							x,y = findMultiColorInRegionFuzzy(0x1b1b1b, "16|11|0x262626,11|22|0x1a1a1a,45|10|0x212121,63|14|0x1a1a1a,97|14|0x1a1a1a,116|14|0x272727,148|-1|0x1a1a1a,168|20|0x1a1a1a,187|8|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
 							if x~=-1 and y~=-1 then
 								mSleep(math.random(500, 700))
-								tap(x, y)
+								randomTap(x,y,4)
 								mSleep(math.random(500, 700))
 								toast("注销wcPay",1)
 								mSleep(500)
@@ -761,11 +679,11 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 						end
 					elseif processWay == "1" then
 						mSleep(math.random(500, 700))
-						tap(414,319)
+						randomTap(414, 319,4)
 						mSleep(math.random(500, 700))
 					elseif processWay == "3" then
 						mSleep(math.random(500, 700))
-						tap(414,182)
+						randomTap(414, 182,4)
 						mSleep(math.random(500, 700))
 					end
 					break
@@ -781,7 +699,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				x,y = findMultiColorInRegionFuzzy(0xffffff, "111|-4|0xffffff,-184|-38|0x04be02,-185|31|0x04be02,52|-38|0x04be02,52|31|0x04be02,381|-33|0x04be02,376|27|0x04be02,-36|-607|0x171717,142|-608|0x171717", 90, 0, 0, 750, 1334, { orient = 2 })
 				if x~=-1 and y~=-1 then
 					mSleep(math.random(500, 700))
-					tap(x, y)
+					randomTap(x,y,4)
 					mSleep(math.random(500, 700))
 					toast("确认注销",1)
 					mSleep(500)
@@ -792,7 +710,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				x,y = findMultiColorInRegionFuzzy(0xc8c8cd, "-427|-228|0x171717,-270|-222|0x171717,-251|-225|0x171717,-260|-6|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
 				if x~=-1 and y~=-1 then
 					mSleep(math.random(500, 700))
-					tap(x - 200, y)
+					randomTap(x - 200, y,4)
 					mSleep(math.random(500, 700))
 					toast("验证pay密码",1)
 					mSleep(1500)
@@ -822,7 +740,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				x,y = findMultiColorInRegionFuzzy(0xc8c8cd, "-427|-228|0x171717,-270|-222|0x171717,-251|-225|0x171717,-260|-6|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
 				if x~=-1 and y~=-1 then
 					mSleep(math.random(500, 700))
-					tap(x - 200, y)
+					randomTap(x - 200, y,4)
 					mSleep(math.random(500, 700))
 				end
 
@@ -835,25 +753,25 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 						mSleep(500)
 						num = string.sub(payPass,i,i)
 						if num == "0" then
-							tap(373, 1281)
+							randomTap(373, 1281,4)
 						elseif num == "1" then
-							tap(132,  955)
+							randomTap(132,  955,4)
 						elseif num == "2" then
-							tap(377,  944)
+							randomTap(377,  944,4)
 						elseif num == "3" then
-							tap(634,  941)
+							randomTap(634,  941,4)
 						elseif num == "4" then
-							tap(128, 1063)
+							randomTap(128, 1063,4)
 						elseif num == "5" then
-							tap(374, 1061)
+							randomTap(374, 1061,4)
 						elseif num == "6" then
-							tap(628, 1055)
+							randomTap(628, 1055,4)
 						elseif num == "7" then
-							tap(119, 1165)
+							randomTap(119, 1165,4)
 						elseif num == "8" then
-							tap(378, 1160)
+							randomTap(378, 1160,4)
 						elseif num == "9" then
-							tap(633, 1164)
+							randomTap(633, 1164,4)
 						end
 						mSleep(100)
 					end
@@ -887,7 +805,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 						break
 					else
 						mSleep(math.random(500, 700))
-						tap(x - 260, y)
+						randomTap(x - 260, y,4)
 						mSleep(math.random(500, 700))
 						while true do
 							mSleep(500)
@@ -895,7 +813,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 								break
 							else
 								mSleep(math.random(500, 700))
-								tap(736,689)
+								randomTap(736,  689,4) 
 								mSleep(math.random(500, 700))
 							end
 						end
@@ -919,14 +837,14 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				x,y = findMultiColorInRegionFuzzy(0x576b95, "34|-4|0x576b95,80|-2|0x576b95,84|12|0x576b95,110|3|0x576b95,108|-15|0x576b95,-201|-162|0x1a1a1a,-96|-160|0x1a1a1a,226|-163|0x1a1a1a,268|-174|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
 				if x~=-1 and y~=-1 then
 					mSleep(math.random(500, 700))
-					tap(x, y)
+					randomTap(x,y,4)
 					mSleep(math.random(500, 700))
 					while true do
 						mSleep(500)
 						x,y = findMultiColorInRegionFuzzy(0xc8c8cd, "-427|-228|0x171717,-270|-222|0x171717,-251|-225|0x171717,-260|-6|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
 						if x~=-1 and y~=-1 then
 							mSleep(math.random(500, 700))
-							tap(57, 85)
+							randomTap(57, 85,4)
 							mSleep(math.random(500, 700))
 							break
 						end
@@ -941,7 +859,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				x,y = findMultiColorInRegionFuzzy( 0x02bb00, "10|0|0x02bb00,37|0|0x02bb00,-36|-122|0x000000,-25|-121|0x040404,5|-121|0x000000,34|-125|0x000000,61|-126|0x000000", 90, 0, 0, 749, 1333)
 				if x~=-1 and y~=-1 then
 					mSleep(math.random(500, 700))
-					tap(x, y)
+					randomTap(x,y,4)
 					mSleep(math.random(500, 700))
 					toast("确定",1)
 					mSleep(500)
@@ -955,7 +873,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				x,y = findMultiColorInRegionFuzzy( 0x171717, "25|-1|0x171717,11|7|0x171717,37|13|0x171717,57|18|0x171717,82|13|0x171717,106|8|0x171717,123|5|0x171717,173|11|0xededed", 100, 0, 0, 749, 1333)
 				if x~=-1 and y~=-1 then
 					mSleep(math.random(500, 700))
-					tap(414,319)
+					randomTap(414,319,4)
 					mSleep(math.random(500, 700))
 				end
 
@@ -963,7 +881,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				if getColor(566,1289) == 0xededed and getColor(617,1280) == 0x181818 then
 					if getColor(288,813) == 0x07c160 then
 						mSleep(math.random(500, 700))
-						tap(288,813)
+						randomTap(288,813,4)
 						mSleep(math.random(500, 700))
 						while true do
 							mSleep(500)
@@ -1014,25 +932,25 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 						mSleep(500)
 						num = string.sub(payPass,i,i)
 						if num == "0" then
-							tap(373, 1281)
+							randomTap(373, 1281,4)
 						elseif num == "1" then
-							tap(132,  955)
+							randomTap(132,  955,4)
 						elseif num == "2" then
-							tap(377,  944)
+							randomTap(377,  944,4)
 						elseif num == "3" then
-							tap(634,  941)
+							randomTap(634,  941,4)
 						elseif num == "4" then
-							tap(128, 1063)
+							randomTap(128, 1063,4)
 						elseif num == "5" then
-							tap(374, 1061)
+							randomTap(374, 1061,4)
 						elseif num == "6" then
-							tap(628, 1055)
+							randomTap(628, 1055,4)
 						elseif num == "7" then
-							tap(119, 1165)
+							randomTap(119, 1165,4)
 						elseif num == "8" then
-							tap(378, 1160)
+							randomTap(378, 1160,4)
 						elseif num == "9" then
-							tap(633, 1164)
+							randomTap(633, 1164,4)
 						end
 						mSleep(100)
 					end
@@ -1102,7 +1020,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 						break
 					else
 						mSleep(math.random(500, 700))
-						tap(x - 260, y)
+						randomTap(x - 260,y,4)
 						mSleep(math.random(500, 700))
 						while true do
 							mSleep(500)
@@ -1110,7 +1028,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 								break
 							else
 								mSleep(math.random(500, 700))
-								tap(736,689)
+								randomTap(736, 689,4)
 								mSleep(math.random(500, 700))
 							end
 						end
@@ -1118,8 +1036,6 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				end
 			end
 		elseif processWay == "2" then
-			back = true
-
 			while (true) do
 				mSleep(500)
 				x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "5|25|0x1a1a1a,14|7|0x1a1a1a,29|11|0x1a1a1a,45|16|0x1a1a1a,279|16|0x576b95,336|2|0x576b95,359|22|0x576b95,387|16|0x576b95,399|18|0x576b95", 90, 0, 0, 750, 1334, { orient = 2 })
@@ -1147,11 +1063,8 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 					mSleep(500)
 					toast("进入收藏",1)
 					mSleep(1000)
-					category = "error-data"
-					data = self.infoData.."----无关键词"
-					
-					mSleep(500)
 					if getColor(371,  310) ~= 0xa6a6a6 then
+						mSleep(5000)
 						mSleep(5000)
 						local Wildcard = self:getList(appDataPath(self.wc_bid)..self.wc_folder) 
 						for var = 1,#Wildcard do 
@@ -1162,8 +1075,8 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 								if open then
 									for a in db:nrows('SELECT * FROM FavoritesSearchTable') do 
 										for k,v in pairs(a) do
+											v = string.gsub(v,"%s+","")
 											if k == "SearchStr" then
-												v = string.gsub(v,"%s+","")
 												str = string.match(v, '密码:800000ID:')
 												if type(str) ~= "nil" then
 													left,right = string.find(v,".+%d+.+%d+")
@@ -1173,14 +1086,17 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 													toast("识别内容："..self.word,1)
 													mSleep(1000)
 													break
+												else
+													category = "error-data"
+													data = self.infoData.."----无关键词"
 												end
 											else
-
+												category = "error-data"
+												data = self.infoData.."----无关键词"
 											end
 										end
 									end
 								end
-								break
 							end
 						end
 					end
@@ -1190,11 +1106,8 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 		elseif processWay == "3" then
 			while (true) do
 				mSleep(500)
-				if getColor(267,  276) == 0x000000 and getColor(469,  273) == 0x000000 then
+				if getColor(267,  276) == 0x000000 and getColor(473,  275) == 0x000000 then
 					mSleep(500)
-					toast("准备识别",1)
-					mSleep(1000)
-					
 					local API = "Hk8Ve2Duh6QCR5XUxLpRxPyv"
 					local Secret  = "fD0az8pW8lNhGptCZC4TPfMWX5CyVtnh"
 
@@ -1212,7 +1125,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 						local content_name = userPath() .. "/res/baiduAI_content_name1.jpg"
 
 						--内容
-						snapshot(content_name, 406,926,443,964) 
+						snapshot(content_name, 414,926,443,964) 
 						mSleep(500)
 
 						::put_work::
@@ -1221,7 +1134,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 						}
 						body_send = {
 							["access_token"] = access_token,
-							["image"] = urlEncoder(self:readFileBase64(content_name)),
+							["image"] = urlEncoder(readFileBase64(content_name)),
 							["recognize_granularity"] = "big"
 						}
 						ts.setHttpsTimeOut(60)
@@ -1406,14 +1319,6 @@ function model:main()
 	while true do
 		self:getConfig()
 		self:run()
-		if connect_vpn == "0" then
-			self:vpn()
-		else
-			mSleep(100)
-			setVPNEnable(false)
-			setVPNEnable(false)
-			mSleep(100)
-		end
 		self:loginAccount(processWay,oldPassword,newPassword)
 		toast('一个流程结束，进行下一个',1)
 	end

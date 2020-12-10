@@ -1133,58 +1133,122 @@ end
 
 
 
-
---local getList = function(path) 
---	local a = io.popen("ls "..path) 
---	local f = {}; 
---	for l in a:lines() do 
---		table.insert(f,l) 
---	end 
---	return f 
---end 
-
+mSleep(math.random(500, 700))
+		x,y = findMultiColorInRegionFuzzy( 0x07c160, "171|-1|0x07c160,57|-5|0xffffff,-163|-3|0xf2f2f2,-411|1|0xf2f2f2,-266|-6|0x06ae56", 90, 0, 1100, 749, 1333)
+		if x~=-1 and y~=-1 then
+			mSleep(math.random(500, 700))
+			tap(x - 350, y + 20)
+			mSleep(math.random(500, 700))
+			toast("登录",1)
+			mSleep(500)
+		end
 
 --while (true) do
 --	mSleep(500)
---	if getColor(694, 84) == 0x181818 and getColor(351, 85) == 0x171717 and getColor(371,  310) ~= 0xa6a6a6 then
---		toast("aa",1)
---		local Wildcard = getList(appDataPath("com.tencent.xin").."/Library/WechatPrivate") 
+--	x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "5|25|0x1a1a1a,14|7|0x1a1a1a,29|11|0x1a1a1a,45|16|0x1a1a1a,279|16|0x576b95,336|2|0x576b95,359|22|0x576b95,387|16|0x576b95,399|18|0x576b95", 90, 0, 0, 750, 1334, { orient = 2 })
+--	if x~=-1 and y~=-1 then
+--		mSleep(math.random(500, 700))
+--		randomTap(x,y,4)
+--		mSleep(math.random(500, 700))
+--		toast("忽略",1)
+--		mSleep(500)
+--	end
+
+--	--支付
+--	mSleep(500)
+--	x,y = findMultiColorInRegionFuzzy( 0x00c777, "-13|-3|0x00c777,24|-2|0x00c777,66|-12|0x1a1a1a,91|-12|0x1a1a1a,79|6|0x1a1a1a,103|2|0x1a1a1a,122|-1|0x1a1a1a", 100, 0, 0, 749, 1333)
+--	if x~=-1 and y~=-1 then
+--		mSleep(math.random(500, 700))
+--		randomTap(x + 200,y + 140,4)
+--		mSleep(math.random(500, 700))
+--		toast("收藏",1)
+--		mSleep(500)
+--	end
+
+--	mSleep(500)
+--	if getColor(694, 84) == 0x181818 and getColor(351, 85) == 0x171717 then
+--		mSleep(500)
+--		toast("进入收藏",1)
+--		mSleep(1000)
 --		infoData = "aaaaaaaaaa"
---		for var = 1,#Wildcard do 
---			local bool = isFileExist(appDataPath("com.tencent.xin").."/Library/WechatPrivate/"..Wildcard[var].."/Favorites/fav.db")
---			if bool then
---				local sz = require("sz")
---				local sqlite3 = sz.sqlite3	
---				local db = sqlite3.open(appDataPath("com.tencent.xin").."/Library/WechatPrivate/"..Wildcard[var].."/Favorites/fav.db")
---				local open = db:isopen("fav")
---				if open then
---					for a in db:nrows('SELECT * FROM FavoritesSearchTable') do 
---						for k,v in pairs(a) do
---							v = string.gsub(v,"%s+","")
---							if k == "SearchStr" then
---								str = string.match(v, '密码:800000ID:')
---								if type(str) ~= "nil" then
---									word = v
---									category = "success-data"
---									data = infoData.."----"..word
---									toast("识别内容："..word,1)
---									mSleep(1000)
---									break
---								else
---									category = "error-data"
---									data = infoData.."----无关键词"
+--		category = "error-data"
+--		data = infoData.."----无关键词"
+
+--		if getColor(371,  310) ~= 0xa6a6a6 then
+--			mSleep(500)
+--			local Wildcard = getList(appDataPath("com.tencent.xin").."/Library/WechatPrivate") 
+
+--			for var = 1,#Wildcard do 
+--				local bool = isFileExist(appDataPath("com.tencent.xin").."/Library/WechatPrivate/"..Wildcard[var].."/Favorites/fav.db")
+--				if bool then
+--					local sz = require("sz")
+--					local sqlite3 = sz.sqlite3	
+--					local db = sqlite3.open(appDataPath("com.tencent.xin").."/Library/WechatPrivate/"..Wildcard[var].."/Favorites/fav.db")
+--					local open = db:isopen("fav")
+--					if open then
+--						for a in db:nrows('SELECT * FROM FavoritesSearchTable') do 
+--							if a then
+--								for k,v in pairs(a) do
+--									nLog(k.."===="..v)
+--									mSleep(100)
+--									if k == "SearchStr" then
+--										v = string.gsub(v,"%s+","")
+--										str = string.match(v, '密码:800000ID:')
+--										if type(str) ~= "nil" then
+--											word = v
+--											category = "success-data"
+--											data = infoData.."----"..word
+--											toast("识别内容："..word,1)
+--											mSleep(1000)
+--											break
+--										end
+--									end
 --								end
---							else
---								category = "error-data"
---								data = infoData.."----无关键词"
 --							end
 --						end
-
 --					end
 --				end
 --			end
+--			dialog(data, time)
 --		end
 --		break
 
 --	end
 --end
+
+
+function msleep(t1,t2)
+	math.randomseed(getRndNum())
+	t = math.random(t1,t2)
+	dialog(t, 0)
+	mSleep(t)
+end
+
+
+--::put_work::
+--header_send = {
+--	["Content-Type"] = "application/x-www-form-urlencoded",
+--}
+--body_send = {
+--	["data"] = "我是重要信息111",
+--	["type"] = "des",
+--	["arg"] = "m=ecb_pad=zero_p=Hwm39kY8_o=0_s=gb2312_t=0",
+--}
+--ts.setHttpsTimeOut(60)
+--code,header_resp, body_resp = ts.httpsPost("http://tool.chacuo.net/cryptdes", header_send,body_send)
+--if code == 200 then
+--	mSleep(500)
+--	local tmp = json.decode(body_resp)
+--	if tmp.status == 1 then
+--		key = urlEncoder(tmp.data[1]:base64_encode())
+--		toast("key:"..key,1)
+--	else
+--		mSleep(500)
+--		toast("发布失败，6秒后重新发布",1)
+--		mSleep(6000)
+--		goto put_work
+--	end
+--else
+--	goto put_work
+--end
+
