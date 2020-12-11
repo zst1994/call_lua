@@ -1132,16 +1132,15 @@ end
 --end	
 
 
-
-mSleep(math.random(500, 700))
-		x,y = findMultiColorInRegionFuzzy( 0x07c160, "171|-1|0x07c160,57|-5|0xffffff,-163|-3|0xf2f2f2,-411|1|0xf2f2f2,-266|-6|0x06ae56", 90, 0, 1100, 749, 1333)
-		if x~=-1 and y~=-1 then
-			mSleep(math.random(500, 700))
-			tap(x - 350, y + 20)
-			mSleep(math.random(500, 700))
-			toast("登录",1)
-			mSleep(500)
-		end
+--订单完成
+--订单完成
+				mSleep(math.random(200, 300))
+				x,y = findMultiColorInRegionFuzzy( 0x06ae56, "25|0|0x06ae56,13|2|0x06ae56,13|9|0x06ae56,36|6|0x06ae56,49|-2|0x06ae56,203|8|0xf2f2f2,-143|7|0xf2f2f2,35|-22|0xf2f2f2,29|-43|0xffffff", 100, 0, 800, 750, 1334, { orient = 2 })
+                if x~=-1 and y~=-1 then
+					mSleep(math.random(500, 700))
+					toast("完成",1)
+					mSleep(500)
+				end
 
 --while (true) do
 --	mSleep(500)

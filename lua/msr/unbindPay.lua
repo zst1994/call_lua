@@ -335,7 +335,7 @@ function model:timeOutRestart(t1)
 end
 
 function model:dialog_box()
-	mSleep(500)
+	mSleep(200)
 	x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "5|25|0x1a1a1a,14|7|0x1a1a1a,29|11|0x1a1a1a,45|16|0x1a1a1a,279|16|0x576b95,336|2|0x576b95,359|22|0x576b95,387|16|0x576b95,399|18|0x576b95", 90, 0, 0, 750, 1334, { orient = 2 })
 	if x~=-1 and y~=-1 then
 		mSleep(math.random(500, 700))
@@ -345,7 +345,7 @@ function model:dialog_box()
 		mSleep(500)
 	end
 
-	mSleep(500)
+	mSleep(200)
 	x,y = findMultiColorInRegionFuzzy( 0x1a1a1a, "321|10|0x576b95,317|-11|0x576b95,39|-356|0x1a1a1a,224|-358|0x1a1a1a,259|-356|0x1a1a1a", 90, 0, 0, 749, 1333)
 	if x~=-1 and y~=-1 then
 		mSleep(math.random(500, 700))
@@ -356,7 +356,7 @@ function model:dialog_box()
 	end
 
 	--允许访问位置
-	mSleep(500)
+	mSleep(200)
 	x,y = findMultiColorInRegionFuzzy( 0x007aff, "22|0|0x007aff,38|-1|0x007aff,-114|-273|0x000000,-47|-277|0x000000,-93|-316|0x000000", 90, 0, 0, 749, 1333)
 	if x~=-1 and y~=-1 then
 		mSleep(math.random(500, 700))
@@ -367,6 +367,7 @@ function model:dialog_box()
 	end
 
 	--好
+	mSleep(200)
 	x,y = findMultiColorInRegionFuzzy( 0x007aff, "8|-1|0x007aff,6|14|0x007aff,16|-5|0x007aff,27|8|0x007aff,18|22|0x007aff", 90, 0, 0, 749, 1333)
 	if x~=-1 and y~=-1 then
 		mSleep(math.random(500, 700))
@@ -377,7 +378,7 @@ function model:dialog_box()
 	end
 
 	--尚未绑定手机号
-	mSleep(500)
+	mSleep(200)
 	x,y = findMultiColorInRegionFuzzy( 0x576b95, "6|-1|0x576b95,33|4|0x576b95,69|3|0x576b95,142|-1|0x576b95,-349|-217|0x1a1a1a,-314|-224|0x1a1a1a,-122|-140|0x1a1a1a,-103|-131|0x1a1a1a,152|-187|0x1a1a1a", 90, 0, 0, 749, 1333)
 	if x~=-1 and y~=-1 then
 		mSleep(math.random(500, 700))
@@ -394,7 +395,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 	runApp(self.wc_bid)
 	mSleep(2000)
 	while (true) do
-		mSleep(math.random(500, 700))
+		mSleep(math.random(200, 300))
 		x,y = findMultiColorInRegionFuzzy( 0x07c160, "171|-1|0x07c160,57|-5|0xffffff,-163|-3|0xf2f2f2,-411|1|0xf2f2f2,-266|-6|0x06ae56", 90, 0, 1100, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -405,7 +406,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 			break
 		end
 
-		mSleep(math.random(500, 700))
+		mSleep(math.random(200, 300))
 		flag = isFrontApp(self.wc_bid)
 		if flag == 0 then
 			goto run_app
@@ -413,7 +414,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 	end
 
 	while (true) do
-		mSleep(500)
+		mSleep(math.random(200, 300))
 		x,y = findMultiColorInRegionFuzzy( 0x576b95, "31|-1|0x576b95,55|9|0x576b95,96|0|0x576b95,225|-4|0x576b95,275|7|0x576b95,295|1|0x576b95,329|4|0x576b95", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -426,7 +427,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 	end
 
 	while (true) do
-		mSleep(500)
+		mSleep(math.random(200, 300))
 		x,y = findMultiColorInRegionFuzzy( 0x576b95, "31|-1|0x576b95,55|9|0x576b95,96|0|0x576b95,225|-4|0x576b95,275|7|0x576b95,295|1|0x576b95,329|4|0x576b95", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -434,11 +435,11 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 			mSleep(math.random(500, 700))
 		end
 
-		mSleep(500)
+		mSleep(math.random(200, 300))
 		x,y = findMultiColorInRegionFuzzy( 0x576b95, "33|-4|0x576b95,56|3|0x576b95,72|-4|0x576b95,105|-1|0x576b95,162|3|0x576b95", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			while (true) do
-				mSleep(500)
+				mSleep(math.random(200, 300))
 				x1,y1 = findMultiColorInRegionFuzzy( 0xededed, "-9|0|0xbebebe,10|0|0xbebebe,1|-8|0xbebebe,1|11|0xbebebe,-4|-4|0xededed,5|-4|0xededed,5|5|0xededed,-4|5|0xededed", 90, 647, 0, 749, 648)
 				if x1~=-1 and y1~=-1 then
 					key = "ReturnOrEnter"
@@ -460,11 +461,11 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 	end
 
 	while (true) do
-		mSleep(500)
+		mSleep(math.random(200, 300))
 		x,y = findMultiColorInRegionFuzzy( 0x576b95, "33|-4|0x576b95,56|3|0x576b95,72|-4|0x576b95,105|-1|0x576b95,162|3|0x576b95", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			while (true) do
-				mSleep(500)
+				mSleep(math.random(200, 300))
 				x1,y1 = findMultiColorInRegionFuzzy( 0xededed, "-9|0|0xbebebe,10|0|0xbebebe,1|-8|0xbebebe,1|11|0xbebebe,-4|-4|0xededed,5|-4|0xededed,5|5|0xededed,-4|5|0xededed", 90, 647, 0, 749, 648)
 				if x1~=-1 and y1~=-1 then
 					mSleep(100)
@@ -484,7 +485,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 	end
 
 	while (true) do
-		mSleep(500)
+		mSleep(math.random(200, 300))
 		x,y = findMultiColorInRegionFuzzy( 0xffffff, "35|9|0xffffff,-304|-34|0x07c160,-306|32|0x07c160,1|-38|0x07c160,16|34|0x07c160,334|-35|0x07c160,336|27|0x07c160", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -506,7 +507,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 		end
 
 		--登陆
-		mSleep(500)
+		mSleep(math.random(200, 300))
 		x,y = findMultiColorInRegionFuzzy( 0xffffff, "35|9|0xffffff,-304|-34|0x07c160,-306|32|0x07c160,1|-38|0x07c160,16|34|0x07c160,334|-35|0x07c160,336|27|0x07c160", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -516,7 +517,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 
 		self:dialog_box()
 
-		mSleep(math.random(500, 700))
+		mSleep(math.random(200, 300))
 		x, y = findMultiColorInRegionFuzzy(0x7c160,"191|19|0,565|19|0,104|13|0xfafafa,616|24|0xfafafa", 90, 0, 1013, 749,  1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -526,7 +527,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 		end
 
 		--绑定手机号码
-		mSleep(500)
+		mSleep(math.random(200, 300))
 		x,y = findMultiColorInRegionFuzzy( 0x181818, "13|-1|0x181818,27|-1|0x181818,36|-1|0x181818,49|-1|0x181818,63|-1|0x181818,86|-2|0x181818,110|-2|0x181818,130|-2|0x181818", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(1000)
@@ -537,7 +538,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 		end
 
 		--密码错误
-		mSleep(math.random(500, 700))
+		mSleep(math.random(200, 300))
 		x,y = findMultiColorInRegionFuzzy(0x576b95, "45|-1|0x576b95,-210|-162|0x1a1a1a,-193|-166|0x1a1a1a,-163|-165|0x1a1a1a,-58|-157|0x1a1a1a,-37|-157|0x1a1a1a,12|-165|0x1a1a1a,66|-160|0x1a1a1a,170|-164|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -549,7 +550,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 		end
 
 		--连接失败
-		mSleep(500)
+		mSleep(math.random(200, 300))
 		x,y = findMultiColorInRegionFuzzy( 0x576b95, "17|0|0x576b95,44|0|0x576b95,-229|-167|0x1a1a1a,-215|-167|0x1a1a1a,-195|-167|0x1a1a1a,-152|-167|0x1a1a1a,-123|-167|0x1a1a1a,198|-168|0x1a1a1a,221|-163|0x1a1a1a", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -560,7 +561,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 		end
 
 		--外挂封号
-		mSleep(500)
+		mSleep(math.random(200, 300))
 		x,y = findMultiColorInRegionFuzzy( 0x576b95, "17|-2|0x576b95,46|-2|0x576b95,-388|-303|0x1a1a1a,-356|-300|0x1a1a1a,-320|-303|0x1a1a1a,-32|-145|0x1a1a1a,3|-139|0x1a1a1a,22|-152|0x1a1a1a,22|-144|0x1a1a1a", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -572,7 +573,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 		end
 
 		--恶意营销
-		mSleep(500)
+		mSleep(math.random(200, 300))
 		x,y = findMultiColorInRegionFuzzy( 0x576b95, "28|3|0x576b95,-47|-286|0x1a1a1a,-21|-286|0x1a1a1a,-22|-272|0x1a1a1a,-33|-258|0x1c1c1c,-39|-264|0x1a1a1a,-195|-155|0x1a1a1a,-195|-146|0x1a1a1a,-179|-147|0x1a1a1a", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -584,7 +585,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 		end
 
 		--恶意营销
-		mSleep(500)
+		mSleep(math.random(200, 300))
 		x,y = findMultiColorInRegionFuzzy(0x576b95, "17|-1|0x576b95,44|-2|0x576b95,-184|-151|0x1a1a1a,-165|-155|0x1a1a1a,-165|-150|0x1a1a1a,-173|-140|0x1a1a1a,-143|-148|0x1a1a1a,-131|-149|0x1a1a1a,-124|-148|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -596,7 +597,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 		end
 
 		--被投诉限制登录
-		mSleep(500)
+		mSleep(math.random(200, 300))
 		x,y = findMultiColorInRegionFuzzy(0x576b95, "18|1|0x576b95,45|-2|0x576b95,-323|-183|0x1a1a1a,-310|-188|0x1a1a1a,-305|-184|0x1a1a1a,-279|-184|0x1a1a1a,-355|-261|0x1a1a1a,-319|-262|0x1a1a1a,-82|-138|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -607,7 +608,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 			break
 		end
 
-		mSleep(500)
+		mSleep(math.random(200, 300))
 		x,y = findMultiColorInRegionFuzzy(0x576b95, "17|2|0x576b95,46|0|0x576b95,-7|-142|0x1a1a1a,6|-145|0x1a1a1a,27|-145|0x1a1a1a,69|-142|0x1a1a1a,81|-146|0x1a1a1a,89|-146|0x1a1a1a,-182|-142|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -619,7 +620,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 		end
 
 		--安全验证
-		mSleep(500)
+		mSleep(math.random(200, 300))
 		x,y = findMultiColorInRegionFuzzy( 0x10aeff, "117|6|0x10aeff,53|1|0xffffff,-265|388|0x1aad19,378|387|0x1aad19,382|440|0x1aad19,-271|449|0x1aad19", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -631,7 +632,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 		end
 
 		--存在异常
-		mSleep(500)
+		mSleep(math.random(200, 300))
 		x,y = findMultiColorInRegionFuzzy(0x576b95, "18|-1|0x576b95,45|-2|0x576b95,-145|-262|0x1a1a1a,-133|-276|0x1a1a1a,-131|-260|0x1a1a1a,-98|-266|0x1a1a1a,-67|-278|0x1a1a1a,-32|-260|0x1a1a1a,89|-149|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -642,7 +643,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 			break
 		end
 
-		mSleep(math.random(500, 700))
+		mSleep(math.random(200, 300))
 		flag = isFrontApp(self.wc_bid)
 		if flag == 0 then
 			runApp(self.wc_bid)
@@ -662,7 +663,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 
 			self:dialog_box()
 
-			mSleep(500)
+			mSleep(math.random(200, 300))
 			x,y = findMultiColorInRegionFuzzy( 0x07c160, "-4|-26|0x07c160,-569|-17|0xf5f5f5,-54|6|0xf5f5f5", 90, 0, 1190, 749, 1333)
 			if x~=-1 and y~=-1 then
 				break
@@ -673,7 +674,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 			end
 
 			--绑定手机号码
-			mSleep(500)
+			mSleep(math.random(200, 300))
 			x,y = findMultiColorInRegionFuzzy( 0x181818, "13|0|0x181818,26|0|0x181818,36|0|0x181818,50|0|0x181818,63|0|0x181818,79|-3|0x181818,109|-3|0x181818,129|-3|0x181818,124|-235|0x171717", 90, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
 				mSleep(1000)
@@ -683,7 +684,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				mSleep(1000)
 			end
 
-			mSleep(math.random(500, 700))
+			mSleep(math.random(200, 300))
 			flag = isFrontApp(self.wc_bid)
 			if flag == 0 then
 				runApp(self.wc_bid)
@@ -694,7 +695,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 		::networkError::
 		if processWay == "0" or processWay == "1" or processWay == "3" or processWay == "4" then
 			while (true) do
-				mSleep(500)
+				mSleep(math.random(200, 300))
 				x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "5|25|0x1a1a1a,14|7|0x1a1a1a,29|11|0x1a1a1a,45|16|0x1a1a1a,279|16|0x576b95,336|2|0x576b95,359|22|0x576b95,387|16|0x576b95,399|18|0x576b95", 90, 0, 0, 750, 1334, { orient = 2 })
 				if x~=-1 and y~=-1 then
 					mSleep(math.random(500, 700))
@@ -705,7 +706,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				end
 
 				--支付
-				mSleep(500)
+				mSleep(math.random(200, 300))
 				x,y = findMultiColorInRegionFuzzy( 0x00c777, "-13|-3|0x00c777,24|-2|0x00c777,66|-12|0x1a1a1a,91|-12|0x1a1a1a,79|6|0x1a1a1a,103|2|0x1a1a1a,122|-1|0x1a1a1a", 100, 0, 0, 749, 1333)
 				if x~=-1 and y~=-1 then
 					mSleep(math.random(500, 700))
@@ -717,7 +718,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
                 
                 if processWay == "4" then
                     --三个点:点击收付款
-    				mSleep(500)
+    				mSleep(math.random(200, 300))
     				x,y = findMultiColorInRegionFuzzy( 0x181818, "-7|-2|0xededed,-14|-2|0x181818,-26|2|0xededed,7|0|0xededed,14|-2|0x181818,30|-2|0xededed,-292|5|0x171717,21|77|0x3cb371,23|319|0x3cb371", 100, 0, 0, 749, 1333)
     				if x~=-1 and y~=-1 then
     					mSleep(math.random(500, 700))
@@ -728,7 +729,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
     				end
     				
     				--开启刷卡功能
-    				mSleep(500)
+    				mSleep(math.random(200, 300))
     				x,y = findMultiColorInRegionFuzzy(0x07c160, "-173|-56|0x07c160,-171|-1|0x07c160,1|-57|0x07c160,173|-56|0x07c160,176|1|0x07c160,-7|-98|0xffffff,3|-423|0xb3b3b3,52|-432|0xb3b3b3,-48|-433|0xb3b3b3", 90, 0, 0, 750, 1334, { orient = 2 })
                     if x ~= -1 then
                         mSleep(math.random(500, 700))
@@ -738,14 +739,14 @@ function model:loginAccount(processWay,oldPassword,newPassword)
     					mSleep(1000)
                     end
                     
-                    mSleep(500)
+                    mSleep(math.random(200, 300))
     				if getColor(566,1289) == 0xededed and getColor(617,1280) == 0x181818 then
     				    mSleep(500)
     					break
     				end
                 else
     				--三个点
-    				mSleep(500)
+    				mSleep(math.random(200, 300))
     				x,y = findMultiColorInRegionFuzzy( 0x181818, "-7|-2|0xededed,-14|-2|0x181818,-26|2|0xededed,7|0|0xededed,14|-2|0x181818,30|-2|0xededed,-292|5|0x171717,21|77|0x3cb371,23|319|0x3cb371", 100, 0, 0, 749, 1333)
     				if x~=-1 and y~=-1 then
     					mSleep(math.random(500, 700))
@@ -756,7 +757,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
     				end
     
     				--实名认证
-    				mSleep(500)
+    				mSleep(math.random(200, 300))
     				x,y = findMultiColorInRegionFuzzy(0x171717, "26|12|0x171717,45|8|0x171717,63|12|0x171717,110|9|0x171717,222|120|0x808080,258|106|0x808080,275|106|0x808080,295|110|0x808080,346|109|0x808080", 90, 0, 0, 750, 1334, { orient = 2 })
     				if x~=-1 and y~=-1 then
     					mSleep(math.random(500, 700))
@@ -768,12 +769,12 @@ function model:loginAccount(processWay,oldPassword,newPassword)
     				end
     
     				--注销wcPay
-    				mSleep(500)
+    				mSleep(math.random(200, 300))
     				x,y = findMultiColorInRegionFuzzy( 0x171717, "25|-1|0x171717,11|7|0x171717,37|13|0x171717,57|18|0x171717,82|13|0x171717,106|8|0x171717,123|5|0x171717,173|11|0xededed", 100, 0, 0, 749, 1333)
     				if x~=-1 and y~=-1 then
     					if processWay == "0" then
     						while true do
-    							mSleep(500)
+    							mSleep(math.random(200, 300))
     							x,y = findMultiColorInRegionFuzzy(0x1b1b1b, "16|11|0x262626,11|22|0x1a1a1a,45|10|0x212121,63|14|0x1a1a1a,97|14|0x1a1a1a,116|14|0x272727,148|-1|0x1a1a1a,168|20|0x1a1a1a,187|8|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
     							if x~=-1 and y~=-1 then
     								mSleep(math.random(500, 700))
@@ -807,7 +808,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 			::again::
 		    while (true) do
 				--确认注销
-				mSleep(500)
+				mSleep(math.random(200, 300))
 				x,y = findMultiColorInRegionFuzzy(0xffffff, "111|-4|0xffffff,-184|-38|0x04be02,-185|31|0x04be02,52|-38|0x04be02,52|31|0x04be02,381|-33|0x04be02,376|27|0x04be02,-36|-607|0x171717,142|-608|0x171717", 90, 0, 0, 750, 1334, { orient = 2 })
 				if x~=-1 and y~=-1 then
 					mSleep(math.random(500, 700))
@@ -818,7 +819,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				end
 
 				--验证pay密码
-				mSleep(500)
+				mSleep(math.random(200, 300))
 				x,y = findMultiColorInRegionFuzzy(0xc8c8cd, "-427|-228|0x171717,-270|-222|0x171717,-251|-225|0x171717,-260|-6|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
 				if x~=-1 and y~=-1 then
 					mSleep(math.random(500, 700))
@@ -830,14 +831,14 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				end
 
 				--账户冻结
-				mSleep(500)
+				mSleep(math.random(200, 300))
 				x,y = findMultiColorInRegionFuzzy( 0xffffff, "25|9|0xffffff,50|10|0xffffff,-293|-16|0x04be02,-298|36|0x04be02,362|-17|0x04be02,355|38|0x04be02,-279|-207|0x000000,-26|-210|0x000000,9|-219|0x000000", 90, 0, 0, 749, 1333)
 				if x~=-1 and y~=-1 then
 					break
 				end
 
 				--原身份已注销
-				mSleep(500)
+				mSleep(math.random(200, 300))
 				x,y = findMultiColorInRegionFuzzy(0xffffff, "30|-4|0xffffff,-228|-34|0x04be02,-230|21|0x04be02,18|-36|0x04be02,15|25|0x04be02,311|-36|0x04be02,312|26|0x04be02,6|-378|0x09bb07,25|-294|0x09bb07", 90, 0, 0, 750, 1334, { orient = 2 })
 				if x~=-1 and y~=-1 then
 					toast("检测到原身份已注销",1)
@@ -848,7 +849,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 			pass_index = 1
 			while true do
 				--验证pay密码
-				mSleep(500)
+				mSleep(math.random(200, 300))
 				x,y = findMultiColorInRegionFuzzy(0xc8c8cd, "-427|-228|0x171717,-270|-222|0x171717,-251|-225|0x171717,-260|-6|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
 				if x~=-1 and y~=-1 then
 					mSleep(math.random(500, 700))
@@ -856,7 +857,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 					mSleep(math.random(500, 700))
 				end
 
-				mSleep(500)
+				mSleep(math.random(200, 300))
 				if getColor(566,1289) == 0xededed and getColor(617,1280) == 0x181818 then
 					oldPasswordArr = strSplit(oldPassword,"-")
 					payPass = string.gsub(oldPasswordArr[pass_index],"%s+","")
@@ -890,7 +891,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				end
 
 				--原身份已注销
-				mSleep(500)
+				mSleep(math.random(200, 300))
 				x,y = findMultiColorInRegionFuzzy(0xffffff, "30|-4|0xffffff,-228|-34|0x04be02,-230|21|0x04be02,18|-36|0x04be02,15|25|0x04be02,311|-36|0x04be02,312|26|0x04be02,6|-378|0x09bb07,25|-294|0x09bb07", 90, 0, 0, 750, 1334, { orient = 2 })
 				if x~=-1 and y~=-1 then
 					mSleep(math.random(500, 700))
@@ -902,7 +903,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				end
 
 				--支付密码错误
-				mSleep(500)
+				mSleep(math.random(200, 300))
 				x,y = findMultiColorInRegionFuzzy(0x576b95, "12|3|0x576b95,10|17|0x576b95,34|7|0x576b95,50|1|0x576b95,79|12|0x576b95,117|10|0x576b95,-260|-164|0x1a1a1a,-80|-161|0x1a1a1a,41|-157|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
 				if x~=-1 and y~=-1 then
 					pass_index = pass_index + 1
@@ -920,7 +921,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 						tap(x - 260, y)
 						mSleep(math.random(500, 700))
 						while true do
-							mSleep(500)
+							mSleep(math.random(200, 300))
 							if getColor(566,1289) == 0xededed and getColor(617,1280) == 0x181818 then
 								break
 							else
@@ -933,7 +934,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				end
 
 				--账户冻结
-				mSleep(500)
+				mSleep(math.random(200, 300))
 				x,y = findMultiColorInRegionFuzzy( 0xffffff, "25|9|0xffffff,50|10|0xffffff,-293|-16|0x04be02,-298|36|0x04be02,362|-17|0x04be02,355|38|0x04be02,-279|-207|0x000000,-26|-210|0x000000,9|-219|0x000000", 90, 0, 0, 749, 1333)
 				if x~=-1 and y~=-1 then
 					mSleep(math.random(500, 700))
@@ -945,14 +946,14 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				end
 
 				--网络通信出现问题
-				mSleep(500)
+				mSleep(math.random(200, 300))
 				x,y = findMultiColorInRegionFuzzy(0x576b95, "34|-4|0x576b95,80|-2|0x576b95,84|12|0x576b95,110|3|0x576b95,108|-15|0x576b95,-201|-162|0x1a1a1a,-96|-160|0x1a1a1a,226|-163|0x1a1a1a,268|-174|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
 				if x~=-1 and y~=-1 then
 					mSleep(math.random(500, 700))
 					tap(x, y)
 					mSleep(math.random(500, 700))
 					while true do
-						mSleep(500)
+						mSleep(math.random(200, 300))
 						x,y = findMultiColorInRegionFuzzy(0xc8c8cd, "-427|-228|0x171717,-270|-222|0x171717,-251|-225|0x171717,-260|-6|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
 						if x~=-1 and y~=-1 then
 							mSleep(math.random(500, 700))
@@ -967,7 +968,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				end
 
 				--确定
-				mSleep(500)
+				mSleep(math.random(200, 300))
 				x,y = findMultiColorInRegionFuzzy( 0x02bb00, "10|0|0x02bb00,37|0|0x02bb00,-36|-122|0x000000,-25|-121|0x040404,5|-121|0x000000,34|-125|0x000000,61|-126|0x000000", 90, 0, 0, 749, 1333)
 				if x~=-1 and y~=-1 then
 					mSleep(math.random(500, 700))
@@ -981,7 +982,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 		elseif processWay == "1" then
 			pass_index = 1
 			while true do
-				mSleep(500)
+				mSleep(math.random(200, 300))
 				x,y = findMultiColorInRegionFuzzy( 0x171717, "25|-1|0x171717,11|7|0x171717,37|13|0x171717,57|18|0x171717,82|13|0x171717,106|8|0x171717,123|5|0x171717,173|11|0xededed", 100, 0, 0, 749, 1333)
 				if x~=-1 and y~=-1 then
 					mSleep(math.random(500, 700))
@@ -989,14 +990,14 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 					mSleep(math.random(500, 700))
 				end
 
-				mSleep(500)
+				mSleep(math.random(200, 300))
 				if getColor(566,1289) == 0xededed and getColor(617,1280) == 0x181818 then
 					if getColor(288,813) == 0x07c160 then
 						mSleep(math.random(500, 700))
 						tap(288,813)
 						mSleep(math.random(500, 700))
 						while true do
-							mSleep(500)
+							mSleep(math.random(200, 300))
 							x,y = findMultiColorInRegionFuzzy( 0x171717, "25|-1|0x171717,11|7|0x171717,37|13|0x171717,57|18|0x171717,82|13|0x171717,106|8|0x171717,123|5|0x171717,173|11|0xededed", 100, 0, 0, 749, 1333)
 							if x~=-1 and y~=-1 then
 								mSleep(500)
@@ -1008,7 +1009,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 							end
 
 							--账户冻结
-							mSleep(500)
+							mSleep(math.random(200, 300))
 							x,y = findMultiColorInRegionFuzzy(0x576b95, "17|1|0x576b95,45|-2|0x576b95,1|-242|0x1a1a1a,18|-232|0x1a1a1a,10|-221|0x1a1a1a,29|-235|0x1a1a1a,29|-226|0x1a1a1a,47|-237|0x1a1a1a,46|-228|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
 							if x ~= -1 then
 								mSleep(math.random(500, 700))
@@ -1020,7 +1021,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 							end
 
 							--账户冻结
-							mSleep(500)
+							mSleep(math.random(200, 300))
 							x,y = findMultiColorInRegionFuzzy(0x5d7199, "17|-2|0x5d7199,44|-3|0x5d7199,3|-243|0x212121,19|-243|0x212121,10|-225|0x212121,40|-243|0x212121,52|-236|0x212121,46|-229|0x212121,52|-220|0x212121", 90, 0, 0, 750, 1334, { orient = 2 })
 							if x ~= -1 then
 								mSleep(math.random(500, 700))
@@ -1069,7 +1070,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				end
 
 				--账户被锁定
-				mSleep(500)
+				mSleep(math.random(200, 300))
 				x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "-1|19|0x1a1a1a,10|0|0x1a1a1a,21|7|0x1a1a1a,15|17|0x1a1a1a,34|13|0x1a1a1a,56|15|0x1a1a1a,87|8|0x1a1a1a,115|-2|0x1a1a1a,182|9|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
 				if x ~= -1 then
 					mSleep(math.random(500, 700))
@@ -1081,7 +1082,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				end
 
 				--账户冻结
-				mSleep(500)
+				mSleep(math.random(200, 300))
 				x,y = findMultiColorInRegionFuzzy(0x576b95, "17|1|0x576b95,45|-2|0x576b95,1|-242|0x1a1a1a,18|-232|0x1a1a1a,10|-221|0x1a1a1a,29|-235|0x1a1a1a,29|-226|0x1a1a1a,47|-237|0x1a1a1a,46|-228|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
 				if x ~= -1 then
 					mSleep(math.random(500, 700))
@@ -1093,7 +1094,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				end
 
 				--账户冻结
-				mSleep(500)
+				mSleep(math.random(200, 300))
 				x,y = findMultiColorInRegionFuzzy(0x5d7199, "17|-2|0x5d7199,44|-3|0x5d7199,3|-243|0x212121,19|-243|0x212121,10|-225|0x212121,40|-243|0x212121,52|-236|0x212121,46|-229|0x212121,52|-220|0x212121", 90, 0, 0, 750, 1334, { orient = 2 })
 				if x ~= -1 then
 					mSleep(math.random(500, 700))
@@ -1105,7 +1106,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				end
 
 				--支付密码错误
-				mSleep(500)
+				mSleep(math.random(200, 300))
 				x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "24|0|0x1a1a1a,12|7|0x1a1a1a,36|15|0x1a1a1a,55|14|0x1a1a1a,80|18|0x1a1a1a,123|17|0x1a1a1a,219|17|0x1a1a1a,261|9|0x1a1a1a,294|13|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
 				if x ~= -1 then
 					mSleep(math.random(500, 700))
@@ -1117,7 +1118,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				end
 
 				--支付密码错误
-				mSleep(500)
+				mSleep(math.random(200, 300))
 				x,y = findMultiColorInRegionFuzzy(0x576b95, "12|3|0x576b95,10|17|0x576b95,34|7|0x576b95,50|1|0x576b95,79|12|0x576b95,117|10|0x576b95,-260|-164|0x1a1a1a,-80|-161|0x1a1a1a,41|-157|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
 				if x~=-1 and y~=-1 then
 					pass_index = pass_index + 1
@@ -1135,7 +1136,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 						tap(x - 260, y)
 						mSleep(math.random(500, 700))
 						while true do
-							mSleep(500)
+							mSleep(math.random(200, 300))
 							if getColor(566,1289) == 0xededed and getColor(617,1280) == 0x181818 then
 								break
 							else
@@ -1151,7 +1152,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 			back = true
 
 			while (true) do
-				mSleep(500)
+				mSleep(math.random(200, 300))
 				x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "5|25|0x1a1a1a,14|7|0x1a1a1a,29|11|0x1a1a1a,45|16|0x1a1a1a,279|16|0x576b95,336|2|0x576b95,359|22|0x576b95,387|16|0x576b95,399|18|0x576b95", 90, 0, 0, 750, 1334, { orient = 2 })
 				if x~=-1 and y~=-1 then
 					mSleep(math.random(500, 700))
@@ -1162,7 +1163,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				end
 
 				--支付
-				mSleep(500)
+				mSleep(math.random(200, 300))
 				x,y = findMultiColorInRegionFuzzy( 0x00c777, "-13|-3|0x00c777,24|-2|0x00c777,66|-12|0x1a1a1a,91|-12|0x1a1a1a,79|6|0x1a1a1a,103|2|0x1a1a1a,122|-1|0x1a1a1a", 100, 0, 0, 749, 1333)
 				if x~=-1 and y~=-1 then
 					mSleep(math.random(500, 700))
@@ -1172,7 +1173,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 					mSleep(500)
 				end
 
-				mSleep(500)
+				mSleep(math.random(200, 300))
 				if getColor(694, 84) == 0x181818 and getColor(351, 85) == 0x171717 then
 					mSleep(500)
 					toast("进入收藏",1)
@@ -1219,7 +1220,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 			end
 		elseif processWay == "3" then
 			while (true) do
-				mSleep(500)
+				mSleep(math.random(200, 300))
 				if getColor(267,  276) == 0x000000 and getColor(469,  273) == 0x000000 then
 					mSleep(500)
 					toast("准备识别",1)
@@ -1307,14 +1308,20 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 		    pass_index = 1
 		    
 		    while true do
-		        mSleep(500)
+		        mSleep(math.random(200, 300))
 				if getColor(566,1289) == 0xededed and getColor(617,1280) == 0x181818 then
 					oldPasswordArr = strSplit(oldPassword,"-")
 					payPass = string.gsub(oldPasswordArr[pass_index],"%s+","")
-					mSleep(500)
-					for i = 1, #(payPass) do
+					for var= 1, 3 do
 						mSleep(500)
+						tap(566,1289)
+						mSleep(500)
+					end
+					
+					for i = 1, #(payPass) do
+						mSleep(200)
 						num = string.sub(payPass,i,i)
+						mSleep(300)
 						if num == "0" then
 							tap(373, 1281)
 						elseif num == "1" then
@@ -1336,11 +1343,11 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 						elseif num == "9" then
 							tap(633, 1164)
 						end
-						mSleep(100)
+						mSleep(200)
 					end
 				end
 				
-				mSleep(500)
+				mSleep(math.random(200, 300))
 				if getColor(234,879) == 0x000000 and getColor(335,1145) == 0x39b472 then
 				    mSleep(500)
 				    tap(367,1006)
@@ -1350,11 +1357,9 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				end
 				
 				--订单完成
-				mSleep(500)
-				x,y = findMultiColorInRegionFuzzy(0x07c160, "27|-1|0x07c160,17|1|0x07c160,16|8|0x07c160,37|5|0x07c160,49|-2|0x07c160,205|7|0xf2f2f2,-139|6|0xf2f2f2,36|-20|0xf2f2f2,36|-42|0xffffff", 100, 0, 800, 750, 1334, { orient = 2 })
+				mSleep(math.random(200, 300))
+				x,y = findMultiColorInRegionFuzzy( 0x06ae56, "25|0|0x06ae56,13|2|0x06ae56,13|9|0x06ae56,36|6|0x06ae56,49|-2|0x06ae56,203|8|0xf2f2f2,-143|7|0xf2f2f2,35|-22|0xf2f2f2,29|-43|0xffffff", 100, 0, 800, 750, 1334, { orient = 2 })
                 if x~=-1 and y~=-1 then
-					mSleep(math.random(500, 700))
-					tap(x, y)
 					mSleep(math.random(500, 700))
 					toast("完成",1)
 					mSleep(500)
@@ -1363,7 +1368,43 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 					break
 				end
 				
-				mSleep(500)
+				--订单完成
+				mSleep(math.random(200, 300))
+				x,y = findMultiColorInRegionFuzzy( 0x07c160, "25|0|0x07c160,17|9|0x07c160,37|7|0x07c160,52|-2|0x07c160,206|9|0xf2f2f2,-140|2|0xf2f2f2,32|-24|0xf2f2f2,28|-48|0xffffff", 90, 0, 0, 749, 1333)
+				if x~=-1 and y~=-1 then
+					mSleep(math.random(500, 700))
+					toast("完成",1)
+					mSleep(500)
+					category = "success-data"
+					data = self.infoData.."----支付成功"
+					break
+				end
+				
+				--被盗风险
+				mSleep(math.random(200, 300))
+				x,y = findMultiColorInRegionFuzzy( 0x576b95, "9|-10|0x576b95,70|3|0x576b95,115|-11|0x576b95,149|-2|0x576b95,186|-9|0x576b95,-237|1|0x1a1a1a,-208|2|0x1a1a1a,49|-149|0x1a1a1a,110|-143|0x1a1a1a", 90, 0, 0, 749, 1333)
+				if x~=-1 and y~=-1 then
+					mSleep(math.random(500, 700))
+					toast("被盗风险",1)
+					mSleep(500)
+					category = "error-data"
+					data = self.infoData.."----被盗风险"
+					break
+				end
+				
+				--被盗嫌疑
+				mSleep(math.random(200, 300))
+				x,y = findMultiColorInRegionFuzzy( 0x576b95, "22|3|0x576b95,52|1|0x576b95,101|1|0x576b95,136|1|0x576b95,197|2|0x576b95,41|-139|0x1a1a1a,101|-139|0x1a1a1a", 90, 0, 0, 749, 1333)
+                if x~=-1 and y~=-1 then
+					mSleep(math.random(500, 700))
+					toast("被盗嫌疑",1)
+					mSleep(500)
+					category = "error-data"
+					data = self.infoData.."----被盗嫌疑"
+					break
+				end
+				
+				mSleep(math.random(200, 300))
 				x,y = findMultiColorInRegionFuzzy(0x576b95, "18|1|0x576b95,46|1|0x576b95,145|-166|0x1a1a1a,-145|-174|0x1a1a1a,-124|-166|0x1a1a1a,-108|-159|0x1a1a1a,-88|-161|0x1a1a1a,-63|-157|0x1a1a1a,-22|-157|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
                 if x ~= -1 then
                     pass_index = pass_index + 1
@@ -1381,7 +1422,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 						tap(x, y)
 						mSleep(math.random(500, 700))
 						while true do
-							mSleep(500)
+							mSleep(math.random(200, 300))
 							if getColor(566,1289) == 0xededed and getColor(617,1280) == 0x181818 then
 								break
 							else
