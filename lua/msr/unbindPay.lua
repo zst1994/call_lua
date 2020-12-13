@@ -19,6 +19,7 @@ model.six_two_data = ""
 
 model.infoData = ""
 model.word = ""
+model.content_num = ""
 
 math.randomseed(getRndNum()) -- 随机种子初始化真随机数
 
@@ -389,6 +390,170 @@ function model:dialog_box()
 	end
 end
 
+function model:shoucang()
+    back = true
+
+	while (true) do
+		mSleep(math.random(200, 300))
+		x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "5|25|0x1a1a1a,14|7|0x1a1a1a,29|11|0x1a1a1a,45|16|0x1a1a1a,279|16|0x576b95,336|2|0x576b95,359|22|0x576b95,387|16|0x576b95,399|18|0x576b95", 90, 0, 0, 750, 1334, { orient = 2 })
+		if x~=-1 and y~=-1 then
+			mSleep(math.random(500, 700))
+			randomTap(x,y,4)
+			mSleep(math.random(500, 700))
+			toast("忽略",1)
+			mSleep(500)
+		end
+
+		--支付
+		mSleep(math.random(200, 300))
+		x,y = findMultiColorInRegionFuzzy( 0x00c777, "-13|-3|0x00c777,24|-2|0x00c777,66|-12|0x1a1a1a,91|-12|0x1a1a1a,79|6|0x1a1a1a,103|2|0x1a1a1a,122|-1|0x1a1a1a", 100, 0, 0, 749, 1333)
+		if x~=-1 and y~=-1 then
+			mSleep(math.random(500, 700))
+			randomTap(x + 200,y + 140,4)
+			mSleep(math.random(500, 700))
+			toast("收藏",1)
+			mSleep(500)
+		end
+
+		mSleep(math.random(200, 300))
+		if getColor(694, 84) == 0x181818 and getColor(351, 85) == 0x171717 then
+			mSleep(500)
+			toast("进入收藏",1)
+			mSleep(1000)
+			category = "error-data"
+			data = self.infoData.."----无关键词"
+			
+			mSleep(500)
+			if getColor(371,  310) ~= 0xa6a6a6 then
+				mSleep(5000)
+				local Wildcard = self:getList(appDataPath(self.wc_bid)..self.wc_folder) 
+				for var = 1,#Wildcard do 
+					local bool = isFileExist(appDataPath(self.wc_bid)..self.wc_folder..Wildcard[var].."/Favorites/fav.db")
+					if bool then
+						local db = sqlite3.open(appDataPath(self.wc_bid)..self.wc_folder..Wildcard[var].."/Favorites/fav.db")
+						local open = db:isopen("fav")
+						if open then
+							for a in db:nrows('SELECT * FROM FavoritesSearchTable') do 
+								for k,v in pairs(a) do
+									if k == "SearchStr" then
+										v = string.gsub(v,"%s+","")
+										str = string.match(v, '密码:800000ID:')
+										if type(str) ~= "nil" then
+											left,right = string.find(v,".+%d+.+%d+")
+											self.word = string.sub(v,left,right)
+											category = "success-data"
+											data = self.infoData.."----"..self.word
+											toast("识别内容："..self.word,1)
+											mSleep(1000)
+											break
+										end
+									end
+								end
+							end
+						end
+						break
+					end
+				end
+			end
+			result = {}
+			result.category = category
+			result.data = data
+			return result
+		end
+	end
+end
+
+function model:shibie()
+    while (true) do
+		mSleep(math.random(200, 300))
+		if getColor(267,  276) == 0x000000 and getColor(469,  273) == 0x000000 then
+			mSleep(500)
+			toast("准备识别",1)
+			mSleep(1000)
+			
+			local API = "Hk8Ve2Duh6QCR5XUxLpRxPyv"
+			local Secret  = "fD0az8pW8lNhGptCZC4TPfMWX5CyVtnh"
+
+			local tab={
+				language_type="ENG",
+				detect_direction="true",
+				detect_language="true",
+				ocrType = 3
+			}
+
+			::getBaiDuToken::
+			local code,access_token = getAccessToken(API,Secret)
+			if code then
+				::snap::
+				local content_name = userPath() .. "/res/baiduAI_content_name1.jpg"
+
+				--内容
+				snapshot(content_name, 406,926,443,964) 
+				mSleep(500)
+
+				::put_work::
+				header_send = {
+					["Content-Type"] = "application/x-www-form-urlencoded",
+				}
+				body_send = {
+					["access_token"] = access_token,
+					["image"] = urlEncoder(self:readFileBase64(content_name)),
+					["recognize_granularity"] = "big"
+				}
+				ts.setHttpsTimeOut(60)
+				code,header_resp, body_resp = ts.httpsPost("https://aip.baidubce.com/rest/2.0/ocr/v1/numbers", header_send,body_send)
+				if code == 200 then
+					mSleep(500)
+					local tmp = json.decode(body_resp)
+					if #tmp.words_result > 0 then
+						self.content_num = string.lower(tmp.words_result[1].words)
+					else
+						mSleep(500)
+						local code, body = baiduAI(access_token,content_name,tab)
+						if code then
+							local tmp = json.decode(body)
+							if #tmp.words_result > 0 then
+								self.content_num = string.lower(tmp.words_result[1].words)
+							else
+								toast("识别内容失败\n" .. tostring(body),1)
+								mSleep(3000)
+								goto snap
+							end
+						else
+							toast("识别内容失败\n" .. tostring(body),1)
+							mSleep(3000)
+							goto snap
+						end       
+					end
+				else
+					toast("识别内容失败\n" .. tostring(body_resp),1)
+					mSleep(3000)
+					goto put_work
+				end 
+
+				if self.content_num ~= nil and #self.content_num >= 1 then
+					self.content_num = string.sub(self.content_num,#self.content_num - 1, #self.content_num)
+					toast("识别内容：\r\n"..self.content_num,1)
+					mSleep(1000)
+					category = "success-data"
+					data = self.infoData.."----"..self.content_num
+				else
+					toast("识别内容失败,重新截图识别" .. tostring(body),1)
+					mSleep(3000)
+					goto snap 
+				end
+			else
+				toast("获取token失败",1)
+				goto getBaiDuToken
+			end
+			result = {}
+			result.category = category
+			result.data = data
+			return result
+		end
+	end
+end
+
 function model:loginAccount(processWay,oldPassword,newPassword)
 	::run_app::
 	mSleep(1000)
@@ -521,7 +686,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 		x, y = findMultiColorInRegionFuzzy(0x7c160,"191|19|0,565|19|0,104|13|0xfafafa,616|24|0xfafafa", 90, 0, 1013, 749,  1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
-			toast("微信界面",1)
+			toast("wc界面",1)
 			data_six_two = true
 			break
 		end
@@ -536,6 +701,18 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 			toast("绑定手机号码",1)
 			mSleep(1000)
 		end
+		
+		--操作频繁
+		mSleep(math.random(200, 300))
+		x,y = findMultiColorInRegionFuzzy(0x576b95, "12|4|0x576b95,39|1|0x576b95,-93|-175|0x1a1a1a,-94|-163|0x1a1a1a,-84|-167|0x1a1a1a,-73|-167|0x1a1a1a,-14|-175|0x1a1a1a,-7|-166|0x1a1a1a,225|-162|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+            mSleep(math.random(500, 700))
+			toast("操作频率过快",1)
+			mSleep(500)
+			category = "caozuo-data"
+			data = self.infoData.."----操作频率过快"
+			break
+        end
 
 		--密码错误
 		mSleep(math.random(200, 300))
@@ -558,6 +735,9 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 			mSleep(math.random(500, 700))
 			toast("连接失败",1)
 			mSleep(500)
+			if connect_vpn == "0" then
+			    self:vpn()
+			end
 		end
 
 		--外挂封号
@@ -693,7 +873,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 		end
 
 		::networkError::
-		if processWay == "0" or processWay == "1" or processWay == "3" or processWay == "4" then
+		if processWay == "0" or processWay == "1" or processWay == "3" or processWay == "4" or processWay == "5" then
 			while (true) do
 				mSleep(math.random(200, 300))
 				x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "5|25|0x1a1a1a,14|7|0x1a1a1a,29|11|0x1a1a1a,45|16|0x1a1a1a,279|16|0x576b95,336|2|0x576b95,359|22|0x576b95,387|16|0x576b95,399|18|0x576b95", 90, 0, 0, 750, 1334, { orient = 2 })
@@ -793,7 +973,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
     						mSleep(math.random(500, 700))
     						tap(414,319)
     						mSleep(math.random(500, 700))
-    					elseif processWay == "3" then
+    					elseif processWay == "3" or processWay == "5" then
     						mSleep(math.random(500, 700))
     						tap(414,182)
     						mSleep(math.random(500, 700))
@@ -1149,160 +1329,16 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				end
 			end
 		elseif processWay == "2" then
-			back = true
-
-			while (true) do
-				mSleep(math.random(200, 300))
-				x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "5|25|0x1a1a1a,14|7|0x1a1a1a,29|11|0x1a1a1a,45|16|0x1a1a1a,279|16|0x576b95,336|2|0x576b95,359|22|0x576b95,387|16|0x576b95,399|18|0x576b95", 90, 0, 0, 750, 1334, { orient = 2 })
-				if x~=-1 and y~=-1 then
-					mSleep(math.random(500, 700))
-					randomTap(x,y,4)
-					mSleep(math.random(500, 700))
-					toast("忽略",1)
-					mSleep(500)
-				end
-
-				--支付
-				mSleep(math.random(200, 300))
-				x,y = findMultiColorInRegionFuzzy( 0x00c777, "-13|-3|0x00c777,24|-2|0x00c777,66|-12|0x1a1a1a,91|-12|0x1a1a1a,79|6|0x1a1a1a,103|2|0x1a1a1a,122|-1|0x1a1a1a", 100, 0, 0, 749, 1333)
-				if x~=-1 and y~=-1 then
-					mSleep(math.random(500, 700))
-					randomTap(x + 200,y + 140,4)
-					mSleep(math.random(500, 700))
-					toast("收藏",1)
-					mSleep(500)
-				end
-
-				mSleep(math.random(200, 300))
-				if getColor(694, 84) == 0x181818 and getColor(351, 85) == 0x171717 then
-					mSleep(500)
-					toast("进入收藏",1)
-					mSleep(1000)
-					category = "error-data"
-					data = self.infoData.."----无关键词"
-					
-					mSleep(500)
-					if getColor(371,  310) ~= 0xa6a6a6 then
-						mSleep(5000)
-						local Wildcard = self:getList(appDataPath(self.wc_bid)..self.wc_folder) 
-						for var = 1,#Wildcard do 
-							local bool = isFileExist(appDataPath(self.wc_bid)..self.wc_folder..Wildcard[var].."/Favorites/fav.db")
-							if bool then
-								local db = sqlite3.open(appDataPath(self.wc_bid)..self.wc_folder..Wildcard[var].."/Favorites/fav.db")
-								local open = db:isopen("fav")
-								if open then
-									for a in db:nrows('SELECT * FROM FavoritesSearchTable') do 
-										for k,v in pairs(a) do
-											if k == "SearchStr" then
-												v = string.gsub(v,"%s+","")
-												str = string.match(v, '密码:800000ID:')
-												if type(str) ~= "nil" then
-													left,right = string.find(v,".+%d+.+%d+")
-													self.word = string.sub(v,left,right)
-													category = "success-data"
-													data = self.infoData.."----"..self.word
-													toast("识别内容："..self.word,1)
-													mSleep(1000)
-													break
-												end
-											else
-
-											end
-										end
-									end
-								end
-								break
-							end
-						end
-					end
-					break
-				end
+			result = self:shoucang()
+			if result then
+    			category = result.category
+    			data = result.data
 			end
 		elseif processWay == "3" then
-			while (true) do
-				mSleep(math.random(200, 300))
-				if getColor(267,  276) == 0x000000 and getColor(469,  273) == 0x000000 then
-					mSleep(500)
-					toast("准备识别",1)
-					mSleep(1000)
-					
-					local API = "Hk8Ve2Duh6QCR5XUxLpRxPyv"
-					local Secret  = "fD0az8pW8lNhGptCZC4TPfMWX5CyVtnh"
-
-					local tab={
-						language_type="ENG",
-						detect_direction="true",
-						detect_language="true",
-						ocrType = 3
-					}
-
-					::getBaiDuToken::
-					local code,access_token = getAccessToken(API,Secret)
-					if code then
-						::snap::
-						local content_name = userPath() .. "/res/baiduAI_content_name1.jpg"
-
-						--内容
-						snapshot(content_name, 406,926,443,964) 
-						mSleep(500)
-
-						::put_work::
-						header_send = {
-							["Content-Type"] = "application/x-www-form-urlencoded",
-						}
-						body_send = {
-							["access_token"] = access_token,
-							["image"] = urlEncoder(self:readFileBase64(content_name)),
-							["recognize_granularity"] = "big"
-						}
-						ts.setHttpsTimeOut(60)
-						code,header_resp, body_resp = ts.httpsPost("https://aip.baidubce.com/rest/2.0/ocr/v1/numbers", header_send,body_send)
-						if code == 200 then
-							mSleep(500)
-							local tmp = json.decode(body_resp)
-							if #tmp.words_result > 0 then
-								content_num = string.lower(tmp.words_result[1].words)
-							else
-								mSleep(500)
-								local code, body = baiduAI(access_token,content_name,tab)
-								if code then
-									local tmp = json.decode(body)
-									if #tmp.words_result > 0 then
-										content_num = string.lower(tmp.words_result[1].words)
-									else
-										toast("识别内容失败\n" .. tostring(body),1)
-										mSleep(3000)
-										goto snap
-									end
-								else
-									toast("识别内容失败\n" .. tostring(body),1)
-									mSleep(3000)
-									goto snap
-								end       
-							end
-						else
-							toast("识别内容失败\n" .. tostring(body_resp),1)
-							mSleep(3000)
-							goto put_work
-						end 
-
-						if content_num ~= nil and #content_num >= 1 then
-							content_num = string.sub(content_num,#content_num - 1, #content_num)
-							toast("识别内容：\r\n"..content_num,1)
-							mSleep(1000)
-							category = "success-data"
-							data = self.infoData.."----"..content_num
-						else
-							toast("识别内容失败,重新截图识别" .. tostring(body),1)
-							mSleep(3000)
-							goto snap 
-						end
-					else
-						toast("获取token失败",1)
-						goto getBaiDuToken
-					end
-					break
-				end
+			result = self:shibie()
+			if result then
+    			category = result.category
+    			data = result.data
 			end
 		elseif processWay == "4" then
 		    pass_index = 1
@@ -1434,6 +1470,29 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 					end
                 end
 		    end
+		elseif processWay == "5" then
+		    result = self:shibie()
+			if result then
+			    while true do
+    			    --支付
+    				mSleep(math.random(200, 300))
+    				x,y = findMultiColorInRegionFuzzy( 0x00c777, "-13|-3|0x00c777,24|-2|0x00c777,66|-12|0x1a1a1a,91|-12|0x1a1a1a,79|6|0x1a1a1a,103|2|0x1a1a1a,122|-1|0x1a1a1a", 100, 0, 0, 749, 1333)
+    				if x~=-1 and y~=-1 then
+    					mSleep(100)
+    					break
+    				else
+    				    mSleep(math.random(500, 700))
+        				tap(57, 85)
+        				mSleep(math.random(500, 700))
+    				end
+			    end
+			    
+				result = self:shoucang()
+    			if result then
+        			category = "success-data"
+        			data = self.infoData.."----"..self.word.."----"..self.content_num
+    			end
+			end
 		end
 
 		::pushData::
