@@ -3614,10 +3614,12 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 				}
 				ts.setHttpsTimeOut(60)
 				code,header_resp, body_resp = ts.httpPost("http://gvU6e7.g7e6.com:20083/api/code", header_send,body_send)
+				toast(body_resp,1)
+				mSleep(500)
 				if code == 200 then
 					mSleep(500)
 					local tmp = json.decode(body_resp)
-					if tmp.status == 0 then
+					if tmp.status == 0 and #tmp.codes > 0 then
 						code = tmp.codes[1].code
 						mess_yzm = string.match(code,"%d%d%d%d%d%d")
 					else
