@@ -1015,27 +1015,206 @@ end
 
 --ts.binaryzation(414,924,443,964,200)
 
---注销wcPay
-mSleep(500)
-x,y = findMultiColorInRegionFuzzy( 0x171717, "25|-1|0x171717,11|7|0x171717,37|13|0x171717,57|18|0x171717,82|13|0x171717,106|8|0x171717,123|5|0x171717,173|11|0xededed", 100, 0, 0, 749, 1333)
-if x~=-1 and y~=-1 then
-	dialog(x.."=="..y, time)
+		dialog(string.match("233.fdfhd,555555","%d%d%d%d%d%d"), time)
+::get_phone::
+header_send = {
+	["Content-Type"] = "application/json"
+}
+body_send = {
+	["appKey"] = "x727KdG1",
+	["secretKey"] = "cc128a0c117a4493b2827de05c150909",
+	["infos"] = {
+		{
+			["productId"] = 3,
+			["abbr"] = "ru",
+			["number"] = 1
+		}
+	},
+}
+ts.setHttpsTimeOut(60)
+code,header_resp, body_resp = ts.httpPost("http://gvU6e7.g7e6.com:20083/api/phone", header_send,body_send)
+if code == 200 then
+	mSleep(500)
+	local tmp = json.decode(body_resp)
+	if tmp.status == 0 then
+		taskId = tmp.phones[1].phoneNodes[1].taskId
+		telphone = tmp.phones[1].phoneNodes[1].phone
+		toast(telphone.."\r\n"..taskId,1)
+	else
+		toast("获取号码失败:"..body_resp,1)
+		mSleep(5000)
+		goto get_phone
+	end
+else
+	toast("获取号码失败:"..body_resp,1)
+	mSleep(5000)
+	goto get_phone
 end
+
+header_send = {
+	["Content-Type"] = "application/json"
+}
+body_send = {
+	["appKey"] = "x727KdG1",
+	["secretKey"] = "cc128a0c117a4493b2827de05c150909",
+	["type"] = 1,
+	["taskId"] = taskId,
+	["status"] = 2,
+	["msg"] = "号码不可使用"
+}
+ts.setHttpsTimeOut(60)
+code,header_resp, body_resp = ts.httpPost("http://gvU6e7.g7e6.com:20083/api/feedback", header_send,body_send)
+dialog(tostring(body_resp), time)
+
+
+
+::get_code::
+header_send = {
+	["Content-Type"] = "application/json"
+}
+body_send = {
+	["appKey"] = "x727KdG1",
+	["secretKey"] = "cc128a0c117a4493b2827de05c150909",
+	["taskIds"] = {
+		{
+			["taskId"] = taskId,
+		}
+	},
+}
+ts.setHttpsTimeOut(60)
+code,header_resp, body_resp = ts.httpPost("http://gvU6e7.g7e6.com:20083/api/code", header_send,body_send)
+if code == 200 then
+	mSleep(500)
+	local tmp = json.decode(body_resp)
+	if tmp.status == 0 then
+		code = tmp.codes[1].code
+		mess_yzm = string.match(code,"%d%d%d%d%d%d")
+		toast(telphone.."\r\n"..taskId,1)
+	else
+		toast("获取号码失败:"..body_resp,1)
+		mSleep(5000)
+		goto get_code
+	end
+else
+	toast("获取号码失败:"..body_resp,1)
+	mSleep(5000)
+	goto get_code
+end
+--if code == 200 then
+--	mSleep(500)
+--	local tmp = json.decode(body_resp)
+--	if tmp.status == 0 then
+--		taskId = tmp.phones[1].phoneNodes[1].taskId
+--		telphone = tmp.phones[1].phoneNodes[1].phone
+--		toast(telphone.."\r\n"..taskId,1)
+--	else
+--		toast("获取号码失败:"..body_resp,1)
+--		mSleep(5000)
+--		goto get_phone
+--	end
+--else
+--	toast("获取号码失败:"..body_resp,1)
+--	mSleep(5000)
+--	goto get_phone
+--end
+
+--if code == 200 then
+--	mSleep(500)
+--	local tmp = json.decode(body_resp)
+--	if tmp.status == 0 then
+--		phone = tmp.phones[1].phoneNodes[1].phone
+--		toast("二维码辅助发布成功:"..phone,1)
+--		mSleep(5000)
+--	else
+--		mSleep(500)
+--		toast("发布失败，6秒后重新发布",1)
+--		mSleep(6000)
+--		goto put_work
+--	end
+--else
+--	goto put_work
+--end
+
 
 --0123456789
 --14789
 
---local API = "Hk8Ve2Duh6QCR5XUxLpRxPyv"
---local Secret  = "fD0az8pW8lNhGptCZC4TPfMWX5CyVtnh"
 
---local tab={
---	language_type="ENG",
+--local model = {}
+--model.API = "Hk8Ve2Duh6QCR5XUxLpRxPyv"
+--model.Secret  = "fD0az8pW8lNhGptCZC4TPfMWX5CyVtnh"
+
+--model.tab_CHN_ENG={
+--	language_type="CHN_ENG",
 --	detect_direction="true",
 --	detect_language="true",
 --	ocrType = 3
 --}
 
---::getBaiDuToken::
+--function model:main()
+--	mSleep(math.random(200, 300))
+--	if getColor(43,  841) == 0xfbdf66 then
+--		::getBaiDuToken1::
+--		local code,access_token = getAccessToken(self.API,self.Secret)
+--		if code then
+--			::snap1::
+
+--			local content_name = userPath() .. "/res/baiduAI_content_name1.jpg"
+
+--			--内容
+--			snapshot(content_name, 84,  805,370,  882) 
+--			mSleep(500)
+
+--			local code, body = baiduAI(access_token,content_name,self.tab_CHN_ENG)
+--			if code then
+--				local tmp = json.decode(body)
+--				if #tmp.words_result > 0 then
+--					content_num = string.lower(tmp.words_result[1].words)
+--				else
+--					toast("识别内容失败\n" .. tostring(body),1)
+--					mSleep(3000)
+--					goto snap1
+--				end
+--			else
+--				toast("识别内容失败\n" .. tostring(body),1)
+--				mSleep(3000)
+--				goto snap1
+--			end
+
+--			if content_num ~= nil and #content_num >= 1 then
+--				toast("识别内容：\r\n"..content_num,1)
+--				mSleep(1000)
+--				while (true) do
+--					mSleep(500)
+--					if getColor(262,  669) == 0x07c160 then
+--						mSleep(500)
+--						tap(229,  664)
+--						mSleep(1000)
+--						dialog(content_num, 0)
+--						break
+--					else
+--						mSleep(500)
+--						tap(384,449)
+--						mSleep(500)
+--					end
+--				end
+--			else
+--				toast("识别内容失败,重新截图识别" .. tostring(body),1)
+--				mSleep(3000)
+--				goto snap1
+--			end
+--		else
+--			toast("获取token失败",1)
+--			goto getBaiDuToken1
+--		end
+--	end
+--end
+
+--model:main()
+
+
+
+
 --local code,access_token = getAccessToken(API,Secret)
 --if code then
 ----	::snap::
@@ -1043,52 +1222,26 @@ end
 --	local content_name = userPath() .. "/res/baiduAI_content_name1.jpg"
 
 --	--内容
---	snapshot(content_name, 414,926,443,964) 
+--	snapshot(content_name, 84,  805,370,  882) 
 --	mSleep(500)
 
---	local ts = require("ts")
---	::put_work::
---	header_send = {
---		["Content-Type"] = "application/x-www-form-urlencoded",
---	}
---	body_send = {
---		["access_token"] = access_token,
---		["image"] = urlEncoder(readFileBase64(content_name)),
---		["recognize_granularity"] = "big"
---	}
---	ts.setHttpsTimeOut(60)
---	code,header_resp, body_resp = ts.httpsPost("https://aip.baidubce.com/rest/2.0/ocr/v1/numbers", header_send,body_send)
---	if code == 200 then
---		mSleep(500)
---		local tmp = json.decode(body_resp)
+--	local code, body = baiduAI(access_token,content_name,tab)
+--	dialog(body, time)
+--	if code then
+--		local tmp = json.decode(body)
+
 --		if #tmp.words_result > 0 then
 --			content_num = string.lower(tmp.words_result[1].words)
 --		else
---			mSleep(500)
---			local code, body = baiduAI(access_token,content_name,tab)
---			if code then
---				local tmp = json.decode(body)
 
---				if #tmp.words_result > 0 then
---					content_num = string.lower(tmp.words_result[1].words)
---				else
-
---				end
---			else
---				toast("识别内容失败\n" .. tostring(body),1)
---				mSleep(3000)
-----		goto snap
---			end       
 --		end
 --	else
---		goto put_work
---	end 
-
-
+--		toast("识别内容失败\n" .. tostring(body),1)
+--		mSleep(3000)
+----		goto snap
+--	end
 
 --	if content_num ~= nil and #content_num >= 1 then
---		sendCodeTime = 0
---		content_num = string.sub(content_num,#content_num - 1, #content_num)
 --		toast("识别内容：\r\n"..content_num,1)
 --		mSleep(1000)
 --	else
@@ -1132,15 +1285,6 @@ end
 --end	
 
 
---订单完成
---订单完成
-				mSleep(math.random(200, 300))
-				x,y = findMultiColorInRegionFuzzy( 0x06ae56, "25|0|0x06ae56,13|2|0x06ae56,13|9|0x06ae56,36|6|0x06ae56,49|-2|0x06ae56,203|8|0xf2f2f2,-143|7|0xf2f2f2,35|-22|0xf2f2f2,29|-43|0xffffff", 100, 0, 800, 750, 1334, { orient = 2 })
-                if x~=-1 and y~=-1 then
-					mSleep(math.random(500, 700))
-					toast("完成",1)
-					mSleep(500)
-				end
 
 --while (true) do
 --	mSleep(500)
