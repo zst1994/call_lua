@@ -1547,11 +1547,11 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 							if status_resp == 200 then
 								tmp = json.decode(body_resp)
 								if tmp.code == "200" then
-									if tmp.data == "SUCCESS" then
+									if tmp.data == "SUCCESS" or tmp.message == "success" then
 										toast("接收到验证码，反馈成功",1)
 										mSleep(1000)
 									else
-										toast("拉黑失败"..tostring(body_resp),1)
+										toast("接收到验证码，反馈失败"..tostring(body_resp),1)
 										mSleep(2000)
 										goto get_sucess
 									end
