@@ -109,17 +109,7 @@ end
 --	end
 --end
 
-function readFileBase64(path) 
-	f = io.open(path,"rb")
-	if f == null then
-		toast("no file")
-		mSleep(3000);
-		return null;
-	end 
-	bytes = f:read("*all");
-	f:close();
-	return bytes:base64_encode();
-end
+
 
 --openURL("snssdk1128://aweme/detail/6864869537918045453")
 --mSleep(math.random(500,700))
@@ -1016,7 +1006,9 @@ end
 --ts.binaryzation(414,924,443,964,200)
 
 --		dialog(string.match("233.fdfhd,555555","%d%d%d%d%d%d"), time)
-dialog(string.sub("689656855555", 4 ,#("+689656855555")), time)
+
+
+
 --if code == 200 then
 --	mSleep(500)
 --	local tmp = json.decode(body_resp)
@@ -1068,68 +1060,161 @@ dialog(string.sub("689656855555", 4 ,#("+689656855555")), time)
 --	ocrType = 3
 --}
 
+--model.tab_ENG = {
+--	language_type = "ENG",
+--	detect_direction = "true",
+--	detect_language = "true",
+--	ocrType = 3
+--}
+
+--function model:readFileBase64(path) 
+--	f = io.open(path,"rb")
+--	if f == null then
+--		toast("no file")
+--		mSleep(3000);
+--		return null;
+--	end 
+--	bytes = f:read("*all");
+--	f:close();
+--	return bytes:base64_encode();
+--end
+
 --function model:main()
---	mSleep(math.random(200, 300))
---	if getColor(43,  841) == 0xfbdf66 then
---		::getBaiDuToken1::
+	
+
+--		::getBaiDuToken::
 --		local code,access_token = getAccessToken(self.API,self.Secret)
 --		if code then
---			::snap1::
-
+--			::snap::
 --			local content_name = userPath() .. "/res/baiduAI_content_name1.jpg"
 
 --			--内容
---			snapshot(content_name, 84,  805,370,  882) 
+--			snapshot(content_name, 406,926,443,964) 
 --			mSleep(500)
-
---			local code, body = baiduAI(access_token,content_name,self.tab_CHN_ENG)
---			if code then
---				local tmp = json.decode(body)
+			
+--			::put_work::
+--			header_send = {
+--				["Content-Type"] = "application/x-www-form-urlencoded",
+--			}
+--			body_send = {
+--				["access_token"] = access_token,
+--				["image"] = urlEncoder(self:readFileBase64(content_name)),
+--				["recognize_granularity"] = "big",
+--				["detect_direction"] = "true"
+--			}
+--			ts.setHttpsTimeOut(60)
+--			code,header_resp, body_resp = ts.httpsPost("https://aip.baidubce.com/rest/2.0/ocr/v1/numbers", header_send,body_send)
+--			dialog(body_resp, time)
+--			if code == 200 then
+--				mSleep(500)
+--				local tmp = json.decode(body_resp)
 --				if #tmp.words_result > 0 then
---					content_num = string.lower(tmp.words_result[1].words)
+--					self.content_num = string.lower(tmp.words_result[1].words)
 --				else
---					toast("识别内容失败\n" .. tostring(body),1)
---					mSleep(3000)
---					goto snap1
+--					mSleep(500)
+--					local code, body = baiduAI(access_token,content_name,self.tab_ENG)
+--					dialog("11"..body, time)
+--					if code then
+--						local tmp = json.decode(body)
+--						if #tmp.words_result > 0 then
+--							self.content_num = string.lower(tmp.words_result[1].words)
+--						else
+--							toast("识别内容失败\n" .. tostring(body),1)
+--							mSleep(3000)
+--							goto snap
+--						end
+--					else
+--						toast("识别内容失败\n" .. tostring(body),1)
+--						mSleep(3000)
+--						goto snap
+--					end       
 --				end
 --			else
---				toast("识别内容失败\n" .. tostring(body),1)
+--				toast("识别内容失败\n" .. tostring(body_resp),1)
 --				mSleep(3000)
---				goto snap1
---			end
+--				goto put_work
+--			end 
 
---			if content_num ~= nil and #content_num >= 1 then
---				toast("识别内容：\r\n"..content_num,1)
+--			if self.content_num ~= nil and #self.content_num >= 1 then
+--				self.content_num = string.sub(self.content_num,#self.content_num - 1, #self.content_num)
+--				toast("识别内容：\r\n"..self.content_num,1)
 --				mSleep(1000)
---				while (true) do
---					mSleep(500)
---					if getColor(262,  669) == 0x07c160 then
---						mSleep(500)
---						tap(229,  664)
---						mSleep(1000)
---						dialog(content_num, 0)
---						break
---					else
---						mSleep(500)
---						tap(384,449)
---						mSleep(500)
---					end
---				end
+--				category = "success-data"
+--				data = self.infoData.."----"..self.content_num
 --			else
 --				toast("识别内容失败,重新截图识别" .. tostring(body),1)
 --				mSleep(3000)
---				goto snap1
+--				goto snap 
 --			end
 --		else
 --			toast("获取token失败",1)
---			goto getBaiDuToken1
+--			goto getBaiDuToken
 --		end
---	end
+
 --end
 
 --model:main()
 
 
+
+::get_phone::
+header_send = {
+	["Content-Type"] = "application/json"
+}
+body_send = {
+	["appKey"] = "21HvZQWL",
+	["secretKey"] = "51aae7a2a5f342d2b7f0cab5ad70eaaf",
+	["infos"] = {
+		{
+			["productId"] = 3,
+			["abbr"] = "ru",
+			["number"] = 1
+		}
+	},
+}
+ts.setHttpsTimeOut(60)
+code,header_resp, body_resp = ts.httpPost("http://gvU6e7.g7e6.com:20083/api/phone", header_send,body_send)
+dialog(body_resp, time)
+if code == 200 then
+	mSleep(500)
+	local tmp = json.decode(body_resp)
+	if tmp.status == 0 then
+		taskId = tmp.phones[1].phoneNodes[1].taskId
+		telphone = tmp.phones[1].phoneNodes[1].phone
+		toast(telphone.."\r\n"..taskId,1)
+	elseif tmp.status == 20000 then
+		toast("暂无手机号",1)
+		mSleep(5000)
+		goto get_phone
+	elseif tmp.status == 20001 then
+		toast("参数为空",1)
+		mSleep(5000)
+		goto get_phone
+	elseif tmp.status == 20002 then
+		toast("任务已完成",1)
+		mSleep(5000)
+	elseif tmp.status == 20003 then
+		toast("任务已关闭",1)
+		mSleep(5000)
+		goto get_phone
+	elseif tmp.status == 20004 then
+		toast("下发上限，等待成功反馈同步后继续下发",1)
+		mSleep(5000)
+		goto get_phone
+	elseif tmp.status == 20006 then
+		toast("appKey或者secretKey不正确",1)
+		mSleep(5000)
+		goto get_phone
+	else
+		toast("获取号码失败:"..body_resp,1)
+		mSleep(5000)
+		goto get_phone
+	end
+else
+	toast("获取号码失败:"..body_resp,1)
+	mSleep(5000)
+	goto get_phone
+end
 
 
 --local code,access_token = getAccessToken(API,Secret)
