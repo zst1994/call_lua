@@ -1542,7 +1542,7 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 									if api_change == "9" then
                     			        url = "http://www.phantomunion.com:10023/pickCode-api/push/redemption?token="..tokens.."&serialNumber="..serialNumber.."&feedbackType=A&description=fail"..telphone
                     			    elseif api_change == "11" then
-                    			        url = "http://cucumber.bid/bbq-cu-api/push/redemption?token="..tokens.."&feedbackType=A&serialNumber="..serialNumber.."&description=fail"..telphone
+                    			        url = "http://cucumber.bid/bbq-cu-api/push/redemption?token="..tokens.."&feedbackType=B&serialNumber="..serialNumber.."&description=fail"..telphone
                     			    end
 			    
 									::get_fail::
@@ -1562,7 +1562,7 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 												toast("拉黑成功",1)
 												mSleep(1000)
 											else
-												toast("拉黑失败",1)
+												toast("拉黑失败"..tostring(body_resp),1)
 												mSleep(2000)
 												goto get_fail
 											end
@@ -1960,7 +1960,7 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 			    if api_change == "9" then
 			        url = "http://www.phantomunion.com:10023/pickCode-api/push/redemption?token="..tokens.."&serialNumber="..serialNumber.."&feedbackType=A&description=fail"..telphone
 			    elseif api_change == "11" then
-		            url = "http://cucumber.bid/bbq-cu-api/push/redemption?token="..tokens.."&feedbackType=A&serialNumber="..serialNumber.."&description=fail"..telphone
+		            url = "http://cucumber.bid/bbq-cu-api/push/redemption?token="..tokens.."&feedbackType=B&serialNumber="..serialNumber.."&description=fail"..telphone
 			    end
 	            
 				::get_fail::
@@ -1980,7 +1980,7 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 							toast("拉黑成功",1)
 							mSleep(1000)
 						else
-							toast("拉黑失败",1)
+							toast("拉黑失败"..tostring(body_resp),1)
 							mSleep(2000)
 							goto get_fail
 						end
@@ -3250,7 +3250,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			    if api_change == "9" then
 			        url = "http://www.phantomunion.com:10023/pickCode-api/push/redemption?token="..tokens.."&serialNumber="..serialNumber.."&feedbackType=A&description=fail"..telphone
 			    elseif api_change == "11" then
-			        url = "http://cucumber.bid/bbq-cu-api/push/redemption?token="..tokens.."&feedbackType=A&serialNumber="..serialNumber.."&description=fail"..telphone
+			        url = "http://cucumber.bid/bbq-cu-api/push/redemption?token="..tokens.."&feedbackType=B&serialNumber="..serialNumber.."&description=fail"..telphone
 			    end
 	            
 				::get_fail::
@@ -3270,7 +3270,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 							toast("拉黑成功",1)
 							mSleep(1000)
 						else
-							toast("拉黑失败",1)
+							toast("拉黑失败"..tostring(body_resp),1)
 							mSleep(2000)
 							goto get_fail
 						end
@@ -6131,7 +6131,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			    if api_change == "9" then
 			        url = "http://www.phantomunion.com:10023/pickCode-api/push/redemption?token="..tokens.."&serialNumber="..serialNumber.."&feedbackType=A&description=fail"..telphone
 			    elseif api_change == "11" then
-			        url = "http://cucumber.bid/bbq-cu-api/push/redemption?token="..tokens.."&feedbackType=A&serialNumber="..serialNumber.."&description=fail"..telphone
+			        url = "http://cucumber.bid/bbq-cu-api/push/redemption?token="..tokens.."&feedbackType=B&serialNumber="..serialNumber.."&description=fail"..telphone
 			    end
 	            
 				::get_fail::
@@ -6151,7 +6151,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 							toast("拉黑成功",1)
 							mSleep(1000)
 						else
-							toast("拉黑失败",1)
+							toast("拉黑失败"..tostring(body_resp),1)
 							mSleep(2000)
 							goto get_fail
 						end
