@@ -164,7 +164,7 @@
                 },{
                     "id": "api_change",
                     "type": "RadioGroup",
-                    "list": "自己服务器,SMS,奥迪,卡农,香蕉,柠檬,东帝汶,美码,短信码,幻影,奶茶",
+                    "list": "自己服务器,SMS,奥迪,卡农,香蕉,柠檬,东帝汶,美码,短信码,幻影,奶茶,新幻影",
                     "select": "0"
                 },{
                     "type": "Label",
@@ -395,6 +395,18 @@
                     "id": "liandongName",
                     "type": "Edit",
                     "prompt": "请输入您要设置的联动名字",
+                    "text": "默认值",
+                    "kbtype": "ascii"
+                },{
+                    "type": "Label",
+                    "text": "联动时间设置(纯数字)",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "liandongTime",
+                    "type": "Edit",
+                    "prompt": "请输入您要设置的联动时间",
                     "text": "默认值",
                     "kbtype": "ascii"
                 }]

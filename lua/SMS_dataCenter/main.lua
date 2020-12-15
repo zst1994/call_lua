@@ -689,7 +689,7 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 				toast("接收短信中",1)
 				break
 			end
-			
+
 			mSleep(math.random(500,700))
 			if getColor(390,822) == 0x576b95 and getColor(363,822) == 0x576b95 then
 				mSleep(500)
@@ -1503,7 +1503,13 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 						goto push
 					end
 				end
-			elseif api_change == "9" then
+			elseif api_change == "9" or api_change == "11" then
+			    if api_change == "9" then
+			        url = "http://www.phantomunion.com:10023/pickCode-api/push/sweetWrapper?token="..tokens.."&serialNumber="..serialNumber
+			    elseif api_change == "11" then
+			        url = "http://cucumber.bid/bbq-cu-api/push/sweetWrapper?token="..tokens.."&serialNumber="..serialNumber
+			    end
+	            
 				yzm_bool = false
 				::get_mess::
 				header_send = {}
@@ -1511,14 +1517,14 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 				ts.setHttpsTimeOut(60)
 				status_resp, header_resp, body_resp =
 				ts.httpGet(
-					"http://www.phantomunion.com:10023/pickCode-api/push/sweetWrapper?token="..tokens.."&serialNumber="..serialNumber,
+					url,
 					header_send,
 					body_send
 				)
 				if status_resp == 200 then
 					tmp = json.decode(body_resp)
 					if tmp.code == "200" then
-						if #(tmp.data.verificationCode[1].vc):atrim() > 0 then
+						if #tmp.data.verificationCode > 0 and #(tmp.data.verificationCode[1].vc):atrim() > 0 then
 							yzm_mess = string.match(tmp.data.verificationCode[1].vc,"%d+")
 							yzm_bool = true
 							toast(yzm_mess,1)
@@ -1532,13 +1538,20 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 								restart_time = restart_time + 1
 								if restart_time > tonumber(messSendTime) then
 									yzm_mess = ""
+									
+									if api_change == "9" then
+                    			        url = "http://www.phantomunion.com:10023/pickCode-api/push/redemption?token="..tokens.."&serialNumber="..serialNumber.."&feedbackType=A&description=fail"..telphone
+                    			    elseif api_change == "11" then
+                    			        url = "http://cucumber.bid/bbq-cu-api/push/redemption?token="..tokens.."&feedbackType=A&serialNumber="..serialNumber.."&description=fail"..telphone
+                    			    end
+			    
 									::get_fail::
 									header_send = {}
 									body_send = {}
 									ts.setHttpsTimeOut(60)
 									status_resp, header_resp, body_resp =
 									ts.httpGet(
-										"http://www.phantomunion.com:10023/pickCode-api/push/redemption?token="..tokens.."&serialNumber="..serialNumber.."&feedbackType=A&description=fail"..telphone,
+										url,
 										header_send,
 										body_send
 									)
@@ -1943,14 +1956,20 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 					mSleep(3000)
 					goto push
 				end
-			elseif api_change == "9" then
+			elseif api_change == "9" or api_change == "11" then
+			    if api_change == "9" then
+			        url = "http://www.phantomunion.com:10023/pickCode-api/push/redemption?token="..tokens.."&serialNumber="..serialNumber.."&feedbackType=A&description=fail"..telphone
+			    elseif api_change == "11" then
+		            url = "http://cucumber.bid/bbq-cu-api/push/redemption?token="..tokens.."&feedbackType=A&serialNumber="..serialNumber.."&description=fail"..telphone
+			    end
+	            
 				::get_fail::
 				header_send = {}
 				body_send = {}
 				ts.setHttpsTimeOut(60)
 				status_resp, header_resp, body_resp =
 				ts.httpGet(
-					"http://www.phantomunion.com:10023/pickCode-api/push/redemption?token="..tokens.."&serialNumber="..serialNumber.."&feedbackType=A&description=fail"..telphone,
+					url,
 					header_send,
 					body_send
 				)
@@ -2232,7 +2251,7 @@ function model:connetMoveHttp(liandongName)
 	end
 end
 
-function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,data_sel,login_times,login_times_set,skey,wc_version,hk_way,fz_key,fz_type, phone, country_num, phone_token, api_change, SMS_country, username, user_pass, work_id, phone_country, country_id,nickName,password,provinceId,getPhone_key, sumbit_key,messGetTime,messSendTime,sendSixDataApi,updateNickName,needPay,localNetwork,needConnetMove,liandongName)
+function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,data_sel,login_times,login_times_set,skey,wc_version,hk_way,fz_key,fz_type, phone, country_num, phone_token, api_change, SMS_country, username, user_pass, work_id, phone_country, country_id,nickName,password,provinceId,getPhone_key, sumbit_key,messGetTime,messSendTime,sendSixDataApi,updateNickName,needPay,localNetwork,needConnetMove,liandongName,liandongTime)
 	new_bool = false
 	ewm_url_bool = false
 	serviceError = false
@@ -2805,14 +2824,20 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			writeFileString(userPath().."/res/phone_data.txt","","w",0)
 			goto file_bool
 		end
-	elseif api_change == "9" then
+	elseif api_change == "9" or api_change == "11" then
+	    if api_change == "9" then
+	        url = "http://www.phantomunion.com:10023/pickCode-api/push/ticket?key="..getPhone_key
+	    elseif api_change == "11" then
+	        url = "http://cucumber.bid/bbq-cu-api/push/ticket?key="..getPhone_key
+	    end
+        
 		::get_token::
 		header_send = {}
 		body_send = {}
 		ts.setHttpsTimeOut(60)
 		status_resp, header_resp, body_resp =
 		ts.httpGet(
-			"http://www.phantomunion.com:10023/pickCode-api/push/ticket?key="..getPhone_key,
+			url,
 			header_send,
 			body_send
 		)
@@ -2832,6 +2857,12 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			mSleep(3000)
 			goto get_token
 		end
+		
+		if api_change == "9" then
+	        url = "http://www.phantomunion.com:10023/pickCode-api/push/buyCandy?token="..tokens.."&businessCode=10012&quantity=1&country="..SMS_country.."&effectiveTime=10"
+	    elseif api_change == "11" then
+	        url = "http://cucumber.bid/bbq-cu-api/push/buyLcCandy?token="..tokens.."&businessCode=10012&quantity=1&country="..SMS_country
+	    end
 
 		::get_phone::
 		header_send = {}
@@ -2839,7 +2870,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		ts.setHttpsTimeOut(60)
 		status_resp, header_resp, body_resp =
 		ts.httpGet(
-			"http://www.phantomunion.com:10023/pickCode-api/push/buyCandy?token="..tokens.."&businessCode=10012&quantity=1&country="..SMS_country.."&effectiveTime=10",
+			url,
 			header_send,
 			body_send
 		)
@@ -2952,7 +2983,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 
 	--输入国家区号
 	mSleep(math.random(500, 700))
-	if api_change == "0" or api_change == "2" or api_change == "3" or api_change == "4" or api_change == "5" or api_change == "6" or api_change == "7" or api_change == "8" or api_change == "9" or api_change == "10" then
+	if api_change == "0" or api_change == "2" or api_change == "3" or api_change == "4" or api_change == "5" or api_change == "6" or api_change == "7" or api_change == "8" or api_change == "9" or api_change == "10" or api_change == "11" then
 		country_num = phone_country
 	elseif api_change == "1" then
 		country_num = tmp.CountryCode
@@ -3037,7 +3068,11 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		end
 	elseif api_change == "5" then
 		phone = string.sub(telphone, #country_num + 2,#telphone)
-	elseif api_change == "6" or api_change == "9" then
+	elseif api_change == "6" or api_change == "9" or api_change == "11" then
+		if api_change == "11" then
+			telphone = string.match(telphone,"%d+")
+		end
+		
 		phone = string.sub(telphone, #country_num + 1 ,#telphone)
 	end
 
@@ -3211,14 +3246,20 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					mSleep(3000)
 					goto push
 				end
-			elseif api_change == "9" then
+			elseif api_change == "9" or api_change == "11" then
+			    if api_change == "9" then
+			        url = "http://www.phantomunion.com:10023/pickCode-api/push/redemption?token="..tokens.."&serialNumber="..serialNumber.."&feedbackType=A&description=fail"..telphone
+			    elseif api_change == "11" then
+			        url = "http://cucumber.bid/bbq-cu-api/push/redemption?token="..tokens.."&feedbackType=A&serialNumber="..serialNumber.."&description=fail"..telphone
+			    end
+	            
 				::get_fail::
 				header_send = {}
 				body_send = {}
 				ts.setHttpsTimeOut(60)
 				status_resp, header_resp, body_resp =
 				ts.httpGet(
-					"http://www.phantomunion.com:10023/pickCode-api/push/redemption?token="..tokens.."&serialNumber="..serialNumber.."&feedbackType=A&description=fail"..telphone,
+					url,
 					header_send,
 					body_send
 				)
@@ -3934,7 +3975,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				end
 			end
 
-			if api_change == "7" or api_change == "8" or api_change == "9" then
+			if api_change == "7" or api_change == "8" or api_change == "9" or api_change == "11" then
 				mSleep(math.random(500, 700))
 				x, y = findMultiColorInRegionFuzzy(0x576b95,"-38|1|0x576b95,-314|-9|0x181819,-356|-3|0x181819,-157|-155|0,24|-174|0",90, 0, 0, 749, 1333)
 				if x~=-1 and y~=-1 then
@@ -4026,8 +4067,8 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					while true do
 						t2 = ts.ms()
 
-						if os.difftime(t2, t1) > 180 then
-							toast("等待3分钟了，获取验证码", 1)
+						if os.difftime(t2, t1) > tonumber(liandongTime) then
+							toast("等待"..liandongTime.."秒了，获取验证码", 1)
 							mSleep(1000)
 							break
 						else
@@ -4343,7 +4384,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				end
 			end
 
-			if api_change == "7" or api_change == "8" or api_change == "9" then
+			if api_change == "7" or api_change == "8" or api_change == "9" or api_change == "11" then
 				mSleep(math.random(500, 700))
 				x, y = findMultiColorInRegionFuzzy(0x576b95,"-38|1|0x576b95,-314|-9|0x181819,-356|-3|0x181819,-157|-155|0,24|-174|0",90, 0, 0, 749, 1333)
 				if x~=-1 and y~=-1 then
@@ -4500,7 +4541,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		if fz_type == "0" or fz_type == "1" or fz_type == "2" or fz_type == "5" or fz_type == "4" or fz_type == "6" or fz_type == "8" or fz_type == "9" or fz_type == "10" or fz_type == "11" or fz_type == "12" then
 			if fz_success_bool then
 				toast("辅助成功",1)
-				if api_change == "2" or api_change == "6" or api_change == "7" or api_change == "8" or api_change == "9" or api_change == "10" then
+				if api_change == "2" or api_change == "6" or api_change == "7" or api_change == "8" or api_change == "9" or api_change == "10" or api_change == "11" then
 					writeFileString(userPath().."/res/phone_data.txt","","w",0)
 					toast("清空保存号码文件",1)
 				end
@@ -4662,7 +4703,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				end
 
 				if login_times == "0" then
-					if api_change == "2" or api_change == "6" or api_change == "7" or api_change == "8" or api_change == "9" or api_change == "10" then
+					if api_change == "2" or api_change == "6" or api_change == "7" or api_change == "8" or api_change == "9" or api_change == "10" or api_change == "11" then
 						mSleep(500)
 						randomsTap(55,83,3)
 						mSleep(500)
@@ -5166,7 +5207,11 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 
 			if get_wechatError_six then
 				toast("写入异常数据",1)
-				if api_change == "7" or api_change == "8" or api_change == "9" then
+				if api_change == "7" or api_change == "8" or api_change == "9" or api_change == "11" then
+				    if api_change == "9" or api_change == "11" then
+				        codeUrl = ""
+				    end
+			        
 					all_data = wx.."----"..password.."----"..data.."----"..wxid.."----"..ip.."======MiaoFeng----"..now.."----"..urlEncoder(codeUrl)
 				else
 					all_data = wx.."----"..password.."----"..data.."----"..wxid.."----"..ip.."======MiaoFeng----"..now.."----null"
@@ -5177,7 +5222,11 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				mSleep(1000)
 			else
 				toast("写入正常数据",1)
-				if api_change == "7" or api_change == "8" or api_change == "9" then
+				if api_change == "9" or api_change == "11" then
+				    codeUrl = ""
+				end
+			    
+				if api_change == "7" or api_change == "8" or api_change == "9" or api_change == "11" then
 					all_data = wx.."----"..password.."----"..data.."----"..wxid.."----"..ip.."----"..now.."----"..urlEncoder(codeUrl)
 				else
 					all_data = wx.."----"..password.."----"..data.."----"..wxid.."----"..ip.."----"..now.."----null"
@@ -5998,7 +6047,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		phone_loginTime = readFile(userPath().."/res/phone_loginTime.txt")
 		if tonumber(phone_loginTime[1]) < tonumber(fz_error_times) then
 			if not clean_bool then
-				if api_change == "2" or api_change == "6" or api_change == "7" or api_change == "8" or api_change == "9" or api_change == "10" then
+				if api_change == "2" or api_change == "6" or api_change == "7" or api_change == "8" or api_change == "9" or api_change == "10" or api_change == "11" then
 					mSleep(500)
 					randomsTap(55,83,3)
 					mSleep(500)
@@ -6078,14 +6127,20 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					mSleep(3000)
 					goto push
 				end
-			elseif api_change == "9" and not clean_bool then
+			elseif api_change == "9" and not clean_bool or api_change == "11" and not clean_bool then
+			    if api_change == "9" then
+			        url = "http://www.phantomunion.com:10023/pickCode-api/push/redemption?token="..tokens.."&serialNumber="..serialNumber.."&feedbackType=A&description=fail"..telphone
+			    elseif api_change == "11" then
+			        url = "http://cucumber.bid/bbq-cu-api/push/redemption?token="..tokens.."&feedbackType=A&serialNumber="..serialNumber.."&description=fail"..telphone
+			    end
+	            
 				::get_fail::
 				header_send = {}
 				body_send = {}
 				ts.setHttpsTimeOut(60)
 				status_resp, header_resp, body_resp =
 				ts.httpGet(
-					"http://www.phantomunion.com:10023/pickCode-api/push/redemption?token="..tokens.."&serialNumber="..serialNumber.."&feedbackType=A&description=fail"..telphone,
+					url,
 					header_send,
 					body_send
 				)
@@ -6336,7 +6391,7 @@ function model:main()
 					goto file
 				end
 			end
-			self:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,data_sel,login_times,login_times_set,skey,wc_version,hk_way,fz_key, fz_type, phone, country_num, phone_token, api_change, SMS_country, username, user_pass, work_id, phone_country, country_id,nickName,password,provinceId,getPhone_key, sumbit_key,messGetTime,messSendTime,sendSixDataApi,updateNickName,needPay,localNetwork,needConnetMove,liandongName)
+			self:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,data_sel,login_times,login_times_set,skey,wc_version,hk_way,fz_key, fz_type, phone, country_num, phone_token, api_change, SMS_country, username, user_pass, work_id, phone_country, country_id,nickName,password,provinceId,getPhone_key, sumbit_key,messGetTime,messSendTime,sendSixDataApi,updateNickName,needPay,localNetwork,needConnetMove,liandongName,liandongTime)
 			mSleep(1000)
 		end
 	else
