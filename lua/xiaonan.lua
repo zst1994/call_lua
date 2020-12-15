@@ -1261,6 +1261,64 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 			mSleep(30000)
 			goto get_phone
 		end
+	elseif vpn_stauts == "12" then
+		::get_phone::
+		header_send = {
+			["Content-Type"] = "application/json"
+		}
+		body_send = {
+			["appKey"] = "21HvZQWL",
+			["secretKey"] = "51aae7a2a5f342d2b7f0cab5ad70eaaf",
+			["infos"] = {
+				{
+					["productId"] = 3,
+					["abbr"] = countryId,
+					["number"] = 1
+				}
+			},
+		}
+		ts.setHttpsTimeOut(60)
+		code,header_resp, body_resp = ts.httpPost("http://gvU6e7.g7e6.com:20083/api/phone", header_send,body_send)
+		if code == 200 then
+			mSleep(500)
+			local tmp = json.decode(body_resp)
+			if tmp.status == 0 then
+				taskId = tmp.phones[1].phoneNodes[1].taskId
+				telphone = tmp.phones[1].phoneNodes[1].phone
+				toast(telphone.."\r\n"..taskId,1)
+			elseif tmp.status == 20000 then
+				toast("暂无手机号",1)
+				mSleep(5000)
+				goto get_phone
+			elseif tmp.status == 20001 then
+				toast("参数为空",1)
+				mSleep(5000)
+				goto get_phone
+			elseif tmp.status == 20002 then
+				toast("任务已完成",1)
+				mSleep(5000)
+			elseif tmp.status == 20003 then
+				toast("任务已关闭",1)
+				mSleep(5000)
+				goto get_phone
+			elseif tmp.status == 20004 then
+				toast("下发上限，等待成功反馈同步后继续下发",1)
+				mSleep(5000)
+				goto get_phone
+			elseif tmp.status == 20006 then
+				toast("appKey或者secretKey不正确",1)
+				mSleep(5000)
+				goto get_phone
+			else
+				toast("获取号码失败:"..body_resp,1)
+				mSleep(5000)
+				goto get_phone
+			end
+		else
+			toast("获取号码失败:"..body_resp,1)
+			mSleep(5000)
+			goto get_phone
+		end
 	else
 		::get_phone::
 		local sz = require("sz")        --登陆
@@ -1294,7 +1352,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 		end
 	end
 
-	if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "3" or vpn_stauts == "5" or vpn_stauts == "6" or vpn_stauts == "7" or vpn_stauts == "8" or vpn_stauts == "9" or vpn_stauts == "11" then
+	if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "3" or vpn_stauts == "5" or vpn_stauts == "6" or vpn_stauts == "7" or vpn_stauts == "8" or vpn_stauts == "9" or vpn_stauts == "11" or vpn_stauts == "12" then
 		country_id = kn_country
 	elseif vpn_stauts == "4" or vpn_stauts == "10" then
 		country_id = country_code
@@ -1317,7 +1375,11 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 		phone = telphone
 	elseif vpn_stauts == "5" or vpn_stauts == "8" then
 		phone = string.sub(telphone, #country_id + 1,#telphone)
-	elseif vpn_stauts == "2" or vpn_stauts == "7" or vpn_stauts == "9" or vpn_stauts == "11" then
+	elseif vpn_stauts == "2" or vpn_stauts == "7" or vpn_stauts == "9" or vpn_stauts == "11" or vpn_stauts == "12" then
+		if vpn_stauts == "12" then
+			telphone = string.match(telphone,"%d+")
+		end
+		
 		b,c = string.find(string.sub(telphone,1,#country_id),country_id)
 		if c ~= nil then
 			phone = string.sub(telphone,c+1,#telphone)
@@ -3419,6 +3481,86 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 					mSleep(3000)
 					goto get_mess
 				end
+			elseif vpn_stauts == "12" then
+				::get_mess::
+				self:sendSMSKQ()
+
+				::get_code::
+				header_send = {
+					["Content-Type"] = "application/json"
+				}
+				body_send = {
+					["appKey"] = "21HvZQWL",
+					["secretKey"] = "51aae7a2a5f342d2b7f0cab5ad70eaaf",
+					["taskIds"] = {
+						{
+							["taskId"] = taskId,
+						}
+					},
+				}
+				ts.setHttpsTimeOut(60)
+				code,header_resp, body_resp = ts.httpPost("http://gvU6e7.g7e6.com:20083/api/code", header_send,body_send)
+				toast(body_resp,1)
+				mSleep(500)
+				if code == 200 then
+					mSleep(500)
+					local tmp = json.decode(body_resp)
+					if tmp.status == 0 and #tmp.codes > 0 then
+						code = tmp.codes[1].code
+						mess_yzm = string.match(code,"%d%d%d%d%d%d")
+					else
+						toast("暂未查询到验证码，请稍后再试"..get_time,1)
+						mSleep(2000)
+						get_time = get_time + 1
+						if get_time > 15 then
+							if country_id == "886" then
+								mSleep(500)
+								setVPNEnable(true)
+								mSleep(math.random(2000, 3000))
+								randomsTap(372,  749, 3)
+								mSleep(math.random(1000, 1500))
+								randomsTap(368, 1039,5)
+								mSleep(math.random(5000, 6000))
+								if content_type ~= "3" then
+									setVPNEnable(false)
+								end
+							else
+								if content_type == "1" then
+									mSleep(math.random(2000, 3000))
+									randomsTap(372,  749, 3)
+									mSleep(math.random(1000, 1500))
+									randomsTap(368, 1039,5)
+									mSleep(math.random(5000, 6000))
+								else
+									mSleep(500)
+									setVPNEnable(true)
+									mSleep(math.random(2000, 3000))
+									randomsTap(372,  749, 3)
+									mSleep(math.random(1000, 1500))
+									randomsTap(368, 1039,5)
+									mSleep(math.random(5000, 6000))
+									if content_type ~= "3" then
+										setVPNEnable(false)
+									end
+								end
+							end
+							get_time = 1
+							restart_time = restart_time + 1
+							caozuo_more = true
+							toast("重新获取验证码"..restart_time,1)
+							goto caozuo_more
+						end
+
+						if restart_time > 1 then
+							goto over
+						end
+						goto get_mess
+					end
+				else
+					toast("获取号码失败:"..body_resp,1)
+					mSleep(5000)
+					goto get_code
+				end
 			else
 				::get_mess::
 				self:sendSMSKQ()
@@ -4694,7 +4836,7 @@ function model:main()
 			},
 			{
 				["type"] = "RadioGroup",                    
-				["list"] = "柠檬,卡农注册,奥迪,52,俄罗斯1,东帝汶,服务器取号,俄罗斯2,各国API,老友,SMS,奶茶",
+				["list"] = "柠檬,卡农注册,奥迪,52,俄罗斯1,东帝汶,服务器取号,俄罗斯2,各国API,老友,SMS,奶茶,柠檬2",
 				["select"] = "0",  
 				["countperline"] = "4",
 			},
