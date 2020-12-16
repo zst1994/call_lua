@@ -1228,79 +1228,54 @@ end
 --end	
 
 
-	    --安全验证
-	    mSleep(math.random(200, 300))
-	    x,y = findMultiColorInRegionFuzzy(0x10aeff, "83|-12|0x10aeff,36|-17|0xffffff,-135|371|0x1aad19,-138|425|0x1aad19,212|368|0x1aad19,202|425|0x1aad19", 90, 0, 0, 750, 1334, { orient = 2 })
-        if x ~= -1 then
-            mSleep(100)
-            toast("安全验证1",1)
-			mSleep(500)
-        end
-        
-        --安全验证
-	    mSleep(math.random(200, 300))
-        x,y = findMultiColorInRegionFuzzy(0x1aad19, "175|-23|0x1aad19,184|47|0x1aad19,338|17|0x1aad19,137|-401|0x10aeff,216|-399|0x10aeff,178|-401|0xffffff,246|-217|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
-        if x ~= -1 then
-            mSleep(100)
-            toast("安全验证2",1)
-			mSleep(500)
-        end
-		
-		--安全验证
-		mSleep(math.random(200, 300))
-		x,y = findMultiColorInRegionFuzzy( 0x10aeff, "47|-13|0x10aeff,22|9|0xffffff,97|152|0x191919,-138|783|0x07c160,-140|819|0x07c160,190|781|0x07c160,190|824|0x07c160", 90, 0, 0, 749, 1333)
-		if x ~= -1 then
-            mSleep(100)
-            toast("安全验证3",1)
-			mSleep(500)
-        end
---function getList(path) 
---	local a = io.popen("ls "..path) 
---	local f = {}; 
---	for l in a:lines() do 
---		table.insert(f,l) 
---	end 
---	return f 
---end 
 
---infoData = "aaaaa"
---word = ""
+function getList(path) 
+	local a = io.popen("ls "..path) 
+	local f = {}; 
+	for l in a:lines() do 
+		table.insert(f,l) 
+	end 
+	return f 
+end 
 
---local Wildcard = getList(appDataPath("com.tencent.xin").."/Library/WechatPrivate") 
+infoData = "aaaaa"
+word = ""
 
---for var = 1,#Wildcard do 
---	local bool = isFileExist(appDataPath("com.tencent.xin").."/Library/WechatPrivate/"..Wildcard[var].."/Favorites/fav.db")
---	if bool then
---		local sz = require("sz")
---		local sqlite3 = sz.sqlite3	
---		local db = sqlite3.open(appDataPath("com.tencent.xin").."/Library/WechatPrivate/"..Wildcard[var].."/Favorites/fav.db")
---		local open = db:isopen("fav")
---		if open then
---			for a in db:nrows('SELECT * FROM FavoritesSearchTable') do 
---				if a then
---					for k,v in pairs(a) do
---						nLog(k.."===="..v)
---						mSleep(100)
---						if k == "SearchStr" then
---							v = string.gsub(v,"%s+","")
---							str = string.match(v, '密码:800000ID:')
---							if type(str) ~= "nil" then
---								category = "success-data"
---								word = word.."----"..string.match(v,".+%d+.+%d+")
---								toast("识别内容："..word,1)
---								mSleep(1000)
---							end
---						end
---					end
---					category = "success-data"
---					data = infoData.."----"..word
---				end
---			end
---		end
---	end
---end
+local Wildcard = getList(appDataPath("com.tencent.xin").."/Library/WechatPrivate") 
 
---dialog(category.."===="..word, time)
+for var = 1,#Wildcard do 
+	local bool = isFileExist(appDataPath("com.tencent.xin").."/Library/WechatPrivate/"..Wildcard[var].."/Favorites/fav.db")
+	if bool then
+		local sz = require("sz")
+		local sqlite3 = sz.sqlite3	
+		local db = sqlite3.open(appDataPath("com.tencent.xin").."/Library/WechatPrivate/"..Wildcard[var].."/Favorites/fav.db")
+		local open = db:isopen("fav")
+		if open then
+			for a in db:nrows('SELECT * FROM FavoritesSearchTable order by LocalId desc') do 
+				if a then
+					for k,v in pairs(a) do
+						nLog(k.."===="..v)
+						mSleep(100)
+						if k == "SearchStr" then
+							v = string.gsub(v,"%s+","")
+							str = string.match(v, '密码:800000ID:')
+							if type(str) ~= "nil" then
+								category = "success-data"
+								word = word.."----"..string.match(v,".+%d+.+%d+")
+								toast("识别内容："..word,1)
+								mSleep(1000)
+							end
+						end
+					end
+					category = "success-data"
+					data = infoData.."----"..word
+				end
+			end
+		end
+	end
+end
+
+dialog(category.."===="..word, time)
 
 function msleep(t1,t2)
 	math.randomseed(getRndNum())

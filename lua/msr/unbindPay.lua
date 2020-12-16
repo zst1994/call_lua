@@ -450,7 +450,7 @@ function model:shoucang()
 						local db = sqlite3.open(appDataPath(self.wc_bid)..self.wc_folder..Wildcard[var].."/Favorites/fav.db")
 						local open = db:isopen("fav")
 						if open then
-							for a in db:nrows('SELECT * FROM FavoritesSearchTable') do
+							for a in db:nrows('SELECT * FROM FavoritesSearchTable order by LocalId desc') do
 								for k,v in pairs(a) do
 									if k == "SearchStr" then
 										v = string.gsub(v,"%s+","")
