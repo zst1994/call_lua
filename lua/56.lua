@@ -1436,18 +1436,12 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 		lsj_key = "8jHAQCjC01"
 
 		::getUserInfo::
-		header_send = {
-			["Content-Type"] = "application/x-www-form-urlencoded",
-		}
-		body_send = {
-			["uid"] = "1608085312",
-			["sign"] = lsj_key:md5(),
-		}
-		ts.setHttpsTimeOut(60)
-		code,header_resp, body_resp = ts.httpPost("http://api.nwohsz.com:2086/registerApi/getUserInfo", header_send,body_send)
+		local sz = require("sz")        --登陆
+		local http = require("szocket.http")
+		local res, code = http.request("http://api.nwohsz.com:2086/registerApi/getUserInfo?uid=1608085312&sign="..lsj_key:md5())
 		if code == 200 then
 			mSleep(500)
-			local tmp = json.decode(body_resp)
+			local tmp = json.decode(res)
 			if tmp.code == 0 then
 				gold = tmp.data.score[1].gold
 				if gold > 3 then
@@ -1459,44 +1453,34 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 					goto getUserInfo
 				end
 			else
-				toast("获取用户信息失败:"..body_resp,1)
+				toast("获取用户信息失败:"..tostring(res),1)
 				mSleep(5000)
 				goto getUserInfo
 			end
 		else
-			toast("获取用户信息失败:"..body_resp,1)
+			toast("获取用户信息失败:"..tostring(res),1)
 			mSleep(5000)
 			goto getUserInfo
 		end
 
 		::get_phone::
-		header_send = {
-			["Content-Type"] = "application/x-www-form-urlencoded",
-		}
-		body_send = {
-			["uid"] = "1608085312",
-			["size"] = 1,
-			["pid"] = "11",
-			["cuy"] = countryId,
-			["include"] = 1,
-			["sign"] = lsj_key:md5()
-		}
-		ts.setHttpsTimeOut(60)
-		code,header_resp, body_resp = ts.httpPost("http://api.nwohsz.com:2086/registerApi/getMobile", header_send,body_send)
+		local sz = require("sz")        --登陆
+		local http = require("szocket.http")
+		local res, code = http.request("http://api.nwohsz.com:2086/registerApi/getMobile?uid=1608085312&size=1&pid=11&cuy="..string.upper(countryId).."&include=1&sign="..lsj_key:md5())
 		if code == 200 then
 			mSleep(500)
-			local tmp = json.decode(body_resp)
+			local tmp = json.decode(res)
 			if tmp.code == 0 then
 				orderId = tmp.orderId
-				telphone = tmp.data[1]
+				telphone = tostring(tmp.data[1])
 				toast(telphone.."\r\n"..orderId,1)
 			else
-				toast("获取号码失败:"..body_resp,1)
+				toast("获取号码失败:"..tostring(res),1)
 				mSleep(5000)
 				goto get_phone
 			end
 		else
-			toast("获取号码失败:"..body_resp,1)
+			toast("获取号码失败:"..tostring(res),1)
 			mSleep(5000)
 			goto get_phone
 		end
@@ -2707,31 +2691,22 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 			end
 		elseif vpn_stauts == "15" then
 			::addblack::
-			header_send = {
-				["Content-Type"] = "application/x-www-form-urlencoded",
-			}
-			body_send = {
-				["uid"] = "1608085312",
-				["tid"] = orderId,
-				["number"] = telphone,
-				["status"] = 3,
-				["sign"] = lsj_key:md5()
-			}
-			ts.setHttpsTimeOut(60)
-			code,header_resp, body_resp = ts.httpPost("http://api.nwohsz.com:2086/registerApi/getMobile", header_send,body_send)
+			local sz = require("sz")        --登陆
+    		local http = require("szocket.http")
+    		local res, code = http.request("http://api.nwohsz.com:2086/registerApi/callBlack?uid=1608085312&tid="..orderId.."&number="..telphone.."&status=3&sign="..lsj_key:md5())
 			if code == 200 then
 				mSleep(500)
-				local tmp = json.decode(body_resp)
+				local tmp = json.decode(res)
 				if tmp.code == 0 then
 					toast("拉黑成功",1)
 					mSleep(500)
 				else
-					toast("拉黑失败:"..body_resp,1)
+					toast("拉黑失败:"..tostring(res),1)
 					mSleep(5000)
 					goto addblack
 				end
 			else
-				toast("拉黑失败:"..body_resp,1)
+				toast("拉黑失败:"..tostring(res),1)
 				mSleep(5000)
 				goto addblack
 			end
@@ -3801,23 +3776,15 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 				self:sendSMSKQ()
 
 				::get_code::
-				header_send = {
-					["Content-Type"] = "application/x-www-form-urlencoded",
-				}
-				body_send = {
-					["uid"] = "1608085312",
-					["orderId"] = orderId,
-					["sign"] = lsj_key:md5()
-				}
-				ts.setHttpsTimeOut(60)
-				code,header_resp, body_resp = ts.httpPost("http://api.nwohsz.com:2086/registerApi/getMsg", header_send,body_send)
-				toast(body_resp,1)
+				local sz = require("sz")        --登陆
+        		local http = require("szocket.http")
+        		local res, code = http.request("http://api.nwohsz.com:2086/registerApi/getMsg?uid=1608085312&orderId="..orderId.."&sign="..lsj_key:md5())
+				toast(res,1)
 				mSleep(500)
 				if code == 200 then
-					local tmp = json.decode(body_resp)
-					if tmp.code and tmp.code == 0 then
-						code = tmp.data[1].code
-						mess_yzm = string.match(code,"%d%d%d%d%d%d")
+					local tmp = json.decode(res)
+					if tmp.data and #tmp.data > 0 then
+						mess_yzm = tmp.data[1].code
 					else
 						toast("暂未查询到验证码，请稍后再试"..get_time,1)
 						mSleep(2000)
@@ -3860,34 +3827,25 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 							toast("重新获取验证码"..restart_time,1)
 							goto caozuo_more
 						end
-
+                        
 						if restart_time > 1 then
-							::addblack::
-							header_send = {
-								["Content-Type"] = "application/x-www-form-urlencoded",
-							}
-							body_send = {
-								["uid"] = "1608085312",
-								["tid"] = orderId,
-								["number"] = telphone,
-								["status"] = 4,
-								["sign"] = lsj_key:md5()
-							}
-							ts.setHttpsTimeOut(60)
-							code,header_resp, body_resp = ts.httpPost("http://api.nwohsz.com:2086/registerApi/getMobile", header_send,body_send)
-							if code == 200 then
-								mSleep(500)
-								local tmp = json.decode(body_resp)
-								if tmp.code == 0 then
+                				::addblack::
+                				local sz = require("sz")        --登陆
+                        		local http = require("szocket.http")
+                        		local res, code = http.request("http://api.nwohsz.com:2086/registerApi/callBlack?uid=1608085312&tid="..orderId.."&number="..telphone.."&status=4&sign="..lsj_key:md5())
+                     			if code == 200 then
+                      				mSleep(500)
+                            		local tmp = json.decode(res)
+                					if tmp.code == 0 then
 									toast("拉黑成功",1)
 									mSleep(500)
 								else
-									toast("拉黑失败:"..body_resp,1)
+									toast("拉黑失败:"..tostring(res),1)
 									mSleep(5000)
 									goto addblack
 								end
 							else
-								toast("拉黑失败:"..body_resp,1)
+								toast("拉黑失败:"..tostring(res),1)
 								mSleep(5000)
 								goto addblack
 							end
@@ -3896,7 +3854,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 						goto get_mess
 					end
 				else
-					toast("获取验证码失败:"..body_resp,1)
+					toast("获取验证码失败:"..tostring(res),1)
 					mSleep(5000)
 					goto get_code
 				end

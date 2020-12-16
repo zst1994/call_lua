@@ -450,13 +450,13 @@ function model:shoucang()
 						local db = sqlite3.open(appDataPath(self.wc_bid)..self.wc_folder..Wildcard[var].."/Favorites/fav.db")
 						local open = db:isopen("fav")
 						if open then
-							for a in db:nrows('SELECT * FROM FavoritesSearchTable order by LocalId desc') do
+							for a in db:nrows('SELECT * FROM FavoritesSearchTable') do
 								for k,v in pairs(a) do
 									if k == "SearchStr" then
 										v = string.gsub(v,"%s+","")
 										str = string.match(v, '密码:800000ID:')
 										if type(str) ~= "nil" then
-											self.word = self.word.."----"..string.match(v,".+%d+.+%d+")
+											self.word = string.match(v,".+%d+.+%d+")
 											category = "success-data"
 											data = self.infoData.."----"..self.word
 											toast("识别内容："..self.word,1)
