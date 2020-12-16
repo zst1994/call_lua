@@ -72,10 +72,20 @@ function model:clear_App()
 		tap(225,826)
 		mSleep(math.random(500, 1000))
 		while true do
+			mSleep(200)
 			if getColor(376, 735) == 0xffffff or getColor(379, 562) == 0xffffff then
 				toast("newApp成功",1)
 				break
 			end
+			
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy( 0x007aff, "2|17|0x007aff,11|20|0x007aff,24|3|0x007aff,46|10|0x007aff,53|5|0x007aff,61|21|0x007aff,52|20|0x007aff", 90, 0, 0, 749, 1333)
+			if x ~= -1 and y ~= -1 then
+				self.vpn()
+				mSleep(1000)
+				goto run_again
+			end
+			
 		end
 	else
 		::new_phone::
@@ -89,6 +99,10 @@ function model:clear_App()
 				toast("新机成功，但是ip重复了",1)
 			elseif result == 1 then
 				toast("新机成功",1)
+			elseif result == 100 then
+				self.vpn()
+				mSleep(1000)
+				goto run_again
 			else 
 				toast("失败，请手动查看问题："..tostring(res), 1)
 				mSleep(3000)
@@ -264,7 +278,7 @@ end
 function model:timeOutRestart(t1)
 	t2 = ts.ms()
 
-	if os.difftime(t2, t1) > 60 then
+	if os.difftime(t2, t1) > 40 then
 		toast("超过60秒返回重新进入", 1)
 		mSleep(500)
 		return true
@@ -413,7 +427,7 @@ function model:loginAccount()
 	    x,y = findMultiColorInRegionFuzzy(0x10aeff, "83|-12|0x10aeff,36|-17|0xffffff,-135|371|0x1aad19,-138|425|0x1aad19,212|368|0x1aad19,202|425|0x1aad19", 90, 0, 0, 750, 1334, { orient = 2 })
         if x ~= -1 then
             mSleep(100)
-            toast("安全验证",1)
+            toast("安全验证1",1)
 			mSleep(500)
             category = "success-data"
 			data = self.infoData.."----成功"
@@ -425,9 +439,21 @@ function model:loginAccount()
         x,y = findMultiColorInRegionFuzzy(0x1aad19, "175|-23|0x1aad19,184|47|0x1aad19,338|17|0x1aad19,137|-401|0x10aeff,216|-399|0x10aeff,178|-401|0xffffff,246|-217|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
         if x ~= -1 then
             mSleep(100)
-            toast("安全验证",1)
+            toast("安全验证2",1)
 			mSleep(500)
             category = "success-data"
+			data = self.infoData.."----成功"
+            break
+        end
+		
+		--安全验证
+		mSleep(math.random(200, 300))
+		x,y = findMultiColorInRegionFuzzy( 0x10aeff, "47|-13|0x10aeff,22|9|0xffffff,97|152|0x191919,-138|783|0x07c160,-140|819|0x07c160,190|781|0x07c160,190|824|0x07c160", 90, 0, 0, 749, 1333)
+		if x ~= -1 then
+            mSleep(100)
+            toast("安全验证3",1)
+			mSleep(500)
+			category = "success-data"
 			data = self.infoData.."----成功"
             break
         end
@@ -558,8 +584,9 @@ function model:loginAccount()
     				mSleep(3000)
     			else
     				mSleep(math.random(500, 1000))
-    				tap(695,786)
+    				tap(57,86)
     				mSleep(math.random(3000, 6000))
+					goto login
     			end
     		else
     		    mSleep(math.random(500, 1000))

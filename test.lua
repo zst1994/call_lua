@@ -1080,7 +1080,7 @@ end
 --end
 
 --function model:main()
-	
+
 
 --		::getBaiDuToken::
 --		local code,access_token = getAccessToken(self.API,self.Secret)
@@ -1091,7 +1091,7 @@ end
 --			--内容
 --			snapshot(content_name, 406,926,443,964) 
 --			mSleep(500)
-			
+
 --			::put_work::
 --			header_send = {
 --				["Content-Type"] = "application/x-www-form-urlencoded",
@@ -1156,65 +1156,6 @@ end
 --model:main()
 
 
-
-::get_phone::
-header_send = {
-	["Content-Type"] = "application/json"
-}
-body_send = {
-	["appKey"] = "21HvZQWL",
-	["secretKey"] = "51aae7a2a5f342d2b7f0cab5ad70eaaf",
-	["infos"] = {
-		{
-			["productId"] = 3,
-			["abbr"] = "ru",
-			["number"] = 1
-		}
-	},
-}
-ts.setHttpsTimeOut(60)
-code,header_resp, body_resp = ts.httpPost("http://gvU6e7.g7e6.com:20083/api/phone", header_send,body_send)
-dialog(body_resp, time)
-if code == 200 then
-	mSleep(500)
-	local tmp = json.decode(body_resp)
-	if tmp.status == 0 then
-		taskId = tmp.phones[1].phoneNodes[1].taskId
-		telphone = tmp.phones[1].phoneNodes[1].phone
-		toast(telphone.."\r\n"..taskId,1)
-	elseif tmp.status == 20000 then
-		toast("暂无手机号",1)
-		mSleep(5000)
-		goto get_phone
-	elseif tmp.status == 20001 then
-		toast("参数为空",1)
-		mSleep(5000)
-		goto get_phone
-	elseif tmp.status == 20002 then
-		toast("任务已完成",1)
-		mSleep(5000)
-	elseif tmp.status == 20003 then
-		toast("任务已关闭",1)
-		mSleep(5000)
-		goto get_phone
-	elseif tmp.status == 20004 then
-		toast("下发上限，等待成功反馈同步后继续下发",1)
-		mSleep(5000)
-		goto get_phone
-	elseif tmp.status == 20006 then
-		toast("appKey或者secretKey不正确",1)
-		mSleep(5000)
-		goto get_phone
-	else
-		toast("获取号码失败:"..body_resp,1)
-		mSleep(5000)
-		goto get_phone
-	end
-else
-	toast("获取号码失败:"..body_resp,1)
-	mSleep(5000)
-	goto get_phone
-end
 
 
 --local code,access_token = getAccessToken(API,Secret)
@@ -1287,80 +1228,79 @@ end
 --end	
 
 
+	    --安全验证
+	    mSleep(math.random(200, 300))
+	    x,y = findMultiColorInRegionFuzzy(0x10aeff, "83|-12|0x10aeff,36|-17|0xffffff,-135|371|0x1aad19,-138|425|0x1aad19,212|368|0x1aad19,202|425|0x1aad19", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+            mSleep(100)
+            toast("安全验证1",1)
+			mSleep(500)
+        end
+        
+        --安全验证
+	    mSleep(math.random(200, 300))
+        x,y = findMultiColorInRegionFuzzy(0x1aad19, "175|-23|0x1aad19,184|47|0x1aad19,338|17|0x1aad19,137|-401|0x10aeff,216|-399|0x10aeff,178|-401|0xffffff,246|-217|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+            mSleep(100)
+            toast("安全验证2",1)
+			mSleep(500)
+        end
+		
+		--安全验证
+		mSleep(math.random(200, 300))
+		x,y = findMultiColorInRegionFuzzy( 0x10aeff, "47|-13|0x10aeff,22|9|0xffffff,97|152|0x191919,-138|783|0x07c160,-140|819|0x07c160,190|781|0x07c160,190|824|0x07c160", 90, 0, 0, 749, 1333)
+		if x ~= -1 then
+            mSleep(100)
+            toast("安全验证3",1)
+			mSleep(500)
+        end
+--function getList(path) 
+--	local a = io.popen("ls "..path) 
+--	local f = {}; 
+--	for l in a:lines() do 
+--		table.insert(f,l) 
+--	end 
+--	return f 
+--end 
 
---while (true) do
---	mSleep(500)
---	x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "5|25|0x1a1a1a,14|7|0x1a1a1a,29|11|0x1a1a1a,45|16|0x1a1a1a,279|16|0x576b95,336|2|0x576b95,359|22|0x576b95,387|16|0x576b95,399|18|0x576b95", 90, 0, 0, 750, 1334, { orient = 2 })
---	if x~=-1 and y~=-1 then
---		mSleep(math.random(500, 700))
---		randomTap(x,y,4)
---		mSleep(math.random(500, 700))
---		toast("忽略",1)
---		mSleep(500)
---	end
+--infoData = "aaaaa"
+--word = ""
 
---	--支付
---	mSleep(500)
---	x,y = findMultiColorInRegionFuzzy( 0x00c777, "-13|-3|0x00c777,24|-2|0x00c777,66|-12|0x1a1a1a,91|-12|0x1a1a1a,79|6|0x1a1a1a,103|2|0x1a1a1a,122|-1|0x1a1a1a", 100, 0, 0, 749, 1333)
---	if x~=-1 and y~=-1 then
---		mSleep(math.random(500, 700))
---		randomTap(x + 200,y + 140,4)
---		mSleep(math.random(500, 700))
---		toast("收藏",1)
---		mSleep(500)
---	end
+--local Wildcard = getList(appDataPath("com.tencent.xin").."/Library/WechatPrivate") 
 
---	mSleep(500)
---	if getColor(694, 84) == 0x181818 and getColor(351, 85) == 0x171717 then
---		mSleep(500)
---		toast("进入收藏",1)
---		mSleep(1000)
---		infoData = "aaaaaaaaaa"
---		category = "error-data"
---		data = infoData.."----无关键词"
-
---		if getColor(371,  310) ~= 0xa6a6a6 then
---			mSleep(500)
---			local Wildcard = getList(appDataPath("com.tencent.xin").."/Library/WechatPrivate") 
-
---			for var = 1,#Wildcard do 
---				local bool = isFileExist(appDataPath("com.tencent.xin").."/Library/WechatPrivate/"..Wildcard[var].."/Favorites/fav.db")
---				if bool then
---					local sz = require("sz")
---					local sqlite3 = sz.sqlite3	
---					local db = sqlite3.open(appDataPath("com.tencent.xin").."/Library/WechatPrivate/"..Wildcard[var].."/Favorites/fav.db")
---					local open = db:isopen("fav")
---					if open then
---						for a in db:nrows('SELECT * FROM FavoritesSearchTable') do 
---							if a then
---								for k,v in pairs(a) do
---									nLog(k.."===="..v)
---									mSleep(100)
---									if k == "SearchStr" then
---										v = string.gsub(v,"%s+","")
---										str = string.match(v, '密码:800000ID:')
---										if type(str) ~= "nil" then
---											word = v
---											category = "success-data"
---											data = infoData.."----"..word
---											toast("识别内容："..word,1)
---											mSleep(1000)
---											break
---										end
---									end
---								end
+--for var = 1,#Wildcard do 
+--	local bool = isFileExist(appDataPath("com.tencent.xin").."/Library/WechatPrivate/"..Wildcard[var].."/Favorites/fav.db")
+--	if bool then
+--		local sz = require("sz")
+--		local sqlite3 = sz.sqlite3	
+--		local db = sqlite3.open(appDataPath("com.tencent.xin").."/Library/WechatPrivate/"..Wildcard[var].."/Favorites/fav.db")
+--		local open = db:isopen("fav")
+--		if open then
+--			for a in db:nrows('SELECT * FROM FavoritesSearchTable') do 
+--				if a then
+--					for k,v in pairs(a) do
+--						nLog(k.."===="..v)
+--						mSleep(100)
+--						if k == "SearchStr" then
+--							v = string.gsub(v,"%s+","")
+--							str = string.match(v, '密码:800000ID:')
+--							if type(str) ~= "nil" then
+--								category = "success-data"
+--								word = word.."----"..string.match(v,".+%d+.+%d+")
+--								toast("识别内容："..word,1)
+--								mSleep(1000)
 --							end
 --						end
 --					end
+--					category = "success-data"
+--					data = infoData.."----"..word
 --				end
 --			end
---			dialog(data, time)
 --		end
---		break
-
 --	end
 --end
 
+--dialog(category.."===="..word, time)
 
 function msleep(t1,t2)
 	math.randomseed(getRndNum())

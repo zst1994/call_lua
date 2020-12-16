@@ -442,7 +442,7 @@ function model:shoucang()
 
 			mSleep(500)
 			if getColor(371,  310) ~= 0xa6a6a6 then
-				mSleep(5000)
+				mSleep(8000)
 				local Wildcard = self:getList(appDataPath(self.wc_bid)..self.wc_folder) 
 				for var = 1,#Wildcard do 
 					local bool = isFileExist(appDataPath(self.wc_bid)..self.wc_folder..Wildcard[var].."/Favorites/fav.db")
@@ -450,14 +450,13 @@ function model:shoucang()
 						local db = sqlite3.open(appDataPath(self.wc_bid)..self.wc_folder..Wildcard[var].."/Favorites/fav.db")
 						local open = db:isopen("fav")
 						if open then
-							for a in db:nrows('SELECT * FROM FavoritesSearchTable') do 
+							for a in db:nrows('SELECT * FROM FavoritesSearchTable') do
 								for k,v in pairs(a) do
 									if k == "SearchStr" then
 										v = string.gsub(v,"%s+","")
 										str = string.match(v, '密码:800000ID:')
 										if type(str) ~= "nil" then
-											left,right = string.find(v,".+%d+.+%d+")
-											self.word = string.sub(v,left,right)
+											self.word = self.word.."----"..string.match(v,".+%d+.+%d+")
 											category = "success-data"
 											data = self.infoData.."----"..self.word
 											toast("识别内容："..self.word,1)
@@ -472,6 +471,7 @@ function model:shoucang()
 					end
 				end
 			end
+			
 			result = {}
 			result.category = category
 			result.data = data
@@ -794,7 +794,8 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 			data = self.infoData.."----被投诉限制登录"
 			break
 		end
-
+		
+		--多人投诉
 		mSleep(math.random(200, 300))
 		x,y = findMultiColorInRegionFuzzy(0x576b95, "17|2|0x576b95,46|0|0x576b95,-7|-142|0x1a1a1a,6|-145|0x1a1a1a,27|-145|0x1a1a1a,69|-142|0x1a1a1a,81|-146|0x1a1a1a,89|-146|0x1a1a1a,-182|-142|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
 		if x~=-1 and y~=-1 then
@@ -827,6 +828,18 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 			data_six_two = false
 			category = "error-data"
 			data = self.infoData.."----存在异常"
+			break
+		end
+		
+		--被盗风险
+		mSleep(math.random(200, 300))
+		x,y = findMultiColorInRegionFuzzy( 0x576b95, "17|1|0x576b95,46|-1|0x576b95,187|-307|0x1a1a1a,203|-325|0x1a1a1a,204|-316|0x1a1a1a,239|-327|0x1a1a1a,221|-307|0x1a1a1a,235|-302|0x1a1a1a,24|-144|0x1a1a1a", 90, 0, 0, 749, 1333)
+		if x~=-1 and y~=-1 then
+			mSleep(math.random(500, 700))
+			toast("被盗风险",1)
+			data_six_two = false
+			category = "caozuo-data"
+			data = self.infoData.."----被盗风险"
 			break
 		end
 
@@ -870,7 +883,19 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 				toast("绑定手机号码",1)
 				mSleep(1000)
 			end
-
+			
+			--被盗风险
+			mSleep(math.random(200, 300))
+			x,y = findMultiColorInRegionFuzzy( 0x576b95, "17|1|0x576b95,46|-1|0x576b95,187|-307|0x1a1a1a,203|-325|0x1a1a1a,204|-316|0x1a1a1a,239|-327|0x1a1a1a,221|-307|0x1a1a1a,235|-302|0x1a1a1a,24|-144|0x1a1a1a", 90, 0, 0, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(math.random(500, 700))
+				toast("被盗风险",1)
+				data_six_two = false
+				category = "caozuo-data"
+				data = self.infoData.."----被盗风险"
+				goto pushData
+			end
+			
 			mSleep(math.random(200, 300))
 			flag = isFrontApp(self.wc_bid)
 			if flag == 0 then

@@ -830,6 +830,29 @@ function model:sendSMSKQ()
 	end
 end
 
+function model:sendServerStatus(telphone,status)
+	::send_code::
+	local sz = require("sz")       
+	local http = require("szocket.http")
+	local res, code = http.request("http://39.99.192.160//import_abnormal?phone="..telphone.."&code="..status)
+	nLog(res)
+	if code == 200 then
+		tmp = json.decode(res)
+		if tmp.code == 200 then
+			toast(tmp.message,1)
+			mSleep(1000)
+		else
+			toast("重新上传",1)
+			mSleep(1000)
+			goto send_code
+		end
+	else
+		toast("重新上传",1)
+		mSleep(1000)
+		goto send_code
+	end
+end
+
 function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_country,content_type,vpn_stauts,phone_token,kn_country,kn_id,countryId,nickName,password,country_len,login_type,addBlack,diff_user,ran_pass,ddwGet,airplaneStatus,connect_vpn,EU_countries,tmFailBack)
 	account_len = 0
 	old_mess_yzm = ""
@@ -1409,6 +1432,74 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 			mSleep(5000)
 			goto get_phone
 		end
+	elseif vpn_stauts == "15" then
+		lsj_key = "8jHAQCjC01"
+
+		::getUserInfo::
+		header_send = {
+			["Content-Type"] = "application/x-www-form-urlencoded",
+		}
+		body_send = {
+			["uid"] = "1608085312",
+			["sign"] = lsj_key:md5(),
+		}
+		ts.setHttpsTimeOut(60)
+		code,header_resp, body_resp = ts.httpPost("http://api.nwohsz.com:2086/registerApi/getUserInfo", header_send,body_send)
+		if code == 200 then
+			mSleep(500)
+			local tmp = json.decode(body_resp)
+			if tmp.code == 0 then
+				gold = tmp.data.score[1].gold
+				if gold > 3 then
+					toast("当前用户积分大于3，可以正常取号",1)
+					mSleep(500)
+				else
+					toast("当前用户积分低于3，请及时充值",1)
+					mSleep(500)
+					goto getUserInfo
+				end
+			else
+				toast("获取用户信息失败:"..body_resp,1)
+				mSleep(5000)
+				goto getUserInfo
+			end
+		else
+			toast("获取用户信息失败:"..body_resp,1)
+			mSleep(5000)
+			goto getUserInfo
+		end
+
+		::get_phone::
+		header_send = {
+			["Content-Type"] = "application/x-www-form-urlencoded",
+		}
+		body_send = {
+			["uid"] = "1608085312",
+			["size"] = 1,
+			["pid"] = "11",
+			["cuy"] = countryId,
+			["include"] = 1,
+			["sign"] = lsj_key:md5()
+		}
+		ts.setHttpsTimeOut(60)
+		code,header_resp, body_resp = ts.httpPost("http://api.nwohsz.com:2086/registerApi/getMobile", header_send,body_send)
+		if code == 200 then
+			mSleep(500)
+			local tmp = json.decode(body_resp)
+			if tmp.code == 0 then
+				orderId = tmp.orderId
+				telphone = tmp.data[1]
+				toast(telphone.."\r\n"..orderId,1)
+			else
+				toast("获取号码失败:"..body_resp,1)
+				mSleep(5000)
+				goto get_phone
+			end
+		else
+			toast("获取号码失败:"..body_resp,1)
+			mSleep(5000)
+			goto get_phone
+		end
 	else
 		::get_phone::
 		local sz = require("sz")        --登陆
@@ -1442,7 +1533,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 		end
 	end
 
-	if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "3" or vpn_stauts == "5" or vpn_stauts == "6" or vpn_stauts == "7" or vpn_stauts == "8" or vpn_stauts == "9" or vpn_stauts == "11" or vpn_stauts == "12" or vpn_stauts == "13" or vpn_stauts == "14" then
+	if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "3" or vpn_stauts == "5" or vpn_stauts == "6" or vpn_stauts == "7" or vpn_stauts == "8" or vpn_stauts == "9" or vpn_stauts == "11" or vpn_stauts == "12" or vpn_stauts == "13" or vpn_stauts == "14" or vpn_stauts == "15" then
 		country_id = kn_country
 	elseif vpn_stauts == "4" or vpn_stauts == "10" then
 		country_id = country_code
@@ -1463,7 +1554,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 
 	if vpn_stauts == "1" or vpn_stauts == "3" or vpn_stauts == "4" or vpn_stauts == "6" or vpn_stauts == "10" or vpn_stauts == "11" then
 		phone = telphone
-	elseif vpn_stauts == "5" or vpn_stauts == "8" or vpn_stauts == "12" then
+	elseif vpn_stauts == "5" or vpn_stauts == "8" or vpn_stauts == "12" or vpn_stauts == "15" then
 		phone = string.sub(telphone, #country_id + 1,#telphone)
 	elseif vpn_stauts == "2" or vpn_stauts == "7" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "14" then
 		if vpn_stauts == "14" then
@@ -2614,6 +2705,36 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 				toast("取消失败",1)
 				goto black
 			end
+		elseif vpn_stauts == "15" then
+			::addblack::
+			header_send = {
+				["Content-Type"] = "application/x-www-form-urlencoded",
+			}
+			body_send = {
+				["uid"] = "1608085312",
+				["tid"] = orderId,
+				["number"] = telphone,
+				["status"] = 3,
+				["sign"] = lsj_key:md5()
+			}
+			ts.setHttpsTimeOut(60)
+			code,header_resp, body_resp = ts.httpPost("http://api.nwohsz.com:2086/registerApi/getMobile", header_send,body_send)
+			if code == 200 then
+				mSleep(500)
+				local tmp = json.decode(body_resp)
+				if tmp.code == 0 then
+					toast("拉黑成功",1)
+					mSleep(500)
+				else
+					toast("拉黑失败:"..body_resp,1)
+					mSleep(5000)
+					goto addblack
+				end
+			else
+				toast("拉黑失败:"..body_resp,1)
+				mSleep(5000)
+				goto addblack
+			end
 		end
 
 		mSleep(500)
@@ -3121,11 +3242,11 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 					if reTxtUtf8(data[1]) == "OK" then
 						mess_yzm = string.match(data[2], '%d+%d+%d+%d+%d+%d+')
 						if ddwGet == "0" then
-							--							datatable = readFile(userPath().."/res/savePhone.txt")
-							--							table.remove(datatable, savePhone)
-							--							writeFile(userPath().."/res/test.txt",datatable,"w",1)
-							--							toast("获取验证码成功，删除文件里面这个号码",1)
-							--							mSleep(1000)
+--							datatable = readFile(userPath().."/res/savePhone.txt")
+--							table.remove(datatable, savePhone)
+--							writeFile(userPath().."/res/test.txt",datatable,"w",1)
+--							toast("获取验证码成功，删除文件里面这个号码",1)
+--							mSleep(1000)
 							::update_platform::
 							local sz = require("sz")       
 							local http = require("szocket.http")
@@ -3671,7 +3792,111 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 						goto get_mess
 					end
 				else
-					toast("获取号码失败:"..body_resp,1)
+					toast("获取验证码失败:"..body_resp,1)
+					mSleep(5000)
+					goto get_code
+				end
+			elseif vpn_stauts == "15" then
+				::get_mess::
+				self:sendSMSKQ()
+
+				::get_code::
+				header_send = {
+					["Content-Type"] = "application/x-www-form-urlencoded",
+				}
+				body_send = {
+					["uid"] = "1608085312",
+					["orderId"] = orderId,
+					["sign"] = lsj_key:md5()
+				}
+				ts.setHttpsTimeOut(60)
+				code,header_resp, body_resp = ts.httpPost("http://api.nwohsz.com:2086/registerApi/getMsg", header_send,body_send)
+				toast(body_resp,1)
+				mSleep(500)
+				if code == 200 then
+					local tmp = json.decode(body_resp)
+					if tmp.code and tmp.code == 0 then
+						code = tmp.data[1].code
+						mess_yzm = string.match(code,"%d%d%d%d%d%d")
+					else
+						toast("暂未查询到验证码，请稍后再试"..get_time,1)
+						mSleep(2000)
+						get_time = get_time + 1
+						if get_time > 15 then
+							if country_id == "886" then
+								mSleep(500)
+								setVPNEnable(true)
+								mSleep(math.random(2000, 3000))
+								randomsTap(372,  749, 3)
+								mSleep(math.random(1000, 1500))
+								randomsTap(368, 1039,5)
+								mSleep(math.random(5000, 6000))
+								if content_type ~= "3" then
+									setVPNEnable(false)
+								end
+							else
+								if content_type == "1" then
+									mSleep(math.random(2000, 3000))
+									randomsTap(372,  749, 3)
+									mSleep(math.random(1000, 1500))
+									randomsTap(368, 1039,5)
+									mSleep(math.random(5000, 6000))
+								else
+									mSleep(500)
+									setVPNEnable(true)
+									mSleep(math.random(2000, 3000))
+									randomsTap(372,  749, 3)
+									mSleep(math.random(1000, 1500))
+									randomsTap(368, 1039,5)
+									mSleep(math.random(5000, 6000))
+									if content_type ~= "3" then
+										setVPNEnable(false)
+									end
+								end
+							end
+							get_time = 1
+							restart_time = restart_time + 1
+							caozuo_more = true
+							toast("重新获取验证码"..restart_time,1)
+							goto caozuo_more
+						end
+
+						if restart_time > 1 then
+							::addblack::
+							header_send = {
+								["Content-Type"] = "application/x-www-form-urlencoded",
+							}
+							body_send = {
+								["uid"] = "1608085312",
+								["tid"] = orderId,
+								["number"] = telphone,
+								["status"] = 4,
+								["sign"] = lsj_key:md5()
+							}
+							ts.setHttpsTimeOut(60)
+							code,header_resp, body_resp = ts.httpPost("http://api.nwohsz.com:2086/registerApi/getMobile", header_send,body_send)
+							if code == 200 then
+								mSleep(500)
+								local tmp = json.decode(body_resp)
+								if tmp.code == 0 then
+									toast("拉黑成功",1)
+									mSleep(500)
+								else
+									toast("拉黑失败:"..body_resp,1)
+									mSleep(5000)
+									goto addblack
+								end
+							else
+								toast("拉黑失败:"..body_resp,1)
+								mSleep(5000)
+								goto addblack
+							end
+							goto over
+						end
+						goto get_mess
+					end
+				else
+					toast("获取验证码失败:"..body_resp,1)
 					mSleep(5000)
 					goto get_code
 				end
@@ -3968,26 +4193,8 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 					end
 				end
 
-				::send_code::
-				local sz = require("sz")       
-				local http = require("szocket.http")
-				local res, code = http.request("http://39.99.192.160//import_abnormal?phone="..telphone.."&code="..mess_yzm)
-				nLog(res)
-				if code == 200 then
-					tmp = json.decode(res)
-					if tmp.code == 200 then
-						toast(tmp.message,1)
-						mSleep(1000)
-					else
-						toast("重新上传",1)
-						mSleep(1000)
-						goto send_code
-					end
-				else
-					toast("重新上传",1)
-					mSleep(1000)
-					goto send_code
-				end
+				self:sendServerStatus(telphone,mess_yzm)
+
 				toast("验证码不正确",1)
 				mSleep(1000)
 				goto reset
@@ -3997,6 +4204,8 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 			mSleep(500)
 			x, y = findMultiColorInRegionFuzzy(0x576b95,"-44|3|0x576b95,-252|-185|0,-207|-203|0,-186|-191|0,-151|-193|0,-66|-177|0,53|-181|0,-47|-141|0,-14|-59|0xe0dee1", 100, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
+				self:sendServerStatus(telphone,"环境异常")
+
 				mSleep(500)
 				randomsTap(x,  y, 3)
 				mSleep(1000)
@@ -4144,7 +4353,8 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 				randomsTap(x,y,8)
 				mSleep(math.random(500, 700))
 				toast("手机号近期注册过微信",1)
-				break
+				self:sendServerStatus(telphone,"最近注册")
+				goto over
 			end
 
 			mSleep(math.random(500, 700))
@@ -4168,6 +4378,8 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 			mSleep(500)
 			x, y = findMultiColorInRegionFuzzy(0x576b95,"-44|3|0x576b95,-252|-185|0,-207|-203|0,-186|-191|0,-151|-193|0,-66|-177|0,53|-181|0,-47|-141|0,-14|-59|0xe0dee1", 100, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
+				self:sendServerStatus(telphone,"环境异常")
+
 				mSleep(500)
 				randomsTap(x,  y, 3)
 				mSleep(1000)
@@ -4848,7 +5060,7 @@ function model:main()
 			},
 			{
 				["type"] = "RadioGroup",                    
-				["list"] = "柠檬,卡农注册,奥迪,52,俄罗斯1,东帝汶,服务器取号,俄罗斯2,各国API,老友,SMS,越南,各国API2,奶茶,柠檬2",
+				["list"] = "柠檬,卡农注册,奥迪,52,俄罗斯1,东帝汶,服务器取号,俄罗斯2,各国API,老友,SMS,越南,各国API2,奶茶,柠檬2,老司机",
 				["select"] = "0",  
 				["countperline"] = "4",
 			},

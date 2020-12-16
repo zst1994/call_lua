@@ -835,6 +835,29 @@ function model:sendSMSKQ()
 	end
 end
 
+function model:sendServerStatus(telphone,status,operator)
+	::send_code::
+	local sz = require("sz")       
+	local http = require("szocket.http")
+	local res, code = http.request("http://39.100.23.169//import_abnormal?phone="..telphone.."&code="..status.."&author="..operator)
+	nLog(res)
+	if code == 200 then
+		tmp = json.decode(res)
+		if tmp.code == 200 then
+			toast(tmp.message,1)
+			mSleep(1000)
+		else
+			toast("重新上传",1)
+			mSleep(1000)
+			goto send_code
+		end
+	else
+		toast("重新上传",1)
+		mSleep(1000)
+		goto send_code
+	end
+end
+
 function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_country,content_type,vpn_stauts,phone_token,kn_country,kn_id,countryId,nickName,password,country_len,login_type,addBlack,diff_user,ran_pass,ddwGet,airplaneStatus,connect_vpn,EU_countries,tmFailBack)
 	account_len = 0
 	old_mess_yzm = ""
@@ -1379,7 +1402,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 		if vpn_stauts == "12" then
 			telphone = string.match(telphone,"%d+")
 		end
-		
+
 		b,c = string.find(string.sub(telphone,1,#country_id),country_id)
 		if c ~= nil then
 			phone = string.sub(telphone,c+1,#telphone)
@@ -3918,27 +3941,9 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 						break
 					end
 				end
-
-				::send_code::
-				local sz = require("sz")       
-				local http = require("szocket.http")
-				local res, code = http.request("http://39.100.23.169//import_abnormal?phone="..telphone.."&code="..mess_yzm.."&author="..operator)
-				nLog(res)
-				if code == 200 then
-					tmp = json.decode(res)
-					if tmp.code == 200 then
-						toast(tmp.message,1)
-						mSleep(1000)
-					else
-						toast("重新上传",1)
-						mSleep(1000)
-						goto send_code
-					end
-				else
-					toast("重新上传",1)
-					mSleep(1000)
-					goto send_code
-				end
+				
+				self:sendServerStatus(telphone,mess_yzm,operator)
+	
 				toast("验证码不正确",1)
 				mSleep(1000)
 				goto reset
@@ -3948,26 +3953,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 			mSleep(500)
 			x, y = findMultiColorInRegionFuzzy(0x576b95,"-44|3|0x576b95,-252|-185|0,-207|-203|0,-186|-191|0,-151|-193|0,-66|-177|0,53|-181|0,-47|-141|0,-14|-59|0xe0dee1", 100, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
-				::send_code::
-				local sz = require("sz")       
-				local http = require("szocket.http")
-				local res, code = http.request("http://39.100.23.169//import_abnormal?phone="..telphone.."&code=环境异常&author="..operator)
-				nLog(res)
-				if code == 200 then
-					tmp = json.decode(res)
-					if tmp.code == 200 then
-						toast(tmp.message,1)
-						mSleep(1000)
-					else
-						toast("重新上传",1)
-						mSleep(1000)
-						goto send_code
-					end
-				else
-					toast("重新上传",1)
-					mSleep(1000)
-					goto send_code
-				end
+				self:sendServerStatus(telphone,"环境异常",operator)
 
 				mSleep(500)
 				randomsTap(x,  y, 3)
@@ -4122,7 +4108,8 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 				randomsTap(x,y,8)
 				mSleep(math.random(500, 700))
 				toast("手机号近期注册过微信",1)
-				break
+				self:sendServerStatus(telphone,"最近注册",operator)
+				goto over
 			end
 
 			mSleep(math.random(500, 700))
@@ -4146,26 +4133,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 			mSleep(500)
 			x, y = findMultiColorInRegionFuzzy(0x576b95,"-44|3|0x576b95,-252|-185|0,-207|-203|0,-186|-191|0,-151|-193|0,-66|-177|0,53|-181|0,-47|-141|0,-14|-59|0xe0dee1", 100, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
-				::send_code::
-				local sz = require("sz")       
-				local http = require("szocket.http")
-				local res, code = http.request("http://39.100.23.169//import_abnormal?phone="..telphone.."&code=环境异常&author="..operator)
-				nLog(res)
-				if code == 200 then
-					tmp = json.decode(res)
-					if tmp.code == 200 then
-						toast(tmp.message,1)
-						mSleep(1000)
-					else
-						toast("重新上传",1)
-						mSleep(1000)
-						goto send_code
-					end
-				else
-					toast("重新上传",1)
-					mSleep(1000)
-					goto send_code
-				end
+				self:sendServerStatus(telphone,"环境异常",operator)
 
 				mSleep(500)
 				randomsTap(x,  y, 3)
