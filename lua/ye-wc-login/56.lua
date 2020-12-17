@@ -4,8 +4,12 @@ local json 				= ts.json
 
 local model 				= {}
 
-model.awz_bid 			= "AWZ"
-model.wc_bid 			= "com.tencent.xin"
+model.wc_bid 			= ""
+model.wc_name			= ""
+model.wc_file			= ""
+model.awz_bid 			= ""
+model.awz_url           = ""
+
 math.randomseed(getRndNum()) -- 随机种子初始化真随机数
 
 --随机字符串
@@ -217,12 +221,12 @@ function model:clear_App(connect_vpn)
 	::new_phone::
 	local sz = require("sz");
 	local http = require("szocket.http")
-	local res, code = http.request("http://127.0.0.1:1688/cmd?fun=newrecord")
+	local res, code = http.request(self.awz_url)
 	if code == 200 then
 		local resJson = sz.json.decode(res)
 		local result = resJson.result
 		if result == 3 then
-			toast("新机成功，不过ip重复了",1)
+			toast("newApp成功，不过ip重复了",1)
 			mSleep(1000)
 			if connect_vpn == "0" then
 				self:vpn()
@@ -238,12 +242,12 @@ function model:clear_App(connect_vpn)
 end
 
 function model:get_hkUrl(country_num)
-	filepath=appDataPath('com.tencent.xin')..'/Documents/MMappedKV/maycrashcpmap_v2'
+	filepath=appDataPath(self.wc_bid)..'/Documents/MMappedKV/maycrashcpmap_v2'
 	local file = io.open(filepath,'r')
 	local text = file:read("*all")
 	file:close()
 	if text then
-		local link='https%3a%2f%2fweixin110.qq.com%2fsecurity%2freadtemplate%3ft%3dsignup%5Fverify%2fw%5Fintro%26regcc%3d'..country_num..'%26regmobile%3d'..text:match('mobile=(%d+)&regid')..'%26regid%3d'..text:match('regid=(%d%p%d+)&scen')..'%26scene%3dget_reg_verify_code%26wechat_real_lang%3dzh_CN'
+		local link='https%3a%2f%2fweixin110.qq.com%2fsecurity%2freadtemplate%3ft%3dsignup%5Fverify%2fw%5Fintro%26regcc%3d'..country_num..'%26regmobile%3d'..text:match('mobile=(%d+)&regid')..'%26regid%3d'..text:match('regid=(%d%p%d+)&scen')..'%26scene%3dget_reg_verify_code%26'..self.wc_name..'_real_lang%3dzh_CN'
 		return urlDecoder(link)
 	else
 		toast('文件不存在',1)
@@ -260,6 +264,23 @@ function model:readFileBase64(path)
 	bytes = f:read("*all");
 	f:close();
 	return bytes:base64_encode();
+end
+
+function model:getConfig()
+	::read_file::
+	tab = readFile(userPath().."/res/config.txt") 
+	if tab then 
+		self.wc_bid = string.gsub(tab[1],"%s+","")
+		self.wc_name = string.gsub(tab[2],"%s+","")
+		self.wc_file = string.gsub(tab[3],"%s+","")
+		self.awz_bid = string.gsub(tab[4],"%s+","")
+		self.awz_url = string.gsub(tab[5],"%s+","")
+		toast("获取配置信息成功",1)
+		mSleep(1000)
+	else
+		dialog("文件不存在,请检查配置文件路径",5)
+		goto read_file
+	end
 end
 
 function model:moves()
@@ -853,7 +874,7 @@ function model:sendServerStatus(telphone,status)
 	end
 end
 
-function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_country,content_type,vpn_stauts,phone_token,kn_country,kn_id,countryId,nickName,password,country_len,login_type,addBlack,diff_user,ran_pass,ddwGet,airplaneStatus,connect_vpn,EU_countries,tmFailBack)
+function model:wc(ksUrl,move_type,operator,login_times,content_user,content_country,content_type,vpn_stauts,phone_token,kn_country,kn_id,countryId,nickName,password,country_len,login_type,addBlack,diff_user,ran_pass,ddwGet,airplaneStatus,connect_vpn,EU_countries,tmFailBack)
 	account_len = 0
 	old_mess_yzm = ""
 	login_diff_bool = false
@@ -1070,7 +1091,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 		mSleep(500)
 		local sz = require("sz")        --登陆
 		local http = require("szocket.http")
-		local res, code = http.request("https://smsregs.ru/api/v1/get_number?token=zn278868698:6DBB856EFAFE4EE77AAC&country="..countryId.."&service=wechat")
+		local res, code = http.request("https://smsregs.ru/api/v1/get_number?token=zn278868698:6DBB856EFAFE4EE77AAC&country="..countryId.."&service="..self.wc_name)
 		mSleep(500)
 		if code == 200 then
 			tmp = json.decode(res)
@@ -1306,7 +1327,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 			tmp = json.decode(body_resp)
 			if tmp.ResponseCode == 0 then
 				for k,v in ipairs(tmp.Result) do
-					if v.Name == "wechat" then
+					if v.Name == self.wc_name then
 						id = v.Id
 						toast("项目id:"..id,1)
 						mSleep(1000)
@@ -2692,8 +2713,8 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 		elseif vpn_stauts == "15" then
 			::addblack::
 			local sz = require("sz")        --登陆
-    		local http = require("szocket.http")
-    		local res, code = http.request("http://api.nwohsz.com:2086/registerApi/callBlack?uid=1608085312&tid="..orderId.."&number="..telphone.."&status=3&sign="..lsj_key:md5())
+			local http = require("szocket.http")
+			local res, code = http.request("http://api.nwohsz.com:2086/registerApi/addBlack?uid=1608085312&pid=11&number="..telphone.."&sign="..lsj_key:md5())
 			if code == 200 then
 				mSleep(500)
 				local tmp = json.decode(res)
@@ -3777,8 +3798,8 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 
 				::get_code::
 				local sz = require("sz")        --登陆
-        		local http = require("szocket.http")
-        		local res, code = http.request("http://api.nwohsz.com:2086/registerApi/getMsg?uid=1608085312&orderId="..orderId.."&sign="..lsj_key:md5())
+				local http = require("szocket.http")
+				local res, code = http.request("http://api.nwohsz.com:2086/registerApi/getMsg?uid=1608085312&orderId="..orderId.."&sign="..lsj_key:md5())
 				toast(res,1)
 				mSleep(500)
 				if code == 200 then
@@ -3827,16 +3848,16 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 							toast("重新获取验证码"..restart_time,1)
 							goto caozuo_more
 						end
-                        
+
 						if restart_time > 1 then
-                				::addblack::
-                				local sz = require("sz")        --登陆
-                        		local http = require("szocket.http")
-                        		local res, code = http.request("http://api.nwohsz.com:2086/registerApi/callBlack?uid=1608085312&tid="..orderId.."&number="..telphone.."&status=4&sign="..lsj_key:md5())
-                     			if code == 200 then
-                      				mSleep(500)
-                            		local tmp = json.decode(res)
-                					if tmp.code == 0 then
+							::addblack::
+							local sz = require("sz")        --登陆
+							local http = require("szocket.http")
+							local res, code = http.request("http://api.nwohsz.com:2086/registerApi/addBlack?uid=1608085312&pid=11&number="..telphone.."&sign="..lsj_key:md5())
+							if code == 200 then
+								mSleep(500)
+								local tmp = json.decode(res)
+								if tmp.code == 0 then
 									toast("拉黑成功",1)
 									mSleep(500)
 								else
@@ -3990,7 +4011,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 			mSleep(math.random(2000, 3000))
 		end
 		data_six_two = false
-		error_wechat = false
+		error_wc = false
 		while true do
 			if EU_countries == "0" then
 				mSleep(500)
@@ -4078,7 +4099,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 			mSleep(math.random(500, 700))
 			if getColor(362,797) == 0x576b95 and getColor(391,800) == 0x576b95 then
 				toast("通讯录前账号状态异常",1)
-				error_wechat = true
+				error_wc = true
 				break
 			end
 
@@ -4318,7 +4339,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 			mSleep(math.random(500, 700))
 			if getColor(362,797) == 0x576b95 and getColor(391,800) == 0x576b95 then
 				toast("通讯录前账号状态异常",1)
-				error_wechat = true
+				error_wc = true
 				break
 			end
 
@@ -4438,7 +4459,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 			mSleep(math.random(500, 700))
 			if getColor(362,797) == 0x576b95 and getColor(391,800) == 0x576b95 then
 				toast("通讯录后账号状态异常",1)
-				error_wechat = true
+				error_wc = true
 				break
 			end
 		end
@@ -4619,7 +4640,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 		--			end
 		--		end
 
-		if data_six_two or error_wechat then
+		if data_six_two or error_wc then
 			function write_data(inifile,key)
 				F=io.open(userPath().."/res/"..inifile,"a")
 				F:write(key,'\n')
@@ -4637,7 +4658,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 				end 
 				local Wildcard = getList("/var/mobile/Containers/Data/Application") 
 				for var = 1,#Wildcard do 
-					local file = io.open("/var/mobile/Containers/Data/Application/"..Wildcard[var].."/Library/WechatPrivate/wx.dat","rb") 
+					local file = io.open("/var/mobile/Containers/Data/Application/"..Wildcard[var]..self.wc_file,"rb") 
 					if file then 
 						local str = file:read("*a") 
 						file:close() 
@@ -4661,7 +4682,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_user,content_
 			if data_six_two then
 				file_path = "完成的账号.ini"
 				is_normal = "true"
-			elseif error_wechat then 
+			elseif error_wc then 
 				file_path = "秒封的账号.ini"
 				is_normal = "false"
 			end
@@ -5268,6 +5289,8 @@ function model:main()
 
 	get_six_two = false
 	while true do
+		self:getConfig()
+
 		if vpn_stauts == "2" then
 			ksUrl = "http://www.3cpt.com"
 			ApiName = "huqianjin54"
@@ -5325,7 +5348,7 @@ function model:main()
 
 		self:clear_App(connect_vpn)
 		self:Net()
-		self:wechat(ksUrl,move_type,operator,login_times,content_user,content_country,content_type,vpn_stauts,phone_token,kn_country,kn_id,countryId,nickName,password,country_len,login_type,addBlack,diff_user,ran_pass,ddwGet,airplaneStatus,connect_vpn,EU_countries,tmFailBack)
+		self:wc(ksUrl,move_type,operator,login_times,content_user,content_country,content_type,vpn_stauts,phone_token,kn_country,kn_id,countryId,nickName,password,country_len,login_type,addBlack,diff_user,ran_pass,ddwGet,airplaneStatus,connect_vpn,EU_countries,tmFailBack)
 		mSleep(1000)
 	end
 end

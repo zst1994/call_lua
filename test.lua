@@ -1241,41 +1241,30 @@ end
 infoData = "aaaaa"
 word = ""
 
-local Wildcard = getList(appDataPath("com.tencent.xin").."/Library/WechatPrivate") 
+--local Wildcard = getList(appDataPath("com.tencent.xin").."/Documents") 
 
-for var = 1,#Wildcard do 
-	local bool = isFileExist(appDataPath("com.tencent.xin").."/Library/WechatPrivate/"..Wildcard[var].."/Favorites/fav.db")
+--for var = 1,#Wildcard do 
+	local bool = isFileExist(appDataPath("com.ss.iphone.ugc.Aweme").."/Documents/AwemeIM.db")
 	if bool then
 		local sz = require("sz")
 		local sqlite3 = sz.sqlite3	
-		local db = sqlite3.open(appDataPath("com.tencent.xin").."/Library/WechatPrivate/"..Wildcard[var].."/Favorites/fav.db")
-		local open = db:isopen("fav")
+		local db = sqlite3.open(appDataPath("com.ss.iphone.ugc.Aweme").."/Documents/AwemeIM.db")
+		local open = db:isopen("AwemeIM")
 		if open then
-			for a in db:nrows('SELECT * FROM FavoritesSearchTable order by LocalId desc') do 
+			for a,b in db:nrows('SELECT * FROM AwemeContactsV4') do 
 				if a then
 					for k,v in pairs(a) do
-						nLog(k.."===="..v)
-						mSleep(100)
-						if k == "SearchStr" then
-							v = string.gsub(v,"%s+","")
-							str = string.match(v, '密码:800000ID:')
-							if type(str) ~= "nil" then
-								category = "success-data"
-								word = word.."----"..string.match(v,".+%d+.+%d+")
-								toast("识别内容："..word,1)
-								mSleep(1000)
-							end
+						if k == "95423717096" then
+							nLog(k.."===="..v)
 						end
-					end
-					category = "success-data"
-					data = infoData.."----"..word
+					end 
 				end
 			end
 		end
 	end
-end
+--end
 
-dialog(category.."===="..word, time)
+--dialog(category.."===="..word, time)
 
 function msleep(t1,t2)
 	math.randomseed(getRndNum())
