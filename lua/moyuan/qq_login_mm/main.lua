@@ -5,14 +5,14 @@ local json 				= ts.json
 
 local model 			= {}
 
-model.awz_bid 			= "AWZ"
+model.awz_bid 			= "com.superdev.AMG"
 model.mm_bid           = "com.wemomo.momoappdemo1"
-model.qq_bid           = "com.tencent.mqq"
+
 model.qqAcount         = ""
 model.qqPassword       = ""
-model.mm_yzm           = ""
+
+
 model.mm_accountId     = ""
-model.newReUrl         = ""
 model.renameRecordUrl  = ""
 
 math.randomseed(getRndNum()) -- 随机种子初始化真随机数
@@ -56,7 +56,7 @@ function model:moves()
 	mSleep(math.random(500, 700))
 	keepScreen(true)
 	mSleep(1000)
-	snapshot("test_3.jpg", 30, 244, 719, 639)
+	snapshot("test_3.jpg", 33, 503, 712, 892)
 	mSleep(500)
 	ts.img.binaryzationImg(userPath().."/res/test_3.jpg",mns)
 	mSleep(500)
@@ -81,56 +81,6 @@ function model:moves()
 	end
 end
 
-function model:downImage() 
---	list = self:getList(userPath().."/res/*.png")
-	list = self:getList(userPath().."/res/picFile")
-	
-	if #list > 0 then
-		return list[math.random(1, #list)]
-	else
-		dialog("文件夹路径没有照片了",0)
-		lua_exit()
-	end
-end
-
-function model:deleteImage(path)
-	::delete::
-	bool = delFile(path)
-	if  bool then
-		toast("删除成功",1)
-	else
-		toast("删除失败",1)
-		mSleep(1000)
-		goto delete
-	end
-end
-
-function model:newRe()
-	::new::
-	local sz = require("sz")
-	local http = require("szocket.http")
-	local res, code = http.request(self.newReUrl)
-	if code == 200 then
-		local resJson = sz.json.decode(res)
-		local result = resJson.result
-		if result == 3 then
-			toast("new成功，但IP地址重复",1)
-			mSleep(1000)
-			return false
-		elseif result == 1 then
-			toast("new成功",1)
-			mSleep(1000)
-			return true
-		elseif result == 100 then
-			return false
-		else
-			toast(res,1)
-			mSleep(2000)
-			goto new
-		end
-	end 
-end
-
 function model:renameRecord(updateResultName)
 	::runAgain1::
 	runApp(self.awz_bid)
@@ -151,9 +101,9 @@ function model:renameRecord(updateResultName)
 			end 
 			break
 		end
-		
+
 		flag = isFrontApp(self.awz_bid)
-		if  flag ==0 then
+		if  flag == 0 then
 			closeApp(self.awz_bid)
 			mSleep(3000)
 			goto runAgain1
@@ -162,21 +112,34 @@ function model:renameRecord(updateResultName)
 end
 
 function model:newMMApp()
-	::runAgain::
+	::run_again::
+	mSleep(500)
+	closeApp(self.awz_bid) 
+	mSleep(math.random(1000, 1500))
 	runApp(self.awz_bid)
-	mSleep(3 *1000)
+	mSleep(1000*math.random(1, 3))
+
 	while true do
 		mSleep(500)
-		if getColor(596,443) == 0x6f7179 then
-			openAwz = self:newRe()
-			return openAwz
-		end
-		
 		flag = isFrontApp(self.awz_bid)
-		if  flag ==0 then
-			closeApp(self.awz_bid)
-			mSleep(3000)
-			goto runAgain
+		if flag == 1 then
+			--AMG新机
+			mSleep(500)
+			x,y = findMultiColorInRegionFuzzy(0x007aff, "27|0|0x007aff,38|2|0x047cff,56|-1|0x007aff,77|4|0x007aff,87|-4|0x007aff,94|7|0x007aff,109|6|0x007aff,126|1|0x007aff", 90, 0, 0, 750, 1334, { orient = 2 })
+			if x ~= -1 then
+				mSleep(math.random(500, 1000))
+				tap(x,y)
+				mSleep(math.random(500, 1000))
+				while true do
+					if getColor(266,601) == 0xffffff then
+						toast("newApp成功",1)
+						break
+					end
+				end
+				break
+			end
+		else
+			goto run_again
 		end
 	end
 end
@@ -201,11 +164,11 @@ function model:vpn()
 	else
 		toast("关闭状态",1)
 	end
-	
+
 	t1 = ts.ms() 
 	setVPNEnable(true)
 	mSleep(1000*math.random(2, 4))
-	
+
 	while true do
 		new_data = getNetIP() --获取IP  
 		toast(new_data,1)
@@ -215,7 +178,7 @@ function model:vpn()
 			mSleep(1000)
 			break
 		end
-		
+
 		t2 = ts.ms() 
 
 		if os.difftime (t2, t1) > 10 then
@@ -230,449 +193,166 @@ function model:vpn()
 	end
 end
 
-function model:getConfig()
-	config_table = readFile(userPath().."/res/config.txt") 
-	if config_table then
-		if #config_table > 0 then
-			self.newReUrl = config_table[1]
-			self.renameRecordUrl = config_table[2]
-		else
-			dialog("配置文件没数据",0)
-			lua_exit()
-		end
-	else
-		dialog("配置文件不存在，重新倒入该文件",0)
-		lua_exit()
-	end
-end
-
-function model:getPhoneAndToken()
-	phone_table = readFile(userPath().."/res/phoneNum.txt") 
-	if phone_table then
-		if #phone_table > 0 then
-			if #phone_table[1] < 130 then
-				qq_mess = strSplit(phone_table[1],"|")
-				self.qqAcount = qq_mess[1]
-				self.qqPassword = qq_mess[2]
-				toast(self.qqAcount.."\r\n"..self.qqPassword,1)
-				mSleep(1000)
---				table.remove(phone_table, 1)
-				
---				bool = writeFile(userPath().."/res/phoneNum.txt",phone_table,"w",1) --将 table 内容存入文件，成功返回 true
---				if bool then
---					toast("写入成功",1)
---				else
---					toast("写入失败",1)
---				end
-				mSleep(1000)
-			else
-				dialog("号码文件格式有问题，需要一条数据一行，可能数据没有换行",0)
-				lua_exit()
-			end
-		else
-			dialog("号码文件没号码了",0)
-			lua_exit()
-		end
-	else
-		dialog("号码文件不存在，请检查该文件是否有误",0)
-		lua_exit()
-	end
-end
-
-function model:qqLogin()
-	t1 = ts.ms()
-	while true do
-		--同意
-		mSleep(400)
-		if getColor(492,976) == 0x40a0ff and getColor(539,978) == 0x40a0ff then
-			mSleep(500)
-			randomsTap(539,978,4)
-			mSleep(500)
-		end
-		
-		--登录
-		mSleep(400)
-		if getColor(453,1203) == 0xcafc and getColor(647,1203) == 0xcafc then
-			mSleep(500)
-			randomsTap(647,1203,4)
-			mSleep(500)
-			break
-		end
-		
-		flag = isFrontApp(self.qq_bid)
-		if  flag ==0 then
-			runApp(self.qq_bid)
-			mSleep(3000)
-		end
-		
-		t2 = ts.ms() 
-
-		if os.difftime (t2, t1) > 120000 then
-			lua_restart()
-		end
-	end
-	
-	t1 = ts.ms()
-	while true do
-		--qq输入账号界面输入账号密码
-		mSleep(400)
-		if getColor(411,288) == 0 and getColor(374,773) == 0xe9ebf2 then
-			mSleep(500)
-			randomsTap(497,432,4)
-			mSleep(500)
-			while true do
-				mSleep(400)
-				x, y = findMultiColorInRegionFuzzy(0xb0b3bf,"14|1|0xb0b3bf,14|14|0xb0b3bf,1|13|0xb0b3bf,7|7|0xb0b3bf", 100, 550, 0, 749, 746)
-				if x~=-1 and y~=-1 then
-					mSleep(500)
-					randomsTap(497,476,4)
-					mSleep(500)
-					break
-				else
-					mSleep(500)
-					inputStr(self.qqAcount)
-					mSleep(1000)
-				end
-				
-				t2 = ts.ms() 
-
-				if os.difftime (t2, t1) > 120000 then
-					lua_restart()
-				end
-			end
-			
-			while true do
-				mSleep(400)
-				x, y = findMultiColorInRegionFuzzy(0xb0b3bf,"14|1|0xb0b3bf,14|14|0xb0b3bf,1|13|0xb0b3bf,7|7|0xb0b3bf", 100, 550, 0, 749, 746)
-				if x~=-1 and y~=-1 then
-					mSleep(500)
-					randomsTap(372,658,4)
-					mSleep(500)
-					break
-				else
-					mSleep(500)
-					inputStr(self.qqPassword)
-					mSleep(1000)
-				end
-				
-				t2 = ts.ms() 
-
-				if os.difftime (t2, t1) > 120000 then
-					lua_restart()
-				end
-			end
-			break
-		end
-		
-		t2 = ts.ms() 
-
-		if os.difftime (t2, t1) > 120000 then
-			lua_restart()
-		end
-	end
-	
-	t1 = ts.ms()
-	while true do
-		--滑块
-		mSleep(400)
-		if getColor(114,702) == 0x7aff and getColor(53,700) == 0xe4e4e4 then
-			mSleep(500)
-			x_lens = moves()
-			if tonumber(x_lens) > 0 then
-				mSleep(math.random(500, 700))
-				moveTowards( 108,  699, 10, x_len-65)
-				mSleep(3000)
-			else
-				mSleep(math.random(500, 1000))
-				randomsTap(603, 1032,10)
-				mSleep(math.random(3000, 6000))
-			end
-		end
-		
-		--禁止登录
-		mSleep(400)
-		x, y = findMultiColorInRegionFuzzy(0,"37|5|0,69|13|0,105|2|0,42|240|0,68|235|0x929292,114|224|0xffffff,378|162|0x999999", 100, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
-			return false
-		end
-		
-		t2 = ts.ms() 
-
-		if os.difftime (t2, t1) > 120000 then
-			lua_restart()
+function model:getMMId(path)
+	local a = io.popen("ls " .. path)
+	local f = {}
+	for l in a:lines() do
+		b = string.find(l, 'u.(%d%d%d%d%d%d%d%d%d)_main.sqlite')
+		if type(b) ~= "nil" then
+			c = string.match(l, '%d%d%d%d%d%d%d%d%d')
+			toast("陌陌id:"..c,1)
+			mSleep(1000)
+			return c
 		end
 	end
 end
 
-
-function model:mm()
+function model:mm(password, sex)
 	runApp(self.mm_bid)
 	mSleep(1000)
 	t1 = ts.ms()
-	
+
 	while true do
 		--同意
-		mSleep(400)
+		mSleep(math.random(200, 300))
 		if getColor(298,941) == 0x3bb3fa and getColor(520,941) == 0x3bb3fa then
 			mSleep(500)
-			randomsTap(376,944,4)
+			randomTap(376,944,4)
 			mSleep(500)
 		end
-		
+
 		--允许
-		mSleep(400)
+		mSleep(math.random(200, 300))
 		if getColor(533,770) == 0x7aff and getColor(495,771) == 0x7aff then
 			mSleep(500)
-			randomsTap(495,771,4)
+			randomTap(495,771,4)
 			mSleep(500)
 		end
-		
+
 		--手机号登录注册
-		mSleep(400)
+		mSleep(math.random(200, 300))
 		x, y = findMultiColorInRegionFuzzy(0xffffff,"73|2|0xffffff,222|-5|0xffffff,-201|-1|0,116|-63|0,421|-1|0,109|55|0,254|1|0,-27|-2|0", 100, 0, 940, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
-			randomsTap(x - 160, y, 4)
+			randomTap(x - 160, y, 4)
 			mSleep(math.random(500, 700))
 			toast("手机号登录注册",1)
 			mSleep(1000)
 			break
 		end
-		
+
+		flag = isFrontApp(self.mm_bid)
+		if  flag ==0 then
+			runApp(self.mm_bid)
+			mSleep(3000)
+		end
+
 		t2 = ts.ms() 
 
-		if os.difftime (t2, t1) > 120000 then
+		if os.difftime (t2, t1) > 120 then
 			lua_restart()
 		end
 	end
-	
+
 	t1 = ts.ms()
 	while true do
 		--同意
-		mSleep(400)
+		mSleep(math.random(200, 300))
 		if getColor(298,941) == 0x3bb3fa and getColor(520,941) == 0x3bb3fa then
 			mSleep(500)
-			randomsTap(376,944,4)
+			randomTap(376,944,4)
 			mSleep(500)
 		end
-		
+
 		--允许
-		mSleep(400)
+		mSleep(math.random(200, 300))
 		if getColor(533,770) == 0x7aff and getColor(495,771) == 0x7aff then
 			mSleep(500)
-			randomsTap(495,771,4)
+			randomTap(495,771,4)
 			mSleep(500)
 		end
-		
+
 		--手机号登录注册
-		mSleep(400)
+		mSleep(math.random(200, 300))
 		x, y = findMultiColorInRegionFuzzy(0xffffff,"73|2|0xffffff,222|-5|0xffffff,-201|-1|0,116|-63|0,421|-1|0,109|55|0,254|1|0,-27|-2|0", 100, 0, 940, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
-			randomsTap(x - 160, y, 4)
+			randomTap(x - 160, y, 4)
 			mSleep(math.random(500, 700))
 		end
-		
+
 		--qq图标
-		mSleep(400)
+		mSleep(math.random(200, 300))
 		x, y = findMultiColorInRegionFuzzy(0x36b6ff,"3|-27|0x36b6ff,38|12|0x36b6ff,2|54|0x36b6ff,-40|16|0x36b6ff", 100, 0, 1040, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
-			randomsTap(x, y, 4)
-			mSleep(math.random(500, 700))
+			randomTap(x, y, 4)
+			mSleep(math.random(3500, 5700))
 			break
 		end
-		
+
 		t2 = ts.ms() 
 
-		if os.difftime (t2, t1) > 120000 then
+		if os.difftime (t2, t1) > 120 then
 			lua_restart()
 		end
 	end
-	
-	qqLoginBool = self:qqLogin()
-	if not qqLoginBool then
+
+	tab = readFile(userPath().."/res/qq.txt") 
+	if tab then
+		data = strSplit(string.gsub(tab[1],"%s+",""),"----")
+		self.qqAcount = data[1]
+		self.qqPassword = data[2]
+	else
+		dialog("文件不存在,请检查", 0)
 		goto over
 	end
-	
-	lua_exit()
-	
+
 	t1 = ts.ms()
-	while true do
-		--输入号码
-		mSleep(400)
-		if getColor(249,520) == 0xd8d8d8 and getColor(411,524) == 0xffffff then
+	while (true) do
+		mSleep(math.random(200, 300))
+		if getColor(239,  629) == 0x12b7f5 then
 			mSleep(500)
-			randomsTap(434,350,4)
-			mSleep(1000)
-			while true do
-				if getColor(629,1264) == 0 then
-					for i = 1, #(self.phone) do
-						mSleep(math.random(300, 500))
-						num = string.sub(self.phone,i,i)
-						if num == "0" then
-							randomsTap(373, 1281, 8)
-						elseif num == "1" then
-							randomsTap(132,  955, 8)
-						elseif num == "2" then
-							randomsTap(377,  944, 8)
-						elseif num == "3" then
-							randomsTap(634,  941, 8)
-						elseif num == "4" then
-							randomsTap(128, 1063, 8)
-						elseif num == "5" then
-							randomsTap(374, 1061, 8)
-						elseif num == "6" then
-							randomsTap(628, 1055, 8)
-						elseif num == "7" then
-							randomsTap(119, 1165, 8)
-						elseif num == "8" then
-							randomsTap(378, 1160, 8)
-						elseif num == "9" then
-							randomsTap(633, 1164, 8)
-						end
-					end
-					break
-				end
-			end
-			
+			randomTap(395,  357, 4)
+			mSleep(500)
+			inputKey(self.qqAcount)
+			mSleep(500)
+			randomTap(447,  477, 4)
+			mSleep(500)
+			inputKey(self.qqPassword)
+			mSleep(500)
+			randomTap(239,  629, 4)
+			mSleep(500)
+			table.remove(tab, 1)
+			writeFile(userPath().."/res/qq.txt",tab,"w",1)
 		end
-		
-		--获取验证码
-		mSleep(400)
-		if getColor(186,524) == 0x18d9f1 and getColor(597,533) == 0x18d9f1 then
-			mSleep(500)
-			randomsTap(597,533,4)
-			mSleep(1000)
-			toast("获取验证码",1)
-			mSleep(500)
-			break
-		end
-		
-		t2 = ts.ms() 
 
-		if os.difftime (t2, t1) > 120000 then
-			lua_restart()
-		end
-	end
-	
-	function get_mess()
-		get_code_num = 0
-		
-		::get_yzm_restart::
-		yzm_time1 = ts.ms() 
-		
-		::get_yzm::
-
-		header_send = {}
-		body_send = {}
-		ts.setHttpsTimeOut(60)
-		status_resp, header_resp,body_resp = ts.httpGet("http://47.112.154.69:45678/getsms?token="..(self.code_token):atrim(), header_send, body_send)
-		toast(tostring(body_resp),1)
-		mSleep(1000)
-		if status_resp == 200 then
-			tmp = json.decode(body_resp)
-			if tmp ~= nil or type(tmp) ~= "nil" then
-				if tmp.message ~= "No has message" then
-					local i,j = string.find(tmp.message, "%d+%d+%d+%d+%d+%d+")
-					if i > 0 then
-						self.mm_yzm = string.sub(tmp.message, i, j)
-						toast(tmp.message, 1)
-						mSleep(2000)
-						return 1
-					else
-						toast(tmp.message,1)
-						mSleep(3000)
-						goto get_yzm
-					end
-				else
-					mSleep(500)
-					if get_code_num > 2 then
-						toast("验证码重新获取超过2次失败，结束下一个",1)
-						mSleep(3000)
-						return 0
-					else
-						yzm_time2 = ts.ms() 
-						
-						if os.difftime (yzm_time2, yzm_time1) > 65 then
-							mSleep(500)
-							randomsTap(371,521,4)
-							mSleep(1000)
-							toast("重新获取验证码："..get_code_num,1)
-							mSleep(500)
-							get_code_num = get_code_num + 1
-							goto get_yzm_restart
-						end
-						
-						toast(tmp.message,1)
-						mSleep(3000)
-						goto get_yzm
-					end
-				end
-			else
-				toast(tostring(body_resp),1)
+		mSleep(math.random(200, 300))
+		if getColor(116,  949) == 0x007aff then
+			x_lens = self:moves()
+			if tonumber(x_lens) > 0 then
+				mSleep(math.random(500, 700))
+				moveTowards( 116,  949, 10, x_len - 65)
 				mSleep(3000)
-				goto get_yzm
-			end
-		else
-			toast(tostring(body_resp),1)
-			mSleep(3000)
-			goto get_yzm
-		end
-	end
-	
-	::callAgain::
-	local status, err = pcall(get_mess)
-	if status then
-		if err == 1 then
-			toast("验证码："..self.mm_yzm, 1)
-			mSleep(1000)
-		else
-			goto over
-		end
-	else
-		mSleep(1000)
-		setVPNEnable(false)
-		mSleep(3000)
-		self:vpn()
-		goto callAgain
-	end
-	
-	t1 = ts.ms()
-	while true do
-		if getColor(629,1264) == 0 then
-			mSleep(500)
-			for i = 1, #(self.mm_yzm) do
-				mSleep(math.random(400, 600))
-				num = string.sub(self.mm_yzm,i,i)
-				if num == "0" then
-					randomsTap(373, 1281, 8)
-				elseif num == "1" then
-					randomsTap(132,  955, 8)
-				elseif num == "2" then
-					randomsTap(377,  944, 8)
-				elseif num == "3" then
-					randomsTap(634,  941, 8)
-				elseif num == "4" then
-					randomsTap(128, 1063, 8)
-				elseif num == "5" then
-					randomsTap(374, 1061, 8)
-				elseif num == "6" then
-					randomsTap(628, 1055, 8)
-				elseif num == "7" then
-					randomsTap(119, 1165, 8)
-				elseif num == "8" then
-					randomsTap(378, 1160, 8)
-				elseif num == "9" then
-					randomsTap(633, 1164, 8)
-				end
+				randomTap(370, 1024, 4)
+				mSleep(500)
+			else
+				mSleep(math.random(500, 1000))
+				randomTap(603, 1032,10)
+				mSleep(math.random(3000, 6000))
 			end
 			break
 		end
-		
+
+		flag = isFrontApp(self.mm_bid)
+		if  flag ==0 then
+			runApp(self.mm_bid)
+			mSleep(3000)
+		end
+
 		t2 = ts.ms() 
 
-		if os.difftime (t2, t1) > 120000 then
+		if os.difftime (t2, t1) > 120 then
 			lua_restart()
 		end
 	end
@@ -738,76 +418,77 @@ function model:mm()
 		"吹甘硕赋漠颀妤诺展俐朔菊秉苍津空洮济尹周江荡简莱榆贝萧艾仁漫锟谨魄蔼豫纯翊堂嫣誉邦果暎珏" ..
 		"临勤墨薄颉棠羡浚兆环铄"
 	}
+
 	State["随机常量"] = tonumber(self:Rnd_Word("0123456789",5))
 
 	Nickname = self:Rnd_Word(State["姓氏"],1,3)..self:Rnd_Word(State["名字"],1,3)
-	
+
 	t1 = ts.ms()
 	while true do
 		--填写资料
 		mSleep(400)
 		if getColor(253,195) == 0x323333 and getColor(346,246) == 0x323333 then
 			mSleep(500)
-			randomsTap(437,380,4)
+			randomTap(437,380,4)
 			mSleep(1000)
 			inputStr(Nickname)
 			mSleep(1000)
 			break
 		end
-		
+
 		mSleep(400)
 		if getColor(253,195) == 0x323232 and getColor(346,246) == 0x323232 then
 			mSleep(500)
-			randomsTap(437,380,4)
+			randomTap(437,380,4)
 			mSleep(1000)
 			inputStr(Nickname)
 			mSleep(1000)
 			break
 		end
-		
+
 		mSleep(400)
 		if getColor(150,194) == 0x343434 and getColor(350,169) == 0x343434 then
 			mSleep(500)
-			randomsTap(437,292,4)
+			randomTap(437,292,4)
 			mSleep(1000)
 			inputStr(Nickname)
 			mSleep(1000)
 			break
 		end
-		
+
 		t2 = ts.ms() 
 
 		if os.difftime (t2, t1) > 120000 then
 			lua_restart()
 		end
 	end
-	
+
 	t1 = ts.ms()
 	while true do
 		mSleep(400)
 		x, y = findMultiColorInRegionFuzzy(0x323333,"17|0|0x323333,9|8|0x323333,0|17|0x323333,17|17|0x323333,2|6|0xffffff,18|7|0xffffff,10|17|0xffffff,9|-1|0xffffff", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
-			randomsTap(x, y + 110, 4)
+			randomTap(x, y + 110, 4)
 			mSleep(math.random(500, 700))
 			toast("生日",1)
 			mSleep(1000)
 			break
 		else
 			mSleep(500)
-			randomsTap(x - 200, y, 4)
+			randomTap(x - 200, y, 4)
 			mSleep(1000)
 			inputStr(Nickname)
 			mSleep(1000)
 		end
-		
+
 		t2 = ts.ms() 
 
 		if os.difftime (t2, t1) > 120000 then
 			lua_restart()
 		end
 	end
-	
+
 	--上下
 	topBottom = math.random(1, 2)
 	--年份
@@ -816,7 +497,7 @@ function model:mm()
 	month = math.random(1, 6)
 	--日期
 	day = math.random(1, 15)
-	
+
 	t1 = ts.ms()
 	while true do
 		--生日
@@ -827,36 +508,36 @@ function model:mm()
 				mSleep(500)
 				for i = 1 , year do
 					mSleep(500)
-					randomsTap(212,1045,4)
+					randomTap(212,1045,4)
 				end
-				
+
 				for i = 1 , month do
 					mSleep(500)
-					randomsTap(363,1045,4)
+					randomTap(363,1045,4)
 				end
-				
+
 				for i = 1 , day do
 					mSleep(500)
-					randomsTap(526,1045,4)
+					randomTap(526,1045,4)
 				end
 			else
 				mSleep(500)
 				for i = 1 , year do
 					mSleep(500)
-					randomsTap(212,1182,4)
+					randomTap(212,1182,4)
 				end
-				
+
 				for i = 1 , month do
 					mSleep(500)
-					randomsTap(363,1182,4)
+					randomTap(363,1182,4)
 				end
-				
+
 				for i = 1 , day do
 					mSleep(500)
-					randomsTap(526,1182,4)
+					randomTap(526,1182,4)
 				end
 			end
-			
+
 			while true do
 				mSleep(400)
 				if getColor(432,732) == 0xffffff then
@@ -864,20 +545,20 @@ function model:mm()
 					break
 				else
 					mSleep(500)
-					randomsTap(431,708,4)
+					randomTap(431,708,4)
 					mSleep(1000)
 				end
 			end
 			break
 		end
-		
+
 		t2 = ts.ms() 
 
 		if os.difftime (t2, t1) > 120000 then
 			lua_restart()
 		end
 	end
-	
+
 	t1 = ts.ms()
 	while true do
 		--性别
@@ -886,191 +567,191 @@ function model:mm()
 			mSleep(500)
 			if sex == "0" then
 				mSleep(500)
-				randomsTap(190,612,4)
+				randomTap(190,612,4)
 				mSleep(500)
 			else
 				mSleep(500)
-				randomsTap(550,612,4)
+				randomTap(550,612,4)
 				mSleep(500)
 			end
 		end
-		
+
 		--下一步
 		mSleep(400)
 		if getColor(470,842) == 0x18d9f1 then
 			mSleep(500)
-			randomsTap(470,842,4)
+			randomTap(470,842,4)
 			mSleep(500)
 			toast("下一步",1)
 			mSleep(1000)
 			break
 		end
-		
+
 		t2 = ts.ms() 
 
 		if os.difftime (t2, t1) > 120000 then
 			lua_restart()
 		end
 	end
-	
+
 	t1 = ts.ms()
 	while true do
 		mSleep(400)
 		x, y = findMultiColorInRegionFuzzy(0xf6f6f6,"-75|-88|0x18d9f1,-18|-44|0x18d9f1,47|-57|0x18d9f1,92|-113|0xf6f6f6,-8|-187|0xf6f6f6,-131|367|0xd8d8d8,144|374|0xd8d8d8", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
-			randomsTap(x, y, 4)
+			randomTap(x, y, 4)
 			mSleep(math.random(500, 700))
 			toast("上传照片",1)
 			mSleep(1000)
 		end
-		
+
 		--相册
 		mSleep(400)
 		if getColor(342,1013) == 0x7aff and getColor(401,1010) == 0x7aff then
 			mSleep(500)
-			randomsTap(401,1010,4)
+			randomTap(401,1010,4)
 			mSleep(500)
 			break
 		end
-		
+
 		t2 = ts.ms() 
 
 		if os.difftime (t2, t1) > 120000 then
 			lua_restart()
 		end
 	end
-	
+
 	t1 = ts.ms()
 	while true do
 		--相册
 		mSleep(400)
 		if getColor(653,83) == 0x7aff and getColor(388,86) == 0 then
 			mSleep(500)
-			randomsTap(538,221,4)
+			randomTap(538,221,4)
 			mSleep(500)
 			break
 		end
-		
+
 		t2 = ts.ms() 
 
 		if os.difftime (t2, t1) > 120000 then
 			lua_restart()
 		end
 	end
-	
+
 	t1 = ts.ms()
 	while true do
 		--相册:时刻
 		mSleep(400)
 		if getColor(653,83) == 0x7aff and getColor(397,78) == 0 then
 			mSleep(500)
-			randomsTap(90,328,4)
+			randomTap(90,328,4)
 			mSleep(500)
 			break
 		end
-		
+
 		t2 = ts.ms() 
 
 		if os.difftime (t2, t1) > 120000 then
 			lua_restart()
 		end
 	end
-	
+
 	t1 = ts.ms()
 	while true do
 		--相册:时刻
 		mSleep(400)
 		if getColor(244,1015) == 0x18d9f1 and getColor(536,1000) == 0x18d9f1 then
 			mSleep(500)
-			randomsTap(536,1000,4)
+			randomTap(536,1000,4)
 			mSleep(500)
 			break
 		else
 			mSleep(500)
-			randomsTap(689,1254,4)
+			randomTap(689,1254,4)
 			mSleep(500)
 		end
-		
+
 		t2 = ts.ms() 
 
 		if os.difftime (t2, t1) > 120000 then
 			lua_restart()
 		end
 	end
-	
+
 	t1 = ts.ms()
 	while true do
 		--跳过他们在附近
 		mSleep(400)
 		if getColor(683,83) == 0x323333 and getColor(712,80) == 0x323333 then
 			mSleep(500)
-			randomsTap(689,80,4)
+			randomTap(689,80,4)
 			mSleep(500)
 		end
-		
+
 		--跳过屏蔽通讯录
 		mSleep(400)
 		if getColor(491,813) == 0x7aff and getColor(520,827) == 0x7aff 
 		or getColor(481,808) == 0x57cff and getColor(520,815) == 0x57cff 
 		or getColor(481,808) == 0x47cff and getColor(520,815) == 0x47cff then
 			mSleep(500)
-			randomsTap(237,827,4)
+			randomTap(237,827,4)
 			mSleep(500)
 		end
-		
+
 		--跳过屏蔽通讯录
 		mSleep(400)
 		x, y = findMultiColorInRegionFuzzy(0x10000,"19|12|0x10000,71|8|0x10000,119|-5|0x10000", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(500)
-			randomsTap(237,827,4)
+			randomTap(237,827,4)
 			mSleep(500)
 		end
-		
+
 		--想访问通讯录
 		mSleep(400)
 		if getColor(499,819) == 0x7aff and getColor(517,831) == 0x7aff then
 			mSleep(500)
-			randomsTap(517,831,4)
+			randomTap(517,831,4)
 			mSleep(500)
 		end
-		
+
 		--首页
 		mSleep(400)
 		if getColor(64,1312) == 0xfc9e1 and getColor(85,1304) == 0xfc9e1 then
 			mSleep(500)
-			randomsTap(672,1287,4)
+			randomTap(672,1287,4)
 			mSleep(500)
 		end
-		
+
 		--立即展示
 		mSleep(400)
 		x, y = findMultiColorInRegionFuzzy(0xd0d0d3,"-133|616|0x3ab3fb,-263|580|0x3ab3fb,-271|648|0x3ab3fb,-311|624|0xffffff,-292|614|0xffffff,-277|611|0xffffff,-253|604|0xffffff,-224|616|0xffffff,-422|619|0x3ab3fb", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(500)
-			randomsTap(x,y,4)
+			randomTap(x,y,4)
 			mSleep(500)
 			toast("立即展示",1)
 			mSleep(1000)
 		end
-		
+
 		--更多
 		mSleep(400)
 		if getColor(665,1310) == 0xf6aa00 then
 			mSleep(500)
-			randomsTap(693,230,4)
+			randomTap(693,230,4)
 			mSleep(500)
 			break
 		end
-		
+
 		t2 = ts.ms() 
 
 		if os.difftime (t2, t1) > 120000 then
 			lua_restart()
 		end
 	end
-	
+
 	t1 = ts.ms()
 	while true do
 		--编辑
@@ -1090,13 +771,13 @@ function model:mm()
 							mSleep(500)
 							touchUp(1, x + 123,y + 209)
 							mSleep(500)
-							randomsTap(x + 123,y + 159,3)
+							randomTap(x + 123,y + 159,3)
 							mSleep(500)
 							break
 						else
 							mSleep(1000)
 						end
-						
+
 						t2 = ts.ms() 
 
 						if os.difftime (t2, t1) > 120000 then
@@ -1104,7 +785,7 @@ function model:mm()
 						end
 					end
 					mSleep(500)
-					randomsTap(50,82,4)
+					randomTap(50,82,4)
 					mSleep(500)
 					self.mm_accountId = readPasteboard()
 					toast(self.mm_accountId,1)
@@ -1115,15 +796,15 @@ function model:mm()
 					moveTowards(379,884,90,400,10)
 					mSleep(3000)
 				end
-				
+
 				--自拍狂魔：下次再说
 				mSleep(400)
 				if getColor(180,1022) == 0x3bb3fa and getColor(561,1040) == 0x3bb3fa then
 					mSleep(500)
-					randomsTap(369,1129,4)
+					randomTap(369,1129,4)
 					mSleep(500)
 				end
-				
+
 				t2 = ts.ms() 
 
 				if os.difftime (t2, t1) > 120000 then
@@ -1131,56 +812,56 @@ function model:mm()
 				end
 			end
 		end
-		
+
 		--自拍狂魔：下次再说
 		mSleep(400)
 		if getColor(180,1022) == 0x3bb3fa and getColor(561,1040) == 0x3bb3fa then
 			mSleep(500)
-			randomsTap(369,1129,4)
+			randomTap(369,1129,4)
 			mSleep(500)
 		end
-		
+
 		--更多
 		mSleep(400)
 		if getColor(665,1310) == 0xf6aa00 then
 			mSleep(500)
-			randomsTap(693,80,4)
+			randomTap(693,80,4)
 			mSleep(500)
 			break
 		end
-		
+
 		t2 = ts.ms() 
 
 		if os.difftime (t2, t1) > 120000 then
 			lua_restart()
 		end
 	end
-	
+
 	t1 = ts.ms()
 	while true do
 		--设置
 		mSleep(400)
 		if getColor(346,88) == 0 and getColor(392,86) == 0 then
 			mSleep(500)
-			randomsTap(577,209,4)
+			randomTap(577,209,4)
 			mSleep(500)
 		end
-		
+
 		--.密码修改    2.密码修改  图标没加载出来    3.密码修改  图标加载一个
 		mSleep(400) 
 		if getColor(37,684) == 0x3cc9ff and getColor(39,771) == 0xff5075 
 		or getColor(101,683) == 0x323232 and getColor(73,679) == 0x323232 
 		or getColor(37,684) == 0x3fc9ff and getColor(46,773) == 0x343434 then
 			mSleep(500)
-			randomsTap(617,681,4)
+			randomTap(617,681,4)
 			mSleep(500)
 		end
-		
+
 		--重置密码
 		mSleep(400)
 		if getColor(642,87) == 0x3bb3fa and getColor(687,88) == 0x3bb3fa then
 			mSleep(500)
-			randomsTap(396,194,4)
+			randomTap(396,194,4)
 			mSleep(500)
 			while true do
 				mSleep(400)
@@ -1191,16 +872,16 @@ function model:mm()
 					inputStr(password)
 					mSleep(1000)
 				end
-				
+
 				t2 = ts.ms() 
 
 				if os.difftime (t2, t1) > 120000 then
 					lua_restart()
 				end
 			end
-			
+
 			mSleep(500)
-			randomsTap(396,279,4)
+			randomTap(396,279,4)
 			mSleep(500)
 			while true do
 				mSleep(400)
@@ -1211,7 +892,7 @@ function model:mm()
 					inputStr(password)
 					mSleep(1000)
 				end
-				
+
 				t2 = ts.ms() 
 
 				if os.difftime (t2, t1) > 120000 then
@@ -1219,137 +900,114 @@ function model:mm()
 				end
 			end
 			mSleep(500)
-			randomsTap(666,81,4)
+			randomTap(666,81,4)
 			mSleep(5000)
 			break
 		end
-		
+
 		t2 = ts.ms() 
 
 		if os.difftime (t2, t1) > 120000 then
 			lua_restart()
 		end
 	end
-	
-	self:renameRecord(self.mm_accountId.."/"..self.phone)
-	
+
+--	self:renameRecord(self.mm_accountId.."/"..self.phone)
+	mm_id = self:getMMId(appDataPath(self.mm_bid).."/Documents")
+	dialog(mm_id, time)
+
 	::over::
 end
 
 function model:main()
---	local w,h = getScreenSize()
---	MyTable = {
---		["style"] = "default",
---		["width"] = w,
---		["height"] = h,
---		["config"] = "save_001.dat",
---		["timer"] = 100,
---		views = {
---			{
---				["type"] = "Label",
---				["text"] = "陌陌脚本",
---				["size"] = 20,
---				["align"] = "center",
---				["color"] = "255,0,0",
---			},
---			{
---				["type"] = "Label",
---				["text"] = "====================",
---				["size"] = 15,
---				["align"] = "center",
---				["color"] = "255,0,0",
---			},
---			{
---				["type"] = "Label",
---				["text"] = "照片文件夹路径是在触动res下，文件夹名字是picFile",
---				["size"] = 20,
---				["align"] = "center",
---				["color"] = "255,0,0",
---			},
---			{
---				["type"] = "Label",
---				["text"] = "号码文件路径是在触动res下，文件名字是phoneNum.txt",
---				["size"] = 20,
---				["align"] = "center",
---				["color"] = "255,0,0",
---			},
---			{
---				["type"] = "Label",
---				["text"] = "====================",
---				["size"] = 15,
---				["align"] = "center",
---				["color"] = "255,0,0",
---			},
---			{
---				["type"] = "Label",
---				["text"] = "设置密码",
---				["size"] = 15,
---				["align"] = "center",
---				["color"] = "0,0,255",
---			},
---			{
---				["type"] = "Edit",        
---				["prompt"] = "输入密码",
---				["text"] = "默认值",       
---			},
---			{
---				["type"] = "Label",
---				["text"] = "性别选择",
---				["size"] = 15,
---				["align"] = "center",
---				["color"] = "0,0,255",
---			},
---			{
---				["type"] = "RadioGroup",                    
---				["list"] = "女生,男生",
---				["select"] = "0",  
---				["countperline"] = "4",
---			},
---		}
---	}
+	local w,h = getScreenSize()
+	MyTable = {
+		["style"] = "default",
+		["width"] = w,
+		["height"] = h,
+		["config"] = "save_001.dat",
+		["timer"] = 100,
+		views = {
+			{
+				["type"] = "Label",
+				["text"] = "陌陌脚本",
+				["size"] = 20,
+				["align"] = "center",
+				["color"] = "255,0,0",
+			},
+			{
+				["type"] = "Label",
+				["text"] = "====================",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "255,0,0",
+			},
+			{
+				["type"] = "Label",
+				["text"] = "照片文件夹路径是在触动res下，文件夹名字是picFile",
+				["size"] = 20,
+				["align"] = "center",
+				["color"] = "255,0,0",
+			},
+			{
+				["type"] = "Label",
+				["text"] = "号码文件路径是在触动res下，文件名字是phoneNum.txt",
+				["size"] = 20,
+				["align"] = "center",
+				["color"] = "255,0,0",
+			},
+			{
+				["type"] = "Label",
+				["text"] = "====================",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "255,0,0",
+			},
+			{
+				["type"] = "Label",
+				["text"] = "设置密码",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255",
+			},
+			{
+				["type"] = "Edit",        
+				["prompt"] = "输入密码",
+				["text"] = "默认值",       
+			},
+			{
+				["type"] = "Label",
+				["text"] = "性别选择",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255",
+			},
+			{
+				["type"] = "RadioGroup",                    
+				["list"] = "女生,男生",
+				["select"] = "0",  
+				["countperline"] = "4",
+			},
+		}
+	}
 
---	local MyJsonString = json.encode(MyTable)
+	local MyJsonString = json.encode(MyTable)
 
---	ret, password, sex = showUI(MyJsonString)
---	if ret == 0 then
---		dialog("取消运行脚本", 3)
---		luaExit()
---	end
-	
---	while true do
---		closeApp(self.awz_bid, 0)
---		closeApp(self.mm_bid, 0)
---		clearPasteboard()
---		setVPNEnable(false)
---		mSleep(3000)
---		clearAllPhotos()
---		mSleep(500)
---		clearAllPhotos()
---		mSleep(500)
---		self:getConfig()
-		self:getPhoneAndToken()
-		
---		fileName = self:downImage()
---		toast(fileName,1)
---		mSleep(1000)
+	ret, password, sex = showUI(MyJsonString)
+	if ret == 0 then
+		dialog("取消运行脚本", 3)
+		luaExit()
+	end
 
-----		saveImageToAlbum(fileName)
---		saveImageToAlbum(userPath().."/res/picFile/"..fileName)
---		mSleep(500)
-----		saveImageToAlbum(fileName)
---		saveImageToAlbum(userPath().."/res/picFile/"..fileName)
---		mSleep(2000)
-		
-----		self:deleteImage(fileName)
---		self:deleteImage(userPath().."/res/picFile/"..fileName)
-		
---		self:vpn()
---		newApp_bool = self:newMMApp()
---		if newApp_bool then
---			self:mm(password, sex)
---		end
---	end
-	self:mm()
+	while true do
+		closeApp(self.awz_bid, 0)
+		closeApp(self.mm_bid, 0)
+		setVPNEnable(false)
+		mSleep(1000)
+		self:vpn()
+		self:newMMApp()
+		self:mm(password,sex)
+	end
 end
 
 model:main()

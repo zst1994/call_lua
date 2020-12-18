@@ -1244,24 +1244,24 @@ word = ""
 --local Wildcard = getList(appDataPath("com.tencent.xin").."/Documents") 
 
 --for var = 1,#Wildcard do 
-	local bool = isFileExist(appDataPath("com.ss.iphone.ugc.Aweme").."/Documents/AwemeIM.db")
-	if bool then
-		local sz = require("sz")
-		local sqlite3 = sz.sqlite3	
-		local db = sqlite3.open(appDataPath("com.ss.iphone.ugc.Aweme").."/Documents/AwemeIM.db")
-		local open = db:isopen("AwemeIM")
-		if open then
-			for a,b in db:nrows('SELECT * FROM AwemeContactsV4') do 
-				if a then
-					for k,v in pairs(a) do
-						if k == "95423717096" then
-							nLog(k.."===="..v)
-						end
-					end 
-				end
-			end
-		end
-	end
+--	local bool = isFileExist(appDataPath("com.ss.iphone.ugc.Aweme").."/Documents/AwemeIM.db")
+--	if bool then
+--		local sz = require("sz")
+--		local sqlite3 = sz.sqlite3	
+--		local db = sqlite3.open(appDataPath("com.ss.iphone.ugc.Aweme").."/Documents/AwemeIM.db")
+--		local open = db:isopen("AwemeIM")
+--		if open then
+--			for a,b in db:nrows('SELECT * FROM AwemeContactsV4') do 
+--				if a then
+--					for k,v in pairs(a) do
+--						if k == "95423717096" then
+--							nLog(k.."===="..v)
+--						end
+--					end 
+--				end
+--			end
+--		end
+--	end
 --end
 
 --dialog(category.."===="..word, time)
@@ -1273,6 +1273,13 @@ function msleep(t1,t2)
 	mSleep(t)
 end
 
+
+::new_phone::
+local sz = require("sz");
+local http = require("szocket.http")
+local res, code = http.request("http://127.0.0.1:1688/cmd?fun=getcurrentrecordparam")
+dialog(res, time)
+nLog(res)
 
 --::put_work::
 --header_send = {
