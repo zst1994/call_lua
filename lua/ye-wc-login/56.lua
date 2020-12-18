@@ -8,7 +8,10 @@ model.wc_bid 			= ""
 model.wc_name			= ""
 model.wc_file			= ""
 model.awz_bid 			= ""
-model.awz_url           = ""
+model.awz_newUrl        = ""
+model.awz_getparam      = "http://127.0.0.1:1688/cmd?fun=getcurrentrecordparam"
+
+model.newIndex          = "0"
 
 math.randomseed(getRndNum()) -- 随机种子初始化真随机数
 
@@ -199,7 +202,7 @@ function model:vpn()
 	end
 end
 
-function model:clear_App(connect_vpn)
+function model:clear_App()
 	::run_again::
 	closeApp(self.awz_bid)
 	mSleep(math.random(200, 500))
@@ -217,28 +220,47 @@ function model:clear_App(connect_vpn)
 			goto run_again
 		end
 	end
-
-	::new_phone::
-	local sz = require("sz");
-	local http = require("szocket.http")
-	local res, code = http.request(self.awz_url)
-	if code == 200 then
-		local resJson = sz.json.decode(res)
-		local result = resJson.result
-		if result == 3 then
-			toast("newApp成功，不过ip重复了",1)
-			mSleep(1000)
-			if connect_vpn == "0" then
-				self:vpn()
-			end
-		elseif result == 1 then
-			toast("成功",1)
-		else 
-			toast("失败，请手动查看问题", 1)
-			mSleep(4000)
-			goto new_phone
-		end
-	end
+    
+    if self.newIndex == "0" then
+    	::new_phone::
+    	local sz = require("sz");
+    	local http = require("szocket.http")
+    	local res, code = http.request(self.awz_newUrl)
+    	if code == 200 then
+    		local resJson = sz.json.decode(res)
+    		local result = resJson.result
+    		if result == 3 then
+    			toast("newApp成功，不过ip重复了",1)
+    			mSleep(1000)
+    			if connect_vpn == "0" then
+    				self:vpn()
+    			end
+    		elseif result == 1 then
+    			toast("成功",1)
+    		else 
+    			toast("失败，请手动查看问题", 1)
+    			mSleep(4000)
+    			goto new_phone
+    		end
+    	end
+    else
+        ::getcurrentrecordparam::
+    	local sz = require("sz");
+    	local http = require("szocket.http")
+    	local res, code = http.request(self.awz_getparam)
+    	if code == 200 then
+    		local resJson = sz.json.decode(res)
+    		local result = resJson.result
+    		if result == 1 then
+    			toast("数据保存成功",1)
+    			mSleep(1000)
+    		else 
+    			toast("失败，请手动查看问题", 1)
+    			mSleep(4000)
+    			goto getcurrentrecordparam
+    		end
+    	end
+    end
 end
 
 function model:get_hkUrl(country_num)
@@ -274,7 +296,8 @@ function model:getConfig()
 		self.wc_name = string.gsub(tab[2],"%s+","")
 		self.wc_file = string.gsub(tab[3],"%s+","")
 		self.awz_bid = string.gsub(tab[4],"%s+","")
-		self.awz_url = string.gsub(tab[5],"%s+","")
+		self.awz_newUrl = string.gsub(tab[5],"%s+","")
+-- 		self.awz_getparam = string.gsub(tab[6],"%s+","")
 		toast("获取配置信息成功",1)
 		mSleep(1000)
 	else
@@ -4707,6 +4730,8 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				if tmp.code == 200 then
 					toast(tmp.message,1)
 					mSleep(1000)
+					self.newIndex = "1"
+					self:clear_App()
 				else
 					toast("重新上传",1)
 					mSleep(1000)
@@ -5346,7 +5371,7 @@ function model:main()
 			end
 		end
 
-		self:clear_App(connect_vpn)
+		self:clear_App()
 		self:Net()
 		self:wc(ksUrl,move_type,operator,login_times,content_user,content_country,content_type,vpn_stauts,phone_token,kn_country,kn_id,countryId,nickName,password,country_len,login_type,addBlack,diff_user,ran_pass,ddwGet,airplaneStatus,connect_vpn,EU_countries,tmFailBack)
 		mSleep(1000)
