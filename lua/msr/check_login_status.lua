@@ -457,6 +457,18 @@ function model:loginAccount()
 			data = self.infoData.."----成功"
             break
         end
+		
+		--安全验证
+		mSleep(math.random(200, 300))
+		x,y = findMultiColorInRegionFuzzy( 0x10aeff, "28|4|0xffffff,52|8|0x10aeff,105|160|0x191919,-122|784|0x07c160,19|836|0x07c160,199|784|0x07c160,28|784|0x07c160", 90, 0, 0, 749, 1333)
+		if x~=-1 and y~=-1 then
+			mSleep(math.random(500, 700))
+			toast("安全验证4",1)
+			mSleep(500)
+			category = "success-data"
+			data = self.infoData.."----成功"
+            break
+		end
         
         --绑定手机号
 	    mSleep(math.random(200, 300))

@@ -1273,13 +1273,33 @@ function msleep(t1,t2)
 	mSleep(t)
 end
 
+--appPath = appBundlePath("com.tencent.xin");  
+--dialog(appPath,0);
 
-::new_phone::
-local sz = require("sz");
-local http = require("szocket.http")
-local res, code = http.request("http://127.0.0.1:1688/cmd?fun=getcurrentrecordparam")
-dialog(res, time)
-nLog(res)
+
+--local file = io.open(userPath().."/lua/Info.plist","rb") 
+--if file then 
+--	local str = file:read("*a") 
+--	file:close()
+
+--	local file = io.open(appPath.."/Info.plist", 'wb');
+--	file:write(str)
+--	file:close();
+--end
+
+
+
+
+
+
+x,y = findMultiColorInRegionFuzzy( 0xffffff, "105|1|0xffffff,211|3|0x18d9f1,95|-37|0x18d9f1,-48|-4|0x18d9f1,83|39|0x18d9f1", 90, 0, 0, 749, 1333)
+if x~=-1 and y~=-1 then
+	mSleep(500)
+	randomTap(x,y,4)
+	mSleep(500)
+end
+
+
 
 --::put_work::
 --header_send = {

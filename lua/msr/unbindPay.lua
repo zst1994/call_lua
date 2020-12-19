@@ -812,13 +812,25 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 		x,y = findMultiColorInRegionFuzzy( 0x10aeff, "117|6|0x10aeff,53|1|0xffffff,-265|388|0x1aad19,378|387|0x1aad19,382|440|0x1aad19,-271|449|0x1aad19", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
-			toast("安全验证",1)
+			toast("安全验证1",1)
 			data_six_two = false
 			category = "error-data"
 			data = self.infoData.."----安全验证"
 			break
 		end
-
+		
+		--安全验证
+		mSleep(math.random(200, 300))
+		x,y = findMultiColorInRegionFuzzy( 0x10aeff, "28|4|0xffffff,52|8|0x10aeff,105|160|0x191919,-122|784|0x07c160,19|836|0x07c160,199|784|0x07c160,28|784|0x07c160", 90, 0, 0, 749, 1333)
+		if x~=-1 and y~=-1 then
+			mSleep(math.random(500, 700))
+			toast("安全验证2",1)
+			data_six_two = false
+			category = "error-data"
+			data = self.infoData.."----安全验证"
+			break
+		end
+		
 		--存在异常
 		mSleep(math.random(200, 300))
 		x,y = findMultiColorInRegionFuzzy(0x576b95, "18|-1|0x576b95,45|-2|0x576b95,-145|-262|0x1a1a1a,-133|-276|0x1a1a1a,-131|-260|0x1a1a1a,-98|-266|0x1a1a1a,-67|-278|0x1a1a1a,-32|-260|0x1a1a1a,89|-149|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
