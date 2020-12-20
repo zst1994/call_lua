@@ -409,5 +409,16 @@
                     "prompt": "请输入您要设置的联动时间",
                     "text": "默认值",
                     "kbtype": "ascii"
+                },{
+                    "type": "Label",
+                    "text": "选择替换文件版本",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "replaceFile",
+                    "type": "RadioGroup",
+                    "list": "暂不替换,7015,7017",
+                    "select": "0"
                 }]
     }

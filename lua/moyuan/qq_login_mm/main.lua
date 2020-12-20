@@ -323,6 +323,17 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 				runAgain = true
 			end
 		end
+		
+		--注册登录
+		mSleep(math.random(200, 300))
+		x,y = findMultiColorInRegionFuzzy( 0xffffff, "105|1|0xffffff,211|3|0x18d9f1,95|-37|0x18d9f1,-48|-4|0x18d9f1,83|39|0x18d9f1", 90, 0, 0, 749, 1333)
+		if x ~= -1 and y ~= -1 then
+			mSleep(500)
+			randomTap(x,y,4)
+			mSleep(500)
+			toast("注册登录",1)
+			mSleep(500)
+		end
 
 		--qq图标
 		mSleep(math.random(200, 300))
@@ -410,46 +421,74 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 	end
 	
 	huakuai = false
-	
+	inputAgain = false
 	::hk::
 	
 	t1 = ts.ms()
 	while (true) do
 		mSleep(math.random(200, 300))
 		if getColor(239, 629) == 0x12b7f5 then
+		    if inputAgain then
+		        mSleep(500)
+		        randomTap(620,  357, 3)
+		        mSleep(1000)
+		        for var=1,20 do
+                    mSleep(100)
+                    keyDown("DeleteOrBackspace")
+                    keyUp("DeleteOrBackspace")  
+		        end
+                mSleep(500)
+		        randomTap(620,  469, 3)
+		        mSleep(1000)
+		        for var=1,20 do
+                    mSleep(100)
+                    keyDown("DeleteOrBackspace")
+                    keyUp("DeleteOrBackspace")  
+                end
+		    end
+		    
 			mSleep(5000)
 			while (true) do
 				mSleep(200)
-				if getColor(676,  357) == 0xbbbbbb then
+				if getColor(676,  357) == 0xbbbbbb or getColor(599,354) == 0xffffff then
 					mSleep(500)
 					randomTap(447, 477, 4)
 					mSleep(500)
 					break
 				else
+				    mSleep(500)
 					randomTap(395, 357, 4)
 					mSleep(2000)
 					inputStr(self.qqAcount)
-					mSleep(500)
+					mSleep(1000)
 				end
 			end
 
 			while (true) do
 				mSleep(200)
-				if getColor(677,  469) == 0xbbbbbb then
+				if getColor(677,  469) == 0xbbbbbb or getColor(163,471) == 0x000000 then
+				    mSleep(500)
+        			randomTap(239, 629, 4)
+        			mSleep(500)
+        			table.remove(tab, 1)
+        			writeFile(userPath() .. "/res/qq.txt", tab, "w", 1)
 					break
 				else
 					mSleep(500)
 					randomTap(447, 477, 4)
 					mSleep(500)
 					inputStr(self.qqPassword)
+					mSleep(1000)
 				end
 			end
-
-			mSleep(500)
-			randomTap(239, 629, 4)
-			mSleep(500)
-			table.remove(tab, 1)
-			writeFile(userPath() .. "/res/qq.txt", tab, "w", 1)
+		end
+		
+		mSleep(200)
+		if getColor(391,541) == 0x12b7f5 and getColor(379,884) == 0x000000 then
+		    mSleep(500)
+		    randomTap(379,884,4)
+		    mSleep(500)
+		    inputAgain = true
 		end
 
 		mSleep(math.random(200, 300))
@@ -554,12 +593,30 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 
 	t1 = ts.ms()
 	while true do
-		--填写资料
+	    mSleep(math.random(200, 300))
+		if getColor(116, 949) == 0x007aff then
+		    mSleep(math.random(500, 1000))
+			randomTap(603, 1032, 10)
+			mSleep(math.random(3000, 6000))
+		    goto hk
+		end
+		
 		mSleep(200)
+		if getColor(149,  187) == 0x323233 or getColor(149,187) == 0x323333 then
+	   	    mSleep(500)
+			key = "ReturnOrEnter"
+			keyDown(key)
+			keyUp(key)
+			toast("收起键盘",1)
+			mSleep(500)
+		end
+	    
+		--填写资料
+		mSleep(500)
 		x, y = findMultiColorInRegionFuzzy(0x323333,"16|-1|0x323333,8|7|0x323333,10|19|0x323333,24|26|0x323333,30|13|0x323333,25|-7|0x323333,54|-3|0x323333,83|8|0x323333,66|-8|0x323333",90,0,0,750,1334,{orient = 2})
 		if x ~= -1 then
 			mSleep(500)
-			randomTap(x + 70, y + 121, 4)
+			tap(x + 70, y + 121)
 			mSleep(1000)
 			for var = 1, 20 do
 				mSleep(100)
@@ -572,13 +629,6 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			toast("输入昵称", 1)
 			mSleep(500)
 			break
-		end
-
-		mSleep(200)
-		if getColor(659,  291) == 0x323233 then
-			mSleep(500)
-			randomTap(665,  638, 4)
-			mSleep(500)
 		end
 
 		mSleep(200)
@@ -738,7 +788,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 
 		--首页
 		mSleep(200)
-		x,y = findMultiColorInRegionFuzzy(0x323333, "17|15|0x323333,25|-6|0x323333,35|8|0x323333,53|6|0x323333,77|9|0x323333,73|-3|0x323333,104|1|0x323333,135|8|0x323333,200|6|0xffffff", 100, 0, 0, 750, 1334, { orient = 2 })
+		x,y = findMultiColorInRegionFuzzy(0x323333, "17|15|0x323333,25|-6|0x323333,35|8|0x323333,53|6|0x323333,77|9|0x323333,73|-3|0x323333,104|1|0x323333,135|8|0x323333,200|6|0xffffff", 100, 0, 0, 421,179, { orient = 2 })
 		if x ~= -1 then
 			mSleep(500)
 			toast("首页2", 1)
@@ -784,6 +834,14 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			mSleep(math.random(500, 700))
 			toast("上传照片3", 1)
 			mSleep(1000)
+		end
+		
+		--下一步
+		mSleep(400)
+		if getColor(113,839) == 0x18d9f1 or getColor(632,841) == 0x18d9f1 then
+			mSleep(500)
+			randomTap(470, 842, 4)
+			mSleep(500)
 		end
 
 		--跳过
@@ -868,11 +926,42 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			mSleep(500)
 			break
 		end
+		
+		--绑定手机
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy( 0x303031, "-11|-11|0x303031,12|-11|0x303031,-11|13|0x303031,12|12|0x303031,-1|11|0xffffff,-389|571|0x4ebbfb,-72|572|0x4ebbfb", 90, 0, 0, 749, 1333)
+		if x ~= -1 then
+			mSleep(500)
+			randomTap(x, y, 4)
+			mSleep(500)
+			toast("绑定手机", 1)
+			mSleep(500)
+		end
 	end
 
 	if searchFriend == "0" then
 		t1 = ts.ms()
 		while true do
+		    --绑定手机
+    		mSleep(200)
+    		x,y = findMultiColorInRegionFuzzy( 0x303031, "-11|-11|0x303031,12|-11|0x303031,-11|13|0x303031,12|12|0x303031,-1|11|0xffffff,-389|571|0x4ebbfb,-72|572|0x4ebbfb", 90, 0, 0, 749, 1333)
+    		if x ~= -1 then
+    			mSleep(500)
+    			randomTap(x, y, 4)
+    			mSleep(500)
+    			toast("绑定手机", 1)
+    			mSleep(500)
+    		end
+    		
+    		--更多
+    		mSleep(200)
+    		x,y = findMultiColorInRegionFuzzy( 0x323333, "6|0|0x323333,12|0|0x323333,-3|-26|0x565656,37|-26|0x565656,54|-20|0xfdfcfd,-32|-20|0xfdfcfd", 100, 0, 0, 749, 1333)
+    		if x~=-1 and y~=-1 then
+    			mSleep(500)
+    			randomTap(x + 10, y - 10, 4)
+    			mSleep(1000)
+    		end
+		
 			--好友
 			mSleep(200)
 			x,y = findMultiColorInRegionFuzzy( 0xb0b0b0, "2|12|0xaaaaaa,23|2|0xaaaaaa,24|7|0xafafaf,83|3|0xffffff,205|8|0xaaaaaa,360|12|0xaaaaaa,556|7|0xaaaaaa,589|-15|0xffffff", 90, 0, 0, 749, 1333)
@@ -1219,7 +1308,7 @@ function model:main()
 		["width"] = w,
 		["height"] = h,
 		["config"] = "save_001.dat",
-		["timer"] = 100,
+		["timer"] = 30,
 		views = {
 			{
 				["type"] = "Label",
@@ -1357,7 +1446,8 @@ function model:main()
 		closeApp(self.mm_bid, 0)
 		setVPNEnable(false)
 		mSleep(1000)
-
+        
+        changeHeader = "1"
 		if changeHeader == "0" then
 			clearAllPhotos()
 			mSleep(500)
@@ -1366,15 +1456,15 @@ function model:main()
 			fileName = self:downImage()
 			toast(fileName, 1)
 			mSleep(1000)
-
-			--		saveImageToAlbum(fileName)
+            
+	--		saveImageToAlbum(fileName)
 			saveImageToAlbum(userPath() .. "/res/picFile/" .. fileName)
 			mSleep(500)
-			--		saveImageToAlbum(fileName)
+	--		saveImageToAlbum(fileName)
 			saveImageToAlbum(userPath() .. "/res/picFile/" .. fileName)
 			mSleep(2000)
-
-			--		self:deleteImage(fileName)
+            
+	--		self:deleteImage(fileName)
 			self:deleteImage(userPath() .. "/res/picFile/" .. fileName)
 		end
 

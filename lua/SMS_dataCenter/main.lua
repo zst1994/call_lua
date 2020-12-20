@@ -6210,6 +6210,30 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 	closeApp(self.wc_bid)
 end
 
+function model:replace_file(fileName)
+    appPath = appBundlePath(self.wc_bid);  
+
+    local file = io.open(userPath().."/res/info/"..fileName,"rb") 
+    if file then 
+    	local str = file:read("*a") 
+    	file:close()
+    
+    	local file = io.open(appPath.."/Info.plist", 'wb');
+    	file:write(str)
+    	file:close();
+    	
+    	::writeAgain::
+    	bool = writeFileString(userPath().."/res/info/wc_version.txt",fileName,"w") --将 string 内容存入文件，成功返回 true
+        if bool then
+            toast("版本号存储成功，替换文件成功",1)
+        	mSleep(1000)
+        else
+            toast("写入失败", 1)
+            goto writeAgain
+        end
+    end
+end
+
 function model:main()
 	deviceId = readFile(userPath().."/res/phone_num.txt")
 	self.phoneDevice = deviceId[1]
@@ -6398,6 +6422,25 @@ function model:main()
 				self:service_GWvpn()
 			elseif vpn_country == "3" then
 				self:service_GNvpn()
+			end
+			
+			if replaceFile ~= "0" then
+    			local bool = isFileExist(userPath().."/res/info/wc_version.txt")
+                if bool then
+                    txt = readFileString(userPath().."/res/info/wc_version.txt")--读取文件内容，返回全部内容的 string
+                    if txt then
+                        toast("当前版本号："..txt, 1)
+                        mSleep(1000)
+                    end
+                end
+    			
+    			if replaceFile == "1" then
+    			    file_name = "715.plist"
+    			    self:replace_file(file_name)
+    			elseif replaceFile == "2" then
+    			    file_name = "717.plist"
+    			    self:replace_file(file_name)
+    			end
 			end
 
 			if login_times == "1" then

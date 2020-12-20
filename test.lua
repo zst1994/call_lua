@@ -4,8 +4,8 @@ local sz = require("sz")
 local socket = require ("socket");
 local http = require("szocket.http")
 require("TSLib")
-a= {1,2,3}
-nLog(table.concat(a))
+
+
 --local sz = require("sz")
 --local cjson = sz.json
 --local http = sz.i82.http
@@ -1273,31 +1273,32 @@ function msleep(t1,t2)
 	mSleep(t)
 end
 
---appPath = appBundlePath("com.tencent.xin");  
---dialog(appPath,0);
+-- appPath = appBundlePath("com.tencent.xin");  
+
+-- local file = io.open(userPath().."/res/info/Info.plist","rb") 
+-- if file then 
+-- 	local str = file:read("*a") 
+-- 	file:close()
+
+-- 	local file = io.open(appPath.."/Info.plist", 'wb');
+-- 	file:write(str)
+-- 	file:close();
+-- end
 
 
---local file = io.open(userPath().."/lua/Info.plist","rb") 
---if file then 
---	local str = file:read("*a") 
---	file:close()
-
---	local file = io.open(appPath.."/Info.plist", 'wb');
---	file:write(str)
---	file:close();
---end
-
-
+		mSleep(200)
+		if getColor(149,  187) == 0x323233 then
+	   	    mSleep(500)
+			key = "ReturnOrEnter"
+			keyDown(key)
+			keyUp(key)
+			toast("收起键盘",1)
+			mSleep(500)
+		end
 
 
 
 
-x,y = findMultiColorInRegionFuzzy( 0xffffff, "105|1|0xffffff,211|3|0x18d9f1,95|-37|0x18d9f1,-48|-4|0x18d9f1,83|39|0x18d9f1", 90, 0, 0, 749, 1333)
-if x~=-1 and y~=-1 then
-	mSleep(500)
-	randomTap(x,y,4)
-	mSleep(500)
-end
 
 
 
