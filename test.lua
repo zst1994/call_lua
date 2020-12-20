@@ -1286,14 +1286,20 @@ end
 -- end
 
 
-		mSleep(200)
-		if getColor(149,  187) == 0x323233 then
-	   	    mSleep(500)
-			key = "ReturnOrEnter"
-			keyDown(key)
-			keyUp(key)
-			toast("收起键盘",1)
+mSleep(400)
+		x, y = findMultiColorInRegionFuzzy(0x323333,"17|0|0x323333,9|8|0x323333,0|17|0x323333,17|17|0x323333,2|6|0xffffff,18|7|0xffffff,10|17|0xffffff,9|-1|0xffffff",90,0,0,749,1333)
+		if x ~= -1 and y ~= -1 then
+			mSleep(math.random(500, 700))
+			randomTap(x, y + 110, 4)
+			mSleep(math.random(500, 700))
+			toast("生日", 1)
+			mSleep(1000)
+		else
 			mSleep(500)
+			randomTap(x - 200, y, 4)
+			mSleep(1000)
+			inputStr(Nickname)
+			mSleep(1000)
 		end
 
 

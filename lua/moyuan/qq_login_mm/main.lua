@@ -375,6 +375,15 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			randomTap(x,y,4)
 			mSleep(500)
 		end
+		
+		--定位服务未开启
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0x087dff, "11|1|0x087dff,41|0|0x087dff,248|-6|0x087dff,276|-7|0x087dff,336|1|0x087dff,41|-190|0x010101,66|-189|0x010101,62|-177|0x010101,64|-168|0x010101", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+			mSleep(500)
+			randomTap(x, y, 4)
+			mSleep(500)
+		end
 
 		--同意
 		mSleep(math.random(200, 300))
@@ -658,7 +667,18 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			self.subName = "注册过"
 			goto get_mmId
 		end
-
+		
+		--定位服务未开启
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0x087dff, "11|1|0x087dff,41|0|0x087dff,248|-6|0x087dff,276|-7|0x087dff,336|1|0x087dff,41|-190|0x010101,66|-189|0x010101,62|-177|0x010101,64|-168|0x010101", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+			mSleep(500)
+			toast("定位服务未开启2", 1)
+			mSleep(500)
+			self.subName = "注册过"
+			goto get_mmId
+		end
+        
 		self:timeOutRestart(t1)
 	end
 
@@ -865,6 +885,17 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			toast("绑定手机", 1)
 			mSleep(500)
 		end
+		
+		--绑定手机
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0x323232, "13|6|0x323232,17|10|0x323232,32|8|0x323232,47|8|0x323232,-355|93|0x323232,-344|94|0x323232,-305|99|0x323232,-255|101|0x323232,-233|96|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+			mSleep(500)
+			randomTap(x + 10, y + 5, 3)
+			mSleep(500)
+			toast("绑定手机2", 1)
+			mSleep(500)
+		end
 
 		--有新版本
 		mSleep(200)
@@ -907,6 +938,17 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			toast("定位服务未开启", 1)
 			mSleep(500)
 		end
+		
+		--定位服务未开启
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0x087dff, "11|1|0x087dff,41|0|0x087dff,248|-6|0x087dff,276|-7|0x087dff,336|1|0x087dff,41|-190|0x010101,66|-189|0x010101,62|-177|0x010101,64|-168|0x010101", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+			mSleep(500)
+			randomTap(x, y, 4)
+			mSleep(500)
+			toast("定位服务未开启2", 1)
+			mSleep(500)
+		end
 
 		self:timeOutRestart(t1)
 	end
@@ -937,6 +979,39 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			toast("绑定手机", 1)
 			mSleep(500)
 		end
+		
+		--绑定手机
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0x323232, "13|6|0x323232,17|10|0x323232,32|8|0x323232,47|8|0x323232,-355|93|0x323232,-344|94|0x323232,-305|99|0x323232,-255|101|0x323232,-233|96|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+			mSleep(500)
+			randomTap(x + 10, y + 5, 3)
+			mSleep(500)
+			toast("绑定手机2", 1)
+			mSleep(500)
+		end
+		
+		--定位服务未开启
+		mSleep(200)
+		x, y = findMultiColorInRegionFuzzy(0x007aff,"11|1|0x007aff,41|2|0x007aff,40|-188|0x000000,66|-188|0x000000,54|-177|0x000000,79|-177|0x000000,119|-181|0x000000,192|-180|0x000000,260|-185|0x000000",90,0,0,750,1334,{orient = 2})
+		if x ~= -1 then
+			mSleep(500)
+			randomTap(x, y, 4)
+			mSleep(500)
+			toast("定位服务未开启", 1)
+			mSleep(500)
+		end
+		
+		--定位服务未开启
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0x087dff, "11|1|0x087dff,41|0|0x087dff,248|-6|0x087dff,276|-7|0x087dff,336|1|0x087dff,41|-190|0x010101,66|-189|0x010101,62|-177|0x010101,64|-168|0x010101", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+			mSleep(500)
+			randomTap(x, y, 4)
+			mSleep(500)
+			toast("定位服务未开启2", 1)
+			mSleep(500)
+		end
 	end
 
 	if searchFriend == "0" then
@@ -950,6 +1025,17 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
     			randomTap(x, y, 4)
     			mSleep(500)
     			toast("绑定手机", 1)
+    			mSleep(500)
+    		end
+    		
+    	    --绑定手机
+    		mSleep(200)
+    		x,y = findMultiColorInRegionFuzzy(0x323232, "13|6|0x323232,17|10|0x323232,32|8|0x323232,47|8|0x323232,-355|93|0x323232,-344|94|0x323232,-305|99|0x323232,-255|101|0x323232,-233|96|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x ~= -1 then
+    			mSleep(500)
+    			randomTap(x + 10, y + 5, 3)
+    			mSleep(500)
+    			toast("绑定手机2", 1)
     			mSleep(500)
     		end
     		
