@@ -1286,27 +1286,27 @@ end
 -- end
 
 
-mSleep(400)
-		x, y = findMultiColorInRegionFuzzy(0x323333,"17|0|0x323333,9|8|0x323333,0|17|0x323333,17|17|0x323333,2|6|0xffffff,18|7|0xffffff,10|17|0xffffff,9|-1|0xffffff",90,0,0,749,1333)
+--注册登录
+		mSleep(math.random(200, 300))
+		x,y = findMultiColorInRegionFuzzy( 0xffffff, "105|1|0xffffff,211|3|0x18d9f1,95|-37|0x18d9f1,-48|-4|0x18d9f1,83|39|0x18d9f1", 90, 0, 0, 749, 1333)
 		if x ~= -1 and y ~= -1 then
-			mSleep(math.random(500, 700))
-			randomTap(x, y + 110, 4)
-			mSleep(math.random(500, 700))
-			toast("生日", 1)
-			mSleep(1000)
-		else
 			mSleep(500)
-			randomTap(x - 200, y, 4)
-			mSleep(1000)
-			inputStr(Nickname)
-			mSleep(1000)
+			randomTap(x,y,4)
+			mSleep(500)
+			toast("注册登录",1)
+			mSleep(500)
 		end
-
-
-
-
-
-
+		
+--注册登录
+		mSleep(math.random(200, 300))
+		x,y = findMultiColorInRegionFuzzy( 0xffffff, "32|2|0xffffff,90|3|0xfdffff,-99|-2|0x18d9f1,43|-41|0x18d9f1,41|37|0x18d9f1,176|-3|0x18d9f1", 90, 0, 0, 749, 1333)
+		if x ~= -1 and y ~= -1 then
+			mSleep(500)
+			randomTap(x,y,4)
+			mSleep(500)
+			toast("注册登录1",1)
+			mSleep(500)
+		end
 
 --::put_work::
 --header_send = {

@@ -331,7 +331,18 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			mSleep(500)
 			randomTap(x,y,4)
 			mSleep(500)
-			toast("注册登录",1)
+			toast("注册登录1",1)
+			mSleep(500)
+		end
+		
+		--注册登录
+		mSleep(math.random(200, 300))
+		x,y = findMultiColorInRegionFuzzy( 0xffffff, "32|2|0xffffff,90|3|0xfdffff,-99|-2|0x18d9f1,43|-41|0x18d9f1,41|37|0x18d9f1,176|-3|0x18d9f1", 90, 0, 0, 749, 1333)
+		if x ~= -1 and y ~= -1 then
+			mSleep(500)
+			randomTap(x,y,4)
+			mSleep(500)
+			toast("注册登录2",1)
 			mSleep(500)
 		end
 
@@ -363,7 +374,18 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			mSleep(500)
 			randomTap(x,y,4)
 			mSleep(500)
-			toast("注册登录",1)
+			toast("注册登录1",1)
+			mSleep(500)
+		end
+
+		--注册登录
+		mSleep(math.random(200, 300))
+		x,y = findMultiColorInRegionFuzzy( 0xffffff, "32|2|0xffffff,90|3|0xfdffff,-99|-2|0x18d9f1,43|-41|0x18d9f1,41|37|0x18d9f1,176|-3|0x18d9f1", 90, 0, 0, 749, 1333)
+		if x ~= -1 and y ~= -1 then
+			mSleep(500)
+			randomTap(x,y,4)
+			mSleep(500)
+			toast("注册登录2",1)
 			mSleep(500)
 		end
 		
@@ -523,6 +545,38 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 				huakuai = true
 				goto hk
 			end
+		end
+		
+		--已经注册过，需要绑定手机号码
+		mSleep(200)
+		if getColor(672, 85) == 0x323333 and getColor(702, 85) == 0x323333 then
+			mSleep(500)
+			toast("已经注册过，需要绑定手机号码", 1)
+			mSleep(500)
+			self.subName = "注册过"
+			goto get_mmId
+		end
+
+		--定位服务未开启
+		mSleep(200)
+		x, y = findMultiColorInRegionFuzzy(0x007aff,"11|1|0x007aff,41|2|0x007aff,40|-188|0x000000,66|-188|0x000000,54|-177|0x000000,79|-177|0x000000,119|-181|0x000000,192|-180|0x000000,260|-185|0x000000",90,0,0,750,1334,{orient = 2})
+		if x ~= -1 then
+			mSleep(500)
+			toast("定位服务未开启", 1)
+			mSleep(500)
+			self.subName = "注册过"
+			goto get_mmId
+		end
+		
+		--定位服务未开启
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0x087dff, "11|1|0x087dff,41|0|0x087dff,248|-6|0x087dff,276|-7|0x087dff,336|1|0x087dff,41|-190|0x010101,66|-189|0x010101,62|-177|0x010101,64|-168|0x010101", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+			mSleep(500)
+			toast("定位服务未开启2", 1)
+			mSleep(500)
+			self.subName = "注册过"
+			goto get_mmId
 		end
 
 		flag = isFrontApp(self.mm_bid)
@@ -788,6 +842,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			mSleep(500)
 			toast("下一步", 1)
 			mSleep(1000)
+			self.subName = "未注册过"
 			break
 		end
 
@@ -1380,6 +1435,8 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 	--重命名当前记录名
 	local old_name = AMG.Get_Name()
 	local new_name = self.mm_accountId .. "----" .. self.subName
+	toast(new_name,1)
+	mSleep(1000)
 	if AMG.Rename(old_name, new_name) == true then
 		toast("重命名当前记录 " .. old_name .. " 为 " .. new_name, 3)
 	end
