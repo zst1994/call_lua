@@ -703,6 +703,16 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		end
 		
 		mSleep(200)
+		if getColor(391,541) == 0x12b7f5 and getColor(379,884) == 0x000000 then
+		    mSleep(500)
+		    randomTap(379,884,4)
+		    mSleep(500)
+		    self:getAccount()
+		    inputAgain = true
+		    goto hk
+		end
+		
+		mSleep(200)
 		if getColor(149,  187) == 0x323233 or getColor(149,187) == 0x323333 then
 	   	    mSleep(500)
 			key = "ReturnOrEnter"
