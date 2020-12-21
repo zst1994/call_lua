@@ -187,10 +187,26 @@ function model:newMMApp()
 					toast("newApp成功", 1)
 					break
 				end
+				
+				self:vpn_connection()
 			end
 			break
 		end
 	end
+end
+
+function model:vpn_connection()
+    --vpn连接
+	mSleep(200)
+	x,y = findMultiColorInRegionFuzzy(0x1382ff, "-4|4|0x1382ff,5|10|0x1382ff,2|19|0x1382ff,12|-1|0x1382ff,17|8|0x1382ff,10|13|0x1382ff,24|13|0x1382ff,13|26|0x1382ff,17|19|0x1382ff", 90, 0, 0, 750, 1334, { orient = 2 })
+    if x ~= -1 then
+        mSleep(500)
+        randomTap(x,y,4)
+        mSleep(500)
+        setVPNEnable(true)
+        toast("好",1)
+        mSleep(3000)
+    end
 end
 
 function model:vpn()
@@ -220,13 +236,15 @@ function model:vpn()
 
 	while true do
 		new_data = getNetIP() --获取IP
-		toast(new_data, 1)
-		if new_data ~= old_data then
-			mSleep(1000)
-			toast("vpn链接成功")
-			mSleep(1000)
-			break
-		end
+		if new_data and new_data ~= "" then
+            toast(new_data, 1)
+    		if new_data ~= old_data then
+    			mSleep(1000)
+    			toast("vpn链接成功")
+    			mSleep(1000)
+    			break
+    		end
+        end
 
 		t2 = ts.ms()
 
@@ -277,6 +295,25 @@ function model:deleteImage(path)
 		toast("删除失败", 1)
 		mSleep(1000)
 		goto delete
+	end
+end
+
+function model:getAccount()
+    tab = readFile(userPath() .. "/res/qq.txt")
+	if tab then
+		if #tab > 0 then
+			data = strSplit(string.gsub(tab[1], "%s+", ""), "----")
+			self.qqAcount = data[1]
+			self.qqPassword = data[2]
+			toast("获取账号成功",1)
+			mSleep(1000)
+		else
+			dialog("没账号了", 0)
+			lua_exit()
+		end
+	else
+		dialog("文件不存在,请检查", 0)
+		lua_exit()
 	end
 end
 
@@ -519,6 +556,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		    mSleep(500)
 		    randomTap(379,884,4)
 		    mSleep(500)
+		    self:getAccount()
 		    inputAgain = true
 		end
 
@@ -1570,20 +1608,7 @@ function model:main()
 	end
 
 	while true do
-		tab = readFile(userPath() .. "/res/qq.txt")
-		if tab then
-			if #tab > 0 then
-				data = strSplit(string.gsub(tab[1], "%s+", ""), "----")
-				self.qqAcount = data[1]
-				self.qqPassword = data[2]
-			else
-				dialog("没账号了", 0)
-				lua_exit()
-			end
-		else
-			dialog("文件不存在,请检查", 0)
-			lua_exit()
-		end
+		self:getAccount()
 
 		closeApp(self.awz_bid, 0)
 		closeApp(self.mm_bid, 0)
