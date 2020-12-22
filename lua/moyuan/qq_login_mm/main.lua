@@ -10,6 +10,8 @@ local model = {}
 model.awz_bid = "com.superdev.AMG"
 model.mm_bid = "com.wemomo.momoappdemo1"
 
+model.qqList = {}
+
 model.qqAcount = ""
 model.qqPassword = ""
 
@@ -299,10 +301,10 @@ function model:deleteImage(path)
 end
 
 function model:getAccount()
-    tab = readFile(userPath() .. "/res/qq.txt")
-	if tab then
-		if #tab > 0 then
-			data = strSplit(string.gsub(tab[1], "%s+", ""), "----")
+    self.qqList = readFile(userPath() .. "/res/qq.txt")
+	if self.qqList then
+		if #self.qqList > 0 then
+			data = strSplit(string.gsub(self.qqList[1], "%s+", ""), "----")
 			self.qqAcount = data[1]
 			self.qqPassword = data[2]
 			toast("获取账号成功",1)
@@ -538,8 +540,6 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 				    mSleep(500)
         			randomTap(239, 629, 4)
         			mSleep(500)
-        			table.remove(tab, 1)
-        			writeFile(userPath() .. "/res/qq.txt", tab, "w", 1)
 					break
 				else
 					mSleep(500)
@@ -1195,14 +1195,27 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			--返回到更多页面
 			mSleep(200)
 			if getColor(678,   83) == 0xffffff or getColor(678,  131) == 0xffffff then
-				if getColor(678,   83) == 0xffffff then
-					mSleep(2000)
-					randomTap(55,   82, 4)
-					mSleep(500)
-				elseif getColor(678,  131) == 0xffffff then
-					mSleep(2000)
-					randomTap(55,   128, 4)
-					mSleep(500)
+				while (true) do
+				    mSleep(200)
+				    if getColor(678,   83) == 0xffffff then
+    					mSleep(2000)
+    					randomTap(55,   82, 4)
+    					mSleep(500)
+    				elseif getColor(678,  131) == 0xffffff then
+    					mSleep(2000)
+    					randomTap(55,   128, 4)
+    					mSleep(500)
+    				else
+    					mSleep(2000)
+    					randomTap(55,   128, 4)
+    					mSleep(500)
+    				end
+    				
+    				mSleep(200)
+					if getColor(678,   83) == 0x323333 then
+						mSleep(500)
+						break
+					end
 				end
 
 				while (true) do
@@ -1488,7 +1501,11 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 	if AMG.Rename(old_name, new_name) == true then
 		toast("重命名当前记录 " .. old_name .. " 为 " .. new_name, 3)
 	end
-
+	
+	table.remove(self.qqList, 1)
+    writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+    mSleep(1000)
+    
 	::over::
 end
 
