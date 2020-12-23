@@ -1286,16 +1286,17 @@ end
 -- end
 
 
-				--好的
-			mSleep(200)
-			x,y = findMultiColorInRegionFuzzy( 0x3bb3fa, "116|-1|0xffffff,39|-230|0x323333,54|-229|0x323333,56|-249|0x323333,92|-232|0x323333,123|-245|0x323333,168|-244|0x323333,218|-244|0xffffff,174|-234|0x323333", 90, 0, 0, 749, 1333)
-			if x~=-1 and y~=-1 then
-				mSleep(500)
-				randomTap(x,y,4)
-				mSleep(500)
-				toast("好的",1)
-				mSleep(500)
-			end
+		--定位服务未开启
+		mSleep(200)
+		x, y = findMultiColorInRegionFuzzy(0x007aff,"11|1|0x007aff,41|2|0x007aff,40|-188|0x000000,66|-188|0x000000,54|-177|0x000000,79|-177|0x000000,119|-181|0x000000,192|-180|0x000000,260|-185|0x000000",90,0,0,750,1334,{orient = 2})
+		if x ~= -1 then
+			dialog(x..y, time)
+			mSleep(500)
+			randomTap(x, y, 4)
+			mSleep(500)
+			toast("定位服务未开启", 1)
+			mSleep(500)
+		end
 
 --::put_work::
 --header_send = {

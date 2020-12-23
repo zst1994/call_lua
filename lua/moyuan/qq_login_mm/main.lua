@@ -552,6 +552,15 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		end
 		
 		mSleep(200)
+		if getColor(296,  615) == 0x12b7f5 and getColor(682,  259) == 0x818181 then
+		    mSleep(500)
+			toast("暂时无法登陆", 1)
+			mSleep(500)
+			self.subName = "暂时无法登陆"
+			goto get_mmId
+		end
+		
+		mSleep(200)
 		if getColor(391,541) == 0x12b7f5 and getColor(379,884) == 0x000000 then
 		    mSleep(500)
 		    randomTap(379,884,4)
@@ -583,6 +592,16 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 				huakuai = true
 				goto hk
 			end
+		end
+		
+		--填写资料
+		mSleep(500)
+		x, y = findMultiColorInRegionFuzzy(0x323333,"16|-1|0x323333,8|7|0x323333,10|19|0x323333,24|26|0x323333,30|13|0x323333,25|-7|0x323333,54|-3|0x323333,83|8|0x323333,66|-8|0x323333",90,0,0,750,1334,{orient = 2})
+		if x ~= -1 then
+			mSleep(500)
+			toast("不需要过滑块", 1)
+			mSleep(500)
+			break
 		end
 		
 		--已经注册过，需要绑定手机号码
@@ -699,6 +718,8 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		    mSleep(math.random(500, 1000))
 			randomTap(603, 1032, 10)
 			mSleep(math.random(3000, 6000))
+			toast("重新滑块",1)
+			mSleep(500)
 		    goto hk
 		end
 		
@@ -713,7 +734,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		end
 		
 		mSleep(200)
-		if getColor(149,  187) == 0x323233 or getColor(149,187) == 0x323333 then
+		if getColor(149,  187) == 0x323233 or getColor(149,187) == 0x323333 or getColor(149,  187) == 0x313232 then
 	   	    mSleep(500)
 			key = "ReturnOrEnter"
 			keyDown(key)
@@ -727,11 +748,12 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		x, y = findMultiColorInRegionFuzzy(0x323333,"16|-1|0x323333,8|7|0x323333,10|19|0x323333,24|26|0x323333,30|13|0x323333,25|-7|0x323333,54|-3|0x323333,83|8|0x323333,66|-8|0x323333",90,0,0,750,1334,{orient = 2})
 		if x ~= -1 then
 			mSleep(500)
-			tap(x + 70, y + 121)
+			tap(x + 300, y + 121)
 			mSleep(1000)
 			for var = 1, 20 do
-				mSleep(100)
+				mSleep(200)
 				keyDown("DeleteOrBackspace")
+				mSleep(100)
 				keyUp("DeleteOrBackspace")
 			end
 			mSleep(500)
