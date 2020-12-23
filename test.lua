@@ -1286,18 +1286,6 @@ end
 -- end
 
 
-		--定位服务未开启
-		mSleep(200)
-		x, y = findMultiColorInRegionFuzzy(0x007aff,"11|1|0x007aff,41|2|0x007aff,40|-188|0x000000,66|-188|0x000000,54|-177|0x000000,79|-177|0x000000,119|-181|0x000000,192|-180|0x000000,260|-185|0x000000",90,0,0,750,1334,{orient = 2})
-		if x ~= -1 then
-			dialog(x..y, time)
-			mSleep(500)
-			randomTap(x, y, 4)
-			mSleep(500)
-			toast("定位服务未开启", 1)
-			mSleep(500)
-		end
-
 --::put_work::
 --header_send = {
 --	["Content-Type"] = "application/x-www-form-urlencoded",
@@ -1325,3 +1313,18 @@ end
 --	goto put_work
 --end
 
+
+
+    --国家／地区
+    while (true) do
+        --707版本
+        mSleep(math.random(200, 500))
+        x, y = findMultiColorInRegionFuzzy(0,"27|26|0,3|25|0,17|-2|0,14|6|0,35|2|0,63|1|0", 90, 0, 0, 749, 701)
+        if x~=-1 and y~=-1 then
+            dialog(x..y,tab)
+            mSleep(math.random(200, 500))
+            randomsTap(x+110,y+90, 6)
+            mSleep(math.random(200, 500))
+            break
+        end
+    end

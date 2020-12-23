@@ -184,9 +184,9 @@ function model:getPhoneAndToken()
 	if self.phone_table then
 		if #self.phone_table > 0 then
 			if #(self.phone_table[1]:atrim()) < 130 and #(self.phone_table[1]:atrim()) > 0 then
-				phone_mess = strSplit(self.phone_table[1], "|")
+				phone_mess = strSplit(self.phone_table[1]:atrim(), "|")
 				self.phone = phone_mess[1]
-				self.code_token = strSplit(phone_mess[2], "=")[2]
+				self.code_token = phone_mess[2]
 				toast(self.phone .. "\r\n" .. self.code_token, 1)
 				mSleep(1000)
 			else
@@ -229,13 +229,13 @@ function model:get_mess()
 	header_send = {}
 	body_send = {}
 	ts.setHttpsTimeOut(60)
-	status_resp, header_resp, body_resp = ts.httpGet("http://47.112.154.69:45678/getsms?token=" .. (self.code_token):atrim(), header_send, body_send)
+	status_resp, header_resp, body_resp = ts.httpGet(self.code_token, header_send, body_send)
 	toast(tostring(body_resp), 1)
 	mSleep(1000)
 	if status_resp == 200 then
 		tmp = json.decode(body_resp)
 		if tmp ~= nil or type(tmp) ~= "nil" then
-			if tmp.message ~= "No message" then
+			if tmp.message ~= "No has message" then
 				local i, j = string.find(tmp.message, "%d+%d+%d+%d+%d+%d+")
 				if i > 0 then
 					self.mm_yzm = string.sub(tmp.message, i, j)
@@ -248,28 +248,39 @@ function model:get_mess()
 					goto get_yzm
 				end
 			else
-				mSleep(500)
-				if get_code_num > 2 then
-					toast("验证码重新获取超过2次失败，结束下一个", 1)
+			    yzm_time2 = ts.ms()
+
+				if os.difftime(yzm_time2, yzm_time1) > 65 then
+					toast("验证码获取失败，结束下一个", 1)
 					mSleep(3000)
 					return false
 				else
-					yzm_time2 = ts.ms()
-
-					if os.difftime(yzm_time2, yzm_time1) > 65 then
-						mSleep(500)
-						tap(491,  489)
-						mSleep(1000)
-						toast("重新获取验证码：" .. get_code_num, 1)
-						mSleep(1000)
-						get_code_num = get_code_num + 1
-						goto get_yzm_restart
-					end
-					
 					toast(tmp.message, 1)
-					mSleep(3000)
-					goto get_yzm
+    				mSleep(3000)
+    				goto get_yzm
 				end
+				-- mSleep(500)
+				-- if get_code_num > 2 then
+				-- 	toast("验证码重新获取超过2次失败，结束下一个", 1)
+				-- 	mSleep(3000)
+				-- 	return false
+				-- else
+				-- 	yzm_time2 = ts.ms()
+
+				-- 	if os.difftime(yzm_time2, yzm_time1) > 65 then
+				-- 		mSleep(500)
+				-- 		tap(491,  489)
+				-- 		mSleep(1000)
+				-- 		toast("重新获取验证码：" .. get_code_num, 1)
+				-- 		mSleep(1000)
+				-- 		get_code_num = get_code_num + 1
+				-- 		goto get_yzm_restart
+				-- 	end
+					
+				-- 	toast(tmp.message, 1)
+				-- 	mSleep(3000)
+				-- 	goto get_yzm
+				-- end
 			end
 		else
 			toast(tostring(body_resp), 1)
@@ -1001,7 +1012,7 @@ function model:mm()
 			x,y = findMultiColorInRegionFuzzy( 0x3bb3fa, "116|-1|0xffffff,39|-230|0x323333,54|-229|0x323333,56|-249|0x323333,92|-232|0x323333,123|-245|0x323333,168|-244|0x323333,218|-244|0xffffff,174|-234|0x323333", 90, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
 				mSleep(500)
-				tap(x,y)
+				tap(x + 388,y - 650)
 				mSleep(500)
 				toast("好的",1)
 				mSleep(500)
@@ -1018,7 +1029,7 @@ function model:mm()
 			x,y = findMultiColorInRegionFuzzy( 0x3bb3fa, "116|-1|0xffffff,39|-230|0x323333,54|-229|0x323333,56|-249|0x323333,92|-232|0x323333,123|-245|0x323333,168|-244|0x323333,218|-244|0xffffff,174|-234|0x323333", 90, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
 				mSleep(500)
-				tap(x,y)
+				tap(x + 388,y - 650)
 				mSleep(500)
 			end
 
@@ -1325,6 +1336,15 @@ function model:mm()
 			toast("设置",1)
 			mSleep(500)
 		end
+		
+		--退出修改绑定手机号码
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0x3bb3fa, "169|-29|0x3bb3fa,159|41|0x3bb3fa,393|-14|0x3bb3fa,52|6|0xffffff,123|5|0xffffff,258|2|0xffffff,106|-1011|0x000000,149|-1012|0x000000,218|-1010|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+            mSleep(500)
+			tap(57, 84)
+			mSleep(500)
+        end
 
 		--.密码修改    2.密码修改  图标没加载出来    3.密码修改  图标加载一个
 		mSleep(200)
@@ -1530,8 +1550,10 @@ function model:main()
 	end
 
 	while (true) do
+		closeApp(self.awz_bid, 0)
+		closeApp(self.mm_bid, 0)
 		setVPNEnable(false)
-		mSleep(2000)
+		mSleep(1000)
 
 		self:vpn()
 
@@ -1551,14 +1573,14 @@ function model:main()
 				toast(fileName, 1)
 				mSleep(1000)
 
-				--		saveImageToAlbum(fileName)
+		--		saveImageToAlbum(fileName)
 				saveImageToAlbum(userPath() .. "/res/picFile/" .. fileName)
 				mSleep(500)
-				--		saveImageToAlbum(fileName)
+		--		saveImageToAlbum(fileName)
 				saveImageToAlbum(userPath() .. "/res/picFile/" .. fileName)
 				mSleep(2000)
 
-				--		self:deleteImage(fileName)
+		--		self:deleteImage(fileName)
 				self:deleteImage(userPath() .. "/res/picFile/" .. fileName)
 			end
 

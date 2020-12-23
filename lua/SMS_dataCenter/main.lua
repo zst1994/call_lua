@@ -2683,7 +2683,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		mSleep(500)
 		local sz = require("sz")        --登陆
 		local szhttp = require("szocket.http")
-		local res, code = szhttp.request("http://www2.smspva.net/out/ext_api/getMobile?name="..username.."&pwd="..user_pass.."&cuy="..SMS_country.."&pid=0006&num=1&noblack=0&serial=2&secret_key=bfcd1412722c6fc2007bdd4a")
+		local res, code = szhttp.request("http://www2.smspva.net/out/ext_api/getMobile?name="..username.."&pwd="..user_pass.."&cuy="..SMS_country.."&pid="..work_id.."&num=1&noblack=0&serial=2&secret_key="..getPhone_key)
 		mSleep(500)
 		if code == 200 then
 			tmp = json.decode(res)

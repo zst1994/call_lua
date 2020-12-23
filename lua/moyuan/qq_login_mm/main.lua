@@ -564,7 +564,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		if getColor(391,541) == 0x12b7f5 and getColor(379,884) == 0x000000 then
 		    mSleep(500)
 		    randomTap(379,884,4)
-		    mSleep(500)
+            mSleep(500)
+            table.remove(self.qqList, 1)
+            writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
 		    self:getAccount()
 		    inputAgain = true
 		end
@@ -728,6 +730,8 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		    mSleep(500)
 		    randomTap(379,884,4)
 		    mSleep(500)
+		    table.remove(self.qqList, 1)
+            writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
 		    self:getAccount()
 		    inputAgain = true
 		    goto hk
@@ -768,6 +772,8 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		if getColor(239, 629) == 0x12b7f5 or getColor(676, 258) == 0x808080 then
 			toast("切换下一个账号", 1)
 			mSleep(500)
+		    table.remove(self.qqList, 1)
+            writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
 			goto over
 		end
 
