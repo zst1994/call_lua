@@ -1313,27 +1313,14 @@ end
 --	goto put_work
 --end
 
-function jsonDec(res)
-	json.decode(res)
+mSleep(500)
+x, y = findMultiColorInRegionFuzzy(0x323333,"16|-1|0x323333,8|7|0x323333,10|19|0x323333,24|26|0x323333,30|13|0x323333,25|-7|0x323333,54|-3|0x323333,83|8|0x323333,66|-8|0x323333",90,0,0,750,1334,{orient = 2})
+if x~=-1 then
+    dialog(x..y,0)
 end
 
-::get_balance::
-ts.setHttpsTimeOut(60) 
-code,header_resp, body_resp = ts.httpsGet("https://sms-activate.ru/stubs/handler_api.php?api_key=968b85c58A9607A8d984ddA617e03f8f&action=getBalance", header_send,body_send)
 
-if code == 200 then
-	balance = strSplit(body_resp,":")[2]
-	if tonumber(balance) > 5 then
-		toast(balance, 1)
-		mSleep(1000)
-	else
-		toast("账号余额低于5，请及时充值:"..tostring(body_resp),1)
-		mSleep(30000)
-		goto get_balance
-	end
 
-else
-	toast("获取账号余额失败，重新获取:"..tostring(body_resp),1)
-	mSleep(30000)
-	goto get_balance
-end
+
+
+

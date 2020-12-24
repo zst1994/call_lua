@@ -715,7 +715,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 
 	t1 = ts.ms()
 	while true do
-	    mSleep(math.random(200, 300))
+	    mSleep(500)
 		if getColor(116, 949) == 0x007aff then
 		    mSleep(math.random(500, 1000))
 			randomTap(603, 1032, 10)
@@ -725,7 +725,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		    goto hk
 		end
 		
-		mSleep(200)
+		mSleep(500)
 		if getColor(391,541) == 0x12b7f5 and getColor(379,884) == 0x000000 then
 		    mSleep(500)
 		    randomTap(379,884,4)
@@ -737,7 +737,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		    goto hk
 		end
 		
-		mSleep(200)
+		mSleep(500)
 		if getColor(149,  187) == 0x323233 or getColor(149,187) == 0x323333 or getColor(149,  187) == 0x313232 then
 	   	    mSleep(500)
 			key = "ReturnOrEnter"
@@ -751,14 +751,15 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		mSleep(500)
 		x, y = findMultiColorInRegionFuzzy(0x323333,"16|-1|0x323333,8|7|0x323333,10|19|0x323333,24|26|0x323333,30|13|0x323333,25|-7|0x323333,54|-3|0x323333,83|8|0x323333,66|-8|0x323333",90,0,0,750,1334,{orient = 2})
 		if x ~= -1 then
-			mSleep(500)
-			tap(x + 300, y + 121)
 			mSleep(1000)
+			tap(x + 300, y + 121)
+			mSleep(1500)
 			for var = 1, 20 do
 				mSleep(200)
 				keyDown("DeleteOrBackspace")
 				mSleep(100)
 				keyUp("DeleteOrBackspace")
+				mSleep(100)
 			end
 			mSleep(500)
 			inputStr(Nickname)
@@ -768,7 +769,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			break
 		end
 
-		mSleep(200)
+		mSleep(500)
 		if getColor(239, 629) == 0x12b7f5 or getColor(676, 258) == 0x808080 then
 			toast("切换下一个账号", 1)
 			mSleep(500)
@@ -776,9 +777,20 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
             writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
 			goto over
 		end
+		
+		--动态密码
+		mSleep(500)
+		x,y = findMultiColorInRegionFuzzy(0xffffff, "56|-3|0xffffff,-190|-32|0x0078ff,-192|26|0x0078ff,27|27|0x0078ff,29|-33|0x0078ff,257|-29|0x0078ff,250|20|0x0078ff,244|-121|0x0078ff,335|-127|0x0078ff", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+            toast("动态密码,切换下一个账号", 1)
+			mSleep(500)
+		    table.remove(self.qqList, 1)
+            writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+			goto over
+        end
 
 		--已经注册过，需要绑定手机号码
-		mSleep(200)
+		mSleep(500)
 		if getColor(672, 85) == 0x323333 and getColor(702, 85) == 0x323333 then
 			mSleep(500)
 			toast("已经注册过，需要绑定手机号码", 1)
@@ -788,7 +800,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		end
 
 		--定位服务未开启
-		mSleep(200)
+		mSleep(500)
 		x, y = findMultiColorInRegionFuzzy(0x007aff,"11|1|0x007aff,41|2|0x007aff,40|-188|0x000000,66|-188|0x000000,54|-177|0x000000,79|-177|0x000000,119|-181|0x000000,192|-180|0x000000,260|-185|0x000000",90,0,0,750,1334,{orient = 2})
 		if x ~= -1 then
 			mSleep(500)
@@ -799,7 +811,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		end
 		
 		--定位服务未开启
-		mSleep(200)
+		mSleep(500)
 		x,y = findMultiColorInRegionFuzzy(0x087dff, "11|1|0x087dff,41|0|0x087dff,248|-6|0x087dff,276|-7|0x087dff,336|1|0x087dff,41|-190|0x010101,66|-189|0x010101,62|-177|0x010101,64|-168|0x010101", 90, 0, 0, 750, 1334, { orient = 2 })
         if x ~= -1 then
 			mSleep(500)
