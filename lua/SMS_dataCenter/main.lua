@@ -1159,7 +1159,7 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 				mSleep(500)
 				local sz = require("sz")        --登陆
 				local szhttp = require("szocket.http")
-				local res, code = szhttp.request("http://www2.smspva.net/out/ext_api/getMsg?name="..username.."&pwd="..user_pass.."&pn="..telphone.."&pid=0006&&serial=2")
+				local res, code = szhttp.request("http://www2.smspva.net/out/ext_api/getMsg?name="..username.."&pwd="..user_pass.."&pn="..telphone.."&pid="..work_id.."&&serial=2")
 				mSleep(500)
 				if code == 200 then
 					tmp = json.decode(res)
@@ -1179,7 +1179,7 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 								status = 2
 								local sz = require("sz")        --登陆
 								local szhttp = require("szocket.http")
-								local res, code = szhttp.request("http://www2.smspva.net/out/ext_api/passMobile?name="..username.."&pwd="..user_pass.."&pn="..telphone.."&pid=0006&serial=2")
+								local res, code = szhttp.request("http://www2.smspva.net/out/ext_api/passMobile?name="..username.."&pwd="..user_pass.."&pn="..telphone.."&pid="..work_id.."&serial=2")
 								mSleep(500)
 								if code == 200 then
 									tmp = json.decode(res)
