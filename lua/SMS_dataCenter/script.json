@@ -245,7 +245,7 @@
                 },{
                     "id": "password",
                     "type": "RadioGroup",
-                    "list": "3+5,4+4,wypn+手机后四位",
+                    "list": "3+5,4+4,llmm+手机后四位",
                     "select": "0"
                 },{
                     "type": "Label",

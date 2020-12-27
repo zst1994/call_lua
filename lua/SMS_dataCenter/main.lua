@@ -3145,10 +3145,10 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		password = "vip"..string.sub(phone,#phone-4,#phone)
 	elseif password == "1" then
 		mSleep(500)
-		password = "hang"..string.sub(phone,#phone-3,#phone)
+		password = self:randomStr("qwertyuiopasdfghjklzxcvbnm", 4)..self:randomStr("1234567890",4)
 	elseif password == "2" then
 		mSleep(500)
-		password = "wypn"..string.sub(phone,#phone-3,#phone)
+		password = "llmm"..string.sub(phone,#phone-3,#phone)
 	end
 	toast(password,1)
 	mSleep(1000)

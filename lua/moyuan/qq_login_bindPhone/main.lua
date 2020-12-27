@@ -1151,7 +1151,12 @@ function model:mm()
 	end
 	
 	back_again = 0
+	getPhoneAgain = false
+	
 	::get_phone_agagin::
+	if getPhoneAgain then
+	    self:getPhoneAndToken()
+	end
 
 	t1 = ts.ms()
 	while (true) do
@@ -1312,6 +1317,7 @@ function model:mm()
 		tap(60,   84)
 		mSleep(2000)
 		back_again = 0
+		getPhoneAgain =true
 		goto get_phone_agagin
 	end
 
