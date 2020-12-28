@@ -771,13 +771,21 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 
 		mSleep(200)
 		if getColor(239, 629) == 0x12b7f5 or getColor(676, 258) == 0x808080 then
-			toast("切换下一个账号", 1)
-			mSleep(500)
-		    table.remove(self.qqList, 1)
-            writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
-			self:getAccount()
-		    inputAgain = true
-		    goto hk
+		    if getColor(655,211) == 0xffffff then
+    			toast("切换下一个账号", 1)
+    			mSleep(500)
+    		    table.remove(self.qqList, 1)
+                writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+    			self:getAccount()
+    		    inputAgain = true
+    		    goto hk
+    		elseif getColor(683,209) == 0xffffff then
+    		    toast("切换下一个账号,重新新机", 1)
+    			mSleep(500)
+    		    table.remove(self.qqList, 1)
+                writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+                goto over
+    		end
 		end
 		
 		--动态密码
