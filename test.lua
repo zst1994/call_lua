@@ -4,6 +4,7 @@ local sz = require("sz")
 local socket = require ("socket");
 local http = require("szocket.http")
 require("TSLib")
+local sqlite3 			= sz.sqlite3
 
 
 --local sz = require("sz")
@@ -1241,30 +1242,56 @@ end
 infoData = "aaaaa"
 word = ""
 
---local Wildcard = getList(appDataPath("com.tencent.xin").."/Documents") 
+function getConfig()
+	::read_file::
+	tab = readFile(userPath().."/res/config1.txt") 
+	if tab then 
+		wc_bid = string.gsub(tab[1],"%s+","")
+		wc_folder = string.gsub(tab[2],"%s+","")
+		wc_file = string.gsub(tab[3],"%s+","")
+		awz_bid = string.gsub(tab[4],"%s+","")
+		awz_url = string.gsub(tab[5],"%s+","")
+		toast("获取配置信息成功",1)
+		mSleep(1000)
+	else
+		dialog("文件不存在",5)
+		goto read_file
+	end
+end
 
---for var = 1,#Wildcard do 
---	local bool = isFileExist(appDataPath("com.ss.iphone.ugc.Aweme").."/Documents/AwemeIM.db")
---	if bool then
---		local sz = require("sz")
---		local sqlite3 = sz.sqlite3	
---		local db = sqlite3.open(appDataPath("com.ss.iphone.ugc.Aweme").."/Documents/AwemeIM.db")
---		local open = db:isopen("AwemeIM")
---		if open then
---			for a,b in db:nrows('SELECT * FROM AwemeContactsV4') do 
---				if a then
---					for k,v in pairs(a) do
---						if k == "95423717096" then
---							nLog(k.."===="..v)
---						end
---					end 
---				end
---			end
---		end
---	end
---end
+getConfig()
 
---dialog(category.."===="..word, time)
+local Wildcard = getList(appDataPath(wc_bid)..wc_folder) 
+for var = 1,#Wildcard do 
+	local bool = isFileExist(appDataPath(wc_bid)..wc_folder..Wildcard[var].."/Favorites/fav.db")
+	if bool then
+		local db = sqlite3.open(appDataPath(wc_bid)..wc_folder..Wildcard[var].."/Favorites/fav.db")
+		local open = db:isopen("fav")
+		if open then
+			for a in db:nrows('SELECT * FROM FavoritesSearchTable') do
+				for k,v in pairs(a) do
+					if k == "SearchStr" then
+						v = string.gsub(v,"%s+","")
+						str = string.match(v, '----%U%d+')
+						if type(str) ~= "nil" then
+						    data = strSplit(v,";")
+							word = data[#data]
+							category = "success-data"
+							data = infoData.."----"..word
+							toast("识别内容："..word,1)
+							mSleep(1000)
+							break
+						end
+					end
+				end
+			end
+		end
+		break
+	end
+end
+
+
+-- dialog(category.."===="..word, time)
 
 function msleep(t1,t2)
 	math.randomseed(getRndNum())
@@ -1313,11 +1340,6 @@ end
 --	goto put_work
 --end
 
-mSleep(500)
-x, y = findMultiColorInRegionFuzzy(0x323333,"16|-1|0x323333,8|7|0x323333,10|19|0x323333,24|26|0x323333,30|13|0x323333,25|-7|0x323333,54|-3|0x323333,83|8|0x323333,66|-8|0x323333",90,0,0,750,1334,{orient = 2})
-if x~=-1 then
-    dialog(x..y,0)
-end
 
 
 

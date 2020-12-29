@@ -454,15 +454,38 @@ function model:shoucang()
 								for k,v in pairs(a) do
 									if k == "SearchStr" then
 										v = string.gsub(v,"%s+","")
-										str = string.match(v, '密码:800000ID:')
-										if type(str) ~= "nil" then
-											self.word = string.match(v,".+%d+.+%d+")
-											category = "success-data"
-											data = self.infoData.."----"..self.word
-											toast("识别内容："..self.word,1)
-											mSleep(1000)
-											break
-										end
+										if processWay == "2" or processWay == "5" then
+    										str = string.match(v, '密码:800000ID:')
+    										if type(str) ~= "nil" then
+    											self.word = string.match(v,".+%d+.+%d+")
+    											category = "success-data"
+    											data = self.infoData.."----"..self.word
+    											toast("识别内容："..self.word,1)
+    											mSleep(1000)
+    											break
+    										end
+										elseif processWay == "6" or processWay == "7" then
+										    str = string.match(v, '密码:800000ID:')
+    										if type(str) ~= "nil" then
+    											self.word = string.match(v,".+%d+.+%d+")
+    											category = "success-data"
+    											data = self.infoData.."----"..self.word
+    											toast("识别内容："..self.word,1)
+    											mSleep(1000)
+    											break
+    										else
+    										    str = string.match(v, '----%U%d+')
+    										    if type(str) ~= "nil" then
+    										        data = strSplit(v,";")
+        											self.word = data[#data]
+        											category = "success-data"
+        											data = self.infoData.."----"..self.word
+        											toast("识别内容："..self.word,1)
+        											mSleep(1000)
+        											break
+        										end
+    										end
+									    end
 									end
 								end
 							end
@@ -1372,7 +1395,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 					end
 				end
 			end
-		elseif processWay == "2" then
+		elseif processWay == "2" or processWay == "6" then
 			result = self:shoucang()
 			if result then
 				category = result.category
@@ -1572,7 +1595,7 @@ function model:loginAccount(processWay,oldPassword,newPassword)
 					end
 				end
 			end
-		elseif processWay == "5" then
+		elseif processWay == "5" or processWay == "7" then
 			result = self:shibie()
 			if result then
 				while true do
