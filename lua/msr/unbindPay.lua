@@ -442,7 +442,10 @@ function model:shoucang()
 
 			mSleep(500)
 			if getColor(371,  310) ~= 0xa6a6a6 then
-				mSleep(8000)
+			    for var=1,3 do
+			        mSleep(4000)
+			    end
+			    
 				local Wildcard = self:getList(appDataPath(self.wc_bid)..self.wc_folder) 
 				for var = 1,#Wildcard do 
 					local bool = isFileExist(appDataPath(self.wc_bid)..self.wc_folder..Wildcard[var].."/Favorites/fav.db")
