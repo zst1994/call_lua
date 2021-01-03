@@ -254,6 +254,7 @@ function model:clear_App()
     		if result == 1 then
     			toast("数据保存成功",1)
     			mSleep(1000)
+    			self.newIndex = "0"
     		else 
     			toast("失败，请手动查看问题", 1)
     			mSleep(4000)
@@ -1051,7 +1052,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			mSleep(1000)
 			goto get_phone
 		end
-	elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13"  then
+	elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16"  then
 		::get_phone::
 		mSleep(500)
 		local sz = require("sz")        --登陆
@@ -1064,7 +1065,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				mSleep(200)
 				if vpn_stauts == "13" then
 					telphone = data[4]
-				else
+				elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16"  then
 					telphone = data[5]
 					pid = data[2]
 				end
@@ -1528,6 +1529,70 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			mSleep(5000)
 			goto get_phone
 		end
+	elseif vpn_stauts == "17" then
+	    ::get_token::
+        local sz = require("sz")        --登陆
+		local http = require("szocket.http")
+		local res, code = http.request("http://117.149.243.6:82/api/yonghu_login/type=1&username=huqianjin&password=huqianjin")
+            if code == 200 then
+			data = strSplit(urlDecoder(res), "|")
+			if data[1] == "成功" then
+			    server_token = data[2]
+				toast(server_token,1)
+			else
+				toast("获取token失败，重新获取",1)
+				mSleep(1000)
+				goto get_token
+			end
+		else
+			toast("获取token失败，重新获取",1)
+			mSleep(1000)
+			goto get_token
+        end
+	
+	    ::get_balane::
+        local sz = require("sz")        --登陆
+		local http = require("szocket.http")
+		local res, code = http.request("http://117.149.243.6:889/api/xhqyhzb/&lx=3&token="..server_token)
+            if code == 200 then
+			data = strSplit(urlDecoder(res), "|")
+			if data[1] == "成功" then
+			    if tonumber(data[2]) > 1 then
+				    toast(data[2],1)
+				else
+				    toast("当前余额不足1块",1)
+				    mSleep(500)
+			    end
+			else
+				toast("获取token失败，重新获取",1)
+				mSleep(1000)
+				goto get_balane
+			end
+		else
+			toast("获取token失败，重新获取",1)
+			mSleep(1000)
+			goto get_balane
+        end
+    
+        ::get_phone::
+        local sz = require("sz")        --登陆
+		local http = require("szocket.http")
+		local res, code = http.request("http://117.149.243.6:84/api/shouduanxin_zaixianhaoma_plpt/xmid=02121-SMNAIV&xzgj=马来西亚&glhmd=1&qhsl=1&token="..server_token)
+            if code == 200 then
+			data = strSplit(urlDecoder(res), "|")
+			if data[1] == "成功" then
+			    telphone = data[2]
+			    toast(telphone,1)
+			else
+				toast("获取手机号码失败，重新获取",1)
+				mSleep(1000)
+				goto get_phone
+			end
+		else
+			toast("获取手机号码失败，重新获取",1)
+			mSleep(1000)
+			goto get_phone
+        end
 	else
 		::get_phone::
 		local sz = require("sz")        --登陆
@@ -1561,7 +1626,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		end
 	end
 
-	if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "3" or vpn_stauts == "5" or vpn_stauts == "6" or vpn_stauts == "7" or vpn_stauts == "8" or vpn_stauts == "9" or vpn_stauts == "11" or vpn_stauts == "12" or vpn_stauts == "13" or vpn_stauts == "14" or vpn_stauts == "15" then
+	if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "3" or vpn_stauts == "5" or vpn_stauts == "6" or vpn_stauts == "7" or vpn_stauts == "8" or vpn_stauts == "9" or vpn_stauts == "11" or vpn_stauts == "12" or vpn_stauts == "13" or vpn_stauts == "14" or vpn_stauts == "15" or vpn_stauts == "16" or vpn_stauts == "17" then
 		country_id = kn_country
 	elseif vpn_stauts == "4" or vpn_stauts == "10" then
 		country_id = country_code
@@ -1580,11 +1645,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		mSleep(math.random(200, 300))
 	end
 
-	if vpn_stauts == "1" or vpn_stauts == "3" or vpn_stauts == "4" or vpn_stauts == "6" or vpn_stauts == "10" or vpn_stauts == "11" then
+	if vpn_stauts == "1" or vpn_stauts == "3" or vpn_stauts == "4" or vpn_stauts == "6" or vpn_stauts == "10" or vpn_stauts == "11" or vpn_stauts == "17" then
 		phone = telphone
 	elseif vpn_stauts == "5" or vpn_stauts == "8" or vpn_stauts == "12" or vpn_stauts == "15" then
 		phone = string.sub(telphone, #country_id + 1,#telphone)
-	elseif vpn_stauts == "2" or vpn_stauts == "7" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "14" then
+	elseif vpn_stauts == "2" or vpn_stauts == "7" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "14" or vpn_stauts == "16" then
 		if vpn_stauts == "14" then
 			telphone = string.match(telphone,"%d+")
 		end
@@ -2616,11 +2681,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					end
 				end
 			end
-		elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13"  then		--奥迪
+		elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16" then		--奥迪
 			if addBlack == "0" then
 				if vpn_stauts == "13" then
 					setRel_url = ksUrl.."/yhapi.ashx?act=setRel&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone
-				else
+				elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" then
 					setRel_url = ksUrl.."/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
 				end
 
@@ -2663,7 +2728,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 				if vpn_stauts == "13" then
 					black_url = ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
-				else
+				elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" then
 					black_url = ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&pid="..pid.."&reason="..urlEncoder("获取失败")
 				end
 
@@ -2753,6 +2818,49 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				toast("拉黑失败:"..tostring(res),1)
 				mSleep(5000)
 				goto addblack
+			end
+		elseif vpn_stauts == "17" then
+		    if addBlack == "0" then
+				::open_phone::
+				mSleep(500)
+				local sz = require("sz")        --登陆
+				local http = require("szocket.http")
+				local res, code = http.request("http://117.149.243.6:86/api/shouduanxin_shifang/xmid=02121-SMNAIV&sjhm="..phone.."&token="..server_token)
+				mSleep(500)
+				if code == 200 then
+					data = strSplit(urlDecoder(res), "|")
+					if data[1] == "成功" then
+						toast("释放号码成功",1)
+					else
+						toast("释放号码失败，重新释放："..res,1)
+						mSleep(5000)
+						goto open_phone
+					end
+				else
+					toast("释放号码失败，重新释放",1)
+					mSleep(5000)
+					goto open_phone
+				end
+			else
+				::addblack::
+				local sz = require("sz")        --登陆
+				local http = require("szocket.http")
+				local res, code = http.request("http://117.149.243.6:86/api/shouduanxin_lahei/xmid=02121-SMNAIV&sjhm="..phone.."&token="..server_token)
+				mSleep(500)
+				if code == 200 then
+					data = strSplit(urlDecoder(res), "|")
+					if data[1] == "成功" then
+						toast("拉黑手机号码",1)
+					else
+						toast("拉黑失败"..tostring(res),1)
+						mSleep(2000)
+						goto addblack
+					end
+				else
+					toast('拉黑失败，重新拉黑'..tostring(res),1)
+					mSleep(3000)
+					goto addblack
+				end
 			end
 		end
 
@@ -2938,7 +3046,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					mSleep(3000)
 					goto get_mess
 				end
-			elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" then
+			elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16" then
 				if country_id == "60" then
 					all_time = 15
 				else
@@ -2992,7 +3100,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					if addBlack == "0" then
 						if vpn_stauts == "13" then
 							setRel_url = ksUrl.."/yhapi.ashx?act=setRel&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone
-						else
+						elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" then
 							setRel_url = ksUrl.."/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
 						end
 
@@ -3022,7 +3130,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					else
 						if vpn_stauts == "13" then
 							black_url = ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
-						else
+						elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" then
 							black_url = ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&pid="..pid.."&reason="..urlEncoder("获取失败")
 						end
 
@@ -3055,7 +3163,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 				if vpn_stauts == "13" then
 					getPhoneCode_url = ksUrl.."/yhapi.ashx?act=getPhoneCode&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone
-				else
+				elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" then
 					getPhoneCode_url = ksUrl.."/yhapi.ashx?act=getPhoneCode&token="..phone_token.."&pid="..pid
 				end
 
@@ -3902,6 +4010,115 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					mSleep(5000)
 					goto get_code
 				end
+			elseif vpn_stauts == "17" then
+				::get_mess::
+				self:sendSMSKQ()
+
+				::get_code::
+				local sz = require("sz")        --登陆
+				local http = require("szocket.http")
+				local res, code = http.request("http://117.149.243.6:85/api/shouduanxin_quma/xmid=02121-SMNAIV&sjhm="..telphone.."&token="..server_token)
+				toast(res,1)
+				mSleep(500)
+				if code == 200 then
+					data = strSplit(urlDecoder(res), "|")
+					if data[1] == "成功" and tostring(string.match(data[3],"短信内容")) ~= "nil" then
+						mess_yzm = string.match(data[3],"%d%d%d%d%d%d")
+					else
+						toast("暂未查询到验证码，请稍后再试"..get_time,1)
+						mSleep(2000)
+						get_time = get_time + 1
+						if get_time > 15 then
+							if country_id == "886" then
+								mSleep(500)
+								setVPNEnable(true)
+								mSleep(math.random(2000, 3000))
+								randomsTap(372,  749, 3)
+								mSleep(math.random(1000, 1500))
+								randomsTap(368, 1039,5)
+								mSleep(math.random(5000, 6000))
+								if content_type ~= "3" then
+									setVPNEnable(false)
+								end
+							else
+								if content_type == "1" then
+									mSleep(math.random(2000, 3000))
+									randomsTap(372,  749, 3)
+									mSleep(math.random(1000, 1500))
+									randomsTap(368, 1039,5)
+									mSleep(math.random(5000, 6000))
+								else
+									mSleep(500)
+									setVPNEnable(true)
+									mSleep(math.random(2000, 3000))
+									randomsTap(372,  749, 3)
+									mSleep(math.random(1000, 1500))
+									randomsTap(368, 1039,5)
+									mSleep(math.random(5000, 6000))
+									if content_type ~= "3" then
+										setVPNEnable(false)
+									end
+								end
+							end
+							get_time = 1
+							restart_time = restart_time + 1
+							caozuo_more = true
+							toast("重新获取验证码"..restart_time,1)
+							goto caozuo_more
+						end
+
+						if restart_time > 1 then
+							if addBlack == "0" then
+                				::open_phone::
+                				mSleep(500)
+                				local sz = require("sz")        --登陆
+                				local http = require("szocket.http")
+                				local res, code = http.request("http://117.149.243.6:86/api/shouduanxin_shifang/xmid=02121-SMNAIV&sjhm="..phone.."&token="..server_token)
+                				mSleep(500)
+                				if code == 200 then
+                					data = strSplit(urlDecoder(res), "|")
+                					if data[1] == "成功" or tostring(string.match(data[1],"已释放但已来码")) ~= "nil" then
+                						toast("释放号码成功",1)
+                					else
+                						toast("释放号码失败，重新释放："..res,1)
+                						mSleep(5000)
+                						goto open_phone
+                					end
+                				else
+                					toast("释放号码失败，重新释放",1)
+                					mSleep(5000)
+                					goto open_phone
+                				end
+                			else
+                				::addblack::
+                				local sz = require("sz")        --登陆
+                				local http = require("szocket.http")
+                				local res, code = http.request("http://117.149.243.6:86/api/shouduanxin_lahei/xmid=02121-SMNAIV&sjhm="..phone.."&token="..server_token)
+                				mSleep(500)
+                				if code == 200 then
+                					data = strSplit(urlDecoder(res), "|")
+                					if data[1] == "成功" or tostring(string.match(data[1],"已拉黑此手机号但已来码")) ~= "nil" then
+                						toast("拉黑手机号码",1)
+                					else
+                						toast("拉黑失败"..tostring(res),1)
+                						mSleep(2000)
+                						goto addblack
+                					end
+                				else
+                					toast('拉黑失败，重新拉黑'..tostring(res),1)
+                					mSleep(3000)
+                					goto addblack
+                				end
+                			end
+							goto over
+						end
+						goto get_mess
+					end
+				else
+					toast("获取验证码失败:"..tostring(res),1)
+					mSleep(5000)
+					goto get_code
+				end
 			else
 				::get_mess::
 				self:sendSMSKQ()
@@ -4730,8 +4947,8 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				if tmp.code == 200 then
 					toast(tmp.message,1)
 					mSleep(1000)
-					self.newIndex = "1"
-					self:clear_App()
+				-- 	self.newIndex = "1"
+				-- 	self:clear_App()
 				else
 					toast("重新上传",1)
 					mSleep(1000)
@@ -5064,7 +5281,7 @@ function model:main()
 			},
 			{
 				["type"] = "RadioGroup",                    
-				["list"] = "柠檬,卡农注册,奥迪,52,俄罗斯1,东帝汶,服务器取号,俄罗斯2,各国API,老友,SMS,越南,各国API2,奶茶,柠檬2,老司机",
+				["list"] = "柠檬,卡农注册,奥迪,52,俄罗斯1,东帝汶,服务器取号,俄罗斯2,各国API,老友,SMS,越南,各国API2,奶茶,柠檬2,老司机,水煮鱼,松鼠",
 				["select"] = "0",  
 				["countperline"] = "4",
 			},
@@ -5325,9 +5542,12 @@ function model:main()
 		elseif vpn_stauts == "13" then
 			ksUrl = "http://web.jiaotai56.com"
 			ApiName = "huqianjin89"
+		elseif vpn_stauts == "16" then
+			ksUrl = "http://api.hegrace-safex.cn"
+			ApiName = "api_huqianjin_m8k"
 		end
 
-		if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" then
+		if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16" then
 			mSleep(500)
 			if kn_country == "" or kn_country == "默认值" then
 				dialog("国家区号不能为空，请重新运行脚本设置国家区号", 3)
@@ -5353,7 +5573,7 @@ function model:main()
 			end
 		end
 
-		if vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" then
+		if vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16" then
 			::get_token::
 			local sz = require("sz");
 			local http = require("szocket.http")

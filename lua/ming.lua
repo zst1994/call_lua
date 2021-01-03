@@ -839,6 +839,70 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_type,vpn_stau
 			mSleep(30000)
 			goto get_phone
 		end
+	elseif vpn_stauts == "13" then
+		::get_balance::
+		ts.setHttpsTimeOut(60) 
+		code,header_resp, body_resp = ts.httpsGet("https://onlinesim.ru/api/getBalance.php?apikey=aabbffc1db791e1ea7cd6ec9511f561b", header_send,body_send)
+
+		if code == 200 then
+			tmp = json.decode(body_resp)
+			if tmp.response == "1" then
+				if tonumber(tmp.balance) > 1 then
+					toast(tmp.balance, 1)
+					mSleep(1000)
+				else
+					toast("账号余额低于1，请及时充值:"..tostring(body_resp),1)
+					mSleep(30000)
+					goto get_balance
+				end
+			else
+				toast("账号余额获取失败"..tostring(body_resp),1)
+				mSleep(30000)
+				goto get_balance
+			end
+		else
+			toast("获取账号余额失败，重新获取:"..tostring(body_resp),1)
+			mSleep(30000)
+			goto get_balance
+		end
+
+		::get_tzid::
+		ts.setHttpsTimeOut(60) 
+		code,header_resp, body_resp = ts.httpsGet("https://onlinesim.ru/api/getNum.php?apikey=aabbffc1db791e1ea7cd6ec9511f561b&service=WeChat&country="..countryId, header_send,body_send)
+		if code == 200 then
+			tmp = json.decode(body_resp)
+			if tmp.response == 1 then
+				tz_id = tmp.tzid
+				toast(tz_id, 1)
+			else
+				toast("获取手机号码失败，重新获取:"..tostring(body_resp),1)
+				mSleep(30000)
+				goto get_tzid
+			end
+		else
+			toast("获取手机号码失败，重新获取:"..tostring(body_resp),1)
+			mSleep(30000)
+			goto get_tzid
+		end
+		
+		::get_phone::
+		ts.setHttpsTimeOut(60) 
+		code,header_resp, body_resp = ts.httpsGet("https://onlinesim.ru/api/getState.php?apikey=aabbffc1db791e1ea7cd6ec9511f561b&tzid="..tz_id.."&message_to_code=1", header_send,body_send)
+		if code == 200 then
+			tmp = json.decode(body_resp)
+			if tmp[1].response == "TZ_NUM_WAIT" then
+				telphone = string.match(tmp[1].number,"%d+")
+				toast(telphone, 1)
+			else
+				toast("获取手机号码失败，重新获取:"..tostring(body_resp),1)
+				mSleep(30000)
+				goto get_phone
+			end
+		else
+			toast("获取手机号码失败，重新获取:"..tostring(body_resp),1)
+			mSleep(30000)
+			goto get_phone
+		end
 	else
 		::get_phone::
 		local sz = require("sz")        --登陆
@@ -873,7 +937,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_type,vpn_stau
 		end
 	end
 
-	if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "3" or vpn_stauts == "5" or vpn_stauts == "6" or vpn_stauts == "7" or vpn_stauts == "8" or vpn_stauts == "9" or vpn_stauts == "10" or vpn_stauts == "11" or vpn_stauts == "12" then
+	if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "3" or vpn_stauts == "5" or vpn_stauts == "6" or vpn_stauts == "7" or vpn_stauts == "8" or vpn_stauts == "9" or vpn_stauts == "10" or vpn_stauts == "11" or vpn_stauts == "12" or vpn_stauts == "13" then
 		country_id = kn_country
 	elseif vpn_stauts == "4" then
 		country_id = country_code
@@ -894,8 +958,8 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_type,vpn_stau
 
 	if vpn_stauts == "1" or vpn_stauts == "3" or vpn_stauts == "4" or vpn_stauts == "6" or vpn_stauts == "10" then
 		phone = telphone
-	elseif vpn_stauts == "5" or vpn_stauts == "8" or vpn_stauts == "11" or vpn_stauts == "12" then
-		phone = string.sub(telphone, #country_id + 1,#telphone)
+	elseif vpn_stauts == "5" or vpn_stauts == "8" or vpn_stauts == "11" or vpn_stauts == "12" or vpn_stauts == "13" then
+		phone = string.sub(telphone, #country_id + 1, #telphone)
 	elseif vpn_stauts == "2" or vpn_stauts == "7" or vpn_stauts == "9" then
 		b,c = string.find(string.sub(telphone,1,#country_id),country_id)
 		if c ~= nil then
@@ -2086,6 +2150,36 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_type,vpn_stau
 					goto reject
 				end
 			end
+		elseif vpn_stauts == "13" then
+		    ::black::
+			ts.setHttpsTimeOut(60) 
+			code,header_resp, body_resp = ts.httpsGet("http://onlinesim.ru/api/setOperationRevise.php?apikey=aabbffc1db791e1ea7cd6ec9511f561b&tzid="..tz_id, header_send,body_send)
+			if code == 200 then
+				tmp = json.decode(body_resp)
+				if tmp.response == 1 or tmp.response == "1" then
+					::setOperationOk::
+					ts.setHttpsTimeOut(60) 
+					code,header_resp, body_resp = ts.httpsGet("http://onlinesim.ru/api/setOperationOk.php?apikey=aabbffc1db791e1ea7cd6ec9511f561b&tzid="..tz_id, header_send,body_send)
+					if code == 200 then
+						tmp = json.decode(body_resp)
+						if tmp.response == 1 or tmp.response == "1" then
+							toast("手机号码拉黑成功", 1)
+						else
+							toast("拉黑失败",1)
+							goto setOperationOk
+						end
+					else
+						toast("拉黑失败",1)
+						goto setOperationOk
+					end
+				else
+					toast("拉黑失败",1)
+					goto black
+				end
+			else
+				toast("拉黑失败",1)
+				goto black
+			end
 		end
 
 		mSleep(500)
@@ -2842,6 +2936,85 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_type,vpn_stau
 								tmp = strSplit(body_resp,":")
 								if tmp[1] == "ACCESS_CANCEL" then
 									toast("手机号码拉黑成功", 1)
+								else
+									toast("拉黑失败",1)
+									goto black
+								end
+							else
+								toast("拉黑失败",1)
+								goto black
+							end
+							goto over
+						end
+						goto get_mess
+					end
+				else
+					toast("获取验证码失败，重新获取",1)
+					mSleep(3000)
+					goto get_mess
+				end
+			elseif vpn_stauts == "13" then
+				::get_mess::
+				ts.setHttpsTimeOut(60) 
+				code,header_resp, body_resp = ts.httpsGet("https://onlinesim.ru/api/getState.php?apikey=aabbffc1db791e1ea7cd6ec9511f561b&tzid="..tz_id.."&message_to_code=1", header_send,body_send)
+				if code == 200 then
+				    tmp = json.decode(body_resp)
+        			if tmp[1].response == "TZ_NUM_ANSWER" then
+						mess_yzm = tmp[1].msg
+						toast(mess_yzm, 1)
+					else
+						toast("暂未查询到验证码，请稍后再试"..get_time,1)
+						mSleep(5000)
+						get_time = get_time + 1
+						if get_time > 15 then
+							if country_id == "886" then
+								mSleep(500)
+								setVPNEnable(true)
+								mSleep(math.random(2000, 3000))
+								randomsTap(372,  749, 3)
+								mSleep(math.random(1000, 1500))
+								randomsTap(368, 1039,5)
+								mSleep(math.random(5000, 6000))
+								setVPNEnable(false)
+							else
+								mSleep(500)
+								setVPNEnable(true)
+								mSleep(math.random(2000, 3000))
+								randomsTap(372,  749, 3)
+								mSleep(math.random(1000, 1500))
+								randomsTap(368, 1039,5)
+								mSleep(math.random(5000, 6000))
+								setVPNEnable(false)
+							end
+							get_time = 1
+							restart_time = restart_time + 1
+							caozuo_more = true
+							toast("重新获取验证码"..restart_time,1)
+							goto caozuo_more
+						end
+
+						if restart_time > 1 then
+							::black::
+							ts.setHttpsTimeOut(60) 
+							code,header_resp, body_resp = ts.httpsGet("http://onlinesim.ru/api/setOperationRevise.php?apikey=aabbffc1db791e1ea7cd6ec9511f561b&tzid="..tz_id, header_send,body_send)
+							if code == 200 then
+								tmp = json.decode(body_resp)
+								if tmp.response == 1 or tmp.response == "1" then
+									::setOperationOk::
+        							ts.setHttpsTimeOut(60) 
+        							code,header_resp, body_resp = ts.httpsGet("http://onlinesim.ru/api/setOperationOk.php?apikey=aabbffc1db791e1ea7cd6ec9511f561b&tzid="..tz_id, header_send,body_send)
+        							if code == 200 then
+        								tmp = json.decode(body_resp)
+        								if tmp.response == 1 or tmp.response == "1" then
+        									toast("手机号码拉黑成功", 1)
+        								else
+        									toast("拉黑失败",1)
+        									goto setOperationOk
+        								end
+        							else
+        								toast("拉黑失败",1)
+        								goto setOperationOk
+        							end
 								else
 									toast("拉黑失败",1)
 									goto black
@@ -3819,7 +3992,7 @@ function model:main()
 			},
 			{
 				["type"] = "RadioGroup",                    
-				["list"] = "柠檬,卡农注册,奥迪,52,俄罗斯1,东帝汶,服务器取号,俄罗斯2,各国API,老友,simsms,vak,sms-activate",
+				["list"] = "柠檬,卡农注册,奥迪,52,俄罗斯1,东帝汶,服务器取号,俄罗斯2,各国API,老友,simsms,vak,sms-activate,on",
 				["select"] = "0",  
 				["countperline"] = "4",
 			},
