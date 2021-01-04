@@ -575,15 +575,6 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		end
 		
 		mSleep(200)
-		if getColor(296,  615) == 0x12b7f5 and getColor(682,  259) == 0x818181 then
-		    mSleep(500)
-			toast("暂时无法登陆", 1)
-			mSleep(500)
-			self.subName = "暂时无法登陆"
-			goto get_mmId
-		end
-		
-		mSleep(200)
 		if getColor(391,541) == 0x12b7f5 and getColor(379,884) == 0x000000 then
 		    mSleep(500)
 		    randomTap(379,884,4)
@@ -601,15 +592,15 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 				if tonumber(x_lens) > 0 then
 					mSleep(math.random(500, 700))
 					moveTowards(116, 949, 10, x_len - 65)
-					mSleep(3000)
+					mSleep(1000)
 					randomTap(370, 1024, 4)
 					mSleep(2000)
+					break
 				else
 					mSleep(math.random(500, 1000))
 					randomTap(603, 1032, 10)
 					mSleep(math.random(3000, 6000))
 				end
-				break
 			else
 				mSleep(math.random(500, 1000))
 				randomTap(603, 1032, 10)
@@ -617,6 +608,15 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 				huakuai = true
 				goto hk
 			end
+		end
+		
+		mSleep(200)
+		if getColor(296,  615) == 0x12b7f5 and getColor(682,  259) == 0x818181 then
+		    mSleep(500)
+			toast("暂时无法登陆", 1)
+			mSleep(500)
+			self.subName = "暂时无法登陆"
+			goto get_mmId
 		end
 		
 		--填写资料

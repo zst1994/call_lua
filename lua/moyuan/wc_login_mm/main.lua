@@ -365,7 +365,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		end
 
 		self:timeOutRestart(t1)
-		mSleep(2000)
+		mSleep(2000z g)
 	end
 
 	State = {
