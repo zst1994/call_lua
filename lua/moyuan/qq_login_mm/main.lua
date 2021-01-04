@@ -178,7 +178,6 @@ function model:timeOutRestart(t1)
 		lua_restart()
 	else
 	    toast("距离重启脚本还有"..(120 - os.difftime(t2, t1)) .. "秒",1)
-	    mSleep(1000)
 	end
 end
 
@@ -425,6 +424,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		end
 
 		self:timeOutRestart(t1)
+		mSleep(1000)
 	end
 
 	t1 = ts.ms()
@@ -511,6 +511,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		end
 		
 		self:timeOutRestart(t1)
+		mSleep(1000)
 	end
 	
 	huakuai = false
@@ -659,8 +660,27 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			mSleep(500)
 			self.subName = "注册过"
 			goto get_mmId
+        end
+	
+	    mSleep(200)
+		if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) == 0x808080 or getColor(676,258) == 0x818181 then
+		    if getColor(655,211) == 0xffffff then
+    			toast("切换下一个账号", 1)
+    			mSleep(500)
+    		    table.remove(self.qqList, 1)
+                writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+    			self:getAccount()
+    		    inputAgain = true
+    		    goto hk
+    		elseif getColor(683,209) == 0xffffff then
+    		    toast("切换下一个账号,重新新机", 1)
+    			mSleep(500)
+    		    table.remove(self.qqList, 1)
+                writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+                goto over
+    		end
 		end
-
+        
 		flag = isFrontApp(self.mm_bid)
 		if flag == 0 then
 			runApp(self.mm_bid)
@@ -668,6 +688,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		end
 
 		self:timeOutRestart(t1)
+		mSleep(1000)
 	end
 
 	State = {
@@ -697,8 +718,6 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 	State["随机常量"] = tonumber(self:Rnd_Word("0123456789", 5))
 
 	Nickname = self:Rnd_Word(State["姓氏"], 1, 3) .. State["名字"][math.random(1, #State["名字"])]
-    toast(Nickname,1)
-    mSleep(500)
     
 	t1 = ts.ms()
 	while true do
@@ -757,7 +776,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		end
 
 		mSleep(200)
-		if getColor(239, 629) == 0x12b7f5 or getColor(676, 258) == 0x808080 then
+		if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) == 0x808080 or getColor(676,258) == 0x818181 then
 		    if getColor(655,211) == 0xffffff then
     			toast("切换下一个账号", 1)
     			mSleep(500)
@@ -819,6 +838,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		end
         
 		self:timeOutRestart(t1)
+		mSleep(1000)
 	end
 
 	t1 = ts.ms()
@@ -856,6 +876,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		end
         
 		self:timeOutRestart(t1)
+		mSleep(1000)
 	end
 
 	--上下
@@ -929,6 +950,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		end
 
 		self:timeOutRestart(t1)
+		mSleep(1000)
 	end
 
 	t1 = ts.ms()
@@ -946,6 +968,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		end
 
 		self:timeOutRestart(t1)
+		mSleep(1000)
 	end
 
 	t1 = ts.ms()
@@ -1105,6 +1128,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		end
 
 		self:timeOutRestart(t1)
+		mSleep(1000)
 	end
 
 	time = 0
@@ -1169,6 +1193,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
         end
 	
 	    self:timeOutRestart(t1)
+	    mSleep(1000)
 	end
 
 	if searchFriend == "0" then
@@ -1317,10 +1342,12 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 					end
 					
 					self:timeOutRestart(t1)
+					mSleep(1000)
 				end
 				break
 			end
 			self:timeOutRestart(t1)
+			mSleep(1000)
 		end
 	end
 
@@ -1374,6 +1401,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			end
 
 			self:timeOutRestart(t1)
+			mSleep(1000)
 		end
 
 		t1 = ts.ms()
@@ -1449,6 +1477,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			end
 
 			self:timeOutRestart(t1)
+			mSleep(1000)
 		end
 
 		t1 = ts.ms()
@@ -1470,6 +1499,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			end
 
 			self:timeOutRestart(t1)
+			mSleep(1000)
 		end
 	end
 
@@ -1497,6 +1527,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		end
 
 		self:timeOutRestart(t1)
+		mSleep(1000)
 	end
 
 	t1 = ts.ms()
@@ -1551,6 +1582,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 				end
 
 				self:timeOutRestart(t1)
+				mSleep(1000)
 			end
 
 			mSleep(500)
@@ -1567,6 +1599,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 				end
 
 				self:timeOutRestart(t1)
+				mSleep(1000)
 			end
 			mSleep(500)
 			randomTap(666, 81, 4)
@@ -1575,6 +1608,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		end
 
 		self:timeOutRestart(t1)
+		mSleep(1000)
 	end
 
 	::get_mmId::

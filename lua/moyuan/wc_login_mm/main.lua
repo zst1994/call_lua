@@ -365,7 +365,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		end
 
 		self:timeOutRestart(t1)
-		mSleep(2000z g)
+		mSleep(2000)
 	end
 
 	State = {
@@ -440,7 +440,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 
 	t1 = ts.ms()
 	while true do
-		mSleep(400)
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x323333,"17|0|0x323333,9|8|0x323333,0|17|0x323333,17|17|0x323333,2|6|0xffffff,18|7|0xffffff,10|17|0xffffff,9|-1|0xffffff",90,0,0,749,1333)
 		if x ~= -1 and y ~= -1 then
 			mSleep(math.random(500, 700))
@@ -450,11 +450,22 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			mSleep(1000)
 			break
 		else
-			mSleep(500)
-			randomTap(x - 200, y, 4)
-			mSleep(1000)
-			inputStr(Nickname)
-			mSleep(1000)
+		    mSleep(200)
+		    x,y = findMultiColorInRegionFuzzy(0xa4b7b5, "-355|0|0xa4b7b5,-569|0|0xa4b7b5,-507|412|0xd9d9d9,-149|412|0xd9d9d9", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x ~= -1 and y ~= -1 then
+    			mSleep(math.random(500, 700))
+    			randomTap(x - 170, y + 80, 4)
+    			mSleep(math.random(500, 700))
+    			toast("生日", 1)
+    			mSleep(1000)
+    			break
+    		else
+    			mSleep(500)
+    			randomTap(x - 200, y, 4)
+    			mSleep(1000)
+    			inputStr(Nickname)
+    			mSleep(1000)
+            end
 		end
 		
 		flag = isFrontApp(self.mm_bid)
@@ -1249,7 +1260,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		while true do
 			--编辑
 			mSleep(200)
-			x,y = findMultiColorInRegionFuzzy( 0x323333, "2|5|0x323333,4|14|0x323333,-31|9|0xffffff,12|6|0xffffff,19|10|0x323333,27|10|0x323333,36|10|0x323333,34|5|0x323333,53|0|0xffffff", 90, 0, 0, 749, 1333)
+			x,y = findMultiColorInRegionFuzzy( 0x323333, "2|5|0x323333,4|14|0x323333,-31|9|0xffffff,12|6|0xffffff,19|10|0x323333,27|10|0x323333,36|10|0x323333,34|5|0x323333,53|0|0xffffff", 90, 0, 0, 749, 300)
 			if x~=-1 and y~=-1 then
 				mSleep(500)
 				randomTap(55,   y + 7, 4)
