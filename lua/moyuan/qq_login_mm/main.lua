@@ -177,7 +177,7 @@ function model:timeOutRestart(t1)
 	if os.difftime(t2, t1) > 120 then
 		lua_restart()
 	else
-	    toast("距离重启脚本还有"..(120 - os.difftime(t2, t1)) .. "秒",1)
+		toast("距离重启脚本还有"..(120 - os.difftime(t2, t1)) .. "秒",1)
 	end
 end
 
@@ -191,7 +191,7 @@ function model:newMMApp()
 					toast("newApp成功", 1)
 					break
 				end
-				
+
 				self:vpn_connection()
 			end
 			break
@@ -200,26 +200,26 @@ function model:newMMApp()
 end
 
 function model:vpn_connection()
-    --vpn连接
+	--vpn连接
 	mSleep(200)
 	x,y = findMultiColorInRegionFuzzy(0x1382ff, "-4|4|0x1382ff,5|10|0x1382ff,2|19|0x1382ff,12|-1|0x1382ff,17|8|0x1382ff,10|13|0x1382ff,24|13|0x1382ff,13|26|0x1382ff,17|19|0x1382ff", 90, 0, 0, 750, 1334, { orient = 2 })
-    if x ~= -1 then
-        mSleep(500)
-        randomTap(x,y,4)
-        mSleep(500)
-        setVPNEnable(true)
-        toast("好",1)
-        mSleep(3000)
-    end
+	if x ~= -1 then
+		mSleep(500)
+		randomTap(x,y,4)
+		mSleep(500)
+		setVPNEnable(true)
+		toast("好",1)
+		mSleep(3000)
+	end
 end
 
 function model:getIP()
-    ::ip_addresss::
+	::ip_addresss::
 	status_resp, header_resp,body_resp = ts.httpGet("http://myip.ipip.net")
 	toast(body_resp,1)
 	if status_resp == 200 then--打开网站成功
-	    local i,j = string.find(body_resp, "%d+%.%d+%.%d+%.%d+")
-        local ipaddr =string.sub(body_resp,i,j)
+		local i,j = string.find(body_resp, "%d+%.%d+%.%d+%.%d+")
+		local ipaddr =string.sub(body_resp,i,j)
 		return ipaddr
 	else
 		toast("请求ip位置失败："..tostring(body_resp),1)
@@ -232,10 +232,10 @@ function model:vpn()
 	::get_vpn::
 	old_data = self:getIP() --获取IP
 	if old_data and old_data ~= "" then
-        toast(old_data, 1)
-    else
-        goto get_vpn
-    end
+		toast(old_data, 1)
+	else
+		goto get_vpn
+	end
 
 	mSleep(math.random(500, 1500))
 	flag = getVPNStatus()
@@ -258,17 +258,17 @@ function model:vpn()
 	mSleep(1000 * math.random(2, 4))
 
 	while true do
-	    mSleep(1000)
+		mSleep(1000)
 		new_data = self:getIP() --获取IP
 		if new_data and new_data ~= "" then
-            toast(new_data, 1)
-    		if new_data ~= old_data then
-    			mSleep(1000)
-    			toast("vpn链接成功")
-    			mSleep(1000)
-    			break
-    		end
-        end
+			toast(new_data, 1)
+			if new_data ~= old_data then
+				mSleep(1000)
+				toast("vpn链接成功")
+				mSleep(1000)
+				break
+			end
+		end
 
 		t2 = ts.ms()
 
@@ -323,7 +323,7 @@ function model:deleteImage(path)
 end
 
 function model:getAccount()
-    self.qqList = readFile(userPath() .. "/res/qq.txt")
+	self.qqList = readFile(userPath() .. "/res/qq.txt")
 	if self.qqList then
 		if #self.qqList > 0 then
 			data = strSplit(string.gsub(self.qqList[1], "%s+", ""), "----")
@@ -341,7 +341,7 @@ function model:getAccount()
 	end
 end
 
-function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
+function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikcNameType)
 	runApp(self.mm_bid)
 	mSleep(1000)
 	t1 = ts.ms()
@@ -384,7 +384,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 				runAgain = true
 			end
 		end
-		
+
 		--注册登录
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0xffffff, "105|1|0xffffff,211|3|0x18d9f1,95|-37|0x18d9f1,-48|-4|0x18d9f1,83|39|0x18d9f1", 90, 0, 0, 749, 1333)
@@ -395,7 +395,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			toast("注册登录1",1)
 			mSleep(500)
 		end
-		
+
 		--注册登录
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0xffffff, "32|2|0xffffff,90|3|0xfdffff,-99|-2|0x18d9f1,43|-41|0x18d9f1,41|37|0x18d9f1,176|-3|0x18d9f1", 90, 0, 0, 749, 1333)
@@ -450,7 +450,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			toast("注册登录2",1)
 			mSleep(500)
 		end
-		
+
 		--定位服务未开启
 		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x007aff,"11|1|0x007aff,41|2|0x007aff,40|-188|0x000000,66|-188|0x000000,54|-177|0x000000,79|-177|0x000000,119|-181|0x000000,192|-180|0x000000,260|-185|0x000000",90,0,0,750,1334,{orient = 2})
@@ -459,11 +459,11 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			randomTap(x,y,4)
 			mSleep(500)
 		end
-		
+
 		--定位服务未开启
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy(0x087dff, "11|1|0x087dff,41|0|0x087dff,248|-6|0x087dff,276|-7|0x087dff,336|1|0x087dff,41|-190|0x010101,66|-189|0x010101,62|-177|0x010101,64|-168|0x010101", 90, 0, 0, 750, 1334, { orient = 2 })
-        if x ~= -1 then
+		if x ~= -1 then
 			mSleep(500)
 			randomTap(x, y, 4)
 			mSleep(500)
@@ -509,38 +509,38 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			runApp(self.mm_bid)
 			mSleep(3000)
 		end
-		
+
 		self:timeOutRestart(t1)
 		mSleep(1000)
 	end
-	
+
 	huakuai = false
 	inputAgain = false
 	::hk::
-	
+
 	t1 = ts.ms()
 	while (true) do
 		mSleep(200)
 		if getColor(239, 629) == 0x12b7f5 then
-		    if inputAgain then
-		        mSleep(500)
-		        randomTap(620,  357, 3)
-		        mSleep(1000)
-		        for var=1,20 do
-                    mSleep(100)
-                    keyDown("DeleteOrBackspace")
-                    keyUp("DeleteOrBackspace")  
-		        end
-                mSleep(500)
-		        randomTap(620,  469, 3)
-		        mSleep(1000)
-		        for var=1,20 do
-                    mSleep(100)
-                    keyDown("DeleteOrBackspace")
-                    keyUp("DeleteOrBackspace")  
-                end
-		    end
-		    
+			if inputAgain then
+				mSleep(500)
+				randomTap(620,  357, 3)
+				mSleep(1000)
+				for var=1,20 do
+					mSleep(100)
+					keyDown("DeleteOrBackspace")
+					keyUp("DeleteOrBackspace")  
+				end
+				mSleep(500)
+				randomTap(620,  469, 3)
+				mSleep(1000)
+				for var=1,20 do
+					mSleep(100)
+					keyDown("DeleteOrBackspace")
+					keyUp("DeleteOrBackspace")  
+				end
+			end
+
 			mSleep(5000)
 			while (true) do
 				mSleep(200)
@@ -550,7 +550,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 					mSleep(500)
 					break
 				else
-				    mSleep(500)
+					mSleep(500)
 					randomTap(395, 357, 4)
 					mSleep(2000)
 					inputStr(self.qqAcount)
@@ -561,9 +561,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			while (true) do
 				mSleep(200)
 				if getColor(677,  469) == 0xbbbbbb or getColor(163,471) == 0x000000 then
-				    mSleep(500)
-        			randomTap(239, 629, 4)
-        			mSleep(500)
+					mSleep(500)
+					randomTap(239, 629, 4)
+					mSleep(500)
 					break
 				else
 					mSleep(500)
@@ -574,16 +574,16 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 				end
 			end
 		end
-		
+
 		mSleep(200)
 		if getColor(391,541) == 0x12b7f5 and getColor(379,884) == 0x000000 then
-		    mSleep(500)
-		    randomTap(379,884,4)
-            mSleep(500)
-            table.remove(self.qqList, 1)
-            writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
-		    self:getAccount()
-		    inputAgain = true
+			mSleep(500)
+			randomTap(379,884,4)
+			mSleep(500)
+			table.remove(self.qqList, 1)
+			writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+			self:getAccount()
+			inputAgain = true
 		end
 
 		mSleep(200)
@@ -610,16 +610,16 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 				goto hk
 			end
 		end
-		
+
 		mSleep(200)
 		if getColor(296,  615) == 0x12b7f5 and getColor(682,  259) == 0x818181 then
-		    mSleep(500)
+			mSleep(500)
 			toast("暂时无法登陆", 1)
 			mSleep(500)
 			self.subName = "暂时无法登陆"
 			goto get_mmId
 		end
-		
+
 		--填写资料
 		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x323333,"16|-1|0x323333,8|7|0x323333,10|19|0x323333,24|26|0x323333,30|13|0x323333,25|-7|0x323333,54|-3|0x323333,83|8|0x323333,66|-8|0x323333",90,0,0,750,1334,{orient = 2})
@@ -629,7 +629,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			mSleep(500)
 			break
 		end
-		
+
 		--已经注册过，需要绑定手机号码
 		mSleep(200)
 		if getColor(672, 85) == 0x323333 and getColor(702, 85) == 0x323333 then
@@ -650,37 +650,37 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			self.subName = "注册过"
 			goto get_mmId
 		end
-		
+
 		--定位服务未开启
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy(0x087dff, "11|1|0x087dff,41|0|0x087dff,248|-6|0x087dff,276|-7|0x087dff,336|1|0x087dff,41|-190|0x010101,66|-189|0x010101,62|-177|0x010101,64|-168|0x010101", 90, 0, 0, 750, 1334, { orient = 2 })
-        if x ~= -1 then
+		if x ~= -1 then
 			mSleep(500)
 			toast("定位服务未开启2", 1)
 			mSleep(500)
 			self.subName = "注册过"
 			goto get_mmId
-        end
-	
-	    mSleep(200)
-		if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) == 0x808080 or getColor(676,258) == 0x818181 then
-		    if getColor(655,211) == 0xffffff then
-    			toast("切换下一个账号", 1)
-    			mSleep(500)
-    		    table.remove(self.qqList, 1)
-                writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
-    			self:getAccount()
-    		    inputAgain = true
-    		    goto hk
-    		elseif getColor(683,209) == 0xffffff then
-    		    toast("切换下一个账号,重新新机", 1)
-    			mSleep(500)
-    		    table.remove(self.qqList, 1)
-                writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
-                goto over
-    		end
 		end
-        
+
+		mSleep(200)
+		if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) == 0x808080 or getColor(676,258) == 0x818181 then
+			if getColor(655,211) == 0xffffff then
+				toast("切换下一个账号", 1)
+				mSleep(500)
+				table.remove(self.qqList, 1)
+				writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+				self:getAccount()
+				inputAgain = true
+				goto hk
+			elseif getColor(683,209) == 0xffffff then
+				toast("切换下一个账号,重新新机", 1)
+				mSleep(500)
+				table.remove(self.qqList, 1)
+				writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+				goto over
+			end
+		end
+
 		flag = isFrontApp(self.mm_bid)
 		if flag == 0 then
 			runApp(self.mm_bid)
@@ -691,68 +691,134 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		mSleep(1000)
 	end
 
-	State = {
-		["随机常量"] = 0,
-		["姓氏"] = "赵钱孙李周吴郑王冯陈褚卫蒋沈韩杨朱秦尤许何吕施张孔曹严华金魏陶" ..
-		"姜戚谢邹喻柏水窦章云苏潘葛奚范彭郎鲁韦昌马苗凤花方俞任袁柳酆鲍" ..
-		"史唐费廉岑薛雷贺倪汤滕殷罗毕郝邬安常乐于时傅皮卞齐康伍余元卜顾" ..
-		"孟平黄和穆萧尹姚邵湛汪祁毛禹狄米贝明臧计伏成戴谈宋茅庞熊纪舒屈" ..
-		"项祝董梁杜阮蓝闵席季麻强贾路娄危江童颜郭梅盛林刁钟徐邱骆高夏蔡" ..
-		"田樊胡凌霍虞万支柯咎管卢莫经房裘缪干解应宗宣丁贲邓郁单杭洪包诸" ..
-		"左石崔吉钮龚程嵇邢滑裴陆荣翁荀羊於惠甄曲家封芮羿储靳汲邴糜松井" ..
-		"段富巫乌焦巴弓牧隗山谷车侯宓蓬全郗班仰秋仲伊宫宁仇栾暴甘钭厉戎" ..
-		"祖武符刘景詹束龙叶幸司韶郜黎蓟薄印宿白怀蒲邰从鄂索咸籍赖卓蔺屠" ..
-		"蒙池乔阴鬱胥能苍双闻莘党翟谭贡劳逄姬申扶堵冉宰郦雍却璩桑桂濮牛" ..
-		"寿通边扈燕冀郟浦尚农温别庄晏柴瞿阎充慕连茹习宦艾鱼容向古易慎戈" ..
-		"廖庾终暨居衡步都耿满弘匡国文寇广禄阙东欧殳沃利蔚越夔隆师巩厍聂" ..
-		"晁勾敖融冷訾辛阚那简饶空曾毋沙乜养鞠须丰巢关蒯相查后荆红游竺权" ..
-		"逯盖益桓公万俟司马上官欧阳夏侯诸葛闻人东方赫连皇甫尉迟公羊澹台" ..
-		"公冶宗政濮阳淳于单于太叔申屠公孙仲孙轩辕令狐钟离宇文长孙慕容鲜" ..
-		"于闾丘司徒司空亓官司寇仉督子车颛孙端木巫马公西漆雕乐正壤驷公良" ..
-		"拓拔夹谷宰父谷粱晋楚闫法汝鄢涂钦段干百里东郭南门呼延归海羊舌微" ..
-		"生岳帅缑亢况后有琴梁丘左丘东门西门商牟佘佴伯赏南宫墨哈谯笪年爱" ..
-		"阳佟第五言福百家姓终",
-        ["名字"] = {"梦琪","忆柳","之桃","慕青","问兰","尔岚","元香","bai初夏","沛菡","傲珊","曼文","乐菱","痴珊","恨玉","惜文","香寒","新柔","语蓉","海安","夜蓉","涵柏","水桃","醉蓝","春儿","语琴","从彤","傲晴","语兰","又菱","碧彤","元霜","怜梦","紫寒","妙彤","曼易","南莲","紫翠","雨寒","易烟","如萱","若南","寻真","晓亦","向珊","慕灵","以蕊","寻雁","映易","雪柳","孤岚","笑霜","海云","凝天","沛珊","寒云","冰旋","宛儿","绿真","盼儿","晓霜","碧凡","夏菡","曼香","若烟","半梦","雅绿","冰蓝","灵槐","平安","书翠","翠风","香巧","代云","梦曼","幼翠","友巧","听寒","梦柏","醉易","访旋","亦玉","凌萱","访卉","怀亦","笑蓝","春翠","靖柏","夜蕾","冰夏","梦松","书雪","乐枫","念薇","靖雁","寻春","恨山","从寒","忆香","觅波","静曼","凡旋","以亦","念露","芷蕾","千兰","新波","代真","新蕾","雁玉","冷卉","紫山","千琴","恨天","傲芙","盼山","怀蝶","冰兰","山柏","翠萱","恨松","问旋","从南","白易","问筠","如霜","半芹","丹珍","冰彤","亦寒","寒雁","怜云","寻文","乐丹","翠柔","谷山","之瑶","冰露","尔珍","谷雪","乐萱","涵菡","海莲","傲蕾","青槐","冬儿","易梦","惜雪","宛海","之柔","夏青","亦瑶","妙菡","春竹","痴梦","紫蓝","晓巧","幻柏","元风","冰枫","访蕊","南春","芷蕊","凡蕾","凡柔","安蕾","天荷","含玉","书兰","雅琴","书瑶","春雁","从安","夏槐","念芹","怀萍","代曼","幻珊","谷丝","秋翠","白晴","海露","代荷","含玉","书蕾","听白","访琴","灵雁","秋春","雪青","乐瑶","含烟","涵双","平蝶","雅蕊","傲之","灵薇","绿春","含蕾","从梦","从蓉","初丹。听兰","听蓉","语芙","夏彤","凌瑶","忆翠","幻灵","怜菡","紫南","依珊","妙竹","访烟","怜蕾","映寒","友绿","冰萍","惜霜","凌香","芷蕾","雁卉","迎梦","元柏","代萱","紫真","千青","凌寒","紫安","寒安","怀蕊","秋荷","涵雁","以山","凡梅","盼曼","翠彤","谷冬","新巧","冷安","千萍","冰烟","雅阳","友绿","南松","诗云","飞风","寄灵","书芹","幼蓉","以蓝","笑寒","忆寒","秋烟","芷巧","水香","映之","醉波","幻莲","夜山","芷卉","向彤","小玉","幼南","凡梦","尔曼","念波","迎松","青寒","笑天","涵蕾","碧菡","映秋","盼烟","忆山","以寒","寒香","小凡","代亦","梦露","映波","友蕊","寄凡","怜蕾","雁枫","水绿","曼荷","笑珊","寒珊","谷南","慕儿","夏岚","友儿","小萱","紫青","妙菱","冬寒","曼柔","语蝶","青筠","夜安","觅海","问安","晓槐","雅山","访云","翠容","寒凡","晓绿","以菱","冬云","含玉","访枫","含卉","夜白","冷安","灵竹","醉薇","元珊","幻波","盼夏","元瑶","迎曼","水云","访琴","谷波","乐之","笑白","之山","妙海","紫霜","平夏","凌旋","孤丝","怜寒","向萍","凡松","青丝","翠安","如天","凌雪","绮菱","代云","南莲","寻南","春文","香薇","冬灵","凌珍","采绿","天春","沛文","紫槐","幻柏","采文","春梅","雪旋","盼海","映梦","安雁","映容","凝阳","访风","天亦","平绿","盼香","觅风","小霜","雪萍","半雪","山柳","谷雪","靖易","白薇","梦菡","飞绿","如波","又晴","友易","香菱","冬亦","问雁","妙春","海冬","半安","平春","幼柏","秋灵","凝芙","念烟","白山","从灵","尔芙","迎蓉","念寒","翠绿","翠芙","靖儿","妙柏","千凝","小珍","天巧。妙旋","雪枫","夏菡","元绿","痴灵","绮琴","雨双","听枫","觅荷","凡之","晓凡","雅彤","香薇","孤风","从安","绮彤","之玉","雨珍","幻丝","代梅","香波","青亦","元菱","海瑶","飞槐","听露","梦岚","幻竹","新冬","盼翠","谷云","忆霜","水瑶","慕晴","秋双","雨真","觅珍","丹雪","从阳","元枫","痴香","思天","如松","妙晴","谷秋","妙松","晓夏","香柏","巧绿","宛筠","碧琴","盼兰","小夏","安容","青曼","千儿","香春","寻双","涵瑶","冷梅","秋柔","思菱","醉波","醉柳","以寒","迎夏","向雪","香莲","以丹","依凝","如柏","雁菱","凝竹","宛白","初柔","南蕾","书萱","梦槐","香芹","南琴","绿海","沛儿","晓瑶","听春","凝蝶","紫雪","念双","念真","曼寒","凡霜","飞雪","雪兰","雅霜","从蓉","冷雪","靖巧","翠丝","觅翠","凡白","乐蓉","迎波","丹烟","梦旋","书双","念桃","夜天","海桃","青香","恨风","安筠","觅柔","初南","秋蝶","千易","安露","诗蕊","山雁","友菱","香露","晓兰","白卉","语山","冷珍","秋翠","夏柳","如之","忆南","书易","翠桃","寄瑶","如曼","问柳","香梅","幻桃","又菡","春绿","醉蝶","亦绿","诗珊","听芹","新之","易巧","念云","晓灵","静枫","夏蓉","如南","幼丝","秋白","冰安","秋白","南风","醉山","初彤","凝海","紫文","凌晴","香卉","雅琴","傲安","傲之","初蝶","寻桃","代芹","诗霜","春柏","绿夏","碧灵","诗柳","夏柳","采白","慕梅","乐安","冬菱","紫安","宛凝","雨雪","易真","安荷","静竹","代柔","丹秋","绮梅","依白","凝荷","幼珊","忆彤","凌青","之桃","芷荷","听荷","代玉","念珍","梦菲","夜春","千秋","白秋","谷菱","飞松","初瑶","惜灵","恨瑶","梦易","新瑶","曼梅","碧曼","友瑶","雨兰","夜柳","香蝶","盼巧","芷珍","香卉","含芙","夜云","依萱","凝雁","以莲","易容","元柳","安南","幼晴","尔琴","飞阳","白凡","沛萍","雪瑶","向卉","采文","乐珍","寒荷","觅双","白桃","安卉","迎曼","盼雁","乐松","涵山","恨寒","问枫","以柳","含海","秋春","翠曼","忆梅","涵柳","梦香","海蓝","晓曼","代珊","春冬","恨荷","忆丹","静芙","绮兰","梦安","紫丝","千雁","凝珍","香萱","梦容","冷雁","飞柏","天真","翠琴","寄真","秋荷","代珊","初雪","雅柏","怜容","如风","南露","紫易","冰凡","海雪","语蓉","碧玉","翠岚","语风","盼丹","痴旋","凝梦","从雪","白枫","傲云","白梅","念露","慕凝","雅柔","盼柳","半青","从霜","怀柔","怜晴","夜蓉","代双","以南","若菱","芷文","寄春","南晴","恨之","梦寒","初翠","灵波","巧春","问夏","凌春","惜海"}
-	}
+	if nikcNameType == "0" then
+		State = {
+			["随机常量"] = 0,
+			["姓氏"] = "赵钱孙李周吴郑王冯陈褚卫蒋沈韩杨朱秦尤许何吕施张孔曹严华金魏陶" ..
+			"姜戚谢邹喻柏水窦章云苏潘葛奚范彭郎鲁韦昌马苗凤花方俞任袁柳酆鲍" ..
+			"史唐费廉岑薛雷贺倪汤滕殷罗毕郝邬安常乐于时傅皮卞齐康伍余元卜顾" ..
+			"孟平黄和穆萧尹姚邵湛汪祁毛禹狄米贝明臧计伏成戴谈宋茅庞熊纪舒屈" ..
+			"项祝董梁杜阮蓝闵席季麻强贾路娄危江童颜郭梅盛林刁钟徐邱骆高夏蔡" ..
+			"田樊胡凌霍虞万支柯咎管卢莫经房裘缪干解应宗宣丁贲邓郁单杭洪包诸" ..
+			"左石崔吉钮龚程嵇邢滑裴陆荣翁荀羊於惠甄曲家封芮羿储靳汲邴糜松井" ..
+			"段富巫乌焦巴弓牧隗山谷车侯宓蓬全郗班仰秋仲伊宫宁仇栾暴甘钭厉戎" ..
+			"祖武符刘景詹束龙叶幸司韶郜黎蓟薄印宿白怀蒲邰从鄂索咸籍赖卓蔺屠" ..
+			"蒙池乔阴鬱胥能苍双闻莘党翟谭贡劳逄姬申扶堵冉宰郦雍却璩桑桂濮牛" ..
+			"寿通边扈燕冀郟浦尚农温别庄晏柴瞿阎充慕连茹习宦艾鱼容向古易慎戈" ..
+			"廖庾终暨居衡步都耿满弘匡国文寇广禄阙东欧殳沃利蔚越夔隆师巩厍聂" ..
+			"晁勾敖融冷訾辛阚那简饶空曾毋沙乜养鞠须丰巢关蒯相查后荆红游竺权" ..
+			"逯盖益桓公万俟司马上官欧阳夏侯诸葛闻人东方赫连皇甫尉迟公羊澹台" ..
+			"公冶宗政濮阳淳于单于太叔申屠公孙仲孙轩辕令狐钟离宇文长孙慕容鲜" ..
+			"于闾丘司徒司空亓官司寇仉督子车颛孙端木巫马公西漆雕乐正壤驷公良" ..
+			"拓拔夹谷宰父谷粱晋楚闫法汝鄢涂钦段干百里东郭南门呼延归海羊舌微" ..
+			"生岳帅缑亢况后有琴梁丘左丘东门西门商牟佘佴伯赏南宫墨哈谯笪年爱" ..
+			"阳佟第五言福百家姓终",
+			["名字"] = "安彤含祖赩涤彰爵舞深群适渺辞莞延稷桦赐帅适亭濮存城稷澄添悟绢绢澹迪婕箫识悟舞添剑深禄延涤" ..
+			"濮存罡禄瑛瑛嗣嫚朵寅添渟黎臻舞绢城骥彰渺禾教祖剑黎莞咸浓芦澹帅臻渟添禾亭添亭霖深策臻稷辞" ..
+			"悟悟澄涉城鸥黎悟乔恒黎鲲涉莞霖甲深婕乔程澹男岳深涉益澹悟箫乔多职适芦瑛澄婕朵适祖霖瑛坤嫚" ..
+			"涉男珂箫芦黎珹绢芦程识嗣珂瑰枝允黎庸嗣赐罡纵添禄霖男延甲彰咸稷箫岳悟职祖恒珂庸琅男莞庸浓" ..
+			"多罡延瑛濮存爵添剑益骥澄延迪寅婕程霖识瑰识程群教朵悟舞岳浓箫城适程禾嫚罡咸职铃爵渺添辞嫚" ..
+			"浓寅鲲嗣瑛鸥多教瑛迪坤铃珹群黎益澄程莞深坤澹禄职澹赩澄藉群箫骥定彰寅臻渟枝允珹深群黎甲鲲" ..
+			"亭黎藏浓涤渟莞寅辞嗣坤迪嫚添策庸策藉瑰彰箫益莞渺乔彰延舞祖婕澹渺鸥纵嗣瑛藏濮存婕职程芦群" ..
+			"禾嫚程辞祖黎职浓桦藏渟禾彰帅辞铃铃黎允绢濮存剑辞禾瑰添延添悟赐祖咸莞男绢策婕藉禾浓珹涤祖" ..
+			"汉骥舞瑛多稷赐莞渟黎舞桦黎群藏渺黎坤桦咸迪澈舞允稷咸剑定亭澄濮存鲲臻全鸥多赐程添瑛亭帅悟" ..
+			"甲男帅涤适纵渟鲲亭悟琅亭添允舞禾庸咸瑛教鲲允箫芦允瑛咸鸥帅悟延珂黎珹箫爵剑霖剑霖禄鸥悟涉" ..
+			"彰群悟辞帅渺莞澄桦瑛适臻益霖珹亭澹辞坤程嗣铃箫策澈枝赐莞爵渟禄群枝添芦群浓赐职益城澄赩琅" ..
+			"延群乔珹鲲祖群悟黎定庸澄芦延霖罡鲲咸渺纵亭禄鸥赩涤剑澹藏纵濮存澄芦剑延瑰稷黎益赩澄允悟澈" ..
+			"甲嗣绢朵益甲悟涤婕群咸臻箫鲲寅鸥桦益珂舞允庸芦藉寅渺咸赐澄程剑瑰霖瑰铃帅男铃悟识瑰仕仕城" ..
+			"允莞全朵涤铃剑渺稷剑珂铃箫全仕益纵芦桦珂濮存城朵朵咸程剑澄定澈爵寅庸定莞瑛教彰黎箫仕黎桦" ..
+			"赩深赩爵迪悟珹涤琅添箫桦帅瑛黎黎策识寅嫚涉迪策汉舞定彰允男祖教澄群瑛濮存男禾教莞禾鸥澈濮" ..
+			"存岳城嫚深舞教岳澄亭禾坤朵亭职莞稷寅瑰城庸亭舞禾瑛恒坤浓彰莞澄澈鸥臻稷教琅辞益剑藉黎添瑛" ..
+			"延舞坤仕岳多婕骥迪帅黎悟全澄识益甲桦纵适罡彰澄禾婕程黎城涤浓枝箫咸渟岳渟澹臻珹识珹澄箫辞" ..
+			"浓鲲识悟允悟禾识群祖迪渟鲲群庸莞珹悟澹瑰悟鸥汉群甲莞庸职琅莞桦鲲朵深乔辞允彰渺朵瑰亭瑰朵" ..
+			"定深男识群职霖益男舞城允舞爵赩枝罡罡群澹芦藉爵悟渟澹禾多庸箫坤乔芦甲濮存多渟藉珹赐汉纵亭" ..
+			"禾城枝剑露以玉春飞慧娜悠亦元晔曜霜宁桃彦仪雨琴青筠逸曼代菀孤昆秋蕊语莺丝红羲盛静南淑震晴" ..
+			"彭祯山霞凝柔隽松翠高骊雅念皓双洛紫瑞英思歆蓉娟波芸荷笑云若宏夏妍嘉彩如鹏寄芝柳凌莹蝶舒恬" ..
+			"虹清爽月巧乾勋翰芳罗刚鸿运枫阳葳杰怀悦凡哲瑶凯然尚丹奇弘顺依雪菡君畅白振馨寻涵问洁辉忆傲" ..
+			"伟经润志华兰芹修晨木宛俊博韶天锐溪燕家沈放明光千永溶昊梅巍真尔馥莲怜惜佳广香宇槐珺芷帆秀" ..
+			"理柏书沛琪仙之竹向卉欣旻晓冬幻和雁淳浩歌荣懿文幼岚昕牧绿轩工旭颜醉玑卓觅叶夜灵胜晗恨流佁" ..
+			"乐火音采睿翎萱民画梦寒泽怡丽心石邵玮佑旺壮名一学谷韵宜冰赫新蕾美晖项琳平树又炳骏气海毅敬" ..
+			"曦婉爰伯珊影鲸容晶婷林子昌梧芙澍诗星冉初映善越原茂国腾孟水烟半峯莉绮德慈敏才戈梓景智盼霁" ..
+			"琇苗熙姝从谊风发钰玛忍婀菲昶可荌小倩妙涛姗方图迎惠晤宣康娅玟奕锦濯穆禧伶丰良祺珍曲喆扬拔" ..
+			"驰绣烁叡长雯颖辰慕承远彬斯薇成聪爱朋萦田致世实愫进瀚朝强铭煦朗精艺熹建忻晏冷佩东古坚滨菱" ..
+			"囡银咏正儿瑜宝蔓端蓓芬碧人开珠昂琬洋璠桐舟姣琛亮煊信今年庄淼沙黛烨楠桂斐胤骄兴尘河晋卿易" ..
+			"愉蕴雄访湛蓝媛骞娴儒妮旋友娇泰基礼芮羽妞意翔岑苑暖玥尧璇阔燎偲靖行瑾资漪晟冠同齐复吉豆唱" ..
+			"韫素盈密富其翮熠绍澎淡韦诚滢知鹍苒抒艳义婧闳琦壤杨芃洲阵璟茵驹涆来捷嫒圣吟恺璞西旎俨颂灿" ..
+			"情玄利痴蕙力潍听磊宸笛中好任轶玲螺郁畴会暄峻略琼琰默池温炫季雰司杉觉维饮湉许宵茉贤昱蕤珑" ..
+			"锋纬渊超萍嫔大霏楚通邈飙霓谧令厚本邃合宾沉昭峰业豪达彗纳飒壁施欢姮甫湘漾闲恩莎祥启煜鸣品" ..
+			"希融野化钊仲蔚生攸能衍菁迈望起微鹤荫靓娥泓金琨筱赞典勇斌媚寿喜飇濡宕茜魁立裕弼翼央莘绚焱" ..
+			"奥萝米衣森荃航璧为跃蒙庆琲倚穹武甜璐俏茹悌格穰皛璎龙材湃农福旷童亘苇范寰瓃忠虎颐蓄霈言禹" ..
+			"章花健炎籁暮升葛贞侠专懋澜量纶布皎源耀鸾慨曾优栋妃游乃用路余珉藻耘军芊日赡勃卫载时三闵姿" ..
+			"麦瑗泉郎怿惬萌照夫鑫樱琭钧掣芫侬丁育浦磬献苓翱雍婵阑女北未陶干自作伦珧溥桀州荏举杏茗洽焕" ..
+			"吹甘硕赋漠颀妤诺展俐朔菊秉苍津空洮济尹周江荡简莱榆贝萧艾仁漫锟谨魄蔼豫纯翊堂嫣誉邦果暎珏" ..
+			"临勤墨薄颉棠羡浚兆环铄"
+		}
+		State["随机常量"] = tonumber(self:Rnd_Word("0123456789", 5))
 
-	State["随机常量"] = tonumber(self:Rnd_Word("0123456789", 5))
+		Nickname = self:Rnd_Word(State["姓氏"], 1, 3) .. self:Rnd_Word(State["名字"], 1, 3)
+	elseif nikcNameType == "1" then
+		State = {
+			["随机常量"] = 0,
+			["姓氏"] = "赵钱孙李周吴郑王冯陈褚卫蒋沈韩杨朱秦尤许何吕施张孔曹严华金魏陶" ..
+			"姜戚谢邹喻柏水窦章云苏潘葛奚范彭郎鲁韦昌马苗凤花方俞任袁柳酆鲍" ..
+			"史唐费廉岑薛雷贺倪汤滕殷罗毕郝邬安常乐于时傅皮卞齐康伍余元卜顾" ..
+			"孟平黄和穆萧尹姚邵湛汪祁毛禹狄米贝明臧计伏成戴谈宋茅庞熊纪舒屈" ..
+			"项祝董梁杜阮蓝闵席季麻强贾路娄危江童颜郭梅盛林刁钟徐邱骆高夏蔡" ..
+			"田樊胡凌霍虞万支柯咎管卢莫经房裘缪干解应宗宣丁贲邓郁单杭洪包诸" ..
+			"左石崔吉钮龚程嵇邢滑裴陆荣翁荀羊於惠甄曲家封芮羿储靳汲邴糜松井" ..
+			"段富巫乌焦巴弓牧隗山谷车侯宓蓬全郗班仰秋仲伊宫宁仇栾暴甘钭厉戎" ..
+			"祖武符刘景詹束龙叶幸司韶郜黎蓟薄印宿白怀蒲邰从鄂索咸籍赖卓蔺屠" ..
+			"蒙池乔阴鬱胥能苍双闻莘党翟谭贡劳逄姬申扶堵冉宰郦雍却璩桑桂濮牛" ..
+			"寿通边扈燕冀郟浦尚农温别庄晏柴瞿阎充慕连茹习宦艾鱼容向古易慎戈" ..
+			"廖庾终暨居衡步都耿满弘匡国文寇广禄阙东欧殳沃利蔚越夔隆师巩厍聂" ..
+			"晁勾敖融冷訾辛阚那简饶空曾毋沙乜养鞠须丰巢关蒯相查后荆红游竺权" ..
+			"逯盖益桓公万俟司马上官欧阳夏侯诸葛闻人东方赫连皇甫尉迟公羊澹台" ..
+			"公冶宗政濮阳淳于单于太叔申屠公孙仲孙轩辕令狐钟离宇文长孙慕容鲜" ..
+			"于闾丘司徒司空亓官司寇仉督子车颛孙端木巫马公西漆雕乐正壤驷公良" ..
+			"拓拔夹谷宰父谷粱晋楚闫法汝鄢涂钦段干百里东郭南门呼延归海羊舌微" ..
+			"生岳帅缑亢况后有琴梁丘左丘东门西门商牟佘佴伯赏南宫墨哈谯笪年爱" ..
+			"阳佟第五言福百家姓终",
+			["名字"] = {"梦琪","忆柳","之桃","慕青","问兰","尔岚","元香","bai初夏","沛菡","傲珊","曼文","乐菱","痴珊","恨玉","惜文","香寒","新柔","语蓉","海安","夜蓉","涵柏","水桃","醉蓝","春儿","语琴","从彤","傲晴","语兰","又菱","碧彤","元霜","怜梦","紫寒","妙彤","曼易","南莲","紫翠","雨寒","易烟","如萱","若南","寻真","晓亦","向珊","慕灵","以蕊","寻雁","映易","雪柳","孤岚","笑霜","海云","凝天","沛珊","寒云","冰旋","宛儿","绿真","盼儿","晓霜","碧凡","夏菡","曼香","若烟","半梦","雅绿","冰蓝","灵槐","平安","书翠","翠风","香巧","代云","梦曼","幼翠","友巧","听寒","梦柏","醉易","访旋","亦玉","凌萱","访卉","怀亦","笑蓝","春翠","靖柏","夜蕾","冰夏","梦松","书雪","乐枫","念薇","靖雁","寻春","恨山","从寒","忆香","觅波","静曼","凡旋","以亦","念露","芷蕾","千兰","新波","代真","新蕾","雁玉","冷卉","紫山","千琴","恨天","傲芙","盼山","怀蝶","冰兰","山柏","翠萱","恨松","问旋","从南","白易","问筠","如霜","半芹","丹珍","冰彤","亦寒","寒雁","怜云","寻文","乐丹","翠柔","谷山","之瑶","冰露","尔珍","谷雪","乐萱","涵菡","海莲","傲蕾","青槐","冬儿","易梦","惜雪","宛海","之柔","夏青","亦瑶","妙菡","春竹","痴梦","紫蓝","晓巧","幻柏","元风","冰枫","访蕊","南春","芷蕊","凡蕾","凡柔","安蕾","天荷","含玉","书兰","雅琴","书瑶","春雁","从安","夏槐","念芹","怀萍","代曼","幻珊","谷丝","秋翠","白晴","海露","代荷","含玉","书蕾","听白","访琴","灵雁","秋春","雪青","乐瑶","含烟","涵双","平蝶","雅蕊","傲之","灵薇","绿春","含蕾","从梦","从蓉","初丹。听兰","听蓉","语芙","夏彤","凌瑶","忆翠","幻灵","怜菡","紫南","依珊","妙竹","访烟","怜蕾","映寒","友绿","冰萍","惜霜","凌香","芷蕾","雁卉","迎梦","元柏","代萱","紫真","千青","凌寒","紫安","寒安","怀蕊","秋荷","涵雁","以山","凡梅","盼曼","翠彤","谷冬","新巧","冷安","千萍","冰烟","雅阳","友绿","南松","诗云","飞风","寄灵","书芹","幼蓉","以蓝","笑寒","忆寒","秋烟","芷巧","水香","映之","醉波","幻莲","夜山","芷卉","向彤","小玉","幼南","凡梦","尔曼","念波","迎松","青寒","笑天","涵蕾","碧菡","映秋","盼烟","忆山","以寒","寒香","小凡","代亦","梦露","映波","友蕊","寄凡","怜蕾","雁枫","水绿","曼荷","笑珊","寒珊","谷南","慕儿","夏岚","友儿","小萱","紫青","妙菱","冬寒","曼柔","语蝶","青筠","夜安","觅海","问安","晓槐","雅山","访云","翠容","寒凡","晓绿","以菱","冬云","含玉","访枫","含卉","夜白","冷安","灵竹","醉薇","元珊","幻波","盼夏","元瑶","迎曼","水云","访琴","谷波","乐之","笑白","之山","妙海","紫霜","平夏","凌旋","孤丝","怜寒","向萍","凡松","青丝","翠安","如天","凌雪","绮菱","代云","南莲","寻南","春文","香薇","冬灵","凌珍","采绿","天春","沛文","紫槐","幻柏","采文","春梅","雪旋","盼海","映梦","安雁","映容","凝阳","访风","天亦","平绿","盼香","觅风","小霜","雪萍","半雪","山柳","谷雪","靖易","白薇","梦菡","飞绿","如波","又晴","友易","香菱","冬亦","问雁","妙春","海冬","半安","平春","幼柏","秋灵","凝芙","念烟","白山","从灵","尔芙","迎蓉","念寒","翠绿","翠芙","靖儿","妙柏","千凝","小珍","天巧。妙旋","雪枫","夏菡","元绿","痴灵","绮琴","雨双","听枫","觅荷","凡之","晓凡","雅彤","香薇","孤风","从安","绮彤","之玉","雨珍","幻丝","代梅","香波","青亦","元菱","海瑶","飞槐","听露","梦岚","幻竹","新冬","盼翠","谷云","忆霜","水瑶","慕晴","秋双","雨真","觅珍","丹雪","从阳","元枫","痴香","思天","如松","妙晴","谷秋","妙松","晓夏","香柏","巧绿","宛筠","碧琴","盼兰","小夏","安容","青曼","千儿","香春","寻双","涵瑶","冷梅","秋柔","思菱","醉波","醉柳","以寒","迎夏","向雪","香莲","以丹","依凝","如柏","雁菱","凝竹","宛白","初柔","南蕾","书萱","梦槐","香芹","南琴","绿海","沛儿","晓瑶","听春","凝蝶","紫雪","念双","念真","曼寒","凡霜","飞雪","雪兰","雅霜","从蓉","冷雪","靖巧","翠丝","觅翠","凡白","乐蓉","迎波","丹烟","梦旋","书双","念桃","夜天","海桃","青香","恨风","安筠","觅柔","初南","秋蝶","千易","安露","诗蕊","山雁","友菱","香露","晓兰","白卉","语山","冷珍","秋翠","夏柳","如之","忆南","书易","翠桃","寄瑶","如曼","问柳","香梅","幻桃","又菡","春绿","醉蝶","亦绿","诗珊","听芹","新之","易巧","念云","晓灵","静枫","夏蓉","如南","幼丝","秋白","冰安","秋白","南风","醉山","初彤","凝海","紫文","凌晴","香卉","雅琴","傲安","傲之","初蝶","寻桃","代芹","诗霜","春柏","绿夏","碧灵","诗柳","夏柳","采白","慕梅","乐安","冬菱","紫安","宛凝","雨雪","易真","安荷","静竹","代柔","丹秋","绮梅","依白","凝荷","幼珊","忆彤","凌青","之桃","芷荷","听荷","代玉","念珍","梦菲","夜春","千秋","白秋","谷菱","飞松","初瑶","惜灵","恨瑶","梦易","新瑶","曼梅","碧曼","友瑶","雨兰","夜柳","香蝶","盼巧","芷珍","香卉","含芙","夜云","依萱","凝雁","以莲","易容","元柳","安南","幼晴","尔琴","飞阳","白凡","沛萍","雪瑶","向卉","采文","乐珍","寒荷","觅双","白桃","安卉","迎曼","盼雁","乐松","涵山","恨寒","问枫","以柳","含海","秋春","翠曼","忆梅","涵柳","梦香","海蓝","晓曼","代珊","春冬","恨荷","忆丹","静芙","绮兰","梦安","紫丝","千雁","凝珍","香萱","梦容","冷雁","飞柏","天真","翠琴","寄真","秋荷","代珊","初雪","雅柏","怜容","如风","南露","紫易","冰凡","海雪","语蓉","碧玉","翠岚","语风","盼丹","痴旋","凝梦","从雪","白枫","傲云","白梅","念露","慕凝","雅柔","盼柳","半青","从霜","怀柔","怜晴","夜蓉","代双","以南","若菱","芷文","寄春","南晴","恨之","梦寒","初翠","灵波","巧春","问夏","凌春","惜海"}
+		}
+		State["随机常量"] = tonumber(self:Rnd_Word("0123456789", 5))
 
-	Nickname = self:Rnd_Word(State["姓氏"], 1, 3) .. State["名字"][math.random(1, #State["名字"])]
-    
+		Nickname = self:Rnd_Word(State["姓氏"], 1, 3) .. State["名字"][math.random(1, #State["名字"])]
+	end
+
 	t1 = ts.ms()
 	while true do
-	    mSleep(200)
+		mSleep(200)
 		if getColor(116, 949) == 0x007aff then
-		    mSleep(math.random(500, 1000))
+			mSleep(math.random(500, 1000))
 			randomTap(603, 1032, 10)
 			mSleep(math.random(3000, 6000))
 			toast("重新滑块",1)
 			mSleep(500)
-		    goto hk
+			goto hk
 		end
-		
+
 		mSleep(200)
 		if getColor(391,541) == 0x12b7f5 and getColor(379,884) == 0x000000 then
-		    mSleep(500)
-		    randomTap(379,884,4)
-		    mSleep(500)
-		    table.remove(self.qqList, 1)
-            writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
-		    self:getAccount()
-		    inputAgain = true
-		    goto hk
+			mSleep(500)
+			randomTap(379,884,4)
+			mSleep(500)
+			table.remove(self.qqList, 1)
+			writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+			self:getAccount()
+			inputAgain = true
+			goto hk
 		end
-		
+
 		mSleep(200)
 		if getColor(149,  187) == 0x323233 or getColor(149,187) == 0x323333 or getColor(149,  187) == 0x313232 then
-	   	    mSleep(500)
+			mSleep(500)
 			key = "ReturnOrEnter"
 			keyDown(key)
 			keyUp(key)
 			toast("收起键盘",1)
 			mSleep(500)
 		end
-	    
+
 		--填写资料
 		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x323333,"16|-1|0x323333,8|7|0x323333,10|19|0x323333,24|26|0x323333,30|13|0x323333,25|-7|0x323333,54|-3|0x323333,83|8|0x323333,66|-8|0x323333",90,0,0,750,1334,{orient = 2})
@@ -777,33 +843,33 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 
 		mSleep(200)
 		if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) == 0x808080 or getColor(676,258) == 0x818181 then
-		    if getColor(655,211) == 0xffffff then
-    			toast("切换下一个账号", 1)
-    			mSleep(500)
-    		    table.remove(self.qqList, 1)
-                writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
-    			self:getAccount()
-    		    inputAgain = true
-    		    goto hk
-    		elseif getColor(683,209) == 0xffffff then
-    		    toast("切换下一个账号,重新新机", 1)
-    			mSleep(500)
-    		    table.remove(self.qqList, 1)
-                writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
-                goto over
-    		end
+			if getColor(655,211) == 0xffffff then
+				toast("切换下一个账号", 1)
+				mSleep(500)
+				table.remove(self.qqList, 1)
+				writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+				self:getAccount()
+				inputAgain = true
+				goto hk
+			elseif getColor(683,209) == 0xffffff then
+				toast("切换下一个账号,重新新机", 1)
+				mSleep(500)
+				table.remove(self.qqList, 1)
+				writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+				goto over
+			end
 		end
-		
+
 		--动态密码
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy(0xffffff, "56|-3|0xffffff,-190|-32|0x0078ff,-192|26|0x0078ff,27|27|0x0078ff,29|-33|0x0078ff,257|-29|0x0078ff,250|20|0x0078ff,244|-121|0x0078ff,335|-127|0x0078ff", 90, 0, 0, 750, 1334, { orient = 2 })
-        if x ~= -1 then
-            toast("动态密码,切换下一个账号", 1)
+		if x ~= -1 then
+			toast("动态密码,切换下一个账号", 1)
 			mSleep(500)
-		    table.remove(self.qqList, 1)
-            writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+			table.remove(self.qqList, 1)
+			writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
 			goto over
-        end
+		end
 
 		--已经注册过，需要绑定手机号码
 		mSleep(200)
@@ -825,18 +891,18 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			self.subName = "注册过"
 			goto get_mmId
 		end
-		
+
 		--定位服务未开启
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy(0x087dff, "11|1|0x087dff,41|0|0x087dff,248|-6|0x087dff,276|-7|0x087dff,336|1|0x087dff,41|-190|0x010101,66|-189|0x010101,62|-177|0x010101,64|-168|0x010101", 90, 0, 0, 750, 1334, { orient = 2 })
-        if x ~= -1 then
+		if x ~= -1 then
 			mSleep(500)
 			toast("定位服务未开启2", 1)
 			mSleep(500)
 			self.subName = "注册过"
 			goto get_mmId
 		end
-        
+
 		self:timeOutRestart(t1)
 		mSleep(1000)
 	end
@@ -853,7 +919,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			mSleep(1000)
 			break
 		end
-		
+
 		--填写资料
 		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x323333,"16|-1|0x323333,8|7|0x323333,10|19|0x323333,24|26|0x323333,30|13|0x323333,25|-7|0x323333,54|-3|0x323333,83|8|0x323333,66|-8|0x323333",90,0,0,750,1334,{orient = 2})
@@ -874,7 +940,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			toast("生日前输入昵称", 1)
 			mSleep(500)
 		end
-        
+
 		self:timeOutRestart(t1)
 		mSleep(1000)
 	end
@@ -1032,7 +1098,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			toast("上传照片3", 1)
 			mSleep(1000)
 		end
-		
+
 		--下一步
 		mSleep(200)
 		if getColor(113,839) == 0x18d9f1 or getColor(632,841) == 0x18d9f1 then
@@ -1062,11 +1128,11 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			toast("绑定手机", 1)
 			mSleep(500)
 		end
-		
+
 		--绑定手机
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy(0x323232, "13|6|0x323232,17|10|0x323232,32|8|0x323232,47|8|0x323232,-355|93|0x323232,-344|94|0x323232,-305|99|0x323232,-255|101|0x323232,-233|96|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
-        if x ~= -1 then
+		if x ~= -1 then
 			mSleep(500)
 			randomTap(x + 10, y + 5, 3)
 			mSleep(500)
@@ -1115,11 +1181,11 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			toast("定位服务未开启", 1)
 			mSleep(500)
 		end
-		
+
 		--定位服务未开启
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy(0x087dff, "11|1|0x087dff,41|0|0x087dff,248|-6|0x087dff,276|-7|0x087dff,336|1|0x087dff,41|-190|0x010101,66|-189|0x010101,62|-177|0x010101,64|-168|0x010101", 90, 0, 0, 750, 1334, { orient = 2 })
-        if x ~= -1 then
+		if x ~= -1 then
 			mSleep(500)
 			randomTap(x, y, 4)
 			mSleep(500)
@@ -1147,7 +1213,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			mSleep(500)
 			break
 		end
-		
+
 		--绑定手机
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0x303031, "-11|-11|0x303031,12|-11|0x303031,-11|13|0x303031,12|12|0x303031,-1|11|0xffffff,-389|571|0x4ebbfb,-72|572|0x4ebbfb", 90, 0, 0, 749, 1333)
@@ -1158,18 +1224,18 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			toast("绑定手机", 1)
 			mSleep(500)
 		end
-		
+
 		--绑定手机
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy(0x323232, "13|6|0x323232,17|10|0x323232,32|8|0x323232,47|8|0x323232,-355|93|0x323232,-344|94|0x323232,-305|99|0x323232,-255|101|0x323232,-233|96|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
-        if x ~= -1 then
+		if x ~= -1 then
 			mSleep(500)
 			randomTap(x + 10, y + 5, 3)
 			mSleep(500)
 			toast("绑定手机2", 1)
 			mSleep(500)
 		end
-		
+
 		--定位服务未开启
 		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x007aff,"11|1|0x007aff,41|2|0x007aff,40|-188|0x000000,66|-188|0x000000,54|-177|0x000000,79|-177|0x000000,119|-181|0x000000,192|-180|0x000000,260|-185|0x000000",90,0,0,750,1334,{orient = 2})
@@ -1180,69 +1246,69 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			toast("定位服务未开启", 1)
 			mSleep(500)
 		end
-		
+
 		--定位服务未开启
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy(0x087dff, "11|1|0x087dff,41|0|0x087dff,248|-6|0x087dff,276|-7|0x087dff,336|1|0x087dff,41|-190|0x010101,66|-189|0x010101,62|-177|0x010101,64|-168|0x010101", 90, 0, 0, 750, 1334, { orient = 2 })
-        if x ~= -1 then
+		if x ~= -1 then
 			mSleep(500)
 			randomTap(x, y, 4)
 			mSleep(500)
 			toast("定位服务未开启2", 1)
 			mSleep(500)
-        end
-	
-	    self:timeOutRestart(t1)
-	    mSleep(1000)
+		end
+
+		self:timeOutRestart(t1)
+		mSleep(1000)
 	end
 
 	if searchFriend == "0" then
 		t1 = ts.ms()
 		while true do
-		   	--更多
-    		mSleep(200)
-    		x,y = findMultiColorInRegionFuzzy( 0x323333, "6|0|0x323333,12|0|0x323333,-3|-26|0x565656,37|-26|0x565656,54|-20|0xfdfcfd,-32|-20|0xfdfcfd", 100, 0, 0, 749, 1333)
-    		if x~=-1 and y~=-1 then
-    			mSleep(500)
-    			randomTap(x + 10, y - 10, 4)
-    			mSleep(1000)
-    			randomTap(x + 10, y - 10, 4)
-    			mSleep(500)
-    			toast("更多",1)
-    			mSleep(500)
-    		end
-    		
-		    --绑定手机
-    		mSleep(200)
-    		x,y = findMultiColorInRegionFuzzy( 0x303031, "-11|-11|0x303031,12|-11|0x303031,-11|13|0x303031,12|12|0x303031,-1|11|0xffffff,-389|571|0x4ebbfb,-72|572|0x4ebbfb", 90, 0, 0, 749, 1333)
-    		if x ~= -1 then
-    			mSleep(500)
-    			randomTap(x, y, 4)
-    			mSleep(500)
-    			toast("绑定手机", 1)
-    			mSleep(500)
-    		end
-    		
-    	    --绑定手机
-    		mSleep(200)
-    		x,y = findMultiColorInRegionFuzzy(0x323232, "13|6|0x323232,17|10|0x323232,32|8|0x323232,47|8|0x323232,-355|93|0x323232,-344|94|0x323232,-305|99|0x323232,-255|101|0x323232,-233|96|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
-            if x ~= -1 then
-    			mSleep(500)
-    			randomTap(x + 10, y + 5, 3)
-    			mSleep(500)
-    			toast("绑定手机2", 1)
-    			mSleep(500)
-    		end
-    		
-    		--更多
-    		mSleep(200)
-    		x,y = findMultiColorInRegionFuzzy( 0x323333, "6|0|0x323333,12|0|0x323333,-3|-26|0x565656,37|-26|0x565656,54|-20|0xfdfcfd,-32|-20|0xfdfcfd", 100, 0, 0, 749, 1333)
-    		if x~=-1 and y~=-1 then
-    			mSleep(500)
-    			randomTap(x + 10, y - 10, 4)
-    			mSleep(1000)
-    		end
-		
+			--更多
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy( 0x323333, "6|0|0x323333,12|0|0x323333,-3|-26|0x565656,37|-26|0x565656,54|-20|0xfdfcfd,-32|-20|0xfdfcfd", 100, 0, 0, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(500)
+				randomTap(x + 10, y - 10, 4)
+				mSleep(1000)
+				randomTap(x + 10, y - 10, 4)
+				mSleep(500)
+				toast("更多",1)
+				mSleep(500)
+			end
+
+			--绑定手机
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy( 0x303031, "-11|-11|0x303031,12|-11|0x303031,-11|13|0x303031,12|12|0x303031,-1|11|0xffffff,-389|571|0x4ebbfb,-72|572|0x4ebbfb", 90, 0, 0, 749, 1333)
+			if x ~= -1 then
+				mSleep(500)
+				randomTap(x, y, 4)
+				mSleep(500)
+				toast("绑定手机", 1)
+				mSleep(500)
+			end
+
+			--绑定手机
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy(0x323232, "13|6|0x323232,17|10|0x323232,32|8|0x323232,47|8|0x323232,-355|93|0x323232,-344|94|0x323232,-305|99|0x323232,-255|101|0x323232,-233|96|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+			if x ~= -1 then
+				mSleep(500)
+				randomTap(x + 10, y + 5, 3)
+				mSleep(500)
+				toast("绑定手机2", 1)
+				mSleep(500)
+			end
+
+			--更多
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy( 0x323333, "6|0|0x323333,12|0|0x323333,-3|-26|0x565656,37|-26|0x565656,54|-20|0xfdfcfd,-32|-20|0xfdfcfd", 100, 0, 0, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(500)
+				randomTap(x + 10, y - 10, 4)
+				mSleep(1000)
+			end
+
 			--好友
 			mSleep(200)
 			x,y = findMultiColorInRegionFuzzy( 0xb0b0b0, "2|12|0xaaaaaa,23|2|0xaaaaaa,24|7|0xafafaf,83|3|0xffffff,205|8|0xaaaaaa,360|12|0xaaaaaa,556|7|0xaaaaaa,589|-15|0xffffff", 90, 0, 0, 749, 1333)
@@ -1288,29 +1354,29 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			mSleep(200)
 			if getColor(678,   83) == 0xffffff or getColor(678,  131) == 0xffffff then
 				while (true) do
-				    mSleep(200)
-				    if getColor(678,   83) == 0xffffff then
-    					mSleep(2000)
-    					randomTap(55,   82, 4)
-    					mSleep(500)
-    				elseif getColor(678,  131) == 0xffffff then
-    					mSleep(2000)
-    					randomTap(55,   128, 4)
-    					mSleep(500)
-    				else
-    					mSleep(2000)
-    					randomTap(55,   128, 4)
-    					mSleep(500)
-    				end
-    				
-    				mSleep(200)
+					mSleep(200)
+					if getColor(678,   83) == 0xffffff then
+						mSleep(2000)
+						randomTap(55,   82, 4)
+						mSleep(500)
+					elseif getColor(678,  131) == 0xffffff then
+						mSleep(2000)
+						randomTap(55,   128, 4)
+						mSleep(500)
+					else
+						mSleep(2000)
+						randomTap(55,   128, 4)
+						mSleep(500)
+					end
+
+					mSleep(200)
 					if getColor(678,   83) == 0x323333 then
 						mSleep(500)
 						break
 					end
 				end
-                
-                t1 = ts.ms()
+
+				t1 = ts.ms()
 				while (true) do
 					mSleep(200)
 					if getColor(678,   83) == 0x323333 then
@@ -1340,7 +1406,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 							mSleep(500)
 						end
 					end
-					
+
 					self:timeOutRestart(t1)
 					mSleep(1000)
 				end
@@ -1354,19 +1420,19 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 	if changeHeader == "0" then
 		t1 = ts.ms()
 		while true do
-		    --更多
-    		mSleep(200)
-    		x,y = findMultiColorInRegionFuzzy( 0x323333, "6|0|0x323333,12|0|0x323333,-3|-26|0x565656,37|-26|0x565656,54|-20|0xfdfcfd,-32|-20|0xfdfcfd", 100, 0, 0, 749, 1333)
-    		if x~=-1 and y~=-1 then
-    			mSleep(500)
-    			randomTap(x + 10, y - 10, 4)
-    			mSleep(1000)
-    			randomTap(x + 10, y - 10, 4)
-    			mSleep(500)
-    			toast("更多",1)
-    			mSleep(500)
-    		end
-    		
+			--更多
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy( 0x323333, "6|0|0x323333,12|0|0x323333,-3|-26|0x565656,37|-26|0x565656,54|-20|0xfdfcfd,-32|-20|0xfdfcfd", 100, 0, 0, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(500)
+				randomTap(x + 10, y - 10, 4)
+				mSleep(1000)
+				randomTap(x + 10, y - 10, 4)
+				mSleep(500)
+				toast("更多",1)
+				mSleep(500)
+			end
+
 			--个人资料
 			mSleep(200)
 			x,y = findMultiColorInRegionFuzzy( 0xaaaaaa, "30|-11|0xaaaaaa,68|-15|0xaaaaaa,62|-4|0xaaaaaa,69|0|0xaaaaaa,52|0|0xaaaaaa,84|-3|0xaaaaaa,101|-3|0xaaaaaa,17|-7|0xffffff,-82|-5|0xffffff", 90, 0, 0, 749, 1333)
@@ -1622,11 +1688,11 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 	if AMG.Rename(old_name, new_name) == true then
 		toast("重命名当前记录 " .. old_name .. " 为 " .. new_name, 3)
 	end
-	
+
 	table.remove(self.qqList, 1)
-    writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
-    mSleep(1000)
-    
+	writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+	mSleep(1000)
+
 	::over::
 end
 
@@ -1736,13 +1802,26 @@ function model:main()
 				["list"] = "换头像,不换头像",
 				["select"] = "0",
 				["countperline"] = "4"
+			},
+			{
+				["type"] = "Label",
+				["text"] = "昵称类型选择",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255"
+			},
+			{
+				["type"] = "RadioGroup",
+				["list"] = "正常,偏女性化",
+				["select"] = "0",
+				["countperline"] = "4"
 			}
 		}
 	}
 
 	local MyJsonString = json.encode(MyTable)
 
-	ret, password, sex, searchFriend, searchAccount, changeHeader = showUI(MyJsonString)
+	ret, password, sex, searchFriend, searchAccount, changeHeader, nikcNameType = showUI(MyJsonString)
 	if ret == 0 then
 		dialog("取消运行脚本", 3)
 		luaExit()
@@ -1762,8 +1841,8 @@ function model:main()
 		closeApp(self.mm_bid, 0)
 		setVPNEnable(false)
 		mSleep(1000)
-        
-        changeHeader = "1"
+
+		changeHeader = "1"
 		if changeHeader == "0" then
 			clearAllPhotos()
 			mSleep(500)
@@ -1772,21 +1851,21 @@ function model:main()
 			fileName = self:downImage()
 			toast(fileName, 1)
 			mSleep(1000)
-            
-	--		saveImageToAlbum(fileName)
+
+			--		saveImageToAlbum(fileName)
 			saveImageToAlbum(userPath() .. "/res/picFile/" .. fileName)
 			mSleep(500)
-	--		saveImageToAlbum(fileName)
+			--		saveImageToAlbum(fileName)
 			saveImageToAlbum(userPath() .. "/res/picFile/" .. fileName)
 			mSleep(2000)
-            
-	--		self:deleteImage(fileName)
+
+			--		self:deleteImage(fileName)
 			self:deleteImage(userPath() .. "/res/picFile/" .. fileName)
 		end
 
 		self:vpn()
 		self:newMMApp()
-		self:mm(password, sex, searchFriend, searchAccount, changeHeader)
+		self:mm(password, sex, searchFriend, searchAccount, changeHeader, nikcNameType)
 	end
 end
 

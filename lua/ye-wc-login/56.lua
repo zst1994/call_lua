@@ -853,7 +853,7 @@ function model:idCard(countryCode)
 
 --		mSleep(500)
 --		if getColor(90,1267) == 0x7c160 or getColor(654,1279) == 0x7c160 then
---			toast("微信",1)
+--			toast("wwxx",1)
 --			break
 --		else
 --			mSleep(500)
@@ -2593,7 +2593,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			mSleep(500)
 			randomsTap(390,822,5)
 			mSleep(500)
-			toast("拒收微信登录",1)
+			toast("拒收wwxx登录",1)
 			tiaoma_next = true
 			goto kq
 		end
@@ -4356,7 +4356,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			x, y = findMultiColorInRegionFuzzy(0x576b95,"28|-1|0x576b95,-84|141|0x36030,164|141|0x36030,-208|-180|0,-121|-230|0", 90, 0, 0, 749,  1333)
 			if x~=-1 and y~=-1 then
 				mSleep(math.random(500, 700))
-				toast("手机号近期注册过微信",1)
+				toast("手机号近期注册过wwxx",1)
 				break
 			end
 
@@ -4595,7 +4595,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				mSleep(math.random(500, 700))
 				randomsTap(x,y,8)
 				mSleep(math.random(500, 700))
-				toast("手机号近期注册过微信",1)
+				toast("手机号近期注册过wwxx",1)
 				self:sendServerStatus(telphone,"最近注册")
 				goto over
 			end
@@ -4715,7 +4715,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				mSleep(math.random(500, 700))
 				randomsTap(653,1278,6)
 				mSleep(math.random(500, 700))
-				toast("微信界面",1)
+				toast("wwxx界面",1)
 				data_six_two = true
 				break
 			end
@@ -4749,7 +4749,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		--					mSleep(math.random(1000, 1700))
 		--					randomsTap(513,833,6)
 		--					mSleep(math.random(500, 700))
-		--					toast("通过siri打开微信",1)
+		--					toast("通过siri打开wwxx",1)
 		--				end
 		--			end
 
@@ -4911,7 +4911,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				F:close()
 			end
 
-			function getData() --获取62数据 (可以用的)
+			function getData() --获取six-two-data (可以用的)
 				local getList = function(path) 
 					local a = io.popen("ls "..path) 
 					local f = {}; 
