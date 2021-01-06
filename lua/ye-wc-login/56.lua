@@ -9,7 +9,7 @@ model.wc_name			= ""
 model.wc_file			= ""
 model.awz_bid 			= ""
 model.awz_newUrl        = ""
-model.awz_getparam      = "http://127.0.0.1:1688/cmd?fun=getcurrentrecordparam"
+model.awz_getparam      = ""
 
 model.newIndex          = "0"
 
