@@ -2963,13 +2963,15 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					data = strSplit(urlDecoder(res), "|")
 					if data[1] == "1" then
 						toast("释放号码成功",1)
+					elseif data[2] == "手机号不存在" then
+					    toast(data[2],1)
 					else
-						toast("释放号码失败，重新释放："..res,1)
+						toast("释放号码失败，重新释放："..tostring(res),1)
 						mSleep(5000)
 						goto open_phone
 					end
 				else
-					toast("释放号码失败，重新释放",1)
+					toast("释放号码失败，重新释放"..tostring(res),1)
 					mSleep(5000)
 					goto open_phone
 				end
@@ -2983,6 +2985,8 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					data = strSplit(urlDecoder(res), "|")
 					if data[1] == "1" then
 						toast("拉黑手机号码",1)
+					elseif data[2] == "手机号不存在" then
+					    toast(data[2],1)
 					else
 						toast("拉黑失败"..tostring(res),1)
 						mSleep(2000)
@@ -4263,7 +4267,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				mSleep(500)
 				if code == 200 then
 					data = strSplit(urlDecoder(res), "|")
-					if data[1] == "1" then
+					if data[1] == "1" and string.match(data[2],"%d%d%d%d%d%d") then
 						mess_yzm = string.match(data[2],"%d%d%d%d%d%d")
 					else
 						toast("暂未查询到验证码，请稍后再试"..get_time,1)
@@ -4320,13 +4324,15 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 									data = strSplit(urlDecoder(res), "|")
 									if data[1] == "1" then
 										toast("释放号码成功",1)
+									elseif data[2] == "手机号不存在" then
+					                    toast(data[2],1)
 									else
-										toast("释放号码失败，重新释放："..res,1)
+										toast("释放号码失败，重新释放："..tostring(res),1)
 										mSleep(5000)
 										goto open_phone
 									end
 								else
-									toast("释放号码失败，重新释放",1)
+									toast("释放号码失败，重新释放"..tostring(res),1)
 									mSleep(5000)
 									goto open_phone
 								end
@@ -4340,6 +4346,8 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 									data = strSplit(urlDecoder(res), "|")
 									if data[1] == "1" then
 										toast("拉黑手机号码",1)
+									elseif data[2] == "手机号不存在" then
+					                    toast(data[2],1)
 									else
 										toast("拉黑失败"..tostring(res),1)
 										mSleep(2000)
