@@ -313,7 +313,6 @@ function model:vpn()
 	setVPNEnable(true)
 	mSleep(1000*3)
 
-	::ip_addresss::
 	local sz = require("sz");
 	local szhttp = require("szocket.http")
 	local res, code = szhttp.request("http://myip.ipip.net/")
@@ -322,7 +321,11 @@ function model:vpn()
 	else
 		toast("请求ip位置失败："..tostring(res),1)
 		mSleep(1000)
-		goto ip_addresss
+		setVPNEnable(false)
+		mSleep(math.random(2000, 2500))
+		self:changeGWIP(ip_userName,ip_country)
+		mSleep(1000)
+		goto get_vpn
 	end
 
 --	new_data = getNetIP() --获取IP 
@@ -867,42 +870,42 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 					end
 				end
 			elseif api_change == "2" or api_change == "10" or api_change == "12" then
---				if aodi_bool then
---				::file_bool::
---				bool = self:file_exists(userPath().."/res/phone_data.txt")
---				if bool then
---					phone_data = readFile(userPath().."/res/phone_data.txt")
---					toast(phone_data[1],1)
---					if type(phone_data[1]) ~= "nil" then
---						mobile = phone_data[1]
---						toast("号码文件有号码",1)
---						::get_phone::
---						local sz = require("sz")        --登陆
---						local szhttp = require("szocket.http")
---						local res, code = szhttp.request("http://web.lyf5.com/yhapi.ashx?act=getPhone&token="..phone_token.."&iid="..work_id.."&mobile="..mobile)
---						mSleep(500)
---						if code == 200 then
---							data = strSplit(res, "|")
---							if data[1] == "1" then
---								telphone = data[5]
---								pid = data[2]
---							else
---								toast("获取手机号码失败，重新获取:"..tostring(res),1)
---								mSleep(1000)
---								goto get_phone
---							end
---						else
---							toast("获取手机号码失败，重新获取:"..tostring(res),1)
---							mSleep(1000)
---							goto get_phone
---						end
---					end
---				else
---					toast("文件不存在，创建文件",1)
---					writeFileString(userPath().."/res/phone_data.txt","","w",0)
---					goto file_bool
---				end
---				end
+				--				if aodi_bool then
+				--				::file_bool::
+				--				bool = self:file_exists(userPath().."/res/phone_data.txt")
+				--				if bool then
+				--					phone_data = readFile(userPath().."/res/phone_data.txt")
+				--					toast(phone_data[1],1)
+				--					if type(phone_data[1]) ~= "nil" then
+				--						mobile = phone_data[1]
+				--						toast("号码文件有号码",1)
+				--						::get_phone::
+				--						local sz = require("sz")        --登陆
+				--						local szhttp = require("szocket.http")
+				--						local res, code = szhttp.request("http://web.lyf5.com/yhapi.ashx?act=getPhone&token="..phone_token.."&iid="..work_id.."&mobile="..mobile)
+				--						mSleep(500)
+				--						if code == 200 then
+				--							data = strSplit(res, "|")
+				--							if data[1] == "1" then
+				--								telphone = data[5]
+				--								pid = data[2]
+				--							else
+				--								toast("获取手机号码失败，重新获取:"..tostring(res),1)
+				--								mSleep(1000)
+				--								goto get_phone
+				--							end
+				--						else
+				--							toast("获取手机号码失败，重新获取:"..tostring(res),1)
+				--							mSleep(1000)
+				--							goto get_phone
+				--						end
+				--					end
+				--				else
+				--					toast("文件不存在，创建文件",1)
+				--					writeFileString(userPath().."/res/phone_data.txt","","w",0)
+				--					goto file_bool
+				--				end
+				--				end
 
 				if api_change == "10" then
 					getPhoneCode_url = "http://web.jiaotai56.com/yhapi.ashx?act=getPhoneCode&token="..phone_token.."&iid="..work_id.."&mobile="..telphone
@@ -935,7 +938,7 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 								elseif api_change == "2" then
 									black_url = "http://web.lyf5.com/yhapi.ashx?act=addBlack&token="..phone_token.."&pid="..pid.."&reason="..urlEncoder("获取失败")
 								elseif api_change == "12" then
-			                        black_url = "http://api.hegrace-safex.cn/yhapi.ashx?act=addBlack&token="..phone_token.."&pid="..pid.."&reason="..urlEncoder("获取失败")
+									black_url = "http://api.hegrace-safex.cn/yhapi.ashx?act=addBlack&token="..phone_token.."&pid="..pid.."&reason="..urlEncoder("获取失败")
 								end
 
 								status = 2
@@ -949,10 +952,10 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 									if data[1] == "1" then
 										toast("拉黑手机号码",1)
 									elseif data[2] == "-5" then
-                        			    if api_change == "12" then
-                        					black_url = "http://api.hegrace-safex.cn/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
-                        					goto addblack
-                        				end
+										if api_change == "12" then
+											black_url = "http://api.hegrace-safex.cn/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
+											goto addblack
+										end
 									else
 										goto addblack
 									end
@@ -1538,7 +1541,7 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 							yzm_bool = true
 							toast(yzm_mess,1)
 							mSleep(1000)
-							
+
 							if api_change == "11" then
 								url = "http://cucumber.bid/bbq-cu-api/push/redemption?token="..tokens.."&feedbackType=A&serialNumber="..serialNumber.."&description=success"..telphone
 							end
@@ -1674,7 +1677,7 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 				if login_times == "1" then
 					if gn and not tiaoma_bool then
 						mSleep(2000)
---						self:change_GNvpn()
+						--						self:change_GNvpn()
 						mSleep(1000)
 						gn = false
 					end
@@ -1781,9 +1784,9 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 						dialog("注册异常",0)
 						mSleep(1000)
 						lua_restart()
---						login_error = true
---						toast("注册异常",1)
---						break
+						--						login_error = true
+						--						toast("注册异常",1)
+						--						break
 					end
 				end
 
@@ -2329,7 +2332,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			end
 		end
 	else
--- 		if data_sel[1] == "0" then
+		-- 		if data_sel[1] == "0" then
 		while (true) do
 			mSleep(math.random(500, 700))
 			x,y = findMultiColorInRegionFuzzy( 0x07c160, "171|-1|0x07c160,57|-5|0xffffff,-163|-3|0xf2f2f2,-411|1|0xf2f2f2,-266|-6|0x06ae56", 90, 0, 0, 749, 1333)
@@ -2347,23 +2350,23 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				goto run_app
 			end
 		end
--- 		else
--- 			while true do
--- 				mSleep(math.random(500, 700))
--- 				if getColor(561,1265) == 0x576b95 then
--- 					mSleep(math.random(500, 700))
--- 					randomsTap(542,1273,3)
--- 					mSleep(math.random(500, 700))
--- 				end
+		-- 		else
+		-- 			while true do
+		-- 				mSleep(math.random(500, 700))
+		-- 				if getColor(561,1265) == 0x576b95 then
+		-- 					mSleep(math.random(500, 700))
+		-- 					randomsTap(542,1273,3)
+		-- 					mSleep(math.random(500, 700))
+		-- 				end
 
--- 				if getColor(393,1170) == 0 then
--- 					mSleep(math.random(500, 700))
--- 					randomsTap(393,1170,3)
--- 					mSleep(math.random(500, 700))
--- 					break
--- 				end
--- 			end
--- 		end
+		-- 				if getColor(393,1170) == 0 then
+		-- 					mSleep(math.random(500, 700))
+		-- 					randomsTap(393,1170,3)
+		-- 					mSleep(math.random(500, 700))
+		-- 					break
+		-- 				end
+		-- 			end
+		-- 		end
 	end
 
 	::start::
@@ -3256,10 +3259,10 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					if data[1] == "1" then
 						toast("拉黑手机号码",1)
 					elseif data[2] == "-5" then
-        			    if api_change == "12" then
-        					black_url = "http://api.hegrace-safex.cn/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
-        					goto addblack
-        				end
+						if api_change == "12" then
+							black_url = "http://api.hegrace-safex.cn/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
+							goto addblack
+						end
 					else
 						goto addblack
 					end
@@ -3537,10 +3540,10 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					if data[1] == "1" then
 						toast("拉黑手机号码",1)
 					elseif data[2] == "-5" then
-        			    if api_change == "12" then
-        					black_url = "http://api.hegrace-safex.cn/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
-        					goto addblack
-        				end
+						if api_change == "12" then
+							black_url = "http://api.hegrace-safex.cn/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
+							goto addblack
+						end
 					else
 						goto addblack
 					end
@@ -3675,10 +3678,10 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					if data[1] == "1" then
 						toast("拉黑手机号码",1)
 					elseif data[2] == "-5" then
-        			    if api_change == "12" then
-        					black_url = "http://api.hegrace-safex.cn/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
-        					goto addblack
-        				end
+						if api_change == "12" then
+							black_url = "http://api.hegrace-safex.cn/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
+							goto addblack
+						end
 					else
 						goto addblack
 					end
@@ -4084,10 +4087,10 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 							if data[1] == "1" then
 								toast("拉黑手机号码",1)
 							elseif data[2] == "-5" then
-							    if api_change == "12" then
-        							black_url = "http://api.hegrace-safex.cn/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
-        							goto addblack
-        						end
+								if api_change == "12" then
+									black_url = "http://api.hegrace-safex.cn/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
+									goto addblack
+								end
 							else
 								goto addblack
 							end
@@ -6167,10 +6170,10 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					if data[1] == "1" then
 						toast("拉黑手机号码",1)
 					elseif data[2] == "-5" then
-        			    if api_change == "12" then
-        					black_url = "http://api.hegrace-safex.cn/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
-        					goto addblack
-        				end
+						if api_change == "12" then
+							black_url = "http://api.hegrace-safex.cn/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
+							goto addblack
+						end
 					else
 						goto addblack
 					end
@@ -6259,27 +6262,27 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 end
 
 function model:replace_file(fileName)
-    appPath = appBundlePath(self.wc_bid);  
+	appPath = appBundlePath(self.wc_bid);  
 
-    local file = io.open(userPath().."/res/info/"..fileName,"rb") 
-    if file then 
-    	local str = file:read("*a") 
-    	file:close()
-    
-    	local file = io.open(appPath.."/Info.plist", 'wb');
-    	file:write(str)
-    	file:close();
-    	
-    	::writeAgain::
-    	bool = writeFileString(userPath().."/res/info/wc_version.txt",fileName,"w") --将 string 内容存入文件，成功返回 true
-        if bool then
-            toast("版本号存储成功，替换文件成功",1)
-        	mSleep(1000)
-        else
-            toast("写入失败", 1)
-            goto writeAgain
-        end
-    end
+	local file = io.open(userPath().."/res/info/"..fileName,"rb") 
+	if file then 
+		local str = file:read("*a") 
+		file:close()
+
+		local file = io.open(appPath.."/Info.plist", 'wb');
+		file:write(str)
+		file:close();
+
+		::writeAgain::
+		bool = writeFileString(userPath().."/res/info/wc_version.txt",fileName,"w") --将 string 内容存入文件，成功返回 true
+		if bool then
+			toast("版本号存储成功，替换文件成功",1)
+			mSleep(1000)
+		else
+			toast("写入失败", 1)
+			goto writeAgain
+		end
+	end
 end
 
 function model:main()
@@ -6473,24 +6476,24 @@ function model:main()
 			elseif vpn_country == "3" then
 				self:service_GNvpn()
 			end
-			
+
 			if replaceFile ~= "0" then
-    			local bool = isFileExist(userPath().."/res/info/wc_version.txt")
-                if bool then
-                    txt = readFileString(userPath().."/res/info/wc_version.txt")--读取文件内容，返回全部内容的 string
-                    if txt then
-                        toast("当前版本号："..txt, 1)
-                        mSleep(1000)
-                    end
-                end
-    			
-    			if replaceFile == "1" then
-    			    file_name = "715.plist"
-    			    self:replace_file(file_name)
-    			elseif replaceFile == "2" then
-    			    file_name = "717.plist"
-    			    self:replace_file(file_name)
-    			end
+				local bool = isFileExist(userPath().."/res/info/wc_version.txt")
+				if bool then
+					txt = readFileString(userPath().."/res/info/wc_version.txt")--读取文件内容，返回全部内容的 string
+					if txt then
+						toast("当前版本号："..txt, 1)
+						mSleep(1000)
+					end
+				end
+
+				if replaceFile == "1" then
+					file_name = "715.plist"
+					self:replace_file(file_name)
+				elseif replaceFile == "2" then
+					file_name = "717.plist"
+					self:replace_file(file_name)
+				end
 			end
 
 			if login_times == "1" then
@@ -6674,7 +6677,7 @@ function beforeUserExit()
 			if data[1] == "1" then
 				toast("拉黑手机号码",1)
 			elseif data[2] == "-5" then
-			    if api_change == "12" then
+				if api_change == "12" then
 					black_url = "http://api.hegrace-safex.cn/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
 					goto addblack
 				end

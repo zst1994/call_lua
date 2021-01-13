@@ -1,3 +1,4 @@
+--夜
 require "TSLib"
 local ts 				= require('ts')
 local json 				= ts.json
@@ -220,48 +221,48 @@ function model:clear_App()
 			goto run_again
 		end
 	end
-    
-    if self.newIndex == "0" then
-    	::new_phone::
-    	local sz = require("sz");
-    	local http = require("szocket.http")
-    	local res, code = http.request(self.awz_newUrl)
-    	if code == 200 then
-    		local resJson = sz.json.decode(res)
-    		local result = resJson.result
-    		if result == 3 then
-    			toast("newApp成功，不过ip重复了",1)
-    			mSleep(1000)
-    			if connect_vpn == "0" then
-    				self:vpn()
-    			end
-    		elseif result == 1 then
-    			toast("成功",1)
-    		else 
-    			toast("失败，请手动查看问题", 1)
-    			mSleep(4000)
-    			goto new_phone
-    		end
-    	end
-    else
-        ::getcurrentrecordparam::
-    	local sz = require("sz");
-    	local http = require("szocket.http")
-    	local res, code = http.request(self.awz_getparam)
-    	if code == 200 then
-    		local resJson = sz.json.decode(res)
-    		local result = resJson.result
-    		if result == 1 then
-    			toast("数据保存成功",1)
-    			mSleep(1000)
-    			self.newIndex = "0"
-    		else 
-    			toast("失败，请手动查看问题", 1)
-    			mSleep(4000)
-    			goto getcurrentrecordparam
-    		end
-    	end
-    end
+
+	if self.newIndex == "0" then
+		::new_phone::
+		local sz = require("sz");
+		local http = require("szocket.http")
+		local res, code = http.request(self.awz_newUrl)
+		if code == 200 then
+			local resJson = sz.json.decode(res)
+			local result = resJson.result
+			if result == 3 then
+				toast("newApp成功，不过ip重复了",1)
+				mSleep(1000)
+				if connect_vpn == "0" then
+					self:vpn()
+				end
+			elseif result == 1 then
+				toast("成功",1)
+			else 
+				toast("失败，请手动查看问题", 1)
+				mSleep(4000)
+				goto new_phone
+			end
+		end
+	else
+		::getcurrentrecordparam::
+		local sz = require("sz");
+		local http = require("szocket.http")
+		local res, code = http.request(self.awz_getparam)
+		if code == 200 then
+			local resJson = sz.json.decode(res)
+			local result = resJson.result
+			if result == 1 then
+				toast("数据保存成功",1)
+				mSleep(1000)
+				self.newIndex = "0"
+			else 
+				toast("失败，请手动查看问题", 1)
+				mSleep(4000)
+				goto getcurrentrecordparam
+			end
+		end
+	end
 end
 
 function model:get_hkUrl(country_num)
@@ -899,27 +900,27 @@ function model:sendServerStatus(telphone,status)
 end
 
 function model:replace_file(fileName)
-    appPath = appBundlePath(self.wc_bid);  
+	appPath = appBundlePath(self.wc_bid);  
 
-    local file = io.open(userPath().."/res/info/"..fileName,"rb") 
-    if file then 
-    	local str = file:read("*a")
-    	file:close()
-    
-    	local file = io.open(appPath.."/Info.plist", 'wb');
-    	file:write(str)
-    	file:close();
-    	
-    	::writeAgain::
-    	bool = writeFileString(userPath().."/res/info/wc_version.txt",fileName,"w") --将 string 内容存入文件，成功返回 true
-        if bool then
-            toast("版本号存储成功，替换文件成功",1)
-        	mSleep(1000)
-        else
-            toast("写入失败", 1)
-            goto writeAgain
-        end
-    end
+	local file = io.open(userPath().."/res/info/"..fileName,"rb") 
+	if file then 
+		local str = file:read("*a")
+		file:close()
+
+		local file = io.open(appPath.."/Info.plist", 'wb');
+		file:write(str)
+		file:close();
+
+		::writeAgain::
+		bool = writeFileString(userPath().."/res/info/wc_version.txt",fileName,"w") --将 string 内容存入文件，成功返回 true
+		if bool then
+			toast("版本号存储成功，替换文件成功",1)
+			mSleep(1000)
+		else
+			toast("写入失败", 1)
+			goto writeAgain
+		end
+	end
 end
 
 function model:wc(ksUrl,move_type,operator,login_times,content_user,content_country,content_type,vpn_stauts,phone_token,kn_country,kn_id,countryId,nickName,password,country_len,login_type,addBlack,diff_user,ran_pass,ddwGet,airplaneStatus,connect_vpn,EU_countries,tmFailBack)
@@ -1554,14 +1555,14 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			goto get_phone
 		end
 	elseif vpn_stauts == "17" then
-	    ::get_token::
-        local sz = require("sz")        --登陆
+		::get_token::
+		local sz = require("sz")        --登陆
 		local http = require("szocket.http")
 		local res, code = http.request("http://117.149.243.6:82/api/yonghu_login/type=1&username=huqianjin&password=huqianjin")
-            if code == 200 then
+		if code == 200 then
 			data = strSplit(urlDecoder(res), "|")
 			if data[1] == "成功" then
-			    server_token = data[2]
+				server_token = data[2]
 				toast(server_token,1)
 			else
 				toast("获取token失败，重新获取",1)
@@ -1572,41 +1573,41 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			toast("获取token失败，重新获取",1)
 			mSleep(1000)
 			goto get_token
-        end
-	
-	    ::get_balane::
-        local sz = require("sz")        --登陆
+		end
+
+		::get_balane::
+		local sz = require("sz")        --登陆
 		local http = require("szocket.http")
 		local res, code = http.request("http://117.149.243.6:889/api/xhqyhzb/&lx=3&token="..server_token)
-            if code == 200 then
+		if code == 200 then
 			data = strSplit(urlDecoder(res), "|")
 			if data[1] == "成功" then
-			    if tonumber(data[2]) > 1 then
-				    toast(data[2],1)
+				if tonumber(data[2]) > 1 then
+					toast(data[2],1)
 				else
-				    toast("当前余额不足1块",1)
-				    mSleep(500)
-			    end
+					toast("当前余额不足1块",1)
+					mSleep(500)
+				end
 			else
-				toast("获取token失败，重新获取",1)
+				toast("获取用户信息失败，重新获取",1)
 				mSleep(1000)
 				goto get_balane
 			end
 		else
-			toast("获取token失败，重新获取",1)
+			toast("获取用户信息失败，重新获取",1)
 			mSleep(1000)
 			goto get_balane
-        end
-    
-        ::get_phone::
-        local sz = require("sz")        --登陆
+		end
+
+		::get_phone::
+		local sz = require("sz")        --登陆
 		local http = require("szocket.http")
 		local res, code = http.request("http://117.149.243.6:84/api/shouduanxin_zaixianhaoma_plpt/xmid=02121-SMNAIV&xzgj=马来西亚&glhmd=1&qhsl=1&token="..server_token)
-            if code == 200 then
+		if code == 200 then
 			data = strSplit(urlDecoder(res), "|")
 			if data[1] == "成功" then
-			    telphone = data[2]
-			    toast(telphone,1)
+				telphone = data[2]
+				toast(telphone,1)
 			else
 				toast("获取手机号码失败，重新获取",1)
 				mSleep(1000)
@@ -1616,7 +1617,71 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			toast("获取手机号码失败，重新获取",1)
 			mSleep(1000)
 			goto get_phone
-        end
+		end
+	elseif vpn_stauts == "18" then
+		::get_token::
+		local sz = require("sz")        --登陆
+		local http = require("szocket.http")
+		local res, code = http.request("http://149.28.132.39/api/do.php?action=loginIn&name=api-73-slU1q6j&password=huqianjin")
+		if code == 200 then
+			data = strSplit(urlDecoder(res), "|")
+			if data[1] == "1" then
+				server_token = data[2]
+				toast(server_token,1)
+			else
+				toast("获取token失败，重新获取",1)
+				mSleep(1000)
+				goto get_token
+			end
+		else
+			toast("获取token失败，重新获取",1)
+			mSleep(1000)
+			goto get_token
+		end
+
+		::get_balane::
+		local sz = require("sz")        --登陆
+		local http = require("szocket.http")
+		local res, code = http.request("http://149.28.132.39/api/do.php?action=getSummary&token="..server_token)
+		if code == 200 then
+			data = strSplit(urlDecoder(res), "|")
+			if data[1] == "1" then
+				if tonumber(data[2]) > 1 then
+					toast(data[2],1)
+				else
+					toast("当前余额不足1块",1)
+					mSleep(500)
+				end
+			else
+				toast("获取用户信息失败，重新获取",1)
+				mSleep(1000)
+				goto get_balane
+			end
+		else
+			toast("获取用户信息失败，重新获取",1)
+			mSleep(1000)
+			goto get_balane
+		end
+
+		::get_phone::
+		local sz = require("sz")        --登陆
+		local http = require("szocket.http")
+		local res, code = http.request("http://149.28.132.39/api/do.php?action=getPhone&sid="..kn_id.."&token="..server_token)
+		if code == 200 then
+			data = strSplit(urlDecoder(res), "|")
+			if data[1] == "1" then
+				telphone = data[2]
+				toast(telphone,1)
+			else
+				toast("获取手机号码失败，重新获取",1)
+				mSleep(1000)
+				goto get_phone
+			end
+		else
+			toast("获取手机号码失败，重新获取",1)
+			mSleep(1000)
+			goto get_phone
+		end
 	else
 		::get_phone::
 		local sz = require("sz")        --登陆
@@ -1650,7 +1715,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		end
 	end
 
-	if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "3" or vpn_stauts == "5" or vpn_stauts == "6" or vpn_stauts == "7" or vpn_stauts == "8" or vpn_stauts == "9" or vpn_stauts == "11" or vpn_stauts == "12" or vpn_stauts == "13" or vpn_stauts == "14" or vpn_stauts == "15" or vpn_stauts == "16" or vpn_stauts == "17" then
+	if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "3" or vpn_stauts == "5" or vpn_stauts == "6" or vpn_stauts == "7" or vpn_stauts == "8" or vpn_stauts == "9" or vpn_stauts == "11" or vpn_stauts == "12" or vpn_stauts == "13" or vpn_stauts == "14" or vpn_stauts == "15" or vpn_stauts == "16" or vpn_stauts == "17" or vpn_stauts == "18" then
 		country_id = kn_country
 	elseif vpn_stauts == "4" or vpn_stauts == "10" then
 		country_id = country_code
@@ -1669,7 +1734,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		mSleep(math.random(200, 300))
 	end
 
-	if vpn_stauts == "1" or vpn_stauts == "3" or vpn_stauts == "4" or vpn_stauts == "6" or vpn_stauts == "10" or vpn_stauts == "11" or vpn_stauts == "17" then
+	if vpn_stauts == "1" or vpn_stauts == "3" or vpn_stauts == "4" or vpn_stauts == "6" or vpn_stauts == "10" or vpn_stauts == "11" or vpn_stauts == "17" or vpn_stauts == "18" then
 		phone = telphone
 	elseif vpn_stauts == "5" or vpn_stauts == "8" or vpn_stauts == "12" or vpn_stauts == "15" then
 		phone = string.sub(telphone, #country_id + 1,#telphone)
@@ -2844,7 +2909,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				goto addblack
 			end
 		elseif vpn_stauts == "17" then
-		    if addBlack == "0" then
+			if addBlack == "0" then
 				::open_phone::
 				mSleep(500)
 				local sz = require("sz")        --登陆
@@ -2874,6 +2939,49 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				if code == 200 then
 					data = strSplit(urlDecoder(res), "|")
 					if data[1] == "成功" then
+						toast("拉黑手机号码",1)
+					else
+						toast("拉黑失败"..tostring(res),1)
+						mSleep(2000)
+						goto addblack
+					end
+				else
+					toast('拉黑失败，重新拉黑'..tostring(res),1)
+					mSleep(3000)
+					goto addblack
+				end
+			end
+		elseif vpn_stauts == "18" then
+			if addBlack == "0" then
+				::open_phone::
+				mSleep(500)
+				local sz = require("sz")        --登陆
+				local http = require("szocket.http")
+				local res, code = http.request("http://149.28.132.39/api/do.php?action=cancelRecv&sid="..kn_id.."&phone="..phone.."&token="..server_token)
+				mSleep(500)
+				if code == 200 then
+					data = strSplit(urlDecoder(res), "|")
+					if data[1] == "1" then
+						toast("释放号码成功",1)
+					else
+						toast("释放号码失败，重新释放："..res,1)
+						mSleep(5000)
+						goto open_phone
+					end
+				else
+					toast("释放号码失败，重新释放",1)
+					mSleep(5000)
+					goto open_phone
+				end
+			else
+				::addblack::
+				local sz = require("sz")        --登陆
+				local http = require("szocket.http")
+				local res, code = http.request("http://149.28.132.39/api/do.php?action=addBlacklist&sid="..kn_id.."&phone="..phone.."&token="..server_token)
+				mSleep(500)
+				if code == 200 then
+					data = strSplit(urlDecoder(res), "|")
+					if data[1] == "1" then
 						toast("拉黑手机号码",1)
 					else
 						toast("拉黑失败"..tostring(res),1)
@@ -4093,47 +4201,156 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 						if restart_time > 1 then
 							if addBlack == "0" then
-                				::open_phone::
-                				mSleep(500)
-                				local sz = require("sz")        --登陆
-                				local http = require("szocket.http")
-                				local res, code = http.request("http://117.149.243.6:86/api/shouduanxin_shifang/xmid=02121-SMNAIV&sjhm="..phone.."&token="..server_token)
-                				mSleep(500)
-                				if code == 200 then
-                					data = strSplit(urlDecoder(res), "|")
-                					if data[1] == "成功" or tostring(string.match(data[1],"已释放但已来码")) ~= "nil" then
-                						toast("释放号码成功",1)
-                					else
-                						toast("释放号码失败，重新释放："..res,1)
-                						mSleep(5000)
-                						goto open_phone
-                					end
-                				else
-                					toast("释放号码失败，重新释放",1)
-                					mSleep(5000)
-                					goto open_phone
-                				end
-                			else
-                				::addblack::
-                				local sz = require("sz")        --登陆
-                				local http = require("szocket.http")
-                				local res, code = http.request("http://117.149.243.6:86/api/shouduanxin_lahei/xmid=02121-SMNAIV&sjhm="..phone.."&token="..server_token)
-                				mSleep(500)
-                				if code == 200 then
-                					data = strSplit(urlDecoder(res), "|")
-                					if data[1] == "成功" or tostring(string.match(data[1],"已拉黑此手机号但已来码")) ~= "nil" then
-                						toast("拉黑手机号码",1)
-                					else
-                						toast("拉黑失败"..tostring(res),1)
-                						mSleep(2000)
-                						goto addblack
-                					end
-                				else
-                					toast('拉黑失败，重新拉黑'..tostring(res),1)
-                					mSleep(3000)
-                					goto addblack
-                				end
-                			end
+								::open_phone::
+								mSleep(500)
+								local sz = require("sz")        --登陆
+								local http = require("szocket.http")
+								local res, code = http.request("http://117.149.243.6:86/api/shouduanxin_shifang/xmid=02121-SMNAIV&sjhm="..phone.."&token="..server_token)
+								mSleep(500)
+								if code == 200 then
+									data = strSplit(urlDecoder(res), "|")
+									if data[1] == "成功" or tostring(string.match(data[1],"已释放但已来码")) ~= "nil" then
+										toast("释放号码成功",1)
+									else
+										toast("释放号码失败，重新释放："..res,1)
+										mSleep(5000)
+										goto open_phone
+									end
+								else
+									toast("释放号码失败，重新释放",1)
+									mSleep(5000)
+									goto open_phone
+								end
+							else
+								::addblack::
+								local sz = require("sz")        --登陆
+								local http = require("szocket.http")
+								local res, code = http.request("http://117.149.243.6:86/api/shouduanxin_lahei/xmid=02121-SMNAIV&sjhm="..phone.."&token="..server_token)
+								mSleep(500)
+								if code == 200 then
+									data = strSplit(urlDecoder(res), "|")
+									if data[1] == "成功" or tostring(string.match(data[1],"已拉黑此手机号但已来码")) ~= "nil" then
+										toast("拉黑手机号码",1)
+									else
+										toast("拉黑失败"..tostring(res),1)
+										mSleep(2000)
+										goto addblack
+									end
+								else
+									toast('拉黑失败，重新拉黑'..tostring(res),1)
+									mSleep(3000)
+									goto addblack
+								end
+							end
+							goto over
+						end
+						goto get_mess
+					end
+				else
+					toast("获取验证码失败:"..tostring(res),1)
+					mSleep(5000)
+					goto get_code
+				end
+			elseif vpn_stauts == "18" then
+				::get_mess::
+				self:sendSMSKQ()
+
+				::get_code::
+				local sz = require("sz")        --登陆
+				local http = require("szocket.http")
+				local res, code = http.request("http://149.28.132.39/api/do.php?action=getMessage&sid="..kn_id.."&phone="..telphone.."&token="..server_token)
+				toast(res,1)
+				mSleep(500)
+				if code == 200 then
+					data = strSplit(urlDecoder(res), "|")
+					if data[1] == "1" then
+						mess_yzm = string.match(data[2],"%d%d%d%d%d%d")
+					else
+						toast("暂未查询到验证码，请稍后再试"..get_time,1)
+						mSleep(2000)
+						get_time = get_time + 1
+						if get_time > 15 then
+							if country_id == "886" then
+								mSleep(500)
+								setVPNEnable(true)
+								mSleep(math.random(2000, 3000))
+								randomsTap(372,  749, 3)
+								mSleep(math.random(1000, 1500))
+								randomsTap(368, 1039,5)
+								mSleep(math.random(5000, 6000))
+								if content_type ~= "3" then
+									setVPNEnable(false)
+								end
+							else
+								if content_type == "1" then
+									mSleep(math.random(2000, 3000))
+									randomsTap(372,  749, 3)
+									mSleep(math.random(1000, 1500))
+									randomsTap(368, 1039,5)
+									mSleep(math.random(5000, 6000))
+								else
+									mSleep(500)
+									setVPNEnable(true)
+									mSleep(math.random(2000, 3000))
+									randomsTap(372,  749, 3)
+									mSleep(math.random(1000, 1500))
+									randomsTap(368, 1039,5)
+									mSleep(math.random(5000, 6000))
+									if content_type ~= "3" then
+										setVPNEnable(false)
+									end
+								end
+							end
+							get_time = 1
+							restart_time = restart_time + 1
+							caozuo_more = true
+							toast("重新获取验证码"..restart_time,1)
+							goto caozuo_more
+						end
+
+						if restart_time > 1 then
+							if addBlack == "0" then
+								::open_phone::
+								mSleep(500)
+								local sz = require("sz")        --登陆
+								local http = require("szocket.http")
+								local res, code = http.request("http://149.28.132.39/api/do.php?action=cancelRecv&sid="..kn_id.."&phone="..phone.."&token="..server_token)
+								mSleep(500)
+								if code == 200 then
+									data = strSplit(urlDecoder(res), "|")
+									if data[1] == "1" then
+										toast("释放号码成功",1)
+									else
+										toast("释放号码失败，重新释放："..res,1)
+										mSleep(5000)
+										goto open_phone
+									end
+								else
+									toast("释放号码失败，重新释放",1)
+									mSleep(5000)
+									goto open_phone
+								end
+							else
+								::addblack::
+								local sz = require("sz")        --登陆
+								local http = require("szocket.http")
+								local res, code = http.request("http://149.28.132.39/api/do.php?action=addBlacklist&sid="..kn_id.."&phone="..phone.."&token="..server_token)
+								mSleep(500)
+								if code == 200 then
+									data = strSplit(urlDecoder(res), "|")
+									if data[1] == "1" then
+										toast("拉黑手机号码",1)
+									else
+										toast("拉黑失败"..tostring(res),1)
+										mSleep(2000)
+										goto addblack
+									end
+								else
+									toast('拉黑失败，重新拉黑'..tostring(res),1)
+									mSleep(3000)
+									goto addblack
+								end
+							end
 							goto over
 						end
 						goto get_mess
@@ -4971,8 +5188,8 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				if tmp.code == 200 then
 					toast(tmp.message,1)
 					mSleep(1000)
-				-- 	self.newIndex = "1"
-				-- 	self:clear_App()
+					-- 	self.newIndex = "1"
+					-- 	self:clear_App()
 				else
 					toast("重新上传",1)
 					mSleep(1000)
@@ -5305,7 +5522,7 @@ function model:main()
 			},
 			{
 				["type"] = "RadioGroup",                    
-				["list"] = "柠檬,卡农注册,奥迪,52,俄罗斯1,东帝汶,服务器取号,俄罗斯2,各国API,老友,SMS,越南,各国API2,奶茶,柠檬2,老司机,水煮鱼,松鼠",
+				["list"] = "柠檬,卡农注册,奥迪,52,俄罗斯1,东帝汶,服务器取号,俄罗斯2,各国API,老友,SMS,越南,各国API2,奶茶,柠檬2,老司机,水煮鱼,松鼠,自用",
 				["select"] = "0",  
 				["countperline"] = "4",
 			},
@@ -5577,35 +5794,35 @@ function model:main()
 		ts_version = ts.version()
 		toast("TSLib版本为："..m.."\r\nts.so版本为："..ts_version,1)
 	end
-	
+
 	if replaceFile == "3" then
-	    if replaceFileVersion == "" or replaceFileVersion == "默认值" then
-    		dialog("替换备用文件版本不能为空，请重新运行脚本设置替换备用文件版本", 3)
-    		luaExit()
-    	end
+		if replaceFileVersion == "" or replaceFileVersion == "默认值" then
+			dialog("替换备用文件版本不能为空，请重新运行脚本设置替换备用文件版本", 3)
+			luaExit()
+		end
 	end
-	
+
 	self:getConfig()
-	
+
 	if replaceFile ~= "0" then
 		local bool = isFileExist(userPath().."/res/info/wc_version.txt")
-        if bool then
-            txt = readFileString(userPath().."/res/info/wc_version.txt")--读取文件内容，返回全部内容的 string
-            if txt then
-                toast("当前版本号："..txt, 1)
-                mSleep(1000)
-            end
-        end
-		
+		if bool then
+			txt = readFileString(userPath().."/res/info/wc_version.txt")--读取文件内容，返回全部内容的 string
+			if txt then
+				toast("当前版本号："..txt, 1)
+				mSleep(1000)
+			end
+		end
+
 		if replaceFile == "1" then
-		    file_name = "715.plist"
-		    self:replace_file(file_name)
+			file_name = "715.plist"
+			self:replace_file(file_name)
 		elseif replaceFile == "2" then
-		    file_name = "717.plist"
-		    self:replace_file(file_name)
+			file_name = "717.plist"
+			self:replace_file(file_name)
 		elseif replaceFile == "3" then
-		    file_name = replaceFileVersion .. ".plist"
-		    self:replace_file(file_name)
+			file_name = replaceFileVersion .. ".plist"
+			self:replace_file(file_name)
 		end
 	end
 
