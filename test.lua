@@ -30,72 +30,72 @@ local sqlite3 = sz.sqlite3
 --nLog(token[1])
 
 function ifIsJson(jsonString)
-    local head
-    local pos1, pos2
-    jsonString = jsonString:atrim()
-    local String1 = string.sub(jsonString, 1, 1) --最外部大括号
-    local String2 = string.sub(jsonString, #jsonString)
-    if String1 == "{" and String2 == "}" then
-        String1 = jsonString
-        jsonString = string.sub(jsonString, 2, -2) --去掉最外部括号
-        pos1, _ = string.find(jsonString, "%[")
-        if pos1 then
-            pos2, _ = string.find(jsonString, "%]")
-            if pos2 then
-                head = string.sub(jsonString, 2, pos1 - 1)
-                local a, b = string.gsub(head, '("-)(.-)("-):', "")
-                if a == "" and b == 1 then
-                    head = string.sub(jsonString, pos1 + 1, pos2 - 1)
-                    while true do
-                        if (pos2) == #jsonString then --没有后续的了
-                            --							local result= ContinueCheck(head)  --传入 []里的内容
-                            if result then
-                                return true
-                            else
-                                return false
-                            end
-                        else --还有
-                            local result = ContinueCheck(head) --传入 []里的内容
-                            if result == false then
-                                return false
-                            end
-                            jsonString = string.sub(jsonString, pos2 + 1, #jsonString) --记录下后面部分
-                            pos1, _ = string.find(jsonString, "%[")
-                            if pos1 then
-                                pos2, _ = string.find(jsonString, "%]")
-                                if pos2 then
-                                    head = string.sub(jsonString, 2, pos1 - 1)
-                                    local a, b = string.gsub(head, '("-)(.-)("-):', "")
-                                    if a ~= "" and b ~= 1 then
-                                        return false
-                                    end -- "head":[{....},{.....},{.....}]  其中的head格式不正确
-                                    head = string.sub(jsonString, pos1 + 1, pos2 - 1) --下一次循环传入的参数
-                                else
-                                    return false
-                                 --缺少]
-                                end
-                            else
-                                return false --[]缺少[]
-                            end
-                        end
-                    end
-                else
-                    return false -- "head":[{....},{.....},{.....}]  其中的head格式不正确
-                end
-            else
-                return false --不匹配[]
-            end
-        else --没有中括号,简单的单个{}json处理
-            --			local result =ContinueCheck(String1)
-            if result then
-                return true
-            else
-                return false
-            end
-        end
-    else
-        return false --不匹配{}
-    end
+	local head
+	local pos1, pos2
+	jsonString = jsonString:atrim()
+	local String1 = string.sub(jsonString, 1, 1) --最外部大括号
+	local String2 = string.sub(jsonString, #jsonString)
+	if String1 == "{" and String2 == "}" then
+		String1 = jsonString
+		jsonString = string.sub(jsonString, 2, -2) --去掉最外部括号
+		pos1, _ = string.find(jsonString, "%[")
+		if pos1 then
+			pos2, _ = string.find(jsonString, "%]")
+			if pos2 then
+				head = string.sub(jsonString, 2, pos1 - 1)
+				local a, b = string.gsub(head, '("-)(.-)("-):', "")
+				if a == "" and b == 1 then
+					head = string.sub(jsonString, pos1 + 1, pos2 - 1)
+					while true do
+						if (pos2) == #jsonString then --没有后续的了
+							--							local result= ContinueCheck(head)  --传入 []里的内容
+							if result then
+								return true
+							else
+								return false
+							end
+						else --还有
+							local result = ContinueCheck(head) --传入 []里的内容
+							if result == false then
+								return false
+							end
+							jsonString = string.sub(jsonString, pos2 + 1, #jsonString) --记录下后面部分
+							pos1, _ = string.find(jsonString, "%[")
+							if pos1 then
+								pos2, _ = string.find(jsonString, "%]")
+								if pos2 then
+									head = string.sub(jsonString, 2, pos1 - 1)
+									local a, b = string.gsub(head, '("-)(.-)("-):', "")
+									if a ~= "" and b ~= 1 then
+										return false
+									end -- "head":[{....},{.....},{.....}]  其中的head格式不正确
+									head = string.sub(jsonString, pos1 + 1, pos2 - 1) --下一次循环传入的参数
+								else
+									return false
+									--缺少]
+								end
+							else
+								return false --[]缺少[]
+							end
+						end
+					end
+				else
+					return false -- "head":[{....},{.....},{.....}]  其中的head格式不正确
+				end
+			else
+				return false --不匹配[]
+			end
+		else --没有中括号,简单的单个{}json处理
+			--			local result =ContinueCheck(String1)
+			if result then
+				return true
+			else
+				return false
+			end
+		end
+	else
+		return false --不匹配{}
+	end
 end
 --精准滑动的原理就是通过向滑动方向的垂直线方向移动 1 像素来终止滑动惯性
 --简单的垂直精准滑动
@@ -133,134 +133,134 @@ end
 --end
 
 function getWord(copyWord)
-    local m = TSVersions()
-    local a = ts.version()
-    local API = "Hk8Ve2Duh6QCR5XUxLpRxPyv"
-    local Secret = "fD0az8pW8lNhGptCZC4TPfMWX5CyVtnh"
-    local tp = getDeviceType()
-    if m <= "1.2.7" then
-        dialog("请使用 v1.2.8 及其以上版本 TSLib", 0)
-        lua_exit()
-    end
+	local m = TSVersions()
+	local a = ts.version()
+	local API = "Hk8Ve2Duh6QCR5XUxLpRxPyv"
+	local Secret = "fD0az8pW8lNhGptCZC4TPfMWX5CyVtnh"
+	local tp = getDeviceType()
+	if m <= "1.2.7" then
+		dialog("请使用 v1.2.8 及其以上版本 TSLib", 0)
+		lua_exit()
+	end
 
-    if tp >= 0 and tp <= 2 then
-        if a <= "1.3.9" then
-            dialog("请使用 iOS v1.4.0 及其以上版本 ts.so", 0)
-            lua_exit()
-        end
-    elseif tp >= 3 and tp <= 4 then
-        if a <= "1.1.0" then
-            dialog("请使用安卓 v1.1.1 及其以上版本 ts.so", 0)
-            lua_exit()
-        end
-    end
+	if tp >= 0 and tp <= 2 then
+		if a <= "1.3.9" then
+			dialog("请使用 iOS v1.4.0 及其以上版本 ts.so", 0)
+			lua_exit()
+		end
+	elseif tp >= 3 and tp <= 4 then
+		if a <= "1.1.0" then
+			dialog("请使用安卓 v1.1.1 及其以上版本 ts.so", 0)
+			lua_exit()
+		end
+	end
 
-    local tab = {
-        paragraph = "true",
-        probability = "true",
-        ocrType = 2
-    }
+	local tab = {
+		paragraph = "true",
+		probability = "true",
+		ocrType = 2
+	}
 
-    local code1, access_token = getAccessToken(API, Secret)
-    if code1 then
-        local content_name1 = userPath() .. "/res/baiduAI_content_name1.jpg"
-        --内容
-        snapshot(content_name1, 0, 0, 749, 1333)
-        mSleep(1000)
+	local code1, access_token = getAccessToken(API, Secret)
+	if code1 then
+		local content_name1 = userPath() .. "/res/baiduAI_content_name1.jpg"
+		--内容
+		snapshot(content_name1, 0, 0, 749, 1333)
+		mSleep(1000)
 
-        local code2, body = baiduAI(access_token, content_name1, tab)
-        nLog(body)
-        if code2 then
-            local tmp = json.decode(body)
-            for i = 1, #tmp.words_result, 1 do
-                mSleep(200)
-                x, y = string.find(tmp.words_result[i].words, copyWord)
-                toast(x, 1)
-                if x ~= nil then
-                    dialog(tmp.words_result[i].location.top, time)
-                    return tmp.words_result[i]
-                end
-            end
-        else
-            dialog("识别失败\n" .. body, 5)
-        end
-    else
-        dialog("识别失败\n" .. access_token, 5)
-    end
-    return nil
+		local code2, body = baiduAI(access_token, content_name1, tab)
+		nLog(body)
+		if code2 then
+			local tmp = json.decode(body)
+			for i = 1, #tmp.words_result, 1 do
+				mSleep(200)
+				x, y = string.find(tmp.words_result[i].words, copyWord)
+				toast(x, 1)
+				if x ~= nil then
+					dialog(tmp.words_result[i].location.top, time)
+					return tmp.words_result[i]
+				end
+			end
+		else
+			dialog("识别失败\n" .. body, 5)
+		end
+	else
+		dialog("识别失败\n" .. access_token, 5)
+	end
+	return nil
 end
 
 function getData()
-    dataPath = appDataPath("com.wemomo.momoappdemo1")
-    local getList = function(path)
-        local a = io.popen("ls " .. path)
-        local f = {}
-        for l in a:lines() do
-            table.insert(f, l)
-        end
-        return f
-    end
-    local Wildcard = getList("var/mobile/Containers/Data/Application")
-    for var = 1, #Wildcard do
-        local file = io.open(dataPath .. "/Library/Preferences/com.wemomo.momoappdemo1.plist", "rb")
-        if file then
-            local ts = require("ts")
-            local plist = ts.plist
-            local plfilename =
-                appDataPath("com.wemomo.momoappdemo1") .. "/Library/Preferences/com.wemomo.momoappdemo1.plist" --设置plist路径
-            local tmp2 = plist.read(plfilename) --读取 PLIST 文件内容并返回一个 TABLE
-            for k, v in pairs(tmp2) do
-                if string.match(k, "Key(%d+)") then
-                    k = string.match(k, "%d+")
-                    nLog(k)
-                    toast(k, 1)
-                    return k
-                end
-            end
-        end
-    end
+	dataPath = appDataPath("com.wemomo.momoappdemo1")
+	local getList = function(path)
+		local a = io.popen("ls " .. path)
+		local f = {}
+		for l in a:lines() do
+			table.insert(f, l)
+		end
+		return f
+	end
+	local Wildcard = getList("var/mobile/Containers/Data/Application")
+	for var = 1, #Wildcard do
+		local file = io.open(dataPath .. "/Library/Preferences/com.wemomo.momoappdemo1.plist", "rb")
+		if file then
+			local ts = require("ts")
+			local plist = ts.plist
+			local plfilename =
+			appDataPath("com.wemomo.momoappdemo1") .. "/Library/Preferences/com.wemomo.momoappdemo1.plist" --设置plist路径
+			local tmp2 = plist.read(plfilename) --读取 PLIST 文件内容并返回一个 TABLE
+			for k, v in pairs(tmp2) do
+				if string.match(k, "Key(%d+)") then
+					k = string.match(k, "%d+")
+					nLog(k)
+					toast(k, 1)
+					return k
+				end
+			end
+		end
+	end
 end
 
 --getData()
 
 function getData() --获取62数据 (可以用的)
-    dataPath = appDataPath("com.ss.iphone.ugc.Aweme")
-    local getList = function(path)
-        local a = io.popen("ls " .. path)
-        local f = {}
-        for l in a:lines() do
-            table.insert(f, l)
-        end
-        return f
-    end
+	dataPath = appDataPath("com.ss.iphone.ugc.Aweme")
+	local getList = function(path)
+		local a = io.popen("ls " .. path)
+		local f = {}
+		for l in a:lines() do
+			table.insert(f, l)
+		end
+		return f
+	end
 
-    local file = io.open(dataPath .. "/Library/loginData.dat", "rb")
-    if file then
-        local str = file:read("*a")
-        file:close()
-        require "sz"
-        local str = string.tohex(str) --16进制编码
-        return str
-    end
+	local file = io.open(dataPath .. "/Library/loginData.dat", "rb")
+	if file then
+		local str = file:read("*a")
+		file:close()
+		require "sz"
+		local str = string.tohex(str) --16进制编码
+		return str
+	end
 end
 
 function getData() ----获取火山uid
-    dataPath = appDataPath("com.ss.iphone.ugc.Live")
+	dataPath = appDataPath("com.ss.iphone.ugc.Live")
 
-    local file = io.open(dataPath .. "/Library/Preferences/com.ss.iphone.ugc.Live.plist", "rb")
-    if file then
-        local ts = require("ts")
-        local plist = ts.plist
-        local plfilename = appDataPath("com.ss.iphone.ugc.Live") .. "/Library/Preferences/com.ss.iphone.ugc.Live.plist" --设置plist路径
-        local tmp2 = plist.read(plfilename) --读取 PLIST 文件内容并返回一个 TABLE
-        for k, v in pairs(tmp2) do
-            if k == "kHTSLastLoginedUserId" then
-                nLog(v)
-                toast(v, 1)
-                return v
-            end
-        end
-    end
+	local file = io.open(dataPath .. "/Library/Preferences/com.ss.iphone.ugc.Live.plist", "rb")
+	if file then
+		local ts = require("ts")
+		local plist = ts.plist
+		local plfilename = appDataPath("com.ss.iphone.ugc.Live") .. "/Library/Preferences/com.ss.iphone.ugc.Live.plist" --设置plist路径
+		local tmp2 = plist.read(plfilename) --读取 PLIST 文件内容并返回一个 TABLE
+		for k, v in pairs(tmp2) do
+			if k == "kHTSLastLoginedUserId" then
+				nLog(v)
+				toast(v, 1)
+				return v
+			end
+		end
+	end
 end
 
 --MS4wLjABAAAAiRqZ36GT_Wu0U1aO0UFU93w3j1BXYhSi22bQcJHMXNY
@@ -1194,32 +1194,32 @@ end
 --end
 
 function getList(path)
-    local a = io.popen("ls " .. path)
-    local f = {}
-    for l in a:lines() do
-        table.insert(f, l)
-    end
-    return f
+	local a = io.popen("ls " .. path)
+	local f = {}
+	for l in a:lines() do
+		table.insert(f, l)
+	end
+	return f
 end
 
 infoData = "aaaaa"
 word = ""
 
 function getConfig()
-    ::read_file::
-    tab = readFile(userPath() .. "/res/config1.txt")
-    if tab then
-        wc_bid = string.gsub(tab[1], "%s+", "")
-        wc_folder = string.gsub(tab[2], "%s+", "")
-        wc_file = string.gsub(tab[3], "%s+", "")
-        awz_bid = string.gsub(tab[4], "%s+", "")
-        awz_url = string.gsub(tab[5], "%s+", "")
-        toast("获取配置信息成功", 1)
-        mSleep(1000)
-    else
-        dialog("文件不存在", 5)
-        goto read_file
-    end
+	::read_file::
+	tab = readFile(userPath() .. "/res/config1.txt")
+	if tab then
+		wc_bid = string.gsub(tab[1], "%s+", "")
+		wc_folder = string.gsub(tab[2], "%s+", "")
+		wc_file = string.gsub(tab[3], "%s+", "")
+		awz_bid = string.gsub(tab[4], "%s+", "")
+		awz_url = string.gsub(tab[5], "%s+", "")
+		toast("获取配置信息成功", 1)
+		mSleep(1000)
+	else
+		dialog("文件不存在", 5)
+		goto read_file
+	end
 end
 
 --getConfig()
@@ -1256,10 +1256,10 @@ end
 -- dialog(category.."===="..word, time)
 
 function msleep(t1, t2)
-    math.randomseed(getRndNum())
-    t = math.random(t1, t2)
-    dialog(t, 0)
-    mSleep(t)
+	math.randomseed(getRndNum())
+	t = math.random(t1, t2)
+	dialog(t, 0)
+	mSleep(t)
 end
 
 -- appPath = appBundlePath("com.tencent.xin");
@@ -1301,21 +1301,9 @@ end
 --	goto put_work
 --end
 
-function checkFile(file,keyword)
-	tab = readFile(file)
-	if tab then
-		for i=1,#tab,1 do
-			bool = string.match(tab[i], keyword)
-			if bool then
-				return true
-			end
-		end
-		return false
-	else
-		dialog("文件不存在")
-	end
+mSleep(math.random(500, 700))
+x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 90, 0, 0, 749, 1333)
+if x~=-1 and y~=-1 then
+	toast("辅助成功，短信界面",1)
+	mSleep(1000)
 end
-
-
-a = checkFile(userPath().."/res/文本.txt","wxid_aicf86ol2kad22")
-dialog(tostring(a), time)

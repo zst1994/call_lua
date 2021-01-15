@@ -2215,6 +2215,14 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 						mSleep(math.random(1000, 1500))
 						toast("安全验证",1)
 					end
+					
+					mSleep(math.random(500, 700))
+					x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 100, 0, 0, 749, 1333)
+					if x~=-1 and y~=-1 then
+						toast("跳过滑块，短信界面",1)
+						mSleep(1000)
+						break
+					end
 				end
 			end
 
@@ -2342,6 +2350,14 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					randomsTap(372, 1105,10)
 					mSleep(math.random(1000, 1500))
 					toast("安全验证",1)
+				end
+				
+				mSleep(math.random(500, 700))
+				x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 100, 0, 0, 749, 1333)
+				if x~=-1 and y~=-1 then
+					toast("跳过滑块，短信界面",1)
+					mSleep(1000)
+					break
 				end
 			end
 		end
@@ -5758,28 +5774,16 @@ function model:main()
 			},
 			{
 				["type"] = "RadioGroup",                    
-				["list"] = "暂不替换,715,717,备用",
+				["list"] = "715,717,718,720,721,722",
 				["select"] = "0",  
 				["countperline"] = "4",
-			},
-			{
-				["type"] = "Label",
-				["text"] = "输入替换备用文件版本",
-				["size"] = 20,
-				["align"] = "center",
-				["color"] = "255,0,0",
-			},
-			{
-				["type"] = "Edit",        
-				["prompt"] = "请输入您要替换备用文件版本",
-				["text"] = "718",       
-			},
+			}
 		}
 	}
 
 	local MyJsonString = json.encode(MyTable)
 
-	ret, move_type, login_times, content_type, content_user, content_country, vpn_stauts, kn_country, kn_id, countryId, country_len, login_type, fz_terrace, nickName, password, operator, addBlack, diff_user, ran_pass, ddwGet, airplaneStatus, connect_vpn, EU_countries, tmFailBack, replaceFile, replaceFileVersion = showUI(MyJsonString)
+	ret, move_type, login_times, content_type, content_user, content_country, vpn_stauts, kn_country, kn_id, countryId, country_len, login_type, fz_terrace, nickName, password, operator, addBlack, diff_user, ran_pass, ddwGet, airplaneStatus, connect_vpn, EU_countries, tmFailBack, replaceFile = showUI(MyJsonString)
 	if ret == 0 then
 		dialog("取消运行脚本", 3)
 		luaExit()
@@ -5803,36 +5807,38 @@ function model:main()
 		toast("TSLib版本为："..m.."\r\nts.so版本为："..ts_version,1)
 	end
 
-	if replaceFile == "3" then
-		if replaceFileVersion == "" or replaceFileVersion == "默认值" then
-			dialog("替换备用文件版本不能为空，请重新运行脚本设置替换备用文件版本", 3)
-			luaExit()
-		end
-	end
-
 	self:getConfig()
 
-	if replaceFile ~= "0" then
-		local bool = isFileExist(userPath().."/res/info/wc_version.txt")
-		if bool then
-			txt = readFileString(userPath().."/res/info/wc_version.txt")--读取文件内容，返回全部内容的 string
-			if txt then
-				toast("当前版本号："..txt, 1)
-				mSleep(1000)
-			end
-		end
-
-		if replaceFile == "1" then
-			file_name = "715.plist"
-			self:replace_file(file_name)
-		elseif replaceFile == "2" then
-			file_name = "717.plist"
-			self:replace_file(file_name)
-		elseif replaceFile == "3" then
-			file_name = replaceFileVersion .. ".plist"
-			self:replace_file(file_name)
+	
+	local bool = isFileExist(userPath().."/res/info/wc_version.txt")
+	if bool then
+		txt = readFileString(userPath().."/res/info/wc_version.txt")--读取文件内容，返回全部内容的 string
+		if txt then
+			toast("当前版本号："..txt, 1)
+			mSleep(1000)
 		end
 	end
+
+	if replaceFile == "0" then
+		file_name = "715.plist"
+		self:replace_file(file_name)
+	elseif replaceFile == "1" then
+		file_name = "717.plist"
+		self:replace_file(file_name)
+	elseif replaceFile == "2" then
+		file_name = "718.plist"
+		self:replace_file(file_name)
+	elseif replaceFile == "3" then
+		file_name = "720.plist"
+		self:replace_file(file_name)
+	elseif replaceFile == "4" then
+		file_name = "721.plist"
+		self:replace_file(file_name)
+	elseif replaceFile == "5" then
+		file_name = "722.plist"
+		self:replace_file(file_name)
+	end
+
 
 	get_six_two = false
 	while true do
