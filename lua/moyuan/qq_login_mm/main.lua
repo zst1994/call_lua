@@ -1,9 +1,10 @@
 --陌陌-qq号码注册
 require "TSLib"
-local ts = require("ts")
-local json = ts.json
 local sz = require("sz") --登陆
 local http = require("szocket.http")
+local ts = require("ts")
+local json = ts.json
+local plist = ts.plist
 
 local model = {}
 
@@ -22,9 +23,19 @@ math.randomseed(getRndNum()) -- 随机种子初始化真随机数
 
 --检查AMG是否在前台
 function model:Check_AMG()
-	if isFrontApp(self.awz_bid) == 0 then
-		runApp(self.awz_bid)
-		mSleep(3000)
+	while true do
+	    mSleep(500)
+	    x,y = findMultiColorInRegionFuzzy(0x007aff, "24|0|0x007aff,38|3|0x007aff,55|3|0x007aff,58|14|0x007aff,58|-7|0x007aff,58|-12|0x007aff,75|2|0x007aff,93|2|0x007aff,125|2|0x007aff", 90, 24, 540, 319, 610, { orient = 2 })
+        if x ~= -1 then
+			toast("进入界面成功", 1)
+			mSleep(500)
+			break
+		end
+
+		if isFrontApp(self.awz_bid) == 0 then
+    		runApp(self.awz_bid)
+    		mSleep(3000)
+    	end
 	end
 end
 
@@ -72,8 +83,84 @@ local AMG = {
 			if code == 200 then
 				return model:Check_AMG_Result()
 			end
-		end)
+	    end),
+    Get_Param = (function() --获取当前记录参数并保存到指定文件夹
+            model:Check_AMG()
+            local param_file = userPath().."/lua/AMG_Param.plist"   --此处可自行修改保存路径和文件名
+            if isFileExist(param_file) then delFile(param_file) end
+            local res, code = http.request("http://127.0.0.1:8080/cmd?fun=getCurrentRecordParam&saveFilePath="..param_file);
+            if code == 200 then
+                if model:Check_AMG_Result() == true then
+                    return param_file
+                end
+            end 
+        end),
+    Set_Param = (function(param_file)  --设置当前记录参数
+            model:Check_AMG()
+            local res, code = http.request("http://127.0.0.1:8080/cmd?fun=setCurrentRecordParam&filePath="..param_file);
+            if code == 200 then
+                return model:Check_AMG_Result()
+            end 
+        end),
+
 }
+
+--设置机型版本
+--设置开关
+function model:Set_AMG_Config(key,valus)
+    local config_file = "/private/var/mobile/Library/Preferences/AMG/config.plist"
+    local amg_config = plist.read(config_file)
+    amg_config[key] = valus
+    plist.write(config_file,amg_config)
+    toast("修改参数成功",1)
+    mSleep(500)
+end
+
+--设置当前设备机型
+function model:Set_Device_Model(iphone_model)
+    if iphone_model ~= nil then
+        self:Set_AMG_Config("fakeDeviceModel","1")
+    else
+        self:Set_AMG_Config("fakeDeviceModel","0")
+    end
+    local param_file = AMG.Get_Param()    --先获取当前记录参数
+    if param_file then
+        local amg_param = plist.read(param_file)
+        local param_name = "Model"
+        local param_value = "nil"
+        if iphone_model ~= nil then
+            param_value = iphone_model
+        end
+        amg_param[param_name] = iphone_model
+        plist.write(param_file,amg_param)   --写入参数
+        if AMG.Set_Param(param_file) == true then
+            toast("设置当前记录参数"..param_name.."值为"..param_value,3)
+        end
+    end
+end
+
+--设置当前系统版本
+function model:Set_SyetemVer(ios_ver)
+    if ios_ver ~= nil then
+        self:Set_AMG_Config("fakeSystemVer","1")
+    else
+        self:Set_AMG_Config("fakeSystemVer","0")
+    end
+    local param_file = AMG.Get_Param()    --先获取当前记录参数
+    if param_file then
+        local amg_param = plist.read(param_file)
+        local param_name = "SystemVer"
+        local param_value = "nil"
+        if ios_ver ~= nil then
+            param_value = ios_ver
+        end
+        amg_param[param_name] = ios_ver
+        plist.write(param_file,amg_param)   --写入参数
+        if AMG.Set_Param(param_file) == true then
+            toast("设置当前记录参数"..param_name.."值为"..param_value,3)
+        end
+    end
+end
 
 --[[随机内容(UTF-8中文字符占3个字符)]]
 function model:Rnd_Word(strs, i, Length)
@@ -181,7 +268,21 @@ function model:timeOutRestart(t1)
 	end
 end
 
-function model:newMMApp()
+function model:newMMApp(sysVersion, sysPhoneType)
+    if #sysVersion > 0 or #sysPhoneType > 0 then
+        verList = {"13.0","13.1","13.1.1","13.1.2","13.1.3","13.2","13.2.2","13.2.3","13.3","13.3.1","13.4","13.4.1","13.5","13.5.1","13.6","13.6.1","13.7","14.0","14.0.1","14.1","14.2","14.3"}
+        modelList = {"iPhone 7","iPhonse 7 Plus","iPhone 8","iPhone 8 Plus","iPhone X","iPhone Xr","iPhone Xs","iPhone Xs Max","iPhone 11","iPhone 11 Pro","iPhone 11 Pro Max"}
+        
+        check_verList = strSplit(sysVersion,"@")
+        check_modelList = strSplit(sysPhoneType,"@")
+        
+        ios_ver = check_verList[math.random(1, #check_verList)]
+        iphone_model = check_modelList[math.random(1, #check_modelList)]
+    
+        self:Set_Device_Model(modelList[tonumber(iphone_model) + 1])
+        self:Set_SyetemVer(verList[tonumber(ios_ver) + 1])
+    end
+    
 	while true do
 		mSleep(500)
 		--一键新机
@@ -210,7 +311,7 @@ function model:vpn_connection()
 		setVPNEnable(true)
 		toast("好",1)
 		mSleep(3000)
-	end
+	endang
 end
 
 function model:getIP()
@@ -228,7 +329,32 @@ function model:getIP()
 	end
 end
 
-function model:vpn()
+--[[检查网络方法]]
+function model:Net()
+	--ping 3次测试网络连接情况
+	status = ts.ping("www.baidu.com",3)
+	if status then
+		local n = 0
+		for i=1,#status do
+			n = n + status[i]
+		end
+		if n > 800 then
+		    toast("当前网络延迟："..n,1)
+		    mSleep(500)
+			return false
+		else
+			toast("网络良好",1)
+			mSleep(500)
+			return true
+		end
+	else
+	    toast("ping网络失败",1)
+		mSleep(500)
+		return false
+	end
+end
+
+function model:vpn(openPingNet)
 	::get_vpn::
 	old_data = self:getIP() --获取IP
 	if old_data and old_data ~= "" then
@@ -243,11 +369,7 @@ function model:vpn()
 		toast("打开状态", 1)
 		setVPNEnable(false)
 		setVPNEnable(false)
-		for var = 1, 10 do
-			mSleep(math.random(200, 500))
-			toast("等待vpn切换" .. var, 1)
-			mSleep(math.random(200, 500))
-		end
+		mSleep(3000)
 		goto get_vpn
 	else
 		toast("关闭状态", 1)
@@ -264,7 +386,7 @@ function model:vpn()
 			toast(new_data, 1)
 			if new_data ~= old_data then
 				mSleep(1000)
-				toast("vpn链接成功")
+				toast("vpn链接成功,检测网络状态")
 				mSleep(1000)
 				break
 			end
@@ -282,6 +404,12 @@ function model:vpn()
 			goto get_vpn
 		end
 	end
+	
+	if openPingNet == "0" then
+    	if not self:Net() then
+    	    goto get_vpn
+    	end
+    end
 end
 
 function model:getMMId(path)
@@ -751,7 +879,53 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			"章花健炎籁暮升葛贞侠专懋澜量纶布皎源耀鸾慨曾优栋妃游乃用路余珉藻耘军芊日赡勃卫载时三闵姿" ..
 			"麦瑗泉郎怿惬萌照夫鑫樱琭钧掣芫侬丁育浦磬献苓翱雍婵阑女北未陶干自作伦珧溥桀州荏举杏茗洽焕" ..
 			"吹甘硕赋漠颀妤诺展俐朔菊秉苍津空洮济尹周江荡简莱榆贝萧艾仁漫锟谨魄蔼豫纯翊堂嫣誉邦果暎珏" ..
-			"临勤墨薄颉棠羡浚兆环铄"
+			"临勤墨薄颉棠羡浚兆环铄芷烟示奇玮沈曼冬种元英枝承安可晋黎昕赖冰双朱以松夙湛雨掌从凝东方静" ..
+			"槐俞水风税靖之中义詹清秋睦乐音向昌燎辛鹤梦敖韶斐司阴雅宁褚理群顿若菱容诗双晁弘壮满阳旭委" ..
+			"雨彤聂书慧矫璇珠伟正雅巫丽佳务元仰腾逸殳语殷逸秀曲运吾玉后女纪初晴夷易蓉潭紫夏耿雨文弭俨" ..
+			"雅尔晨星韩蕙兰偶宣朗倪光明赵歌吹栾建白边虹雨清萱拱叶嘉督思溪星郁睿德泣彤雯龚傲松钱若芳冒" ..
+			"静柏笪半青野悦媛宇清俊康宜春费绿兰荣香菱祢琲瓃恭芃虞丽华弥国安说雁露杨初夏连锐终冰岚焉恨" ..
+			"瑶律元容喻雨石之和志房正文亥华辉宓孤风夫霞辉洪寻云招令雪乔梦山揭雪戏致欣裘怀薇玉驰轩公古" ..
+			"韵府叶舞雪卉甫佳晨谯莹白邛慧捷晏良不采梦慎依云翠玉瑾苑醉冬郁梓敏郑梦晨单于晨潍仝半安繁高" ..
+			"扬裔绿阙雅充秋白念怡布作人呼延芸茗丰古荆乃班和宜堂同方英涤夔瑜敏封陶宁欧阳会郗承天酆乐珍" ..
+			"尹秋灵元高韵綦雅志池珺琪次博扬游贾静涵营鹏翼公叔晴照贺囡烟凯旋赫连慨能幼仪员鹏涛首谷蓝宝" ..
+			"秋春老梦寒贯令梓蒋曼衍干凝芙乘鸿波邰丰羽御震轩巧锦树诗槐脱康宁邝霁芸柯若蕊冼桂陆德寿巩昆" ..
+			"卉蓬建华诗寄灵百里思官风绪宏峻问紫云字阳平历凝竹邗清润疏晓灵锺芳蕤薛杨柳壬梓菱芮雅可卫德" ..
+			"华暴舒方敬梦岚呼华池厚拔长俊郎钦冰凡励虹玉盍学真茹春华邸晴岚简英哲广飞珍台凝云修新柔第雨" ..
+			"安宣旋功香梅穰承志僧清宋翠丝恽依风类婀北代灵才嘉赐介元德箕子濯系鸿才盖芷天汤可昕西门翠桃" ..
+			"谌雨文郦宏达风依云纵幼旋庹卿月僪忆敏益鸿朗良兴修浮晴岚告春蕾尤清悦云曾琪谢正信敏丽华昆锐" ..
+			"况梓颖鲍锦曦银小萍出叶飞登睿思那若表宛库醉柳抄歌阑宁思洁敛代秋碧鲁沛容撒映真藏白容愚耀华" ..
+			"莘寒梦占白云汲虹颖计音悦董依云寒思涵拓跋山蝶桓皓佛思彤溥言武韶阳鲁昂驹醉香何玲然诸秀艳闽" ..
+			"昆纬宇文夏岚邢觅丹佘敏叡祈紫萱森海亦仙晴霞平梓琬桑湘君剑恺铁星华波书文阎晓凡春钧坚芮丽冉" ..
+			"英楠谷之费莫高峻零夏山闭鸿畅浦童尚庆生宾奥经风褒夜雪幸虹英将高懿马河灵庆千凝邶量蔡慧秀清" ..
+			"逸百安然怀瑰玮席婵娟闳宾白在慕梅胡令璟孝安梦答冷萱皮雅彤通长文忻文翰相秀兰绳阳兰上官寻菡" ..
+			"车隽巧公孙瑛衅夜春皎邵语海时盼晴寸歌云隆骞仕乐景龙戴成双淳于蕴强安顺栗开霁福平良青乐人穆" ..
+			"雨筠勇宇郭笑容迟海熊喜儿丙新之理冷之陈欣悦陶正祥南宫洋洋位灵韵本雯君洛健柏化懿亓益称宜刚" ..
+			"清莹兰鸿光屠辰宇卯运鸿刑叶帆哈语林军绣梓姿实江雪行新蕾娄飞昂施芬芬茅慧艳粘沛凝释开宇仇来" ..
+			"娇洁牢韵诗歧沉道桂月户萌战婉娜巧仉俊达原琇芳白燕楠汗佳思针夜蓉惠以彤闻清漪谭雁桃史麦冬蒲" ..
+			"听云凤高兴钊蔓危琇莹初冰海罕舒畅仪诗蕾第五奥维飞元甲段昊苍乐毛雪绿那拉雪曼任茹薇汪鸿光素" ..
+			"醉易乌娅思受语柳乜宜仲颖斯邱珞武楚吴越婕板童颛桐芒柯侨闳帆六菲琪贯遥越千繁濛渠洛欧欣称曼" ..
+			"松羽文雅兰琦通瑜泉毓彭平须诗过区畅杭雨向晴濮一旷谣汗彤笃皋瑜析佳拓跋珂春舒山婷中晶邵月刀" ..
+			"晓伊姗宿璩睿佼鸽盘佳依莹衣昕吕韵老淇荀绮聊钰凭錦资弋郁婷叶彤荆之桥曦雪熙房北楠养可古倩秦" ..
+			"雪多琪索格邛丹合涵稽奕祁冉嬴怡俟雨柔晴太叔子汝妤沈芸茅晗马佳琳容雪始丹费倩浑晶纪雨公孙熙" ..
+			"夫妤丘一员瑜用昕郸濛委帆公冶莹业函尔錦奈平毓楠保奕势曦银宜乌雅曼壤驷佳孛钰尚想贝晓凤可养" ..
+			"子示悦性琳狂姗刁睿仪冉石涵偶楚斛瑜赫连之出舒德琪蓝嘉黄毓朴涵骑千庾童邶诗俟鸽褚遥铁洛尧颖" ..
+			"巫马淇郗珂宰羽邴琪书晴訾婷宛芸函婕夹谷畅本格求柯五韵丙晗硕越沃婷汝欣厍佳卞绮谷雨牛谣景琦" ..
+			"从怡圭雅松菲刘菡闭珞碧涵言弋侍彤路彤丁桐靖晴屈月植濛芮晴同珞德昕高晴宋帆公叔瑜贝越贲彤石" ..
+			"诗崔想夷宣函闪佳翦宜纪洛甘雪盍琪愚钰貊绮衅谣希睿士遥候桐受千毛菡敬妤骆格善一和舒居晓丰曦" ..
+			"仉之象雅度晗英菲愈子邰月苍奕斛欣鲍婷饶婕郑淇朱楠韶毓沐婷笪平蒙熙隆畅赫涵项童祖怡豆楚慈颖" ..
+			"訾琳穆雨捷冉乌雅彤苏丹梁丘莹庹琪旅弋莘姗年韵缑晶零羽逮瑜镜鸽东可大嘉杭佳鄞雨幸錦昝琦阿涵" ..
+			"行悦应芸泰曼倪倩卞柯赫连珂生姗碧婕力涵郁琪徐涵鹿菲少涵箕欣弥舒夷莹梅遥柔晗归曼乙童牧雨双" ..
+			"錦田珞赤丹桑楠荤嘉习晶答熙仪瑜终琳度婷常谣澄之关奕诗洛公冶倩诸葛颖经曦范晓闫毓曲绮颛孙睿" ..
+			"毛楚姚瑜其彤溥昕律佳卯诗种悦苍芸衡平安雨麴函广羽操月闾冉莱妤硕淇韶怡苑子谢濛步钰中韵伯婷" ..
+			"祁千集帆蒋菡芒琦西门琪亓越马彤衅雪锁弋农晴蓬雅廉想东门宜史可藤桐皋鸽圭珂鲍晴宏一卢格寸柯" ..
+			"咸畅郎佳茆雨墨涵绳桐栋雨矫钰素函赤可尉晗伟宜类珂止淇解嘉宛舒欧阳千称韵聂珞刘晴巧濛曹琪板" ..
+			"一局曼系彤力鸽阎晓书平綦婷隽姗终柯苌菡安格功之丘琳松昕涂晴宝倩贺琦尾绮怀婕慕容羽冀弋革畅" ..
+			"鄂晶公婷长孙遥勇佳函菲束丹广毓董子仉怡钞诗第欣居楠孟谣闭佳谯想顾涵开妤崇錦高雪徭颖前涵梁" ..
+			"丘帆师瑜庆睿充彤满熙姓莹费奕莱雅戏曦宗政月牵越卯洛肥瑜希楚糜悦信冉乌孙琪剑童孙芸衷妤谢莹" ..
+			"农悦始子屠涵乐可郑帆同曦苏晓郜想抄雨奚彤乜菲泷琳厉婷闻佳北一竭雨贲瑜九诗泉雪蒿千夷琦能洛" ..
+			"仝冉过楠黄姗机柯万俟琪栋越路丹考函鲜于畅敬晴弭奕示谣訾錦莱菡歧怡贸昕柴熙朱楚张简涵谷平藤" ..
+			"晶褒宜茆晴龙晗问韵浦彤方月汉珞荆曼蔺涵锁珂阙羽桥桐弘婕寒绮亓官雅巴芸睢琪睦嘉戚濛燕婷夙舒" ..
+			"卞睿智遥宾淇欧毓笪颖吕钰库佳合弋羽鸽宏格咸之靳瑜恭倩希童御欣抄绮牟芸桓"
 		}
 		State["随机常量"] = tonumber(self:Rnd_Word("0123456789", 5))
 
@@ -1815,13 +1989,54 @@ function model:main()
 				["list"] = "正常,偏女性化",
 				["select"] = "0",
 				["countperline"] = "4"
+			},
+			{
+				["type"] = "Label",
+				["text"] = "选择多个系统版本随机",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255"
+			},
+			{
+				["type"] = "CheckBoxGroup",
+				["id"] = "version", 
+				["list"] = "13.0,13.1,13.1.1,13.1.2,13.1.3,13.2,13.2.2,13.2.3,13.3,13.3.1,13.4,13.4.1,13.5,13.5.1,13.6,13.6.1,13.7,14.0,14.0.1,14.1,14.2,14.3",
+				["select"] = "0",
+				["countperline"] = "4"
+			},
+			{
+				["type"] = "Label",
+				["text"] = "选择多个手机型号随机",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255"
+			},
+			{
+				["type"] = "CheckBoxGroup",
+				["id"] = "phoneType", 
+				["list"] = "iPhone 7,iPhonse 7 Plus,iPhone 8,iPhone 8 Plus,iPhone X,iPhone Xr,iPhone Xs,iPhone Xs Max,iPhone 11,iPhone 11 Pro,iPhone 11 Pro Max",
+				["select"] = "0",
+				["countperline"] = "3"
+			},
+			{
+				["type"] = "Label",
+				["text"] = "是否开启网络检测",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255"
+			},
+			{
+				["type"] = "RadioGroup",
+				["list"] = "开启,不开启",
+				["select"] = "0",
+				["countperline"] = "4"
 			}
 		}
 	}
 
 	local MyJsonString = json.encode(MyTable)
 
-	ret, password, sex, searchFriend, searchAccount, changeHeader, nikcNameType = showUI(MyJsonString)
+	ret, password, sex, searchFriend, searchAccount, changeHeader, nikcNameType, sysVersion, sysPhoneType, openPingNet = showUI(MyJsonString)
 	if ret == 0 then
 		dialog("取消运行脚本", 3)
 		luaExit()
@@ -1852,22 +2067,21 @@ function model:main()
 			toast(fileName, 1)
 			mSleep(1000)
 
-			--		saveImageToAlbum(fileName)
+	--		saveImageToAlbum(fileName)
 			saveImageToAlbum(userPath() .. "/res/picFile/" .. fileName)
 			mSleep(500)
-			--		saveImageToAlbum(fileName)
+	--		saveImageToAlbum(fileName)
 			saveImageToAlbum(userPath() .. "/res/picFile/" .. fileName)
 			mSleep(2000)
 
-			--		self:deleteImage(fileName)
+	--		self:deleteImage(fileName)
 			self:deleteImage(userPath() .. "/res/picFile/" .. fileName)
 		end
 
-		self:vpn()
-		self:newMMApp()
+		self:vpn(openPingNet)
+		self:newMMApp(sysVersion, sysPhoneType)
 		self:mm(password, sex, searchFriend, searchAccount, changeHeader, nikcNameType)
 	end
 end
 
 model:main()
--- model:mm(password, "0")

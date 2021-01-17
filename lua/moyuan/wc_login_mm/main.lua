@@ -191,7 +191,32 @@ function model:getIP()
 	end
 end
 
-function model:vpn()
+--[[检查网络方法]]
+function model:Net()
+	--ping 3次测试网络连接情况
+	status = ts.ping("www.baidu.com",3)
+	if status then
+		local n = 0
+		for i=1,#status do
+			n = n + status[i]
+		end
+		if n > 800 then
+		    toast("当前网络延迟："..n,1)
+		    mSleep(500)
+			return false
+		else
+			toast("网络良好",1)
+			mSleep(500)
+			return true
+		end
+	else
+	    toast("ping网络失败",1)
+		mSleep(500)
+		return false
+	end
+end
+
+function model:vpn(openPingNet)
 	::get_vpn::
 	old_data = self:getIP() --获取IP
 	if old_data and old_data ~= "" then
@@ -245,6 +270,12 @@ function model:vpn()
 			goto get_vpn
 		end
 	end
+	
+	if openPingNet == "0" then
+    	if not self:Net() then
+    	    goto get_vpn
+    	end
+    end
 end
 
 function model:getMMId(path)
@@ -1510,13 +1541,26 @@ function model:main()
 				["list"] = "换头像,不换头像",
 				["select"] = "0",
 				["countperline"] = "4"
+			},
+			{
+				["type"] = "Label",
+				["text"] = "是否开启网络检测",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255"
+			},
+			{
+				["type"] = "RadioGroup",
+				["list"] = "开启,不开启",
+				["select"] = "0",
+				["countperline"] = "4"
 			}
 		}
 	}
 
 	local MyJsonString = json.encode(MyTable)
 
-	ret, password, sex, searchFriend, searchAccount, changeHeader = showUI(MyJsonString)
+	ret, password, sex, searchFriend, searchAccount, changeHeader, openPingNet = showUI(MyJsonString)
 	if ret == 0 then
 		dialog("取消运行脚本", 3)
 		luaExit()
@@ -1555,7 +1599,7 @@ function model:main()
 			self:deleteImage(userPath() .. "/res/picFile/" .. fileName)
 		end
 
-		self:vpn()
+		self:vpn(openPingNet)
 		self:newMMApp()
 		self:mm(password, sex, searchFriend, searchAccount, changeHeader)
 	end

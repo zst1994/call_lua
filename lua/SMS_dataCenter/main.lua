@@ -311,15 +311,16 @@ function model:vpn()
 	end
 
 	setVPNEnable(true)
-	mSleep(1000*3)
-
-	local sz = require("sz");
-	local szhttp = require("szocket.http")
-	local res, code = szhttp.request("http://myip.ipip.net/")
+	mSleep(1000*5)
+    
+    header_send = {}
+	body_send = {}
+    ts.setHttpsTimeOut(60) 
+	code,header_resp, body_resp = ts.httpsGet("http://myip.ipip.net/", header_send,body_send)
 	if code == 200 then
-		return res
+		return body_resp
 	else
-		toast("请求ip位置失败："..tostring(res),1)
+		toast("请求ip位置失败："..tostring(body_resp),1)
 		mSleep(1000)
 		setVPNEnable(false)
 		mSleep(math.random(2000, 2500))

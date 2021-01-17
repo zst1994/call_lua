@@ -1301,9 +1301,110 @@ end
 --	goto put_work
 --end
 
-mSleep(math.random(500, 700))
-x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 90, 0, 0, 749, 1333)
-if x~=-1 and y~=-1 then
-	toast("辅助成功，短信界面",1)
-	mSleep(1000)
+
+--设置机型版本
+--设置开关
+function Set_AMG_Config(key,valus)
+    local config_file = "/private/var/mobile/Library/Preferences/AMG/config.plist"
+    local amg_config = plist.read(config_file)
+    amg_config[key] = valus
+    plist.write(config_file,amg_config)
 end
+--设置当前设备机型
+function Set_Device_Model(iphone_model)
+    if iphone_model ~= nil then
+        Set_AMG_Config("fakeDeviceModel","1")
+    else
+        Set_AMG_Config("fakeDeviceModel","0")
+    end
+    local param_file = AMG.Get_Param()    --先获取当前记录参数
+    if param_file then
+        local amg_param = plist.read(param_file)
+        local param_name = "Model"
+        local param_value = "nil"
+        if iphone_model ~= nil then
+            param_value = iphone_model
+        end
+        amg_param[param_name] = iphone_model
+        plist.write(param_file,amg_param)   --写入参数
+        if AMG.Set_Param(param_file) == true then
+            toast("设置当前记录参数"..param_name.."值为"..param_value,3)
+        end
+    end
+end
+--设置当前系统版本
+function Set_SyetemVer(ios_ver)
+    if ios_ver ~= nil then
+        Set_AMG_Config("fakeSystemVer","1")
+    else
+        Set_AMG_Config("fakeSystemVer","0")
+    end
+    local param_file = AMG.Get_Param()    --先获取当前记录参数
+    if param_file then
+        local amg_param = plist.read(param_file)
+        local param_name = "SystemVer"
+        local param_value = "nil"
+        if ios_ver ~= nil then
+            param_value = ios_ver
+        end
+        amg_param[param_name] = ios_ver
+        plist.write(param_file,amg_param)   --写入参数
+        if AMG.Set_Param(param_file) == true then
+            toast("设置当前记录参数"..param_name.."值为"..param_value,3)
+        end
+    end
+end
+
+
+
+
+
+
+
+local sz = require("sz")
+require("TSLib")
+
+WebAPIUrl = "http://47.110.245.30:8001/API/Handler.ashx";
+
+function HttpPostWeb(data)
+ while (true) do
+  local result=httpPost(WebAPIUrl,data)
+  if type(result)== "string" then
+   if result ~="" then
+    if string.len(result)<100 then
+     nLog("返回结果："..result);
+    end
+    toast(result,1)
+    local arr=strSplit(result,"#@#");--返回结果
+    if arr[2]=="数据为空" then
+     return "数据为空"
+    end
+    if string.find(arr[2],"没有当前图片")~=nil then
+     return "0";
+    end
+    if arr[1]=="1" then
+     return arr[2];
+    else
+     toast(arr[2],1)
+    end
+   else
+    toast("网络访问出错",1)
+   end
+  end
+  mSleep(3000)
+ end
+end
+
+账号 = "芒果9834"
+扫码标识 = "0---2"
+二维码网址 = "baidu.com"
+function 上传对接数据()
+    待上传信息 = 账号.."----"..扫码标识.."----"..二维码网址
+    local data="screen=AddOneData&key=renwu&datas="..待上传信息.."&token=463f3fbc9c00f88364556dde20199f21";
+    local result=HttpPostWeb(data);
+    if result == "1" then
+     toast("上传成功")
+    end
+end
+
+上传对接数据()
