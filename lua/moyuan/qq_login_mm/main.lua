@@ -311,7 +311,7 @@ function model:vpn_connection()
 		setVPNEnable(true)
 		toast("好",1)
 		mSleep(3000)
-	endang
+	end
 end
 
 function model:getIP()
@@ -320,8 +320,12 @@ function model:getIP()
 	toast(body_resp,1)
 	if status_resp == 200 then--打开网站成功
 		local i,j = string.find(body_resp, "%d+%.%d+%.%d+%.%d+")
-		local ipaddr =string.sub(body_resp,i,j)
-		return ipaddr
+		if i > 0 then
+			local ipaddr =string.sub(body_resp,i,j)
+			return ipaddr
+		else
+			goto ip_addresss
+		end
 	else
 		toast("请求ip位置失败："..tostring(body_resp),1)
 		mSleep(1000)
