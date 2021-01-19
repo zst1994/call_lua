@@ -975,7 +975,8 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 		--首页
 		mSleep(200)
 		if getColor(206, 109) == 0x323333 and getColor(370, 99) == 0x323333 or
-		getColor(45, 109) == 0x323333 and getColor(222, 95) == 0x323333 then
+		getColor(45, 109) == 0x323333 and getColor(222, 95) == 0x323333 or
+		getColor(206, 156) == 0x323333 and getColor(336, 157) == 0x323333  then
 			mSleep(500)
 			toast("首页1", 1)
 			mSleep(500)
