@@ -1300,17 +1300,35 @@ end
 --else
 --	goto put_work
 --end
+function getIpAddress()
+    ::address::
+    status_resp, header_resp,body_resp = ts.httpGet("http://ip-api.com/json/")
+    if status_resp == 200 then--打开网站成功
+    	tmp = json.decode(body_resp)
+    	if tmp.status == "success" then
+    		return tmp
+    	end
+    else
+    	toast("请求ip位置失败："..tostring(body_resp),1)
+    	mSleep(1000)
+    	goto address
+    end
+end
 
-function getIP()
-	::ip_addresss::
+::ip_addresss::
 	status_resp, header_resp,body_resp = ts.httpGet("http://myip.ipip.net")
 	toast(body_resp,1)
 	if status_resp == 200 then--打开网站成功
-		local i,j = string.find(body_resp, "%d+%.%d+%.%d+%.%d+")
-		if i > 0 then
-			local ipaddr =string.sub(body_resp,i,j)
-			return ipaddr
+	    local i,j = string.find(body_resp, "%d+%.%d+%.%d+%.%d+")
+		if type(i) ~= "nil" and i > 0 then
+			local ipaddr = string.sub(body_resp,i,j)
+			address = strSplit(body_resp,"来自于：")[2]
+			city = string.gsub(strSplit(address," ")[3],"%s+","") 
+			dialog(city,0)
+-- 			return ipaddr
 		else
+			toast("请求ip位置失败："..tostring(body_resp),1)
+			mSleep(1000)
 			goto ip_addresss
 		end
 	else
@@ -1318,8 +1336,3 @@ function getIP()
 		mSleep(1000)
 		goto ip_addresss
 	end
-end
-
---getIP()
-local i = string.find("1223333sfdfdfs", "%d+%.%d+%.%d+%.%d+")
-dialog(type(i), time)
