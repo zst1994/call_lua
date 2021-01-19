@@ -319,11 +319,13 @@ function model:getIP()
 	status_resp, header_resp,body_resp = ts.httpGet("http://myip.ipip.net")
 	toast(body_resp,1)
 	if status_resp == 200 then--打开网站成功
-		local i,j = string.find(body_resp, "%d+%.%d+%.%d+%.%d+")
-		if i > 0 then
+		local i = string.find(body_resp, "%d+%.%d+%.%d+%.%d+")
+		if type(i) ~= "nil" and i > 0 then
 			local ipaddr =string.sub(body_resp,i,j)
 			return ipaddr
 		else
+			toast("请求ip位置失败："..tostring(body_resp),1)
+			mSleep(1000)
 			goto ip_addresss
 		end
 	else

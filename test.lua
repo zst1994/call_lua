@@ -1320,4 +1320,6 @@ function getIP()
 	end
 end
 
-getIP()
+--getIP()
+local i = string.find("1223333sfdfdfs", "%d+%.%d+%.%d+%.%d+")
+dialog(type(i), time)
