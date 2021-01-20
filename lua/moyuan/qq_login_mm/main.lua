@@ -19,6 +19,10 @@ model.qqPassword = ""
 model.mm_accountId = ""
 model.subName = ""
 
+model.city = ""
+model.phone_type = ""
+model.sys_version = ""
+
 math.randomseed(getRndNum()) -- 随机种子初始化真随机数
 
 --检查AMG是否在前台
@@ -293,9 +297,12 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress)
         
         ios_ver = check_verList[math.random(1, #check_verList)]
         iphone_model = check_modelList[math.random(1, #check_modelList)]
-    
-        self:Set_Device_Model(modelList[tonumber(iphone_model) + 1])
-        self:Set_SyetemVer(verList[tonumber(ios_ver) + 1])
+        
+        self.phone_type = modelList[tonumber(iphone_model) + 1]
+        self.sys_version = verList[tonumber(ios_ver) + 1]
+        
+        self:Set_Device_Model(self.phone_type)
+        self:Set_SyetemVer(self.sys_version)
     end
     
     if gpsAddress == "0" then
@@ -316,6 +323,81 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress)
                 toast("设置当前记录GPS位置为".."经度："..lon.."纬度："..lat,3)
             end
         end
+    elseif gpsAddress == "2" then
+        while true do
+    	    mSleep(200)
+    	    x,y = findMultiColorInRegionFuzzy(0x007aff, "24|0|0x007aff,38|3|0x007aff,55|3|0x007aff,58|14|0x007aff,58|-7|0x007aff,58|-12|0x007aff,75|2|0x007aff,93|2|0x007aff,125|2|0x007aff", 90, 24, 540, 319, 610, { orient = 2 })
+            if x ~= -1 then
+                mSleep(500)
+                tap(x,y + 180)
+                mSleep(500)
+    			toast("设置", 1)
+    			mSleep(500)
+            end
+		
+		    mSleep(200)
+		    if getColor(347,87) == 0x000000 and getColor(404,97) == 0x000000 then
+		        mSleep(500)
+		        toast("进入设置",1)
+		        mSleep(500)
+		        break
+		    end
+    
+    		if isFrontApp(self.awz_bid) == 0 then
+        		runApp(self.awz_bid)
+        		mSleep(3000)
+        	end
+        end
+	
+	    while true do
+	        mSleep(500)
+	        x,y = findMultiColorInRegionFuzzy(0x000000, "4|-7|0x000000,4|12|0x000000,13|-3|0x000000,20|-5|0x000000,28|2|0x000000,21|10|0x000000,47|-1|0x000000,54|0|0x000000,61|-1|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x ~= -1 then
+                mSleep(500)
+                tap(x,y)
+                mSleep(500)
+                break
+            else
+                mSleep(500)
+                moveTowards(404,1194,90,900,10)
+                mSleep(1500)
+            end
+	    end
+    
+        while (true) do
+            mSleep(200)
+		    if getColor(379,181) == 0xeaebed and getColor(655,85) ==0x007aff then
+		        mSleep(500)
+		        tap(379,181)
+		        mSleep(500)
+		        inputStr(self.city)
+		        mSleep(1000)
+		        key = "ReturnOrEnter"
+    			keyDown(key)
+    			keyUp(key)
+    			mSleep(2000)
+    			tap(math.random(178, 599), math.random(618, 1076))
+    			mSleep(4000)
+    			tap(682,86)
+    			mSleep(1000)
+    			break
+		    end
+        end
+        
+        while true do
+	        mSleep(500)
+	        x,y = findMultiColorInRegionFuzzy(0x007aff, "24|0|0x007aff,38|3|0x007aff,55|3|0x007aff,58|14|0x007aff,58|-7|0x007aff,58|-12|0x007aff,75|2|0x007aff,93|2|0x007aff,125|2|0x007aff", 90, 24, 540, 319, 610, { orient = 2 })
+            if x ~= -1 then
+                mSleep(500)
+                toast("准备下一步",1)
+                mSleep(500)
+                break
+            else
+                mSleep(500)
+                tap(45,81)
+                mSleep(1000)
+            end
+	    end
     end
     
 	while true do
@@ -350,13 +432,15 @@ function model:vpn_connection()
 end
 
 function model:getIP()
-	::ip_addresss::
+    ::ip_addresss::
 	status_resp, header_resp,body_resp = ts.httpGet("http://myip.ipip.net")
 	toast(body_resp,1)
 	if status_resp == 200 then--打开网站成功
-		local i,j = string.find(body_resp, "%d+%.%d+%.%d+%.%d+")
+	    local i,j = string.find(body_resp, "%d+%.%d+%.%d+%.%d+")
 		if type(i) ~= "nil" and i > 0 then
 			local ipaddr = string.sub(body_resp,i,j)
+			address = strSplit(body_resp,"来自于：")[2]
+			self.city = string.gsub(strSplit(address," ")[3],"%s+","") 
 			return ipaddr
 		else
 			toast("请求ip位置失败："..tostring(body_resp),1)
@@ -1901,10 +1985,13 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 
 	::get_mmId::
 	self.mm_accountId = self:getMMId(appDataPath(self.mm_bid) .. "/Documents")
-
+    
+    times = getNetTime()
+	sj = os.date("%Y年%m月%d日%H点%M分%S秒",times)
+	
 	--重命名当前记录名
 	local old_name = AMG.Get_Name()
-	local new_name = self.mm_accountId .. "----" .. self.subName
+	local new_name = self.mm_accountId .. "----" .. self.subName .. "----" .. self.phone_type .. "----" .. self.sys_version .. "----" .. self.city .. "----" .. sj
 	toast(new_name,1)
 	mSleep(1000)
 	if AMG.Rename(old_name, new_name) == true then
@@ -2088,7 +2175,7 @@ function model:main()
 			},
 			{
 				["type"] = "RadioGroup",
-				["list"] = "开启,不开启",
+				["list"] = "开启,不开启,普通定位",
 				["select"] = "0",
 				["countperline"] = "4"
 			}

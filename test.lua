@@ -1315,24 +1315,20 @@ function getIpAddress()
     end
 end
 
-::ip_addresss::
-	status_resp, header_resp,body_resp = ts.httpGet("http://myip.ipip.net")
-	toast(body_resp,1)
-	if status_resp == 200 then--打开网站成功
-	    local i,j = string.find(body_resp, "%d+%.%d+%.%d+%.%d+")
-		if type(i) ~= "nil" and i > 0 then
-			local ipaddr = string.sub(body_resp,i,j)
-			address = strSplit(body_resp,"来自于：")[2]
-			city = string.gsub(strSplit(address," ")[3],"%s+","") 
-			dialog(city,0)
--- 			return ipaddr
-		else
-			toast("请求ip位置失败："..tostring(body_resp),1)
-			mSleep(1000)
-			goto ip_addresss
-		end
-	else
-		toast("请求ip位置失败："..tostring(body_resp),1)
-		mSleep(1000)
-		goto ip_addresss
-	end
+-- 		--wc图标
+-- 		mSleep(math.random(200, 300))
+-- 		x,y = findMultiColorInRegionFuzzy(0x0ec600, "0|-49|0x0ec600,-50|-1|0x0ec600,-11|38|0x0ec600,38|-1|0x0ec600,104|-541|0xd8d8d8,97|-616|0xd8d8d8", 90, 0, 0, 750, 1334, { orient = 2 })
+--         if x ~= -1 then
+-- 			mSleep(math.random(500, 700))
+-- 			randomTap(x, y, 4)
+-- 			mSleep(math.random(3500, 5000))
+--         end
+	
+	    --wc图标
+		mSleep(math.random(200, 300))
+    	x,y = findMultiColorInRegionFuzzy(0x0ec600, "-46|-6|0x0ec600,2|-51|0x0ec600,39|-4|0x0ec600,-3|32|0x0ec600,-20|2|0xffffff,15|6|0xffffff", 90, 72, 1112, 730, 1297, { orient = 2 })
+        if x ~= -1 then
+			mSleep(math.random(500, 700))
+			randomTap(x, y, 4)
+			mSleep(math.random(3500, 5000))
+        end

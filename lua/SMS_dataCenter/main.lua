@@ -6526,6 +6526,7 @@ function model:main()
 			end
 			self:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,data_sel,login_times,login_times_set,skey,wc_version,hk_way,fz_key, fz_type, phone, country_num, phone_token, api_change, SMS_country, username, user_pass, work_id, phone_country, country_id,nickName,password,provinceId,getPhone_key, sumbit_key,messGetTime,messSendTime,sendSixDataApi,updateNickName,needPay,localNetwork,needConnetMove,liandongName,liandongTime)
 			mSleep(1000)
+			closeApp("*",1)
 		end
 	else
 		function getData()  ----单线程提取
