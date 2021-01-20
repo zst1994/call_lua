@@ -840,6 +840,13 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			toast("复扫",1)
 			mSleep(math.random(1500, 3000))
             while (true) do
+                mSleep(200)
+        		x, y = findMultiColorInRegionFuzzy(0x323333,"16|-1|0x323333,8|7|0x323333,10|19|0x323333,24|26|0x323333,30|13|0x323333,25|-7|0x323333,54|-3|0x323333,83|8|0x323333,66|-8|0x323333",90,0,0,750,1334,{orient = 2})
+        		if x ~= -1 then
+        		    mSleep(200)
+        		    goto fs
+        		end
+	    
                 --授权
         	    mSleep(200)
         	    x,y = findMultiColorInRegionFuzzy(0xffffff, "-97|-26|0x48516d,-107|46|0x48516d,198|-35|0x48516d,201|42|0x48516d,286|-30|0x2f3753,278|51|0x2f3753,579|-26|0x2f3753,582|31|0x2f3753,374|-1166|0xff7fa3", 90, 0, 0, 750, 1334, { orient = 2 })
@@ -873,6 +880,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
                 end
             end
             self.fsBool = true
+            ::fs::
         end
         
 	    --wc图标
@@ -885,6 +893,13 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			toast("复扫",1)
 			mSleep(math.random(1500, 3000))
             while (true) do
+                mSleep(200)
+        		x, y = findMultiColorInRegionFuzzy(0x323333,"16|-1|0x323333,8|7|0x323333,10|19|0x323333,24|26|0x323333,30|13|0x323333,25|-7|0x323333,54|-3|0x323333,83|8|0x323333,66|-8|0x323333",90,0,0,750,1334,{orient = 2})
+        		if x ~= -1 then
+        		    mSleep(200)
+        		    goto fs
+        		end
+        		
                 --授权
         	    mSleep(200)
         	    x,y = findMultiColorInRegionFuzzy(0xffffff, "-97|-26|0x48516d,-107|46|0x48516d,198|-35|0x48516d,201|42|0x48516d,286|-30|0x2f3753,278|51|0x2f3753,579|-26|0x2f3753,582|31|0x2f3753,374|-1166|0xff7fa3", 90, 0, 0, 750, 1334, { orient = 2 })
@@ -918,6 +933,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
                 end
             end
             self.fsBool = true
+            ::fs::
         end
         
 		mSleep(500)
