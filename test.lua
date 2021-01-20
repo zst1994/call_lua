@@ -1315,20 +1315,12 @@ function getIpAddress()
     end
 end
 
--- 		--wc图标
--- 		mSleep(math.random(200, 300))
--- 		x,y = findMultiColorInRegionFuzzy(0x0ec600, "0|-49|0x0ec600,-50|-1|0x0ec600,-11|38|0x0ec600,38|-1|0x0ec600,104|-541|0xd8d8d8,97|-616|0xd8d8d8", 90, 0, 0, 750, 1334, { orient = 2 })
---         if x ~= -1 then
--- 			mSleep(math.random(500, 700))
--- 			randomTap(x, y, 4)
--- 			mSleep(math.random(3500, 5000))
---         end
-	
-	    --wc图标
-		mSleep(math.random(200, 300))
-    	x,y = findMultiColorInRegionFuzzy(0x0ec600, "-46|-6|0x0ec600,2|-51|0x0ec600,39|-4|0x0ec600,-3|32|0x0ec600,-20|2|0xffffff,15|6|0xffffff", 90, 72, 1112, 730, 1297, { orient = 2 })
-        if x ~= -1 then
+mSleep(200)
+	    x,y = findMultiColorInRegionFuzzy(0x323333, "-11|-11|0x323333,13|-12|0x323333,11|11|0x323333,57|886|0x3bb3fa,571|885|0x3bb3fa,339|846|0x3bb3fa,315|924|0x3bb3fa,280|874|0xffffff,363|891|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 and y ~= -1 then
 			mSleep(math.random(500, 700))
 			randomTap(x, y, 4)
-			mSleep(math.random(3500, 5000))
+			mSleep(math.random(500, 700))
+			toast("立即打卡", 1)
+			mSleep(1000)
         end

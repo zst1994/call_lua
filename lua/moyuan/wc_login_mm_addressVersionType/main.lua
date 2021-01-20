@@ -1185,7 +1185,17 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			mSleep(math.random(500, 700))
 			randomTap(x, y, 4)
 			mSleep(math.random(500, 700))
-			toast("立即打卡", 1)
+			toast("立即打卡1", 1)
+			mSleep(1000)
+        end
+        
+        mSleep(200)
+	    x,y = findMultiColorInRegionFuzzy(0x323333, "-11|-11|0x323333,13|-12|0x323333,11|11|0x323333,57|886|0x3bb3fa,571|885|0x3bb3fa,339|846|0x3bb3fa,315|924|0x3bb3fa,280|874|0xffffff,363|891|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 and y ~= -1 then
+			mSleep(math.random(500, 700))
+			randomTap(x, y, 4)
+			mSleep(math.random(500, 700))
+			toast("立即打卡2", 1)
 			mSleep(1000)
         end
 		
@@ -1309,7 +1319,17 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			mSleep(math.random(500, 700))
 			randomTap(x, y, 4)
 			mSleep(math.random(500, 700))
-			toast("立即打卡", 1)
+			toast("立即打卡1", 1)
+			mSleep(1000)
+        end
+        
+        mSleep(200)
+	    x,y = findMultiColorInRegionFuzzy(0x323333, "-11|-11|0x323333,13|-12|0x323333,11|11|0x323333,57|886|0x3bb3fa,571|885|0x3bb3fa,339|846|0x3bb3fa,315|924|0x3bb3fa,280|874|0xffffff,363|891|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 and y ~= -1 then
+			mSleep(math.random(500, 700))
+			randomTap(x, y, 4)
+			mSleep(math.random(500, 700))
+			toast("立即打卡2", 1)
 			mSleep(1000)
         end
 		
@@ -1409,7 +1429,17 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
     			mSleep(math.random(500, 700))
     			randomTap(x, y, 4)
     			mSleep(math.random(500, 700))
-    			toast("立即打卡", 1)
+    			toast("立即打卡1", 1)
+    			mSleep(1000)
+            end
+            
+            mSleep(200)
+    	    x,y = findMultiColorInRegionFuzzy(0x323333, "-11|-11|0x323333,13|-12|0x323333,11|11|0x323333,57|886|0x3bb3fa,571|885|0x3bb3fa,339|846|0x3bb3fa,315|924|0x3bb3fa,280|874|0xffffff,363|891|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x ~= -1 and y ~= -1 then
+    			mSleep(math.random(500, 700))
+    			randomTap(x, y, 4)
+    			mSleep(math.random(500, 700))
+    			toast("立即打卡2", 1)
     			mSleep(1000)
             end
 
@@ -1571,7 +1601,17 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
     			mSleep(math.random(500, 700))
     			randomTap(x, y, 4)
     			mSleep(math.random(500, 700))
-    			toast("立即打卡", 1)
+    			toast("立即打卡1", 1)
+    			mSleep(1000)
+            end
+            
+            mSleep(200)
+    	    x,y = findMultiColorInRegionFuzzy(0x323333, "-11|-11|0x323333,13|-12|0x323333,11|11|0x323333,57|886|0x3bb3fa,571|885|0x3bb3fa,339|846|0x3bb3fa,315|924|0x3bb3fa,280|874|0xffffff,363|891|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x ~= -1 and y ~= -1 then
+    			mSleep(math.random(500, 700))
+    			randomTap(x, y, 4)
+    			mSleep(math.random(500, 700))
+    			toast("立即打卡2", 1)
     			mSleep(1000)
             end
 
