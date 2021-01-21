@@ -287,23 +287,169 @@ function model:getIpAddress()
 	end
 end
 
-function model:newMMApp(sysVersion, sysPhoneType, gpsAddress)
-	if #sysVersion > 0 or #sysPhoneType > 0 then
-		verList = {"13.0","13.1","13.1.1","13.1.2","13.1.3","13.2","13.2.2","13.2.3","13.3","13.3.1","13.4","13.4.1","13.5","13.5.1","13.6","13.6.1","13.7","14.0","14.0.1","14.1","14.2","14.3"}
-		modelList = {"iPhone 7","iPhonse 7 Plus","iPhone 8","iPhone 8 Plus","iPhone X","iPhone Xr","iPhone Xs","iPhone Xs Max","iPhone 11","iPhone 11 Pro","iPhone 11 Pro Max"}
+function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
+    if editorWay == "0" then
+    	if #sysVersion > 0 or #sysPhoneType > 0 then
+    		verList = {"13.0","13.1","13.1.1","13.1.2","13.1.3","13.2","13.2.2","13.2.3","13.3","13.3.1","13.4","13.4.1","13.5","13.5.1","13.6","13.6.1","13.7","14.0","14.0.1","14.1","14.2","14.3"}
+    		modelList = {"iPhone 7","iPhonse 7 Plus","iPhone 8","iPhone 8 Plus","iPhone X","iPhone Xr","iPhone Xs","iPhone Xs Max","iPhone 11","iPhone 11 Pro","iPhone 11 Pro Max"}
+    
+    		check_verList = strSplit(sysVersion,"@")
+    		check_modelList = strSplit(sysPhoneType,"@")
+    
+    		ios_ver = check_verList[math.random(1, #check_verList)]
+    		iphone_model = check_modelList[math.random(1, #check_modelList)]
+    
+    		self.phone_type = modelList[tonumber(iphone_model) + 1]
+    		self.sys_version = verList[tonumber(ios_ver) + 1]
+    
+    		self:Set_Device_Model(self.phone_type)
+    		self:Set_SyetemVer(self.sys_version)
+    	end
+    else
+        while true do
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy(0x007aff, "24|0|0x007aff,38|3|0x007aff,55|3|0x007aff,58|14|0x007aff,58|-7|0x007aff,58|-12|0x007aff,75|2|0x007aff,93|2|0x007aff,125|2|0x007aff", 90, 24, 540, 319, 610, { orient = 2 })
+			if x ~= -1 then
+				mSleep(500)
+				tap(x,y + 180)
+				mSleep(500)
+				toast("设置", 1)
+				mSleep(500)
+			end
 
-		check_verList = strSplit(sysVersion,"@")
-		check_modelList = strSplit(sysPhoneType,"@")
+			mSleep(200)
+			if getColor(347,87) == 0x000000 and getColor(404,97) == 0x000000 then
+				mSleep(500)
+				toast("进入设置",1)
+				mSleep(500)
+				break
+			end
 
-		ios_ver = check_verList[math.random(1, #check_verList)]
-		iphone_model = check_modelList[math.random(1, #check_modelList)]
+			if isFrontApp(self.awz_bid) == 0 then
+				runApp(self.awz_bid)
+				mSleep(3000)
+			end
+		end
+        
+        --设置当前设备机型
+		if editorWay == "1" or editorWay == "3" then
+			while true do
+				mSleep(500)
+				x,y = findMultiColorInRegionFuzzy(0x000000, "5|6|0x000000,22|4|0x000000,38|4|0x000000,54|6|0x000000,59|-11|0x000000,70|-2|0x000000,74|4|0x000000,88|2|0x000000,118|10|0x000000", 90, 0, 0, 749, 1333)
+				if x ~= -1 then
+					mSleep(500)
+					tap(x,y)
+					mSleep(500)
+					break
+				else
+					mSleep(500)
+					moveTowards(404,1194,90,900,10)
+					mSleep(1500)
+				end
+			end
 
-		self.phone_type = modelList[tonumber(iphone_model) + 1]
-		self.sys_version = verList[tonumber(ios_ver) + 1]
+			idx = math.random(1, 4)
+			yy = math.random(171, 1214)
+			while true do
+				mSleep(500)
+				x,y = findMultiColorInRegionFuzzy( 0x000000, "6|-4|0x000000,7|18|0x000000,28|18|0x000000,16|18|0x000000,16|0|0x000000,27|0|0x000000,35|16|0x000000,42|7|0x000000,56|7|0x000000", 90, 0, 0, 749, 1333)
+				if x ~= -1 then
+					for var= 1, idx do
+						mSleep(500)
+						moveTowards(404,1194,90,400,10)
+						mSleep(1500)
+					end
+					mSleep(500)
+					tap(x,yy)
+					mSleep(500)
+					break
+				else
+					mSleep(500)
+					moveTowards(404,1194,90,900,10)
+					mSleep(1500)
+				end
+			end
 
-		self:Set_Device_Model(self.phone_type)
-		self:Set_SyetemVer(self.sys_version)
-	end
+			while true do
+				mSleep(500)
+				x,y = findMultiColorInRegionFuzzy(0x000000, "5|6|0x000000,22|4|0x000000,38|4|0x000000,54|6|0x000000,59|-11|0x000000,70|-2|0x000000,74|4|0x000000,88|2|0x000000,118|10|0x000000", 90, 0, 0, 749, 1333)
+				if x ~= -1 then
+					mSleep(500)
+					break
+				else
+					mSleep(500)
+					tap(55,85)
+					mSleep(500)
+				end
+			end
+			
+			local param_file = AMG.Get_Param()
+			if param_file then
+				local amg_param = plist.read(param_file)
+				local param_name = "Model"
+				self.phone_type = amg_param[param_name]
+			end
+		end
+        
+        --设置当前系统版本
+		if editorWay == "2" or editorWay == "3" then
+			while true do
+				mSleep(500)
+				x,y = findMultiColorInRegionFuzzy( 0x000000, "4|5|0x000000,21|5|0x000000,38|5|0x000000,53|5|0x000000,53|-11|0x000000,83|9|0x000000,124|-8|0x000000,145|-7|0x000000,230|7|0x000000", 90, 0, 0, 749, 1333)
+				if x ~= -1 then
+					mSleep(500)
+					tap(x,y)
+					mSleep(500)
+					break
+				else
+					mSleep(500)
+					moveTowards(404,1194,90,900,10)
+					mSleep(1500)
+				end
+			end
+
+			idx = math.random(1, 7)
+			while true do
+				mSleep(500)
+				x,y = findMultiColorInRegionFuzzy( 0x000000, "-7|-10|0x000000,7|-10|0x000000,7|11|0x000000,-7|11|0x000000,-29|3|0x000000,-53|2|0x000000,-92|6|0x000000,-113|4|0x000000,-121|2|0x000000", 90, 0, 0, 749, 1333)
+				if x ~= -1 then
+					mSleep(500)
+					tap(x,y + (idx - 1) * 90)
+					mSleep(500)
+					break
+				else
+					mSleep(500)
+					moveTowards(404,1194,90,900,10)
+					mSleep(1500)
+				end
+			end
+			
+			local param_file = AMG.Get_Param()
+			if param_file then
+				local amg_param = plist.read(param_file)
+				local param_name = "SystemVer"
+				self.sys_version = amg_param[param_name]
+			end
+		end
+
+		while true do
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy(0x007aff, "24|0|0x007aff,38|3|0x007aff,55|3|0x007aff,58|14|0x007aff,58|-7|0x007aff,58|-12|0x007aff,75|2|0x007aff,93|2|0x007aff,125|2|0x007aff", 90, 24, 540, 319, 610, { orient = 2 })
+			if x ~= -1 then
+				mSleep(500)
+				break
+			else
+				mSleep(500)
+				tap(55,85)
+				mSleep(500)
+			end
+
+			if isFrontApp(self.awz_bid) == 0 then
+				runApp(self.awz_bid)
+				mSleep(3000)
+			end
+		end
+    end
 
 	if gpsAddress == "0" then
 		add = self:getIpAddress()
@@ -2193,13 +2339,26 @@ function model:main()
 				["list"] = "修改,不修改",
 				["select"] = "0",
 				["countperline"] = "4"
+			},
+			{
+				["type"] = "Label",
+				["text"] = "选择修改型号系统方式",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255"
+			},
+			{
+				["type"] = "RadioGroup",
+				["list"] = "amg接口修改,单选型号,单选版本,脚本随机型号系统修改",
+				["select"] = "0",
+				["countperline"] = "3"
 			}
 		}
 	}
 
 	local MyJsonString = json.encode(MyTable)
 
-	ret, password, sex, searchFriend, searchAccount, changeHeader, nikcNameType, sysVersion, sysPhoneType, openPingNet, gpsAddress, changePass = showUI(MyJsonString)
+	ret, password, sex, searchFriend, searchAccount, changeHeader, nikcNameType, sysVersion, sysPhoneType, openPingNet, gpsAddress, changePass, editorWay = showUI(MyJsonString)
 	if ret == 0 then
 		dialog("取消运行脚本", 3)
 		luaExit()
@@ -2242,7 +2401,7 @@ function model:main()
 		end
 
 		self:vpn(openPingNet)
-		self:newMMApp(sysVersion, sysPhoneType, gpsAddress)
+		self:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 		self:mm(password, sex, searchFriend, searchAccount, changeHeader, nikcNameType, changePass)
 	end
 end

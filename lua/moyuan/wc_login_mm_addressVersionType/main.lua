@@ -292,7 +292,8 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 				mSleep(3000)
 			end
 		end
-
+        
+        --设置当前设备机型
 		if editorWay == "1" or editorWay == "3" then
 			while true do
 				mSleep(500)
@@ -351,7 +352,8 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 				self.phone_type = amg_param[param_name]
 			end
 		end
-
+        
+        --设置当前系统版本
 		if editorWay == "2" or editorWay == "3" then
 			while true do
 				mSleep(500)
@@ -409,7 +411,6 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 				mSleep(3000)
 			end
 		end
-
 	end
 
 	if gpsAddress == "0" then
@@ -2368,12 +2369,6 @@ function model:main()
 			{
 				["type"] = "RadioGroup",
 				["list"] = "修改,不修改",
-				["select"] = "0",
-				["countperline"] = "4"
-			},
-			{
-				["type"] = "RadioGroup",
-				["list"] = "开启,不开启,普通定位",
 				["select"] = "0",
 				["countperline"] = "4"
 			},
