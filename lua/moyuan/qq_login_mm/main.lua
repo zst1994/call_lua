@@ -20,8 +20,8 @@ model.mm_accountId = ""
 model.subName = ""
 
 model.city = ""
-model.phone_type = ""
-model.sys_version = ""
+model.phone_type = "脚本自动选择"
+model.sys_version = "脚本自动选择"
 
 math.randomseed(getRndNum()) -- 随机种子初始化真随机数
 
@@ -338,7 +338,9 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 				x,y = findMultiColorInRegionFuzzy(0x000000, "5|6|0x000000,22|4|0x000000,38|4|0x000000,54|6|0x000000,59|-11|0x000000,70|-2|0x000000,74|4|0x000000,88|2|0x000000,118|10|0x000000", 90, 0, 0, 749, 1333)
 				if x ~= -1 then
 					mSleep(500)
-					tap(x,y)
+					tap(x + 200,y)
+					mSleep(500)
+					toast("进入选择机型",1)
 					mSleep(500)
 					break
 				else
@@ -347,20 +349,16 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 					mSleep(1500)
 				end
 			end
-
-			idx = math.random(1, 4)
-			yy = math.random(171, 1214)
+			
+			idx = (math.random(1, 7) - 1) * 90
 			while true do
 				mSleep(500)
-				x,y = findMultiColorInRegionFuzzy( 0x000000, "6|-4|0x000000,7|18|0x000000,28|18|0x000000,16|18|0x000000,16|0|0x000000,27|0|0x000000,35|16|0x000000,42|7|0x000000,56|7|0x000000", 90, 0, 0, 749, 1333)
+				x,y = findMultiColorInRegionFuzzy( 0x000000, "-7|-10|0x000000,7|-10|0x000000,7|11|0x000000,-7|11|0x000000,-29|3|0x000000,-53|2|0x000000,-92|6|0x000000,-113|4|0x000000,-121|2|0x000000", 90, 0, 0, 749, 1333)
 				if x ~= -1 then
-					for var= 1, idx do
-						mSleep(500)
-						moveTowards(404,1194,90,400,10)
-						mSleep(1500)
-					end
 					mSleep(500)
-					tap(x,yy)
+					tap(x,y + idx)
+					mSleep(500)
+					toast("选择机型",1)
 					mSleep(500)
 					break
 				else
@@ -375,6 +373,8 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 				x,y = findMultiColorInRegionFuzzy(0x000000, "5|6|0x000000,22|4|0x000000,38|4|0x000000,54|6|0x000000,59|-11|0x000000,70|-2|0x000000,74|4|0x000000,88|2|0x000000,118|10|0x000000", 90, 0, 0, 749, 1333)
 				if x ~= -1 then
 					mSleep(500)
+					toast("进入下一步",1)
+					mSleep(500)
 					break
 				else
 					mSleep(500)
@@ -383,12 +383,12 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 				end
 			end
 			
-			local param_file = AMG.Get_Param()
-			if param_file then
-				local amg_param = plist.read(param_file)
-				local param_name = "Model"
-				self.phone_type = amg_param[param_name]
-			end
+-- 			local param_file = AMG.Get_Param()
+-- 			if param_file then
+-- 				local amg_param = plist.read(param_file)
+-- 				local param_name = "Model"
+-- 				self.phone_type = amg_param[param_name]
+-- 			end
 		end
         
         --设置当前系统版本
@@ -398,7 +398,9 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 				x,y = findMultiColorInRegionFuzzy( 0x000000, "4|5|0x000000,21|5|0x000000,38|5|0x000000,53|5|0x000000,53|-11|0x000000,83|9|0x000000,124|-8|0x000000,145|-7|0x000000,230|7|0x000000", 90, 0, 0, 749, 1333)
 				if x ~= -1 then
 					mSleep(500)
-					tap(x,y)
+					tap(x + 200,y)
+					mSleep(500)
+					toast("进入选择系统版本",1)
 					mSleep(500)
 					break
 				else
@@ -408,28 +410,49 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 				end
 			end
 
-			idx = math.random(1, 7)
-			while true do
+-- 			idx = math.random(1, 3)
+			yy = math.random(171, 1214)
+			
+			for var=1,4 do
+			    mSleep(500)
+				moveTowards(404,1194,90,900,50)
 				mSleep(500)
-				x,y = findMultiColorInRegionFuzzy( 0x000000, "-7|-10|0x000000,7|-10|0x000000,7|11|0x000000,-7|11|0x000000,-29|3|0x000000,-53|2|0x000000,-92|6|0x000000,-113|4|0x000000,-121|2|0x000000", 90, 0, 0, 749, 1333)
-				if x ~= -1 then
-					mSleep(500)
-					tap(x,y + (idx - 1) * 90)
-					mSleep(500)
-					break
-				else
-					mSleep(500)
-					moveTowards(404,1194,90,900,10)
-					mSleep(1500)
-				end
 			end
 			
-			local param_file = AMG.Get_Param()
-			if param_file then
-				local amg_param = plist.read(param_file)
-				local param_name = "SystemVer"
-				self.sys_version = amg_param[param_name]
-			end
+			mSleep(500)
+			tap(300,yy)
+			mSleep(500)
+			toast("选择系统版本",1)
+			mSleep(500)
+			
+-- 			while true do
+-- 				mSleep(500)
+-- 				x,y = findMultiColorInRegionFuzzy( 0x000000, "6|-4|0x000000,7|18|0x000000,28|18|0x000000,16|18|0x000000,16|0|0x000000,27|0|0x000000,35|16|0x000000,42|7|0x000000,56|7|0x000000", 90, 0, 0, 749, 1333)
+-- 				if x ~= -1 then
+-- 					for var= 1, idx do
+-- 						mSleep(500)
+-- 						moveTowards(404,1194,90,400,10)
+-- 						mSleep(1500)
+-- 					end
+-- 					mSleep(500)
+-- 					tap(x,yy)
+-- 					mSleep(500)
+-- 					toast("选择系统版本",1)
+-- 					mSleep(500)
+-- 					break
+-- 				else
+-- 					mSleep(500)
+-- 					moveTowards(404,1194,90,900,10)
+-- 					mSleep(1500)
+-- 				end
+-- 			end
+			
+-- 			local param_file = AMG.Get_Param()
+-- 			if param_file then
+-- 				local amg_param = plist.read(param_file)
+-- 				local param_name = "SystemVer"
+-- 				self.sys_version = amg_param[param_name]
+-- 			end
 		end
 
 		while true do
@@ -1543,6 +1566,26 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			toast("上传照片3", 1)
 			mSleep(1000)
 		end
+		
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0x323333, "-12|-12|0x323333,13|-12|0x323333,-11|11|0x323333,12|12|0x323333,65|859|0x3bb3fa,595|863|0x3bb3fa,280|852|0xffffff,363|868|0xffffff,319|821|0x3bb3fa", 90, 0, 0, 750, 1334, { orient = 2 })
+		if x ~= -1 and y ~= -1 then
+			mSleep(math.random(500, 700))
+			randomTap(x, y, 4)
+			mSleep(math.random(500, 700))
+			toast("立即打卡1", 1)
+			mSleep(1000)
+		end
+
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0x323333, "-11|-11|0x323333,13|-12|0x323333,11|11|0x323333,57|886|0x3bb3fa,571|885|0x3bb3fa,339|846|0x3bb3fa,315|924|0x3bb3fa,280|874|0xffffff,363|891|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+		if x ~= -1 and y ~= -1 then
+			mSleep(math.random(500, 700))
+			randomTap(x, y, 4)
+			mSleep(math.random(500, 700))
+			toast("立即打卡2", 1)
+			mSleep(1000)
+		end
 
 		--下一步
 		mSleep(200)
@@ -1658,6 +1701,26 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			mSleep(500)
 			break
 		end
+		
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0x323333, "-12|-12|0x323333,13|-12|0x323333,-11|11|0x323333,12|12|0x323333,65|859|0x3bb3fa,595|863|0x3bb3fa,280|852|0xffffff,363|868|0xffffff,319|821|0x3bb3fa", 90, 0, 0, 750, 1334, { orient = 2 })
+		if x ~= -1 and y ~= -1 then
+			mSleep(math.random(500, 700))
+			randomTap(x, y, 4)
+			mSleep(math.random(500, 700))
+			toast("立即打卡1", 1)
+			mSleep(1000)
+		end
+
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0x323333, "-11|-11|0x323333,13|-12|0x323333,11|11|0x323333,57|886|0x3bb3fa,571|885|0x3bb3fa,339|846|0x3bb3fa,315|924|0x3bb3fa,280|874|0xffffff,363|891|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+		if x ~= -1 and y ~= -1 then
+			mSleep(math.random(500, 700))
+			randomTap(x, y, 4)
+			mSleep(math.random(500, 700))
+			toast("立即打卡2", 1)
+			mSleep(1000)
+		end
 
 		--绑定手机
 		mSleep(200)
@@ -1764,6 +1827,26 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				toast("好友",1)
 				mSleep(500)
 			end
+			
+			mSleep(200)
+    		x,y = findMultiColorInRegionFuzzy(0x323333, "-12|-12|0x323333,13|-12|0x323333,-11|11|0x323333,12|12|0x323333,65|859|0x3bb3fa,595|863|0x3bb3fa,280|852|0xffffff,363|868|0xffffff,319|821|0x3bb3fa", 90, 0, 0, 750, 1334, { orient = 2 })
+    		if x ~= -1 and y ~= -1 then
+    			mSleep(math.random(500, 700))
+    			randomTap(x, y, 4)
+    			mSleep(math.random(500, 700))
+    			toast("立即打卡1", 1)
+    			mSleep(1000)
+    		end
+    
+    		mSleep(200)
+    		x,y = findMultiColorInRegionFuzzy(0x323333, "-11|-11|0x323333,13|-12|0x323333,11|11|0x323333,57|886|0x3bb3fa,571|885|0x3bb3fa,339|846|0x3bb3fa,315|924|0x3bb3fa,280|874|0xffffff,363|891|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+    		if x ~= -1 and y ~= -1 then
+    			mSleep(math.random(500, 700))
+    			randomTap(x, y, 4)
+    			mSleep(math.random(500, 700))
+    			toast("立即打卡2", 1)
+    			mSleep(1000)
+    		end
 
 			--输入好友账号
 			mSleep(200)
@@ -1872,6 +1955,26 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 	if changeHeader == "0" then
 		t1 = ts.ms()
 		while true do
+		    mSleep(200)
+    		x,y = findMultiColorInRegionFuzzy(0x323333, "-12|-12|0x323333,13|-12|0x323333,-11|11|0x323333,12|12|0x323333,65|859|0x3bb3fa,595|863|0x3bb3fa,280|852|0xffffff,363|868|0xffffff,319|821|0x3bb3fa", 90, 0, 0, 750, 1334, { orient = 2 })
+    		if x ~= -1 and y ~= -1 then
+    			mSleep(math.random(500, 700))
+    			randomTap(x, y, 4)
+    			mSleep(math.random(500, 700))
+    			toast("立即打卡1", 1)
+    			mSleep(1000)
+    		end
+    
+    		mSleep(200)
+    		x,y = findMultiColorInRegionFuzzy(0x323333, "-11|-11|0x323333,13|-12|0x323333,11|11|0x323333,57|886|0x3bb3fa,571|885|0x3bb3fa,339|846|0x3bb3fa,315|924|0x3bb3fa,280|874|0xffffff,363|891|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+    		if x ~= -1 and y ~= -1 then
+    			mSleep(math.random(500, 700))
+    			randomTap(x, y, 4)
+    			mSleep(math.random(500, 700))
+    			toast("立即打卡2", 1)
+    			mSleep(1000)
+    		end
+		
 			--更多
 			mSleep(200)
 			x,y = findMultiColorInRegionFuzzy( 0x323333, "6|0|0x323333,12|0|0x323333,-3|-26|0x565656,37|-26|0x565656,54|-20|0xfdfcfd,-32|-20|0xfdfcfd", 100, 0, 0, 749, 1333)

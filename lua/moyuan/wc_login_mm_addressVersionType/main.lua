@@ -14,8 +14,8 @@ model.mm_bid = "com.wemomo.momoappdemo1"
 model.mm_accountId = ""
 model.subName = ""
 model.city = ""
-model.phone_type = ""
-model.sys_version = ""
+model.phone_type = "脚本自动选择"
+model.sys_version = "脚本自动选择"
 
 model.fsBool = false
 
@@ -300,7 +300,9 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 				x,y = findMultiColorInRegionFuzzy(0x000000, "5|6|0x000000,22|4|0x000000,38|4|0x000000,54|6|0x000000,59|-11|0x000000,70|-2|0x000000,74|4|0x000000,88|2|0x000000,118|10|0x000000", 90, 0, 0, 749, 1333)
 				if x ~= -1 then
 					mSleep(500)
-					tap(x,y)
+					tap(x + 200,y)
+					mSleep(500)
+					toast("进入选择机型",1)
 					mSleep(500)
 					break
 				else
@@ -309,20 +311,16 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 					mSleep(1500)
 				end
 			end
-
-			idx = math.random(1, 4)
-			yy = math.random(171, 1214)
+			
+			idx = (math.random(1, 7) - 1) * 90
 			while true do
 				mSleep(500)
-				x,y = findMultiColorInRegionFuzzy( 0x000000, "6|-4|0x000000,7|18|0x000000,28|18|0x000000,16|18|0x000000,16|0|0x000000,27|0|0x000000,35|16|0x000000,42|7|0x000000,56|7|0x000000", 90, 0, 0, 749, 1333)
+				x,y = findMultiColorInRegionFuzzy( 0x000000, "-7|-10|0x000000,7|-10|0x000000,7|11|0x000000,-7|11|0x000000,-29|3|0x000000,-53|2|0x000000,-92|6|0x000000,-113|4|0x000000,-121|2|0x000000", 90, 0, 0, 749, 1333)
 				if x ~= -1 then
-					for var= 1, idx do
-						mSleep(500)
-						moveTowards(404,1194,90,400,10)
-						mSleep(1500)
-					end
 					mSleep(500)
-					tap(x,yy)
+					tap(x,y + idx)
+					mSleep(500)
+					toast("选择机型",1)
 					mSleep(500)
 					break
 				else
@@ -337,6 +335,8 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 				x,y = findMultiColorInRegionFuzzy(0x000000, "5|6|0x000000,22|4|0x000000,38|4|0x000000,54|6|0x000000,59|-11|0x000000,70|-2|0x000000,74|4|0x000000,88|2|0x000000,118|10|0x000000", 90, 0, 0, 749, 1333)
 				if x ~= -1 then
 					mSleep(500)
+					toast("进入下一步",1)
+					mSleep(500)
 					break
 				else
 					mSleep(500)
@@ -345,12 +345,12 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 				end
 			end
 			
-			local param_file = AMG.Get_Param()
-			if param_file then
-				local amg_param = plist.read(param_file)
-				local param_name = "Model"
-				self.phone_type = amg_param[param_name]
-			end
+-- 			local param_file = AMG.Get_Param()
+-- 			if param_file then
+-- 				local amg_param = plist.read(param_file)
+-- 				local param_name = "Model"
+-- 				self.phone_type = amg_param[param_name]
+-- 			end
 		end
         
         --设置当前系统版本
@@ -360,7 +360,9 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 				x,y = findMultiColorInRegionFuzzy( 0x000000, "4|5|0x000000,21|5|0x000000,38|5|0x000000,53|5|0x000000,53|-11|0x000000,83|9|0x000000,124|-8|0x000000,145|-7|0x000000,230|7|0x000000", 90, 0, 0, 749, 1333)
 				if x ~= -1 then
 					mSleep(500)
-					tap(x,y)
+					tap(x + 200,y)
+					mSleep(500)
+					toast("进入选择系统版本",1)
 					mSleep(500)
 					break
 				else
@@ -370,28 +372,49 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 				end
 			end
 
-			idx = math.random(1, 7)
-			while true do
+-- 			idx = math.random(1, 3)
+			yy = math.random(171, 1214)
+			
+			for var=1,4 do
+			    mSleep(500)
+				moveTowards(404,1194,90,900,50)
 				mSleep(500)
-				x,y = findMultiColorInRegionFuzzy( 0x000000, "-7|-10|0x000000,7|-10|0x000000,7|11|0x000000,-7|11|0x000000,-29|3|0x000000,-53|2|0x000000,-92|6|0x000000,-113|4|0x000000,-121|2|0x000000", 90, 0, 0, 749, 1333)
-				if x ~= -1 then
-					mSleep(500)
-					tap(x,y + (idx - 1) * 90)
-					mSleep(500)
-					break
-				else
-					mSleep(500)
-					moveTowards(404,1194,90,900,10)
-					mSleep(1500)
-				end
 			end
 			
-			local param_file = AMG.Get_Param()
-			if param_file then
-				local amg_param = plist.read(param_file)
-				local param_name = "SystemVer"
-				self.sys_version = amg_param[param_name]
-			end
+			mSleep(500)
+			tap(300,yy)
+			mSleep(500)
+			toast("选择系统版本",1)
+			mSleep(500)
+			
+-- 			while true do
+-- 				mSleep(500)
+-- 				x,y = findMultiColorInRegionFuzzy( 0x000000, "6|-4|0x000000,7|18|0x000000,28|18|0x000000,16|18|0x000000,16|0|0x000000,27|0|0x000000,35|16|0x000000,42|7|0x000000,56|7|0x000000", 90, 0, 0, 749, 1333)
+-- 				if x ~= -1 then
+-- 					for var= 1, idx do
+-- 						mSleep(500)
+-- 						moveTowards(404,1194,90,400,10)
+-- 						mSleep(1500)
+-- 					end
+-- 					mSleep(500)
+-- 					tap(x,yy)
+-- 					mSleep(500)
+-- 					toast("选择系统版本",1)
+-- 					mSleep(500)
+-- 					break
+-- 				else
+-- 					mSleep(500)
+-- 					moveTowards(404,1194,90,900,10)
+-- 					mSleep(1500)
+-- 				end
+-- 			end
+			
+-- 			local param_file = AMG.Get_Param()
+-- 			if param_file then
+-- 				local amg_param = plist.read(param_file)
+-- 				local param_name = "SystemVer"
+-- 				self.sys_version = amg_param[param_name]
+-- 			end
 		end
 
 		while true do
