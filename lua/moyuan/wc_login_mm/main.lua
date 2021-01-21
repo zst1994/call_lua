@@ -404,19 +404,22 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 	    mSleep(200)
 	    x,y = findMultiColorInRegionFuzzy(0xffffff, "-97|-26|0x48516d,-107|46|0x48516d,198|-35|0x48516d,201|42|0x48516d,286|-30|0x2f3753,278|51|0x2f3753,579|-26|0x2f3753,582|31|0x2f3753,374|-1166|0xff7fa3", 90, 0, 0, 750, 1334, { orient = 2 })
         if x ~= -1 then
+            mSleep(500)
             if self.fsBool then
+                toast("取消之前选择内容",1)
+                mSleep(1000)
                 while (true) do
                     --授权
             	    mSleep(200)
             	    x,y = findMultiColorInRegionFuzzy(0xffffff, "-97|-26|0x48516d,-107|46|0x48516d,198|-35|0x48516d,201|42|0x48516d,286|-30|0x2f3753,278|51|0x2f3753,579|-26|0x2f3753,582|31|0x2f3753,374|-1166|0xff7fa3", 90, 0, 0, 750, 1334, { orient = 2 })
                     if x ~= -1 then
                         mSleep(math.random(500, 700))
-            			randomTap(681,84, 4)
+            			tap(681,84)
             			mSleep(math.random(500, 700))
                     end
                     
                     mSleep(200)
-                    x,y = findMultiColorInRegionFuzzy(0x333333, "20|4|0x333333,50|-1|0x333333,83|-1|0x333333,-24|-192|0xf2f2f3,-26|-280|0xff7fa3,81|-290|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+                    x,y = findMultiColorInRegionFuzzy(0x333333, "20|4|0x333333,50|-1|0x333333,83|-1|0x333333,-24|-192|0xf2f2f3,-26|-280|0xff7fa3,81|-290|0xffffff", 100, 0, 0, 750, 1334, { orient = 2 })
                     if x ~= -1 then
                         mSleep(math.random(500, 700))
     			        randomTap(x, y, 4)
@@ -582,6 +585,13 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			toast("复扫",1)
 			mSleep(math.random(1500, 3000))
             while (true) do
+                mSleep(200)
+        		x, y = findMultiColorInRegionFuzzy(0x323333,"16|-1|0x323333,8|7|0x323333,10|19|0x323333,24|26|0x323333,30|13|0x323333,25|-7|0x323333,54|-3|0x323333,83|8|0x323333,66|-8|0x323333",90,0,0,750,1334,{orient = 2})
+        		if x ~= -1 then
+        		    mSleep(200)
+        		    goto fs
+        		end
+        		
                 --授权
         	    mSleep(200)
         	    x,y = findMultiColorInRegionFuzzy(0xffffff, "-97|-26|0x48516d,-107|46|0x48516d,198|-35|0x48516d,201|42|0x48516d,286|-30|0x2f3753,278|51|0x2f3753,579|-26|0x2f3753,582|31|0x2f3753,374|-1166|0xff7fa3", 90, 0, 0, 750, 1334, { orient = 2 })
@@ -615,6 +625,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
                 end
             end
             self.fsBool = true
+            ::fs::
         end
         
 	    --wc图标
@@ -627,6 +638,13 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			toast("复扫",1)
 			mSleep(math.random(1500, 3000))
             while (true) do
+                mSleep(200)
+        		x, y = findMultiColorInRegionFuzzy(0x323333,"16|-1|0x323333,8|7|0x323333,10|19|0x323333,24|26|0x323333,30|13|0x323333,25|-7|0x323333,54|-3|0x323333,83|8|0x323333,66|-8|0x323333",90,0,0,750,1334,{orient = 2})
+        		if x ~= -1 then
+        		    mSleep(200)
+        		    goto fs
+        		end
+        		
                 --授权
         	    mSleep(200)
         	    x,y = findMultiColorInRegionFuzzy(0xffffff, "-97|-26|0x48516d,-107|46|0x48516d,198|-35|0x48516d,201|42|0x48516d,286|-30|0x2f3753,278|51|0x2f3753,579|-26|0x2f3753,582|31|0x2f3753,374|-1166|0xff7fa3", 90, 0, 0, 750, 1334, { orient = 2 })
@@ -660,6 +678,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
                 end
             end
             self.fsBool = true
+            ::fs::
         end
         
 		mSleep(500)
