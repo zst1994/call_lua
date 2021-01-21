@@ -28,18 +28,18 @@ math.randomseed(getRndNum()) -- 随机种子初始化真随机数
 --检查AMG是否在前台
 function model:Check_AMG()
 	while true do
-	    mSleep(500)
-	    x,y = findMultiColorInRegionFuzzy(0x007aff, "24|0|0x007aff,38|3|0x007aff,55|3|0x007aff,58|14|0x007aff,58|-7|0x007aff,58|-12|0x007aff,75|2|0x007aff,93|2|0x007aff,125|2|0x007aff", 90, 24, 540, 319, 610, { orient = 2 })
-        if x ~= -1 then
+		mSleep(500)
+		x,y = findMultiColorInRegionFuzzy(0x007aff, "24|0|0x007aff,38|3|0x007aff,55|3|0x007aff,58|14|0x007aff,58|-7|0x007aff,58|-12|0x007aff,75|2|0x007aff,93|2|0x007aff,125|2|0x007aff", 90, 24, 540, 319, 610, { orient = 2 })
+		if x ~= -1 then
 			toast("进入界面成功", 1)
 			mSleep(500)
 			break
 		end
 
 		if isFrontApp(self.awz_bid) == 0 then
-    		runApp(self.awz_bid)
-    		mSleep(3000)
-    	end
+			runApp(self.awz_bid)
+			mSleep(3000)
+		end
 	end
 end
 
@@ -87,83 +87,83 @@ local AMG = {
 			if code == 200 then
 				return model:Check_AMG_Result()
 			end
-	    end),
-    Get_Param = (function() --获取当前记录参数并保存到指定文件夹
-            model:Check_AMG()
-            local param_file = userPath().."/lua/AMG_Param.plist"   --此处可自行修改保存路径和文件名
-            if isFileExist(param_file) then delFile(param_file) end
-            local res, code = http.request("http://127.0.0.1:8080/cmd?fun=getCurrentRecordParam&saveFilePath="..param_file);
-            if code == 200 then
-                if model:Check_AMG_Result() == true then
-                    return param_file
-                end
-            end 
-        end),
-    Set_Param = (function(param_file)  --设置当前记录参数
-            model:Check_AMG()
-            local res, code = http.request("http://127.0.0.1:8080/cmd?fun=setCurrentRecordParam&filePath="..param_file);
-            if code == 200 then
-                return model:Check_AMG_Result()
-            end 
-        end),
+		end),
+	Get_Param = (function() --获取当前记录参数并保存到指定文件夹
+			model:Check_AMG()
+			local param_file = userPath().."/lua/AMG_Param.plist"   --此处可自行修改保存路径和文件名
+			if isFileExist(param_file) then delFile(param_file) end
+			local res, code = http.request("http://127.0.0.1:8080/cmd?fun=getCurrentRecordParam&saveFilePath="..param_file);
+			if code == 200 then
+				if model:Check_AMG_Result() == true then
+					return param_file
+				end
+			end 
+		end),
+	Set_Param = (function(param_file)  --设置当前记录参数
+			model:Check_AMG()
+			local res, code = http.request("http://127.0.0.1:8080/cmd?fun=setCurrentRecordParam&filePath="..param_file);
+			if code == 200 then
+				return model:Check_AMG_Result()
+			end 
+		end),
 
 }
 
 --设置机型版本
 --设置开关
 function model:Set_AMG_Config(key,valus)
-    local config_file = "/private/var/mobile/Library/Preferences/AMG/config.plist"
-    local amg_config = plist.read(config_file)
-    amg_config[key] = valus
-    plist.write(config_file,amg_config)
-    toast("修改参数成功",1)
-    mSleep(500)
+	local config_file = "/private/var/mobile/Library/Preferences/AMG/config.plist"
+	local amg_config = plist.read(config_file)
+	amg_config[key] = valus
+	plist.write(config_file,amg_config)
+	toast("修改参数成功",1)
+	mSleep(500)
 end
 
 --设置当前设备机型
 function model:Set_Device_Model(iphone_model)
-    if iphone_model ~= nil then
-        self:Set_AMG_Config("fakeDeviceModel","1")
-    else
-        self:Set_AMG_Config("fakeDeviceModel","0")
-    end
-    local param_file = AMG.Get_Param()    --先获取当前记录参数
-    if param_file then
-        local amg_param = plist.read(param_file)
-        local param_name = "Model"
-        local param_value = "nil"
-        if iphone_model ~= nil then
-            param_value = iphone_model
-        end
-        amg_param[param_name] = iphone_model
-        plist.write(param_file,amg_param)   --写入参数
-        if AMG.Set_Param(param_file) == true then
-            toast("设置当前记录参数"..param_name.."值为"..param_value,3)
-        end
-    end
+	if iphone_model ~= nil then
+		self:Set_AMG_Config("fakeDeviceModel","1")
+	else
+		self:Set_AMG_Config("fakeDeviceModel","0")
+	end
+	local param_file = AMG.Get_Param()    --先获取当前记录参数
+	if param_file then
+		local amg_param = plist.read(param_file)
+		local param_name = "Model"
+		local param_value = "nil"
+		if iphone_model ~= nil then
+			param_value = iphone_model
+		end
+		amg_param[param_name] = iphone_model
+		plist.write(param_file,amg_param)   --写入参数
+		if AMG.Set_Param(param_file) == true then
+			toast("设置当前记录参数"..param_name.."值为"..param_value,3)
+		end
+	end
 end
 
 --设置当前系统版本
 function model:Set_SyetemVer(ios_ver)
-    if ios_ver ~= nil then
-        self:Set_AMG_Config("fakeSystemVer","1")
-    else
-        self:Set_AMG_Config("fakeSystemVer","0")
-    end
-    local param_file = AMG.Get_Param()    --先获取当前记录参数
-    if param_file then
-        local amg_param = plist.read(param_file)
-        local param_name = "SystemVer"
-        local param_value = "nil"
-        if ios_ver ~= nil then
-            param_value = ios_ver
-        end
-        amg_param[param_name] = ios_ver
-        plist.write(param_file,amg_param)   --写入参数
-        if AMG.Set_Param(param_file) == true then
-            toast("设置当前记录参数"..param_name.."值为"..param_value,3)
-        end
-    end
+	if ios_ver ~= nil then
+		self:Set_AMG_Config("fakeSystemVer","1")
+	else
+		self:Set_AMG_Config("fakeSystemVer","0")
+	end
+	local param_file = AMG.Get_Param()    --先获取当前记录参数
+	if param_file then
+		local amg_param = plist.read(param_file)
+		local param_name = "SystemVer"
+		local param_value = "nil"
+		if ios_ver ~= nil then
+			param_value = ios_ver
+		end
+		amg_param[param_name] = ios_ver
+		plist.write(param_file,amg_param)   --写入参数
+		if AMG.Set_Param(param_file) == true then
+			toast("设置当前记录参数"..param_name.."值为"..param_value,3)
+		end
+	end
 end
 
 --[[随机内容(UTF-8中文字符占3个字符)]]
@@ -273,133 +273,133 @@ function model:timeOutRestart(t1)
 end
 
 function model:getIpAddress()
-    ::address::
-    status_resp, header_resp,body_resp = ts.httpGet("http://ip-api.com/json/")
-    if status_resp == 200 then--打开网站成功
-    	tmp = json.decode(body_resp)
-    	if tmp.status == "success" then
-    		return tmp
-    	end
-    else
-    	toast("请求ip位置失败："..tostring(body_resp),1)
-    	mSleep(1000)
-    	goto address
-    end
+	::address::
+	status_resp, header_resp,body_resp = ts.httpGet("http://ip-api.com/json/")
+	if status_resp == 200 then--打开网站成功
+		tmp = json.decode(body_resp)
+		if tmp.status == "success" then
+			return tmp
+		end
+	else
+		toast("请求ip位置失败："..tostring(body_resp),1)
+		mSleep(1000)
+		goto address
+	end
 end
 
 function model:newMMApp(sysVersion, sysPhoneType, gpsAddress)
-    if #sysVersion > 0 or #sysPhoneType > 0 then
-        verList = {"13.0","13.1","13.1.1","13.1.2","13.1.3","13.2","13.2.2","13.2.3","13.3","13.3.1","13.4","13.4.1","13.5","13.5.1","13.6","13.6.1","13.7","14.0","14.0.1","14.1","14.2","14.3"}
-        modelList = {"iPhone 7","iPhonse 7 Plus","iPhone 8","iPhone 8 Plus","iPhone X","iPhone Xr","iPhone Xs","iPhone Xs Max","iPhone 11","iPhone 11 Pro","iPhone 11 Pro Max"}
-        
-        check_verList = strSplit(sysVersion,"@")
-        check_modelList = strSplit(sysPhoneType,"@")
-        
-        ios_ver = check_verList[math.random(1, #check_verList)]
-        iphone_model = check_modelList[math.random(1, #check_modelList)]
-        
-        self.phone_type = modelList[tonumber(iphone_model) + 1]
-        self.sys_version = verList[tonumber(ios_ver) + 1]
-        
-        self:Set_Device_Model(self.phone_type)
-        self:Set_SyetemVer(self.sys_version)
-    end
-    
-    if gpsAddress == "0" then
-        add = self:getIpAddress()
-        lat = add.lat
-        lon = add.lon
-        toast(lat.."\r\n"..lon,1)
-        mSleep(500)
-        
-        local param_file = AMG.Get_Param()    --先获取当前记录参数
-        if param_file then
-            --toast("获取成功，参数文件路径："..param_file, 3)
-            local amg_param = plist.read(param_file)
-            amg_param["Longitude"] = lon
-            amg_param["Latitude"] = lat
-            plist.write(param_file,amg_param)   --写入参数
-            if AMG.Set_Param(param_file) == true then
-                toast("设置当前记录GPS位置为".."经度："..lon.."纬度："..lat,3)
-            end
-        end
-    elseif gpsAddress == "2" then
-        while true do
-    	    mSleep(200)
-    	    x,y = findMultiColorInRegionFuzzy(0x007aff, "24|0|0x007aff,38|3|0x007aff,55|3|0x007aff,58|14|0x007aff,58|-7|0x007aff,58|-12|0x007aff,75|2|0x007aff,93|2|0x007aff,125|2|0x007aff", 90, 24, 540, 319, 610, { orient = 2 })
-            if x ~= -1 then
-                mSleep(500)
-                tap(x,y + 180)
-                mSleep(500)
-    			toast("设置", 1)
-    			mSleep(500)
-            end
-		
-		    mSleep(200)
-		    if getColor(347,87) == 0x000000 and getColor(404,97) == 0x000000 then
-		        mSleep(500)
-		        toast("进入设置",1)
-		        mSleep(500)
-		        break
-		    end
-    
-    		if isFrontApp(self.awz_bid) == 0 then
-        		runApp(self.awz_bid)
-        		mSleep(3000)
-        	end
-        end
-	
-	    while true do
-	        mSleep(500)
-	        x,y = findMultiColorInRegionFuzzy(0x000000, "4|-7|0x000000,4|12|0x000000,13|-3|0x000000,20|-5|0x000000,28|2|0x000000,21|10|0x000000,47|-1|0x000000,54|0|0x000000,61|-1|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
-            if x ~= -1 then
-                mSleep(500)
-                tap(x,y)
-                mSleep(500)
-                break
-            else
-                mSleep(500)
-                moveTowards(404,1194,90,900,10)
-                mSleep(1500)
-            end
-	    end
-    
-        while (true) do
-            mSleep(200)
-		    if getColor(379,181) == 0xeaebed and getColor(655,85) ==0x007aff then
-		        mSleep(500)
-		        tap(379,181)
-		        mSleep(500)
-		        inputStr(self.city)
-		        mSleep(1000)
-		        key = "ReturnOrEnter"
-    			keyDown(key)
-    			keyUp(key)
-    			mSleep(2000)
-    			tap(math.random(178, 599), math.random(618, 1076))
-    			mSleep(4000)
-    			tap(682,86)
-    			mSleep(1000)
-    			break
-		    end
-        end
-        
-        while true do
-	        mSleep(500)
-	        x,y = findMultiColorInRegionFuzzy(0x007aff, "24|0|0x007aff,38|3|0x007aff,55|3|0x007aff,58|14|0x007aff,58|-7|0x007aff,58|-12|0x007aff,75|2|0x007aff,93|2|0x007aff,125|2|0x007aff", 90, 24, 540, 319, 610, { orient = 2 })
-            if x ~= -1 then
-                mSleep(500)
-                toast("准备下一步",1)
-                mSleep(500)
-                break
-            else
-                mSleep(500)
-                tap(45,81)
-                mSleep(1000)
-            end
-	    end
-    end
-    
+	if #sysVersion > 0 or #sysPhoneType > 0 then
+		verList = {"13.0","13.1","13.1.1","13.1.2","13.1.3","13.2","13.2.2","13.2.3","13.3","13.3.1","13.4","13.4.1","13.5","13.5.1","13.6","13.6.1","13.7","14.0","14.0.1","14.1","14.2","14.3"}
+		modelList = {"iPhone 7","iPhonse 7 Plus","iPhone 8","iPhone 8 Plus","iPhone X","iPhone Xr","iPhone Xs","iPhone Xs Max","iPhone 11","iPhone 11 Pro","iPhone 11 Pro Max"}
+
+		check_verList = strSplit(sysVersion,"@")
+		check_modelList = strSplit(sysPhoneType,"@")
+
+		ios_ver = check_verList[math.random(1, #check_verList)]
+		iphone_model = check_modelList[math.random(1, #check_modelList)]
+
+		self.phone_type = modelList[tonumber(iphone_model) + 1]
+		self.sys_version = verList[tonumber(ios_ver) + 1]
+
+		self:Set_Device_Model(self.phone_type)
+		self:Set_SyetemVer(self.sys_version)
+	end
+
+	if gpsAddress == "0" then
+		add = self:getIpAddress()
+		lat = add.lat
+		lon = add.lon
+		toast(lat.."\r\n"..lon,1)
+		mSleep(500)
+
+		local param_file = AMG.Get_Param()    --先获取当前记录参数
+		if param_file then
+			--toast("获取成功，参数文件路径："..param_file, 3)
+			local amg_param = plist.read(param_file)
+			amg_param["Longitude"] = lon
+			amg_param["Latitude"] = lat
+			plist.write(param_file,amg_param)   --写入参数
+			if AMG.Set_Param(param_file) == true then
+				toast("设置当前记录GPS位置为".."经度："..lon.."纬度："..lat,3)
+			end
+		end
+	elseif gpsAddress == "2" then
+		while true do
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy(0x007aff, "24|0|0x007aff,38|3|0x007aff,55|3|0x007aff,58|14|0x007aff,58|-7|0x007aff,58|-12|0x007aff,75|2|0x007aff,93|2|0x007aff,125|2|0x007aff", 90, 24, 540, 319, 610, { orient = 2 })
+			if x ~= -1 then
+				mSleep(500)
+				tap(x,y + 180)
+				mSleep(500)
+				toast("设置", 1)
+				mSleep(500)
+			end
+
+			mSleep(200)
+			if getColor(347,87) == 0x000000 and getColor(404,97) == 0x000000 then
+				mSleep(500)
+				toast("进入设置",1)
+				mSleep(500)
+				break
+			end
+
+			if isFrontApp(self.awz_bid) == 0 then
+				runApp(self.awz_bid)
+				mSleep(3000)
+			end
+		end
+
+		while true do
+			mSleep(500)
+			x,y = findMultiColorInRegionFuzzy(0x000000, "4|-7|0x000000,4|12|0x000000,13|-3|0x000000,20|-5|0x000000,28|2|0x000000,21|10|0x000000,47|-1|0x000000,54|0|0x000000,61|-1|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+			if x ~= -1 then
+				mSleep(500)
+				tap(x,y)
+				mSleep(500)
+				break
+			else
+				mSleep(500)
+				moveTowards(404,1194,90,900,10)
+				mSleep(1500)
+			end
+		end
+
+		while (true) do
+			mSleep(200)
+			if getColor(379,181) == 0xeaebed and getColor(655,85) ==0x007aff then
+				mSleep(500)
+				tap(379,181)
+				mSleep(500)
+				inputStr(self.city)
+				mSleep(1000)
+				key = "ReturnOrEnter"
+				keyDown(key)
+				keyUp(key)
+				mSleep(2000)
+				tap(math.random(178, 599), math.random(618, 1076))
+				mSleep(4000)
+				tap(682,86)
+				mSleep(1000)
+				break
+			end
+		end
+
+		while true do
+			mSleep(500)
+			x,y = findMultiColorInRegionFuzzy(0x007aff, "24|0|0x007aff,38|3|0x007aff,55|3|0x007aff,58|14|0x007aff,58|-7|0x007aff,58|-12|0x007aff,75|2|0x007aff,93|2|0x007aff,125|2|0x007aff", 90, 24, 540, 319, 610, { orient = 2 })
+			if x ~= -1 then
+				mSleep(500)
+				toast("准备下一步",1)
+				mSleep(500)
+				break
+			else
+				mSleep(500)
+				tap(45,81)
+				mSleep(1000)
+			end
+		end
+	end
+
 	while true do
 		mSleep(500)
 		--一键新机
@@ -432,11 +432,11 @@ function model:vpn_connection()
 end
 
 function model:getIP()
-    ::ip_addresss::
+	::ip_addresss::
 	status_resp, header_resp,body_resp = ts.httpGet("http://myip.ipip.net")
 	toast(body_resp,1)
 	if status_resp == 200 then--打开网站成功
-	    local i,j = string.find(body_resp, "%d+%.%d+%.%d+%.%d+")
+		local i,j = string.find(body_resp, "%d+%.%d+%.%d+%.%d+")
 		if type(i) ~= "nil" and i > 0 then
 			local ipaddr = string.sub(body_resp,i,j)
 			address = strSplit(body_resp,"来自于：")[2]
@@ -464,8 +464,8 @@ function model:Net()
 			n = n + status[i]
 		end
 		if n > 800 then
-		    toast("当前网络延迟："..n,1)
-		    mSleep(500)
+			toast("当前网络延迟："..n,1)
+			mSleep(500)
 			return false
 		else
 			toast("网络良好",1)
@@ -473,7 +473,7 @@ function model:Net()
 			return true
 		end
 	else
-	    toast("ping网络失败",1)
+		toast("ping网络失败",1)
 		mSleep(500)
 		return false
 	end
@@ -529,12 +529,12 @@ function model:vpn(openPingNet)
 			goto get_vpn
 		end
 	end
-	
+
 	if openPingNet == "0" then
-    	if not self:Net() then
-    	    goto get_vpn
-    	end
-    end
+		if not self:Net() then
+			goto get_vpn
+		end
+	end
 end
 
 function model:getMMId(path)
@@ -594,7 +594,7 @@ function model:getAccount()
 	end
 end
 
-function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikcNameType)
+function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikcNameType, changePass)
 	runApp(self.mm_bid)
 	mSleep(1000)
 	t1 = ts.ms()
@@ -1649,14 +1649,14 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				mSleep(500)
 				break
 			end
-			
+
 			self:timeOutRestart(t1)
 			mSleep(1000)
 		end
-		
+
 		t1 = ts.ms()
 		while true do
-		    --返回到更多页面
+			--返回到更多页面
 			mSleep(200)
 			if getColor(678,   83) == 0xffffff or getColor(678,  131) == 0xffffff then
 				while (true) do
@@ -1902,93 +1902,95 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 		mSleep(1000)
 	end
 
-	t1 = ts.ms()
-	while true do
-		--设置
-		mSleep(200)
-		if getColor(342, 80) == 0 and getColor(386, 79) == 0 then
-			mSleep(500)
-			randomTap(577, 209, 4)
-			mSleep(500)
-			toast("设置",1)
-			mSleep(500)
-		end
+	if changePass == "0" then
+		t1 = ts.ms()
+		while true do
+			--设置
+			mSleep(200)
+			if getColor(342, 80) == 0 and getColor(386, 79) == 0 then
+				mSleep(500)
+				randomTap(577, 209, 4)
+				mSleep(500)
+				toast("设置",1)
+				mSleep(500)
+			end
 
-		--设置
-		mSleep(200)
-		if getColor(342, 127) == 0 and getColor(386, 145) == 0 then
-			mSleep(500)
-			randomTap(577, 254, 4)
-			mSleep(500)
-			toast("设置",1)
-			mSleep(500)
-		end
+			--设置
+			mSleep(200)
+			if getColor(342, 127) == 0 and getColor(386, 145) == 0 then
+				mSleep(500)
+				randomTap(577, 254, 4)
+				mSleep(500)
+				toast("设置",1)
+				mSleep(500)
+			end
 
-		--.密码修改    2.密码修改  图标没加载出来    3.密码修改  图标加载一个
-		mSleep(200)
-		x,y = findMultiColorInRegionFuzzy( 0x323333, "12|16|0x323333,2|16|0x323333,23|16|0x323333,35|17|0x323333,40|13|0x323333,58|11|0x323333,68|11|0x323333,99|10|0x323333,128|10|0xffffff", 90, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
-			mSleep(500)
-			randomTap(x, y, 4)
-			mSleep(500)
-			toast("密码修改",1)
-			mSleep(500)
-		end
+			--.密码修改    2.密码修改  图标没加载出来    3.密码修改  图标加载一个
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy( 0x323333, "12|16|0x323333,2|16|0x323333,23|16|0x323333,35|17|0x323333,40|13|0x323333,58|11|0x323333,68|11|0x323333,99|10|0x323333,128|10|0xffffff", 90, 0, 0, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(500)
+				randomTap(x, y, 4)
+				mSleep(500)
+				toast("密码修改",1)
+				mSleep(500)
+			end
 
-		--重置密码
-		mSleep(200)
-		if getColor(642,   87) == 0x3bb3fa and getColor(689, 87) == 0x3bb3fa then
-			mSleep(500)
-			randomTap(396, 194, 4)
-			mSleep(500)
-			toast("重置密码",1)
-			mSleep(500)
-			while true do
-				mSleep(400)
-				if getColor(712, 193) == 0xcccccc then
-					break
-				else
-					mSleep(500)
-					inputStr(password)
+			--重置密码
+			mSleep(200)
+			if getColor(642,   87) == 0x3bb3fa and getColor(689, 87) == 0x3bb3fa then
+				mSleep(500)
+				randomTap(396, 194, 4)
+				mSleep(500)
+				toast("重置密码",1)
+				mSleep(500)
+				while true do
+					mSleep(400)
+					if getColor(712, 193) == 0xcccccc then
+						break
+					else
+						mSleep(500)
+						inputStr(password)
+						mSleep(1000)
+					end
+
+					self:timeOutRestart(t1)
 					mSleep(1000)
 				end
 
-				self:timeOutRestart(t1)
-				mSleep(1000)
-			end
+				mSleep(500)
+				randomTap(396, 279, 4)
+				mSleep(500)
+				while true do
+					mSleep(400)
+					if getColor(712, 281) == 0xcccccc then
+						break
+					else
+						mSleep(500)
+						inputStr(password)
+						mSleep(1000)
+					end
 
-			mSleep(500)
-			randomTap(396, 279, 4)
-			mSleep(500)
-			while true do
-				mSleep(400)
-				if getColor(712, 281) == 0xcccccc then
-					break
-				else
-					mSleep(500)
-					inputStr(password)
+					self:timeOutRestart(t1)
 					mSleep(1000)
 				end
-
-				self:timeOutRestart(t1)
-				mSleep(1000)
+				mSleep(500)
+				randomTap(666, 81, 4)
+				mSleep(5000)
+				break
 			end
-			mSleep(500)
-			randomTap(666, 81, 4)
-			mSleep(5000)
-			break
-		end
 
-		self:timeOutRestart(t1)
-		mSleep(1000)
+			self:timeOutRestart(t1)
+			mSleep(1000)
+		end
 	end
 
 	::get_mmId::
 	self.mm_accountId = self:getMMId(appDataPath(self.mm_bid) .. "/Documents")
-    
-    times = getNetTime()
+
+	times = getNetTime()
 	sj = os.date("%Y年%m月%d日%H点%M分%S秒",times)
-	
+
 	--重命名当前记录名
 	local old_name = AMG.Get_Name()
 	local new_name = self.mm_accountId .. "----" .. self.subName .. "----" .. self.phone_type .. "----" .. self.sys_version .. "----" .. self.city .. "----" .. sj
@@ -2178,13 +2180,26 @@ function model:main()
 				["list"] = "开启,不开启,普通定位",
 				["select"] = "0",
 				["countperline"] = "4"
+			},
+			{
+				["type"] = "Label",
+				["text"] = "是否修改密码",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255"
+			},
+			{
+				["type"] = "RadioGroup",
+				["list"] = "修改,不修改",
+				["select"] = "0",
+				["countperline"] = "4"
 			}
 		}
 	}
 
 	local MyJsonString = json.encode(MyTable)
 
-	ret, password, sex, searchFriend, searchAccount, changeHeader, nikcNameType, sysVersion, sysPhoneType, openPingNet, gpsAddress = showUI(MyJsonString)
+	ret, password, sex, searchFriend, searchAccount, changeHeader, nikcNameType, sysVersion, sysPhoneType, openPingNet, gpsAddress, changePass = showUI(MyJsonString)
 	if ret == 0 then
 		dialog("取消运行脚本", 3)
 		luaExit()
@@ -2215,20 +2230,20 @@ function model:main()
 			toast(fileName, 1)
 			mSleep(1000)
 
-	--		saveImageToAlbum(fileName)
+			--		saveImageToAlbum(fileName)
 			saveImageToAlbum(userPath() .. "/res/picFile/" .. fileName)
 			mSleep(500)
-	--		saveImageToAlbum(fileName)
+			--		saveImageToAlbum(fileName)
 			saveImageToAlbum(userPath() .. "/res/picFile/" .. fileName)
 			mSleep(2000)
 
-	--		self:deleteImage(fileName)
+			--		self:deleteImage(fileName)
 			self:deleteImage(userPath() .. "/res/picFile/" .. fileName)
 		end
 
 		self:vpn(openPingNet)
 		self:newMMApp(sysVersion, sysPhoneType, gpsAddress)
-		self:mm(password, sex, searchFriend, searchAccount, changeHeader, nikcNameType)
+		self:mm(password, sex, searchFriend, searchAccount, changeHeader, nikcNameType, changePass)
 	end
 end
 
