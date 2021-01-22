@@ -1315,8 +1315,28 @@ function getIpAddress()
     end
 end
 
-mSleep(200)
-	    x,y = findMultiColorInRegionFuzzy( 0x000000, "4|5|0x000000,21|5|0x000000,38|5|0x000000,53|5|0x000000,53|-11|0x000000,83|9|0x000000,124|-8|0x000000,145|-7|0x000000,230|7|0x000000", 90, 0, 0, 749, 1333)
-        if x ~= -1 and y ~= -1 then
-			dialog(x.."==="..y, 0)
-        end
+--更多
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy( 0x5a5a5a, "41|0|0x5a5a5a,-596|30|0x65b7f3,-584|30|0x65b7f3,-575|30|0x65b7f3,-564|30|0x65b7f3,-450|-18|0x3d3e3e,-409|-18|0x3d3e3e", 90, 0, 0, 749, 1333)
+		if x~=-1 and y~=-1 then
+			mSleep(500)
+			toast("更多",1)
+			mSleep(500)
+		end
+		--更多
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy( 0x323333, "6|0|0x323333,12|0|0x323333,-3|-26|0x565656,37|-26|0x565656,54|-20|0xfdfcfd,-32|-20|0xfdfcfd", 100, 0, 0, 749, 1333)
+		if x~=-1 and y~=-1 then
+			mSleep(500)
+			mSleep(500)
+			toast("更多1",1)
+		end
+		
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy( 0x565656, "40|0|0x565656,-596|30|0x0fc9e1,-584|30|0x0fc9e1,-575|28|0x0fc9e1,-564|27|0x0fc9e1,-450|-21|0x3e3e3e,-408|-20|0x3e3e3e,-117|25|0x424343", 100, 0, 747, 749, 1333)
+		if x~=-1 and y~=-1 then
+			mSleep(500)
+			toast("更多2",1)
+			mSleep(500)
+		end
+		

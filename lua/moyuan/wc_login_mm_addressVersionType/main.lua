@@ -292,8 +292,8 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 				mSleep(3000)
 			end
 		end
-        
-        --设置当前设备机型
+
+		--设置当前设备机型
 		if editorWay == "1" or editorWay == "3" then
 			while true do
 				mSleep(500)
@@ -311,7 +311,7 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 					mSleep(1500)
 				end
 			end
-			
+
 			idx = (math.random(1, 7) - 1) * 90
 			while true do
 				mSleep(500)
@@ -344,7 +344,7 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 					mSleep(500)
 				end
 			end
-			
+
 -- 			local param_file = AMG.Get_Param()
 -- 			if param_file then
 -- 				local amg_param = plist.read(param_file)
@@ -352,8 +352,8 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 -- 				self.phone_type = amg_param[param_name]
 -- 			end
 		end
-        
-        --设置当前系统版本
+
+		--设置当前系统版本
 		if editorWay == "2" or editorWay == "3" then
 			while true do
 				mSleep(500)
@@ -374,19 +374,19 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 
 -- 			idx = math.random(1, 3)
 			yy = math.random(171, 1214)
-			
+
 			for var=1,4 do
-			    mSleep(500)
+				mSleep(500)
 				moveTowards(404,1194,90,900,50)
 				mSleep(500)
 			end
-			
+
 			mSleep(500)
 			tap(300,yy)
 			mSleep(500)
 			toast("选择系统版本",1)
 			mSleep(500)
-			
+
 -- 			while true do
 -- 				mSleep(500)
 -- 				x,y = findMultiColorInRegionFuzzy( 0x000000, "6|-4|0x000000,7|18|0x000000,28|18|0x000000,16|18|0x000000,16|0|0x000000,27|0|0x000000,35|16|0x000000,42|7|0x000000,56|7|0x000000", 90, 0, 0, 749, 1333)
@@ -408,7 +408,7 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 -- 					mSleep(1500)
 -- 				end
 -- 			end
-			
+
 -- 			local param_file = AMG.Get_Param()
 -- 			if param_file then
 -- 				local amg_param = plist.read(param_file)
@@ -1006,49 +1006,63 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			mSleep(math.random(500, 700))
 			randomTap(x, y, 4)
 			mSleep(1000)
-			toast("复扫",1)
+			toast("复扫1",1)
 			mSleep(math.random(1500, 3000))
-			while (true) do
-				mSleep(200)
-				x, y = findMultiColorInRegionFuzzy(0x323333,"16|-1|0x323333,8|7|0x323333,10|19|0x323333,24|26|0x323333,30|13|0x323333,25|-7|0x323333,54|-3|0x323333,83|8|0x323333,66|-8|0x323333",90,0,0,750,1334,{orient = 2})
-				if x ~= -1 then
+			if self.fsBool then
+				while (true) do
+					--授权
 					mSleep(200)
-					goto fs
+					x,y = findMultiColorInRegionFuzzy(0xffffff, "-97|-26|0x48516d,-107|46|0x48516d,198|-35|0x48516d,201|42|0x48516d,286|-30|0x2f3753,278|51|0x2f3753,579|-26|0x2f3753,582|31|0x2f3753,374|-1166|0xff7fa3", 90, 0, 0, 750, 1334, { orient = 2 })
+					if x ~= -1 then
+						mSleep(math.random(500, 700))
+						randomTap(x, y, 4)
+						mSleep(math.random(3500, 5000))
+						break
+					end
+				end
+			else
+				while (true) do
+					mSleep(200)
+					x, y = findMultiColorInRegionFuzzy(0x323333,"16|-1|0x323333,8|7|0x323333,10|19|0x323333,24|26|0x323333,30|13|0x323333,25|-7|0x323333,54|-3|0x323333,83|8|0x323333,66|-8|0x323333",90,0,0,750,1334,{orient = 2})
+					if x ~= -1 then
+						mSleep(200)
+						goto fs
+					end
+
+					--授权
+					mSleep(200)
+					x,y = findMultiColorInRegionFuzzy(0xffffff, "-97|-26|0x48516d,-107|46|0x48516d,198|-35|0x48516d,201|42|0x48516d,286|-30|0x2f3753,278|51|0x2f3753,579|-26|0x2f3753,582|31|0x2f3753,374|-1166|0xff7fa3", 90, 0, 0, 750, 1334, { orient = 2 })
+					if x ~= -1 then
+						mSleep(math.random(500, 700))
+						randomTap(681,84, 4)
+						mSleep(math.random(500, 700))
+					end
+
+					mSleep(200)
+					x,y = findMultiColorInRegionFuzzy(0x333333, "20|4|0x333333,50|-1|0x333333,83|-1|0x333333,-24|-192|0xf2f2f3,-26|-280|0xff7fa3,81|-290|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+					if x ~= -1 then
+						mSleep(math.random(500, 700))
+						randomTap(x, y, 4)
+						mSleep(math.random(1500, 2700))
+						randomTap(50, 86, 4)
+						mSleep(math.random(500, 700))
+						break
+					end
 				end
 
-				--授权
-				mSleep(200)
-				x,y = findMultiColorInRegionFuzzy(0xffffff, "-97|-26|0x48516d,-107|46|0x48516d,198|-35|0x48516d,201|42|0x48516d,286|-30|0x2f3753,278|51|0x2f3753,579|-26|0x2f3753,582|31|0x2f3753,374|-1166|0xff7fa3", 90, 0, 0, 750, 1334, { orient = 2 })
-				if x ~= -1 then
-					mSleep(math.random(500, 700))
-					randomTap(681,84, 4)
-					mSleep(math.random(500, 700))
+				while (true) do
+					--授权
+					mSleep(200)
+					x,y = findMultiColorInRegionFuzzy(0xffffff, "-97|-26|0x48516d,-107|46|0x48516d,198|-35|0x48516d,201|42|0x48516d,286|-30|0x2f3753,278|51|0x2f3753,579|-26|0x2f3753,582|31|0x2f3753,374|-1166|0xff7fa3", 90, 0, 0, 750, 1334, { orient = 2 })
+					if x ~= -1 then
+						mSleep(math.random(500, 700))
+						randomTap(x, y, 4)
+						mSleep(math.random(3500, 5000))
+						break
+					end
 				end
-
-				mSleep(200)
-				x,y = findMultiColorInRegionFuzzy(0x333333, "20|4|0x333333,50|-1|0x333333,83|-1|0x333333,-24|-192|0xf2f2f3,-26|-280|0xff7fa3,81|-290|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
-				if x ~= -1 then
-					mSleep(math.random(500, 700))
-					randomTap(x, y, 4)
-					mSleep(math.random(1500, 2700))
-					randomTap(50, 86, 4)
-					mSleep(math.random(500, 700))
-					break
-				end
+				self.fsBool = true
 			end
-
-			while (true) do
-				--授权
-				mSleep(200)
-				x,y = findMultiColorInRegionFuzzy(0xffffff, "-97|-26|0x48516d,-107|46|0x48516d,198|-35|0x48516d,201|42|0x48516d,286|-30|0x2f3753,278|51|0x2f3753,579|-26|0x2f3753,582|31|0x2f3753,374|-1166|0xff7fa3", 90, 0, 0, 750, 1334, { orient = 2 })
-				if x ~= -1 then
-					mSleep(math.random(500, 700))
-					randomTap(x, y, 4)
-					mSleep(math.random(3500, 5000))
-					break
-				end
-			end
-			self.fsBool = true
 			::fs::
 		end
 
@@ -1059,49 +1073,63 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			mSleep(math.random(500, 700))
 			randomTap(x, y, 4)
 			mSleep(1000)
-			toast("复扫",1)
+			toast("复扫2",1)
 			mSleep(math.random(1500, 3000))
-			while (true) do
-				mSleep(200)
-				x, y = findMultiColorInRegionFuzzy(0x323333,"16|-1|0x323333,8|7|0x323333,10|19|0x323333,24|26|0x323333,30|13|0x323333,25|-7|0x323333,54|-3|0x323333,83|8|0x323333,66|-8|0x323333",90,0,0,750,1334,{orient = 2})
-				if x ~= -1 then
+			if self.fsBool then
+				while (true) do
+					--授权
 					mSleep(200)
-					goto fs
+					x,y = findMultiColorInRegionFuzzy(0xffffff, "-97|-26|0x48516d,-107|46|0x48516d,198|-35|0x48516d,201|42|0x48516d,286|-30|0x2f3753,278|51|0x2f3753,579|-26|0x2f3753,582|31|0x2f3753,374|-1166|0xff7fa3", 90, 0, 0, 750, 1334, { orient = 2 })
+					if x ~= -1 then
+						mSleep(math.random(500, 700))
+						randomTap(x, y, 4)
+						mSleep(math.random(3500, 5000))
+						break
+					end
+				end
+			else
+				while (true) do
+					mSleep(200)
+					x, y = findMultiColorInRegionFuzzy(0x323333,"16|-1|0x323333,8|7|0x323333,10|19|0x323333,24|26|0x323333,30|13|0x323333,25|-7|0x323333,54|-3|0x323333,83|8|0x323333,66|-8|0x323333",90,0,0,750,1334,{orient = 2})
+					if x ~= -1 then
+						mSleep(200)
+						goto fs
+					end
+
+					--授权
+					mSleep(200)
+					x,y = findMultiColorInRegionFuzzy(0xffffff, "-97|-26|0x48516d,-107|46|0x48516d,198|-35|0x48516d,201|42|0x48516d,286|-30|0x2f3753,278|51|0x2f3753,579|-26|0x2f3753,582|31|0x2f3753,374|-1166|0xff7fa3", 90, 0, 0, 750, 1334, { orient = 2 })
+					if x ~= -1 then
+						mSleep(math.random(500, 700))
+						randomTap(681,84, 4)
+						mSleep(math.random(500, 700))
+					end
+
+					mSleep(200)
+					x,y = findMultiColorInRegionFuzzy(0x333333, "20|4|0x333333,50|-1|0x333333,83|-1|0x333333,-24|-192|0xf2f2f3,-26|-280|0xff7fa3,81|-290|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+					if x ~= -1 then
+						mSleep(math.random(500, 700))
+						randomTap(x, y, 4)
+						mSleep(math.random(1500, 2700))
+						randomTap(50, 86, 4)
+						mSleep(math.random(500, 700))
+						break
+					end
 				end
 
-				--授权
-				mSleep(200)
-				x,y = findMultiColorInRegionFuzzy(0xffffff, "-97|-26|0x48516d,-107|46|0x48516d,198|-35|0x48516d,201|42|0x48516d,286|-30|0x2f3753,278|51|0x2f3753,579|-26|0x2f3753,582|31|0x2f3753,374|-1166|0xff7fa3", 90, 0, 0, 750, 1334, { orient = 2 })
-				if x ~= -1 then
-					mSleep(math.random(500, 700))
-					randomTap(681,84, 4)
-					mSleep(math.random(500, 700))
+				while (true) do
+					--授权
+					mSleep(200)
+					x,y = findMultiColorInRegionFuzzy(0xffffff, "-97|-26|0x48516d,-107|46|0x48516d,198|-35|0x48516d,201|42|0x48516d,286|-30|0x2f3753,278|51|0x2f3753,579|-26|0x2f3753,582|31|0x2f3753,374|-1166|0xff7fa3", 90, 0, 0, 750, 1334, { orient = 2 })
+					if x ~= -1 then
+						mSleep(math.random(500, 700))
+						randomTap(x, y, 4)
+						mSleep(math.random(3500, 5000))
+						break
+					end
 				end
-
-				mSleep(200)
-				x,y = findMultiColorInRegionFuzzy(0x333333, "20|4|0x333333,50|-1|0x333333,83|-1|0x333333,-24|-192|0xf2f2f3,-26|-280|0xff7fa3,81|-290|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
-				if x ~= -1 then
-					mSleep(math.random(500, 700))
-					randomTap(x, y, 4)
-					mSleep(math.random(1500, 2700))
-					randomTap(50, 86, 4)
-					mSleep(math.random(500, 700))
-					break
-				end
+				self.fsBool = true
 			end
-
-			while (true) do
-				--授权
-				mSleep(200)
-				x,y = findMultiColorInRegionFuzzy(0xffffff, "-97|-26|0x48516d,-107|46|0x48516d,198|-35|0x48516d,201|42|0x48516d,286|-30|0x2f3753,278|51|0x2f3753,579|-26|0x2f3753,582|31|0x2f3753,374|-1166|0xff7fa3", 90, 0, 0, 750, 1334, { orient = 2 })
-				if x ~= -1 then
-					mSleep(math.random(500, 700))
-					randomTap(x, y, 4)
-					mSleep(math.random(3500, 5000))
-					break
-				end
-			end
-			self.fsBool = true
 			::fs::
 		end
 
@@ -1113,6 +1141,49 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			keyUp(key)
 			toast("收起键盘",1)
 			mSleep(500)
+		end
+		
+		--跳过屏蔽通讯录
+		mSleep(200)
+		x, y = findMultiColorInRegionFuzzy(0x007aff,"20|4|0x007aff,15|3|0x007aff,36|5|0x007aff,38|9|0x007aff,56|6|0x007aff,284|14|0x007aff,304|13|0x007aff,317|12|0x007aff,328|5|0x007aff",90,0,0,750,1334,{orient = 2})
+		if x ~= -1 then
+			mSleep(500)
+			randomTap(x, y, 4)
+			mSleep(500)
+			toast("跳过屏蔽通讯录", 1)
+			mSleep(500)
+		end
+		
+		--首页
+		mSleep(200)
+		if getColor(206, 109) == 0x323333 and getColor(370, 99) == 0x323333 or
+		getColor(45, 109) == 0x323333 and getColor(222, 95) == 0x323333 or
+		getColor(206, 156) == 0x323333 and getColor(336, 157) == 0x323333 or
+		getColor(206,  153) == 0x313232 and getColor(371,  131) == 0x313232 then
+			mSleep(500)
+			toast("首页1", 1)
+			mSleep(500)
+			goto sy
+		end
+
+		--首页
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0x323333, "17|15|0x323333,25|-6|0x323333,35|8|0x323333,53|6|0x323333,77|9|0x323333,73|-3|0x323333,104|1|0x323333,135|8|0x323333,200|6|0xffffff", 100, 0, 0, 421,179, { orient = 2 })
+		if x ~= -1 then
+			mSleep(500)
+			toast("首页2", 1)
+			mSleep(500)
+			goto sy
+		end
+
+		--首页
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0x3ee1ec, "13|-3|0xfdfdfd,30|5|0x3ee1ec,-2|38|0x13cae2,10|38|0x13cae2,25|31|0x13cae2", 100, 0, 0, 750, 1150, { orient = 2 })
+		if x ~= -1 then
+			mSleep(500)
+			toast("首页3", 1)
+			mSleep(500)
+			goto sy
 		end
 
 		--填写资料
@@ -1290,14 +1361,16 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 		self:timeOutRestart(t1)
 		mSleep(1000)
 	end
-
+	
+	::sy::
 	t1 = ts.ms()
 	while true do
 		--首页
 		mSleep(200)
 		if getColor(206, 109) == 0x323333 and getColor(370, 99) == 0x323333 or
 		getColor(45, 109) == 0x323333 and getColor(222, 95) == 0x323333 or
-		getColor(206, 156) == 0x323333 and getColor(336, 157) == 0x323333  then
+		getColor(206, 156) == 0x323333 and getColor(336, 157) == 0x323333 or
+		getColor(206,  153) == 0x313232 and getColor(371,  131) == 0x313232 then
 			mSleep(500)
 			toast("首页1", 1)
 			mSleep(500)
@@ -1493,9 +1566,33 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			mSleep(1000)
 			randomTap(x + 10, y - 10, 4)
 			mSleep(500)
-			toast("更多",1)
+			toast("更多1",1)
 			mSleep(500)
 			break
+		end
+
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy( 0x565656, "40|0|0x565656,-596|30|0x0fc9e1,-584|30|0x0fc9e1,-575|28|0x0fc9e1,-564|27|0x0fc9e1,-450|-21|0x3e3e3e,-408|-20|0x3e3e3e,-117|25|0x424343", 100, 0, 747, 749, 1333)
+		if x~=-1 and y~=-1 then
+			mSleep(500)
+			randomTap(x + 10, y, 4)
+			mSleep(1000)
+			randomTap(x + 10, y, 4)
+			mSleep(500)
+			toast("更多2",1)
+			mSleep(500)
+			break
+		end
+		
+		--跳过屏蔽通讯录
+		mSleep(200)
+		x, y = findMultiColorInRegionFuzzy(0x007aff,"20|4|0x007aff,15|3|0x007aff,36|5|0x007aff,38|9|0x007aff,56|6|0x007aff,284|14|0x007aff,304|13|0x007aff,317|12|0x007aff,328|5|0x007aff",90,0,0,750,1334,{orient = 2})
+		if x ~= -1 then
+			mSleep(500)
+			randomTap(x, y, 4)
+			mSleep(500)
+			toast("跳过屏蔽通讯录", 1)
+			mSleep(500)
 		end
 
 		mSleep(200)
@@ -1594,6 +1691,15 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			if x~=-1 and y~=-1 then
 				mSleep(500)
 				randomTap(x + 10, y - 10, 4)
+				mSleep(1000)
+			end
+
+			--更多
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy( 0x565656, "40|0|0x565656,-596|30|0x0fc9e1,-584|30|0x0fc9e1,-575|28|0x0fc9e1,-564|27|0x0fc9e1,-450|-21|0x3e3e3e,-408|-20|0x3e3e3e,-117|25|0x424343", 100, 0, 747, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(500)
+				randomTap(x + 10, y, 4)
 				mSleep(1000)
 			end
 

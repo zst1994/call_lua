@@ -1510,7 +1510,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 		--首页
 		mSleep(200)
 		if getColor(206, 109) == 0x323333 and getColor(370, 99) == 0x323333 or
-		getColor(45, 109) == 0x323333 and getColor(222, 95) == 0x323333 then
+		getColor(45, 109) == 0x323333 and getColor(222, 95) == 0x323333 or
+		getColor(206, 156) == 0x323333 and getColor(336, 157) == 0x323333 or
+		getColor(206,  153) == 0x313232 and getColor(371,  131) == 0x313232 then
 			mSleep(500)
 			toast("首页1", 1)
 			mSleep(500)
@@ -1697,9 +1699,33 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			mSleep(1000)
 			randomTap(x + 10, y - 10, 4)
 			mSleep(500)
-			toast("更多",1)
+			toast("更多1",1)
 			mSleep(500)
 			break
+		end
+		
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy( 0x565656, "40|0|0x565656,-596|30|0x0fc9e1,-584|30|0x0fc9e1,-575|28|0x0fc9e1,-564|27|0x0fc9e1,-450|-21|0x3e3e3e,-408|-20|0x3e3e3e,-117|25|0x424343", 100, 0, 747, 749, 1333)
+		if x~=-1 and y~=-1 then
+			mSleep(500)
+			randomTap(x + 10, y, 4)
+			mSleep(1000)
+			randomTap(x + 10, y, 4)
+			mSleep(500)
+			toast("更多2",1)
+			mSleep(500)
+			break
+		end
+		
+		--跳过屏蔽通讯录
+		mSleep(200)
+		x, y = findMultiColorInRegionFuzzy(0x007aff,"20|4|0x007aff,15|3|0x007aff,36|5|0x007aff,38|9|0x007aff,56|6|0x007aff,284|14|0x007aff,304|13|0x007aff,317|12|0x007aff,328|5|0x007aff",90,0,0,750,1334,{orient = 2})
+		if x ~= -1 then
+			mSleep(500)
+			randomTap(x, y, 4)
+			mSleep(500)
+			toast("跳过屏蔽通讯录", 1)
+			mSleep(500)
 		end
 		
 		mSleep(200)
@@ -1782,7 +1808,19 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				mSleep(1000)
 				randomTap(x + 10, y - 10, 4)
 				mSleep(500)
-				toast("更多",1)
+				toast("更多1",1)
+				mSleep(500)
+			end
+			
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy( 0x565656, "40|0|0x565656,-596|30|0x0fc9e1,-584|30|0x0fc9e1,-575|28|0x0fc9e1,-564|27|0x0fc9e1,-450|-21|0x3e3e3e,-408|-20|0x3e3e3e,-117|25|0x424343", 100, 0, 747, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(500)
+				randomTap(x + 10, y, 4)
+				mSleep(1000)
+				randomTap(x + 10, y, 4)
+				mSleep(500)
+				toast("更多2",1)
 				mSleep(500)
 			end
 
@@ -1814,6 +1852,15 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			if x~=-1 and y~=-1 then
 				mSleep(500)
 				randomTap(x + 10, y - 10, 4)
+				mSleep(1000)
+			end
+			
+			--更多
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy( 0x565656, "40|0|0x565656,-596|30|0x0fc9e1,-584|30|0x0fc9e1,-575|28|0x0fc9e1,-564|27|0x0fc9e1,-450|-21|0x3e3e3e,-408|-20|0x3e3e3e,-117|25|0x424343", 100, 0, 747, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(500)
+				randomTap(x + 10, y, 4)
 				mSleep(1000)
 			end
 
@@ -1984,7 +2031,19 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				mSleep(1000)
 				randomTap(x + 10, y - 10, 4)
 				mSleep(500)
-				toast("更多",1)
+				toast("更多1",1)
+				mSleep(500)
+			end
+			
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy( 0x565656, "40|0|0x565656,-596|30|0x0fc9e1,-584|30|0x0fc9e1,-575|28|0x0fc9e1,-564|27|0x0fc9e1,-450|-21|0x3e3e3e,-408|-20|0x3e3e3e,-117|25|0x424343", 100, 0, 747, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(500)
+				randomTap(x + 10, y, 4)
+				mSleep(1000)
+				randomTap(x + 10, y, 4)
+				mSleep(500)
+				toast("更多2",1)
 				mSleep(500)
 			end
 
