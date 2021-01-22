@@ -77,7 +77,7 @@
                 },{
                     "id": "vpn_stauts",
                     "type": "RadioGroup",
-                    "list": "柠檬,卡农注册,奥迪,52,俄罗斯1,东帝汶,服务器取号,俄罗斯2,各国API",
+                    "list": "柠檬,卡农注册,奥迪,52,俄罗斯1,东帝汶,服务器取号,俄罗斯2,各国API,老友,SMS,越南,各国API2,奶茶,柠檬2,老司机,水煮鱼,松鼠,自用",
                     "select": "0"
                 },{
                     "type": "Label",
@@ -216,6 +216,72 @@
                     "id": "ran_pass",
                     "type": "RadioGroup",
                     "list": "不随机,随机",
+                    "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "东帝汶号码获取方式",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "ddwGet",
+                    "type": "RadioGroup",
+                    "list": "服务器获取存储号码,平台接口获取",
+                    "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "是否开启关闭飞行模式",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "airplaneStatus",
+                    "type": "RadioGroup",
+                    "list": "无,开启关闭",
+                    "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "是否新机连vpn",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "connect_vpn",
+                    "type": "RadioGroup",
+                    "list": "连接,不连接",
+                    "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "是否是欧盟国家注册",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "EU_countries",
+                    "type": "RadioGroup",
+                    "list": "欧盟,非欧盟",
+                    "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "跳马失败是否返回",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "tmFailBack",
+                    "type": "RadioGroup",
+                    "list": "返回,不返回",
+                    "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "选择替换文件版本",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "replaceFile",
+                    "type": "RadioGroup",
+                    "list": "715,717,718,720,721,722",
                     "select": "0"
                 }]
     }
