@@ -6491,11 +6491,15 @@ function model:main()
 
 				if replaceFile == "1" then
 					file_name = "715.plist"
-					self:replace_file(file_name)
 				elseif replaceFile == "2" then
 					file_name = "717.plist"
-					self:replace_file(file_name)
+				elseif replaceFile == "3" then
+					file_name = "718.plist"
+				elseif replaceFile == "4" then
+					file_name = "721.plist"
 				end
+				
+				self:replace_file(file_name)
 			end
 
 			if login_times == "1" then

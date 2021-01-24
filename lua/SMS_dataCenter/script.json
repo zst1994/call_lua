@@ -418,7 +418,7 @@
                 },{
                     "id": "replaceFile",
                     "type": "RadioGroup",
-                    "list": "暂不替换,7015,7017",
+                    "list": "暂不替换,7015,7017,7018,7021",
                     "select": "0"
                 }]
     }

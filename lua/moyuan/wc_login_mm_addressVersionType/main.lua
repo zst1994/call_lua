@@ -2307,7 +2307,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 	sj = os.date("%Y年%m月%d日%H点%M分%S秒",times)
 	--重命名当前记录名
 	local old_name = AMG.Get_Name()
-	local new_name = "WX" .. "----" .. self.mm_accountId .. "----" .. self.subName .. "----" .. Nickname .. "----" .. self.phone_type .. "----" .. self.sys_version .. "----" .. self.city .. "----" .. sj
+	local new_name = self.mm_accountId .. "----WX----" .. self.subName .. "----" .. Nickname .. "----" .. self.phone_type .. "----" .. self.sys_version .. "----" .. self.city .. "----" .. sj
 	toast(new_name,1)
 	mSleep(1000)
 	if AMG.Rename(old_name, new_name) == true then
