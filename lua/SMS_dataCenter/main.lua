@@ -6496,6 +6496,8 @@ function model:main()
 				elseif replaceFile == "3" then
 					file_name = "718.plist"
 				elseif replaceFile == "4" then
+					file_name = "720.plist"
+				elseif replaceFile == "5" then
 					file_name = "721.plist"
 				end
 				

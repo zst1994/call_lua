@@ -56,14 +56,21 @@ function model:check_account()
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0x03081a, "13|5|0x03081a,4|16|0x03081a,21|4|0x03081a,30|11|0x03081a,34|11|0x03081a,42|11|0x03081a,56|8|0xebedf5,-25|12|0xebedf5,13|-37|0xffffff", 90, 0, 0, 749, 1333)
 		if x ~= -1 then
-			mSleep(500)
+			mSleep(200)
 			x,y = findMultiColorInRegionFuzzy( 0xe82121, "33|-39|0x000000,39|-13|0xe82121,18|14|0xffffff,-22|0|0x000000,45|4|0x000000", 90, 0, 0, 749, 1333)
 			if x ~= -1 then
 				title = "有企鹅头像"
 				path = userPath().."/res/有企鹅头像.txt"
 			else
-				title = "没有企鹅头像"
-				path = userPath().."/res/没有企鹅头像.txt"
+			    mSleep(200)
+			    x,y = findMultiColorInRegionFuzzy(0x03081a, "65|-82|0xffffff,39|-73|0xe3e4ec,-6|-90|0xe3e4ec,-7|74|0x000000,-2|73|0x000000,110|84|0x000000,-108|-8|0xe1e1e9", 90, 0, 0, 750, 1334, { orient = 2 })
+                if x ~= -1 then
+                    title = "有企鹅头像"
+    				path = userPath().."/res/有企鹅头像.txt"
+    			else
+    			    title = "没有企鹅头像"
+				    path = userPath().."/res/没有企鹅头像.txt"
+                end
 			end
 			
 			::writeAgain::
