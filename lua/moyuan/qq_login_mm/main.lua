@@ -335,7 +335,7 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 		end
         
         --设置当前设备机型
-		if editorWay == "1" or editorWay == "3" then
+		if editorWay == "2" or editorWay == "4" then
 			while true do
 				mSleep(500)
 				x,y = findMultiColorInRegionFuzzy(0x000000, "5|6|0x000000,22|4|0x000000,38|4|0x000000,54|6|0x000000,59|-11|0x000000,70|-2|0x000000,74|4|0x000000,88|2|0x000000,118|10|0x000000", 90, 0, 0, 749, 1333)
@@ -395,7 +395,7 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 		end
         
         --设置当前系统版本
-		if editorWay == "2" or editorWay == "3" then
+		if editorWay == "3" or editorWay == "4" then
 			while true do
 				mSleep(500)
 				x,y = findMultiColorInRegionFuzzy( 0x000000, "4|5|0x000000,21|5|0x000000,38|5|0x000000,53|5|0x000000,53|-11|0x000000,83|9|0x000000,124|-8|0x000000,145|-7|0x000000,230|7|0x000000", 90, 0, 0, 749, 1333)
