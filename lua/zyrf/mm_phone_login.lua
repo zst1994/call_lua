@@ -39,15 +39,14 @@ require "TSLib"
 local ts = require("ts")
 local json = ts.json
 
-local model = {}
 
-model.qqList = {}
+qqList = {}
 
-model.phoneNum = ""
-model.codeUrl = ""
-model.yzm = ""
+phoneNum = ""
+codeUrl = ""
+yzm = ""
 
-function model:timeOutRestart(t1)
+function timeOutRestart(t1)
 	t2 = ts.ms()
 
 	if os.difftime(t2, t1) > 30 then
@@ -57,17 +56,17 @@ function model:timeOutRestart(t1)
 	end
 end
 
-function model:getPhoneCodeUrl()
-	self.qqList = readFile(userPath() .. "/res/phone_code.txt")
-	if self.qqList then
-		if #self.qqList > 0 then
-			data = strSplit(string.gsub(self.qqList[1], "%s+", ""), "----")
-			self.phoneNum = data[1]
-			self.codeUrl = data[2]
+function getPhoneCodeUrl_1()
+	qqList = readFile(userPath() .. "/res/phone_code.txt")
+	if qqList then
+		if #qqList > 0 then
+			data = strSplit(string.gsub(qqList[1], "%s+", ""), "|")
+			phoneNum = data[1]
+			codeUrl = data[2]
 			toast("获取账号成功",1)
 			mSleep(1000)
-			table.remove(self.qqList, 1)
-			writeFile(userPath() .. "/res/phone_code.txt", self.qqList, "w", 1)
+			table.remove(qqList, 1)
+			writeFile(userPath() .. "/res/phone_code.txt", qqList, "w", 1)
 			mSleep(1000)
 		else
 			dialog("没账号了", 0)
@@ -79,21 +78,72 @@ function model:getPhoneCodeUrl()
 	end
 end
 
-function model:getCode()
+function getCode_1()
 	t1 = ts.ms()
 	::get_code::
-	status_resp, header_resp,body_resp = ts.httpGet(self.codeUrl)
+	status_resp, header_resp,body_resp = ts.httpGet("http://139.5.177.41/napi/view?token=" .. codeUrl)
+	if status_resp == 200 then
+		tmp = json.decode(body_resp)
+		if tmp.flag == "true" or tmp.flag == true then      --http://refresh.rola-ip.co接口返回
+			yzm = string.match(tmp.message,"%d%d%d%d%d%d")
+			return true
+		else
+			toast("获取验证码失败",1)
+			mSleep(3000)
+			if timeOutRestart(t1) then
+				return false
+			else
+				goto get_code
+			end
+		end
+	else
+		toast("获取验证码失败",1)
+		mSleep(3000)
+		if timeOutRestart(t1) then
+			return false
+		else
+			goto get_code
+		end
+	end
+end
+
+function getPhoneCodeUrl()
+	qqList = readFile(userPath() .. "/res/phone_code.txt")
+	if qqList then
+		if #qqList > 0 then
+			data = strSplit(string.gsub(qqList[1], "%s+", ""), "----")
+			phoneNum = data[1]
+			codeUrl = data[2]
+			toast("获取账号成功",1)
+			mSleep(1000)
+			table.remove(qqList, 1)
+			writeFile(userPath() .. "/res/phone_code.txt", qqList, "w", 1)
+			mSleep(1000)
+		else
+			dialog("没账号了", 0)
+			luaExit()
+		end
+	else
+		dialog("文件不存在,请检查", 0)
+		lua_exit()
+	end
+end
+
+function getCode()
+	t1 = ts.ms()
+	::get_code::
+	status_resp, header_resp,body_resp = ts.httpGet(codeUrl)
 	if status_resp == 200 then
 		codeBack = string.match(body_resp,"陌陌科技")
 		if type(codeBack) ~= "nil" then
-			self.yzm = string.match(body_resp,"%d%d%d%d%d%d")
+			yzm = string.match(body_resp,"%d%d%d%d%d%d")
 			return true
 		else
 			tmp = json.decode(body_resp)
 			if tmp.status == "fail" then      --http://refresh.rola-ip.co接口返回
 				toast("暂时获取不到验证码"..tmp.message,1)
 				mSleep(3000)
-				if self:timeOutRestart(t1) then
+				if timeOutRestart(t1) then
 					return false
 				else
 					goto get_code
@@ -101,7 +151,7 @@ function model:getCode()
 			else
 				toast("获取验证码失败",1)
 				mSleep(3000)
-				if self:timeOutRestart(t1) then
+				if timeOutRestart(t1) then
 					return false
 				else
 					goto get_code
@@ -111,7 +161,7 @@ function model:getCode()
 	else
 		toast("获取验证码失败",1)
 		mSleep(3000)
-		if self:timeOutRestart(t1) then
+		if timeOutRestart(t1) then
 			return false
 		else
 			goto get_code
@@ -119,7 +169,7 @@ function model:getCode()
 	end
 end
 
-function model:mm()
+function mm()
 	while (true) do
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0x9fa3aa, "38|-7|0xffffff,-197|162|0xd8d8d8,66|126|0xd8d8d8,49|216|0xd8d8d8,326|169|0xd8d8d8,85|169|0xffffff", 90, 0, 0, 749, 1333)
@@ -127,7 +177,7 @@ function model:mm()
 			mSleep(500)
 			tap(x,y)
 			mSleep(500)
-			inputStr(self.phoneNum)
+			inputStr(phoneNum)
 			mSleep(500)
 		end
 
@@ -145,11 +195,11 @@ function model:mm()
 		x,y = findMultiColorInRegionFuzzy( 0x18d9f1, "29|-1|0x18d9f1,33|129|0xd8d8d8,517|137|0xd8d8d8,285|83|0xd8d8d8,280|166|0xd8d8d8,271|126|0xffffff,181|124|0xffffff", 90, 0, 0, 749, 1333)
 		if x ~= -1 and y ~= -1 then
 			mSleep(200)
-			if self:getCode() then
+			if getCode() then
 				mSleep(200)
-				for i = 1, #(self.yzm) do
+				for i = 1, #(yzm) do
 					mSleep(300)
-					num = string.sub(self.yzm,i,i)
+					num = string.sub(yzm,i,i)
 					if num == "0" then
 						mSleep(300)
 						tap(373, 1281)
@@ -190,11 +240,11 @@ function model:mm()
 	end
 end
 
-function model:main()
+function main()
 	::getPhoneAgain::
-	self:getPhoneCodeUrl()
-	
-	if self:mm() then
+	getPhoneCodeUrl()
+
+	if mm() then
 		toast("进行下一步操作",1)
 	else
 		mSleep(500)
@@ -211,10 +261,10 @@ function model:main()
 					keyDown("DeleteOrBackspace")
 					keyUp("DeleteOrBackspace")   
 				end
-				
+
 				::write::
 				mSleep(500)
-				bool = writeFileString(userPath().."/res/phone_code_error",self.phoneNum .. "----" .. self.codeUrl, "a", 1) --将 string 内容存入文件，成功返回 true
+				bool = writeFileString(userPath().."/res/phone_code_error",phoneNum .. "----" .. codeUrl, "a", 1) --将 string 内容存入文件，成功返回 true
 				if bool then
 					toast("获取不到验证码数据写入成功",1)
 				else
@@ -228,4 +278,4 @@ function model:main()
 	end
 end
 
-model:main()
+main()
