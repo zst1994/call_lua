@@ -1671,6 +1671,90 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 					mSleep(3000)
 					goto get_mess
 				end
+			elseif api_change == "13" then
+				yzm_bool = false
+				::get_mess::
+				local ts = require("ts")
+				header_send = {}
+				body_send = {}
+				ts.setHttpsTimeOut(60) --安卓不支持设置超时时间
+				code,header_resp, body_resp = ts.httpsGet("http://47.107.172.3/php/index.php?s=/home/index/dq_huan_cun&mingzi=" .. telphone, header_send,body_send)
+				if code == 200 then
+					yzm_mess = string.match(body_resp, '%d+%d+%d+%d+%d+%d+')
+					if type(yzm_mess) == "nil" then
+						toast("获取验证码失败",1)
+						mSleep(5000)
+						get_time = get_time + 1
+						--messGetTime,messSendTime
+						if get_time > tonumber(messGetTime) then
+							restart_time = restart_time + 1
+							if restart_time > tonumber(messSendTime) then
+								status = 2
+								yzm_mess = ""
+                                ::push::
+                                header_send = {}
+                                body_send = {}
+                                ts.setHttpsTimeOut(60)
+                                status_resp, header_resp, body_resp = ts.httpGet("http://47.107.172.3/php/index.php?s=/home/index/huan_cun&mingzi="..telphone.."&nr=0",header_send,body_send)
+                                if status_resp == 200 then
+                                	if tonumber(body_resp) == 1 then
+                                		toast("号码清除成功",1)
+                                		mSleep(1000)
+                                	else
+                                		toast(body_resp, 1)
+                                		mSleep(3000)
+                                		goto push
+                                	end
+                                else
+                                	toast(body_resp, 1)
+                                	mSleep(3000)
+                                	goto push
+                                end
+								lua_restart()
+							else
+								mSleep(500)
+								if fz_type ~= "3" then
+									self:change_vpn()
+								else
+									setVPNEnable(true)
+								end
+								mSleep(math.random(2000, 3000))
+								randomsTap(372,  749, 3)
+								mSleep(math.random(1000, 1500))
+								randomsTap(368, 1039,5)
+								mSleep(math.random(3000, 5000))
+								while (true) do
+									mSleep(500)
+									if getColor(369,  614) == 0x9ce6bf and getColor(374,  668) == 0x9ce6bf then
+										break
+									else
+										toast("等待验证码重新发送",1)
+										mSleep(3000)
+									end
+								end
+
+								if fz_type ~= "3" then
+									setVPNEnable(true)
+								else
+									setVPNEnable(false)
+								end
+								get_time = 1
+								mSleep(2000)
+								goto get_code_again
+							end
+						else
+							goto get_mess
+						end
+					elseif #yzm_mess == 6 then
+						toast(yzm_mess,1)
+					else
+						toast(code..body_resp,1)
+						goto get_mess
+					end
+				else
+					toast(code,0)
+					goto get_mess
+				end
 			end
 
 			mSleep(500)
@@ -2043,6 +2127,26 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 					mSleep(3000)
 					goto get_fail
 				end
+			elseif api_change == "13" then
+				::push::
+				header_send = {}
+                body_send = {}
+                ts.setHttpsTimeOut(60)
+                status_resp, header_resp, body_resp = ts.httpGet("http://47.107.172.3/php/index.php?s=/home/index/huan_cun&mingzi="..phone.."&nr=0",header_send,body_send)
+                if status_resp == 200 then
+                	if tonumber(body_resp) == 1 then
+                		toast("号码清除成功",1)
+                		mSleep(1000)
+                	else
+                		toast(body_resp, 1)
+                		mSleep(3000)
+                		goto push
+                	end
+                else
+                	toast(body_resp, 1)
+                	mSleep(3000)
+                	goto push
+                end
 			end
 			return false
 		end
@@ -2296,6 +2400,30 @@ function model:connetMoveHttp(liandongName)
 			toast("超过5分钟重新获取当前手机号码", 1)
 			mSleep(1000)
 			return false
+		end
+	end
+end
+
+function model:replace_file(fileName)
+	appPath = appBundlePath(self.wc_bid);  
+
+	local file = io.open(userPath().."/res/info/"..fileName,"rb") 
+	if file then 
+		local str = file:read("*a") 
+		file:close()
+
+		local file = io.open(appPath.."/Info.plist", 'wb');
+		file:write(str)
+		file:close();
+
+		::writeAgain::
+		bool = writeFileString(userPath().."/res/info/wc_version.txt",fileName,"w") --将 string 内容存入文件，成功返回 true
+		if bool then
+			toast("版本号存储成功，替换文件成功",1)
+			mSleep(1000)
+		else
+			toast("写入失败", 1)
+			goto writeAgain
 		end
 	end
 end
@@ -2948,6 +3076,27 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			mSleep(3000)
 			goto get_phone
 		end
+	elseif api_change == "13" then
+	    ::get_phone::
+        header_send = {}
+        body_send = {}
+        ts.setHttpsTimeOut(60)
+        status_resp, header_resp, body_resp = ts.httpGet("http://47.107.172.3/php/index.php?s=/home/index/tqsc&sjk=qij",header_send,body_send)
+        if status_resp == 200 then
+        	if tonumber(body_resp) then
+        		telphone = string.gsub(body_resp,"%s+","") 
+        		toast(telphone,1)
+        		mSleep(1000)
+        	else
+        		toast(body_resp, 1)
+        		mSleep(3000)
+        		goto get_phone
+        	end
+        else
+        	toast(body_resp, 1)
+        	mSleep(3000)
+        	goto get_phone
+        end
 	end
 
 	if country_id == "0" then
@@ -3034,7 +3183,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 
 	--输入国家区号
 	mSleep(math.random(500, 700))
-	if api_change == "0" or api_change == "2" or api_change == "3" or api_change == "4" or api_change == "5" or api_change == "6" or api_change == "7" or api_change == "8" or api_change == "9" or api_change == "10" or api_change == "11" or api_change == "12" then
+	if api_change == "0" or api_change == "2" or api_change == "3" or api_change == "4" or api_change == "5" or api_change == "6" or api_change == "7" or api_change == "8" or api_change == "9" or api_change == "10" or api_change == "11" or api_change == "12" or api_change == "13" then
 		country_num = phone_country
 	elseif api_change == "1" then
 		country_num = tmp.CountryCode
@@ -3108,7 +3257,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		else
 			phone = telphone
 		end
-	elseif api_change == "3"  or api_change == "7" or api_change == "8" then
+	elseif api_change == "3"  or api_change == "7" or api_change == "8" or api_change == "13" then
 		phone = telphone
 	elseif api_change == "4" then
 		b,c = string.find(string.sub(telphone,1,#country_num),country_num)
@@ -3342,6 +3491,26 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					mSleep(3000)
 					goto get_fail
 				end
+			elseif api_change == "13" then
+				::push::
+				header_send = {}
+                body_send = {}
+                ts.setHttpsTimeOut(60)
+                status_resp, header_resp, body_resp = ts.httpGet("http://47.107.172.3/php/index.php?s=/home/index/huan_cun&mingzi="..phone.."&nr=0",header_send,body_send)
+                if status_resp == 200 then
+                	if tonumber(body_resp) == 1 then
+                		toast("号码清除成功",1)
+                		mSleep(1000)
+                	else
+                		toast(body_resp, 1)
+                		mSleep(3000)
+                		goto push
+                	end
+                else
+                	toast(body_resp, 1)
+                	mSleep(3000)
+                	goto push
+                end
 			end
 			writeFileString(userPath().."/res/phone_data.txt","","w",0)
 			toast("超过"..fz_error_times.."次注册失败，重新获取注册",1)
@@ -4049,7 +4218,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				end
 			end
 
-			if api_change == "7" or api_change == "8" or api_change == "9" or api_change == "11" then
+			if api_change == "7" or api_change == "8" or api_change == "9" or api_change == "11" or api_change == "13" then
 				mSleep(math.random(500, 700))
 				x, y = findMultiColorInRegionFuzzy(0x576b95,"-38|1|0x576b95,-314|-9|0x181819,-356|-3|0x181819,-157|-155|0,24|-174|0",90, 0, 0, 749, 1333)
 				if x~=-1 and y~=-1 then
@@ -4465,7 +4634,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				end
 			end
 
-			if api_change == "7" or api_change == "8" or api_change == "9" or api_change == "11" then
+			if api_change == "7" or api_change == "8" or api_change == "9" or api_change == "11" or api_change == "13" then
 				mSleep(math.random(500, 700))
 				x, y = findMultiColorInRegionFuzzy(0x576b95,"-38|1|0x576b95,-314|-9|0x181819,-356|-3|0x181819,-157|-155|0,24|-174|0",90, 0, 0, 749, 1333)
 				if x~=-1 and y~=-1 then
@@ -4622,7 +4791,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		if fz_type == "0" or fz_type == "1" or fz_type == "2" or fz_type == "5" or fz_type == "4" or fz_type == "6" or fz_type == "8" or fz_type == "9" or fz_type == "10" or fz_type == "11" or fz_type == "12" then
 			if fz_success_bool then
 				toast("辅助成功",1)
-				if api_change == "2" or api_change == "6" or api_change == "7" or api_change == "8" or api_change == "9" or api_change == "10" or api_change == "11" or api_change == "12" then
+				if api_change == "2" or api_change == "6" or api_change == "7" or api_change == "8" or api_change == "9" or api_change == "10" or api_change == "11" or api_change == "12" or api_change == "13" then
 					writeFileString(userPath().."/res/phone_data.txt","","w",0)
 					toast("清空保存号码文件",1)
 				end
@@ -4784,7 +4953,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				end
 
 				if login_times == "0" then
-					if api_change == "2" or api_change == "6" or api_change == "7" or api_change == "8" or api_change == "9" or api_change == "10" or api_change == "11" or api_change == "12" then
+					if api_change == "2" or api_change == "6" or api_change == "7" or api_change == "8" or api_change == "9" or api_change == "10" or api_change == "11" or api_change == "12" or api_change == "13" then
 						mSleep(500)
 						randomsTap(55,83,3)
 						mSleep(500)
@@ -5288,7 +5457,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 
 			if get_wechatError_six then
 				toast("写入异常数据",1)
-				if api_change == "7" or api_change == "8" or api_change == "9" or api_change == "11" then
+				if api_change == "7" or api_change == "8" or api_change == "9" or api_change == "11" or api_change == "13" then
 					if api_change == "9" or api_change == "11" then
 						codeUrl = ""
 					end
@@ -5307,7 +5476,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					codeUrl = ""
 				end
 
-				if api_change == "7" or api_change == "8" or api_change == "9" or api_change == "11" then
+				if api_change == "7" or api_change == "8" or api_change == "9" or api_change == "11" or api_change == "13" then
 					all_data = wx.."----"..password.."----"..data.."----"..wxid.."----"..ip.."----"..now.."----"..urlEncoder(codeUrl)
 				else
 					all_data = wx.."----"..password.."----"..data.."----"..wxid.."----"..ip.."----"..now.."----null"
@@ -6129,7 +6298,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		phone_loginTime = readFile(userPath().."/res/phone_loginTime.txt")
 		if tonumber(phone_loginTime[1]) < tonumber(fz_error_times) then
 			if not clean_bool then
-				if api_change == "2" or api_change == "6" or api_change == "7" or api_change == "8" or api_change == "9" or api_change == "10" or api_change == "11" or api_change == "12" then
+				if api_change == "2" or api_change == "6" or api_change == "7" or api_change == "8" or api_change == "9" or api_change == "10" or api_change == "11" or api_change == "12" or api_change == "13" then
 					mSleep(500)
 					randomsTap(55,83,3)
 					mSleep(500)
@@ -6254,6 +6423,26 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					mSleep(3000)
 					goto get_fail
 				end
+			elseif api_change == "13" and not clean_bool then
+				::push::
+				header_send = {}
+                body_send = {}
+                ts.setHttpsTimeOut(60)
+                status_resp, header_resp, body_resp = ts.httpGet("http://47.107.172.3/php/index.php?s=/home/index/huan_cun&mingzi="..phone.."&nr=0",header_send,body_send)
+                if status_resp == 200 then
+                	if tonumber(body_resp) == 1 then
+                		toast("号码清除成功",1)
+                		mSleep(1000)
+                	else
+                		toast(body_resp, 1)
+                		mSleep(3000)
+                		goto push
+                	end
+                else
+                	toast(body_resp, 1)
+                	mSleep(3000)
+                	goto push
+                end
 			end
 			writeFileString(userPath().."/res/phone_data.txt","","w",0)
 		end
@@ -6261,30 +6450,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 	::gg::
 	setVPNEnable(false)
 	closeApp(self.wc_bid)
-end
-
-function model:replace_file(fileName)
-	appPath = appBundlePath(self.wc_bid);  
-
-	local file = io.open(userPath().."/res/info/"..fileName,"rb") 
-	if file then 
-		local str = file:read("*a") 
-		file:close()
-
-		local file = io.open(appPath.."/Info.plist", 'wb');
-		file:write(str)
-		file:close();
-
-		::writeAgain::
-		bool = writeFileString(userPath().."/res/info/wc_version.txt",fileName,"w") --将 string 内容存入文件，成功返回 true
-		if bool then
-			toast("版本号存储成功，替换文件成功",1)
-			mSleep(1000)
-		else
-			toast("写入失败", 1)
-			goto writeAgain
-		end
-	end
 end
 
 function model:main()

@@ -1314,3 +1314,18 @@ function getIpAddress()
 		goto address
 	end
 end
+
+-- lastMessage1 = "CMDm1YXQjVYFCHRtqHga4oo242jVp_B25-FC1f0PdPcYXd24HcIurretgdfvfvfdfgfgfhhfghgfgffbykzd3f9t9K5"
+lastMessage1 = "CMDFWEFSDFSDFWEFSFSDFSAEFSEFEEFFEFFSEFEWFEAWSFDSFEWAFSEFWEFDSFEWFEFEFSEFDSFEWFSEDFSFES"
+str = string.match(lastMessage1, "CMD[A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9]")
+if str then
+    dialog(lastMessage1,0)
+    dialog(#str,0)
+    dialog(str,0)
+else
+    dialog(lastMessage1,0)
+    dialog("识别不到",0)
+end
+
+
+
