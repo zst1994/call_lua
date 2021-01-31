@@ -62,34 +62,35 @@ function model:check_account()
 				title = "有企鹅头像"
 				path = userPath().."/res/有企鹅头像.txt"
 			else
-			    mSleep(200)
-			    x,y = findMultiColorInRegionFuzzy(0x03081a, "65|-82|0xffffff,39|-73|0xe3e4ec,-6|-90|0xe3e4ec,-7|74|0x000000,-2|73|0x000000,110|84|0x000000,-108|-8|0xe1e1e9", 90, 0, 0, 750, 1334, { orient = 2 })
-                if x ~= -1 then
-                    title = "有企鹅头像"
-    				path = userPath().."/res/有企鹅头像.txt"
-    			else
-    			    title = "没有企鹅头像"
-				    path = userPath().."/res/没有企鹅头像.txt"
-                end
-			end
-			
-			::writeAgain::
-			bool = writeFileString(path,self.qqAcount .. "----" .. self.qqPassword,"a",1) --将 string 内容存入文件，成功返回 true
-			if bool then
-				toast(title.."写入成功",1)
-				mSleep(500)
-			else
-				toast(title.."写入失败",1)
-				mSleep(500)
-				goto writeAgain
-			end
-			mSleep(500)
-			tap(51,   86)
-			mSleep(500)
+			    title = "没有企鹅头像"
+			    path = userPath().."/res/没有企鹅头像.txt"
+            end
 			break
 		end
+		
+		mSleep(200)
+	    x,y = findMultiColorInRegionFuzzy(0x03081a, "65|-82|0xffffff,39|-73|0xe3e4ec,-6|-90|0xe3e4ec,-7|74|0x000000,-2|73|0x000000,110|84|0x000000,-108|-8|0xe1e1e9", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+            title = "有企鹅头像"
+			path = userPath().."/res/有企鹅头像.txt"
+		    break
+        end
 	end
-
+    
+    ::writeAgain::
+    mSleep(500)
+	bool = writeFileString(path,self.qqAcount .. "----" .. self.qqPassword,"a",1) --将 string 内容存入文件，成功返回 true
+	if bool then
+		toast(title.."写入成功",1)
+		mSleep(500)
+	else
+		toast(title.."写入失败",1)
+		mSleep(500)
+		goto writeAgain
+	end
+	mSleep(500)
+	tap(51,   86)
+	mSleep(500)
 	table.remove(self.qqList, 1)
 	writeFile(userPath() .. "/res/qq_account.txt", self.qqList, "w", 1)
 	mSleep(500)

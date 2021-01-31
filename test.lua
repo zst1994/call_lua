@@ -1316,16 +1316,21 @@ function getIpAddress()
 end
 
 -- lastMessage1 = "CMDm1YXQjVYFCHRtqHga4oo242jVp_B25-FC1f0PdPcYXd24HcIurretgdfvfvfdfgfgfhhfghgfgffbykzd3f9t9K5"
-lastMessage1 = "CMDFWEFSDFSDFWEFSFSDFSAEFSEFEEFFEFFSEFEWFEAWSFDSFEWAFSEFWEFDSFEWFEFEFSEFDSFEWFSEDFSFES"
-str = string.match(lastMessage1, "CMD[A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9]")
-if str then
-    dialog(lastMessage1,0)
-    dialog(#str,0)
-    dialog(str,0)
-else
-    dialog(lastMessage1,0)
-    dialog("识别不到",0)
-end
+-- lastMessage1 = "CMDFWEFSDFSDFWEFSFSDFSAEFSEFEEFFEFFSEFEWFEAWSFDSFEWAFSEFWEFDSFEWFEFEFSEFDSFEWFSEDFSFES"
+-- str = string.match(lastMessage1, "CMD[A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9]")
+-- if str then
+--     dialog(lastMessage1,0)
+--     dialog(#str,0)
+--     dialog(str,0)
+-- else
+--     dialog(lastMessage1,0)
+--     dialog("识别不到",0)
+-- end
 
+mSleep(500)
+x,y = findMultiColorInRegionFuzzy(0x03081a, "65|-82|0xffffff,39|-73|0xe3e4ec,-6|-90|0xe3e4ec,-7|74|0x000000,-2|73|0x000000,110|84|0x000000,-108|-8|0xe1e1e9", 90, 0, 0, 750, 1334, { orient = 2 })
+if x~=-1 then
+    dialog("text",0)
+end
 
 
