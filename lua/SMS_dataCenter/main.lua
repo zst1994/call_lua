@@ -312,10 +312,10 @@ function model:vpn()
 
 	setVPNEnable(true)
 	mSleep(1000*5)
-    
-    header_send = {}
+
+	header_send = {}
 	body_send = {}
-    ts.setHttpsTimeOut(60) 
+	ts.setHttpsTimeOut(60) 
 	code,header_resp, body_resp = ts.httpsGet("http://myip.ipip.net/", header_send,body_send)
 	if code == 200 then
 		return body_resp
@@ -1305,6 +1305,63 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 				newstatus = "失败"
 				::get_mess::
 				toast(codeUrl,1)
+
+				if get_time > tonumber(messGetTime) then
+					restart_time = restart_time + 1
+					if restart_time > tonumber(messSendTime) then
+						status = 2
+						yzm_mess = ""
+						::push::
+						mSleep(500)
+						local sz = require("sz")        --登陆
+						local szhttp = require("szocket.http")
+						local res, code = szhttp.request("http://47.104.246.33/phone.php?cmd=poststatus&phone="..phone.."&status="..newstatus)
+						mSleep(500)
+						if code == 200 then
+							if reTxtUtf8(res) == "反馈成功" then
+								toast("号码状态标记成功",1)
+							else
+								goto push
+							end
+						else
+							toast("号码标记失败，重新标记:"..tostring(res),1)
+							mSleep(3000)
+							goto push
+						end
+						lua_restart()
+					else
+						mSleep(500)
+						if fz_type ~= "3" then
+							self:change_vpn()
+						else
+							setVPNEnable(true)
+						end
+						mSleep(math.random(2000, 3000))
+						randomsTap(372,  749, 3)
+						mSleep(math.random(1000, 1500))
+						randomsTap(368, 1039,5)
+						mSleep(math.random(3000, 5000))
+						while (true) do
+							mSleep(500)
+							if getColor(369,  614) == 0x9ce6bf and getColor(374,  668) == 0x9ce6bf then
+								break
+							else
+								toast("等待验证码重新发送",1)
+								mSleep(3000)
+							end
+						end
+
+						if fz_type ~= "3" then
+							setVPNEnable(true)
+						else
+							setVPNEnable(false)
+						end
+						get_time = 1
+						mSleep(2000)
+						goto get_code_again
+					end
+				end
+
 				local ts = require("ts")
 				header_send = {}
 				body_send = {}
@@ -1316,70 +1373,15 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 						toast("获取验证码失败",1)
 						mSleep(5000)
 						get_time = get_time + 1
-						--messGetTime,messSendTime
-						if get_time > tonumber(messGetTime) then
-							restart_time = restart_time + 1
-							if restart_time > tonumber(messSendTime) then
-								status = 2
-								yzm_mess = ""
-								::push::
-								mSleep(500)
-								local sz = require("sz")        --登陆
-								local szhttp = require("szocket.http")
-								local res, code = szhttp.request("http://47.104.246.33/phone.php?cmd=poststatus&phone="..phone.."&status="..newstatus)
-								mSleep(500)
-								if code == 200 then
-									if reTxtUtf8(res) == "反馈成功" then
-										toast("号码状态标记成功",1)
-									else
-										goto push
-									end
-								else
-									toast("号码标记失败，重新标记:"..tostring(res),1)
-									mSleep(3000)
-									goto push
-								end
-								lua_restart()
-							else
-								mSleep(500)
-								if fz_type ~= "3" then
-									self:change_vpn()
-								else
-									setVPNEnable(true)
-								end
-								mSleep(math.random(2000, 3000))
-								randomsTap(372,  749, 3)
-								mSleep(math.random(1000, 1500))
-								randomsTap(368, 1039,5)
-								mSleep(math.random(3000, 5000))
-								while (true) do
-									mSleep(500)
-									if getColor(369,  614) == 0x9ce6bf and getColor(374,  668) == 0x9ce6bf then
-										break
-									else
-										toast("等待验证码重新发送",1)
-										mSleep(3000)
-									end
-								end
-
-								if fz_type ~= "3" then
-									setVPNEnable(true)
-								else
-									setVPNEnable(false)
-								end
-								get_time = 1
-								mSleep(2000)
-								goto get_code_again
-							end
-						else
-							goto get_mess
-						end
+						goto get_mess
 					elseif #yzm_mess == 6 then
 						toast(yzm_mess,1)
 						yzm_bool = true
 						newstatus = "成功"
 					else
-						toast(code..body_resp,1)
+						toast("获取验证码失败"..code..body_resp,1)
+						mSleep(5000)
+						get_time = get_time + 1
 						goto get_mess
 					end
 				else
@@ -1413,6 +1415,63 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 				newstatus = "失败"
 				::get_mess::
 				toast(codeUrl,1)
+
+				if get_time > tonumber(messGetTime) then
+					restart_time = restart_time + 1
+					if restart_time > tonumber(messSendTime) then
+						status = 2
+						yzm_mess = ""
+						::push::
+						mSleep(500)
+						local sz = require("sz")        --登陆
+						local szhttp = require("szocket.http")
+						local res, code = szhttp.request("http://47.104.246.33/phone1.php?cmd=poststatus&phone="..phone.."&status="..newstatus)
+						mSleep(500)
+						if code == 200 then
+							if reTxtUtf8(res) == "反馈成功" then
+								toast("号码状态标记成功",1)
+							else
+								goto push
+							end
+						else
+							toast("号码标记失败，重新标记:"..tostring(res),1)
+							mSleep(3000)
+							goto push
+						end
+						lua_restart()
+					else
+						mSleep(500)
+						if fz_type ~= "3" then
+							self:change_vpn()
+						else
+							setVPNEnable(true)
+						end
+						mSleep(math.random(2000, 3000))
+						randomsTap(372,  749, 3)
+						mSleep(math.random(1000, 1500))
+						randomsTap(368, 1039,5)
+						mSleep(math.random(3000, 5000))
+						while (true) do
+							mSleep(500)
+							if getColor(369,  614) == 0x9ce6bf and getColor(374,  668) == 0x9ce6bf then
+								break
+							else
+								toast("等待验证码重新发送",1)
+								mSleep(3000)
+							end
+						end
+
+						if fz_type ~= "3" then
+							setVPNEnable(true)
+						else
+							setVPNEnable(false)
+						end
+						get_time = 1
+						mSleep(2000)
+						goto get_code_again
+					end
+				end
+
 				local ts = require("ts")
 				header_send = {}
 				body_send = {}
@@ -1424,70 +1483,15 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 						toast("获取验证码失败",1)
 						mSleep(5000)
 						get_time = get_time + 1
-						--messGetTime,messSendTime
-						if get_time > tonumber(messGetTime) then
-							restart_time = restart_time + 1
-							if restart_time > tonumber(messSendTime) then
-								status = 2
-								yzm_mess = ""
-								::push::
-								mSleep(500)
-								local sz = require("sz")        --登陆
-								local szhttp = require("szocket.http")
-								local res, code = szhttp.request("http://47.104.246.33/phone1.php?cmd=poststatus&phone="..phone.."&status="..newstatus)
-								mSleep(500)
-								if code == 200 then
-									if reTxtUtf8(res) == "反馈成功" then
-										toast("号码状态标记成功",1)
-									else
-										goto push
-									end
-								else
-									toast("号码标记失败，重新标记:"..tostring(res),1)
-									mSleep(3000)
-									goto push
-								end
-								lua_restart()
-							else
-								mSleep(500)
-								if fz_type ~= "3" then
-									self:change_vpn()
-								else
-									setVPNEnable(true)
-								end
-								mSleep(math.random(2000, 3000))
-								randomsTap(372,  749, 3)
-								mSleep(math.random(1000, 1500))
-								randomsTap(368, 1039,5)
-								mSleep(math.random(3000, 5000))
-								while (true) do
-									mSleep(500)
-									if getColor(369,  614) == 0x9ce6bf and getColor(374,  668) == 0x9ce6bf then
-										break
-									else
-										toast("等待验证码重新发送",1)
-										mSleep(3000)
-									end
-								end
-
-								if fz_type ~= "3" then
-									setVPNEnable(true)
-								else
-									setVPNEnable(false)
-								end
-								get_time = 1
-								mSleep(2000)
-								goto get_code_again
-							end
-						else
-							goto get_mess
-						end
+						goto get_mess
 					elseif #yzm_mess == 6 then
 						toast(yzm_mess,1)
 						yzm_bool = true
 						newstatus = "成功"
 					else
-						toast(code..body_resp,1)
+						toast("获取验证码失败"..code..body_resp,1)
+						mSleep(5000)
+						get_time = get_time + 1
 						goto get_mess
 					end
 				else
@@ -1691,25 +1695,25 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 							if restart_time > tonumber(messSendTime) then
 								status = 2
 								yzm_mess = ""
-                                ::push::
-                                header_send = {}
-                                body_send = {}
-                                ts.setHttpsTimeOut(60)
-                                status_resp, header_resp, body_resp = ts.httpGet("http://47.107.172.3/php/index.php?s=/home/index/huan_cun&mingzi="..telphone.."&nr=0",header_send,body_send)
-                                if status_resp == 200 then
-                                	if tonumber(body_resp) == 1 then
-                                		toast("号码清除成功",1)
-                                		mSleep(1000)
-                                	else
-                                		toast(body_resp, 1)
-                                		mSleep(3000)
-                                		goto push
-                                	end
-                                else
-                                	toast(body_resp, 1)
-                                	mSleep(3000)
-                                	goto push
-                                end
+								::push::
+								header_send = {}
+								body_send = {}
+								ts.setHttpsTimeOut(60)
+								status_resp, header_resp, body_resp = ts.httpGet("http://47.107.172.3/php/index.php?s=/home/index/huan_cun&mingzi="..telphone.."&nr=0",header_send,body_send)
+								if status_resp == 200 then
+									if tonumber(body_resp) == 1 then
+										toast("号码清除成功",1)
+										mSleep(1000)
+									else
+										toast(body_resp, 1)
+										mSleep(3000)
+										goto push
+									end
+								else
+									toast(body_resp, 1)
+									mSleep(3000)
+									goto push
+								end
 								lua_restart()
 							else
 								mSleep(500)
@@ -2130,23 +2134,23 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 			elseif api_change == "13" then
 				::push::
 				header_send = {}
-                body_send = {}
-                ts.setHttpsTimeOut(60)
-                status_resp, header_resp, body_resp = ts.httpGet("http://47.107.172.3/php/index.php?s=/home/index/huan_cun&mingzi="..phone.."&nr=0",header_send,body_send)
-                if status_resp == 200 then
-                	if tonumber(body_resp) == 1 then
-                		toast("号码清除成功",1)
-                		mSleep(1000)
-                	else
-                		toast(body_resp, 1)
-                		mSleep(3000)
-                		goto push
-                	end
-                else
-                	toast(body_resp, 1)
-                	mSleep(3000)
-                	goto push
-                end
+				body_send = {}
+				ts.setHttpsTimeOut(60)
+				status_resp, header_resp, body_resp = ts.httpGet("http://47.107.172.3/php/index.php?s=/home/index/huan_cun&mingzi="..phone.."&nr=0",header_send,body_send)
+				if status_resp == 200 then
+					if tonumber(body_resp) == 1 then
+						toast("号码清除成功",1)
+						mSleep(1000)
+					else
+						toast(body_resp, 1)
+						mSleep(3000)
+						goto push
+					end
+				else
+					toast(body_resp, 1)
+					mSleep(3000)
+					goto push
+				end
 			end
 			return false
 		end
@@ -3077,26 +3081,26 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			goto get_phone
 		end
 	elseif api_change == "13" then
-	    ::get_phone::
-        header_send = {}
-        body_send = {}
-        ts.setHttpsTimeOut(60)
-        status_resp, header_resp, body_resp = ts.httpGet("http://47.107.172.3/php/index.php?s=/home/index/tqsc&sjk=qij",header_send,body_send)
-        if status_resp == 200 then
-        	if tonumber(body_resp) then
-        		telphone = string.gsub(body_resp,"%s+","") 
-        		toast(telphone,1)
-        		mSleep(1000)
-        	else
-        		toast(body_resp, 1)
-        		mSleep(3000)
-        		goto get_phone
-        	end
-        else
-        	toast(body_resp, 1)
-        	mSleep(3000)
-        	goto get_phone
-        end
+		::get_phone::
+		header_send = {}
+		body_send = {}
+		ts.setHttpsTimeOut(60)
+		status_resp, header_resp, body_resp = ts.httpGet("http://47.107.172.3/php/index.php?s=/home/index/tqsc&sjk=qij",header_send,body_send)
+		if status_resp == 200 then
+			if tonumber(body_resp) then
+				telphone = string.gsub(body_resp,"%s+","") 
+				toast(telphone,1)
+				mSleep(1000)
+			else
+				toast(body_resp, 1)
+				mSleep(3000)
+				goto get_phone
+			end
+		else
+			toast(body_resp, 1)
+			mSleep(3000)
+			goto get_phone
+		end
 	end
 
 	if country_id == "0" then
@@ -3494,23 +3498,23 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			elseif api_change == "13" then
 				::push::
 				header_send = {}
-                body_send = {}
-                ts.setHttpsTimeOut(60)
-                status_resp, header_resp, body_resp = ts.httpGet("http://47.107.172.3/php/index.php?s=/home/index/huan_cun&mingzi="..phone.."&nr=0",header_send,body_send)
-                if status_resp == 200 then
-                	if tonumber(body_resp) == 1 then
-                		toast("号码清除成功",1)
-                		mSleep(1000)
-                	else
-                		toast(body_resp, 1)
-                		mSleep(3000)
-                		goto push
-                	end
-                else
-                	toast(body_resp, 1)
-                	mSleep(3000)
-                	goto push
-                end
+				body_send = {}
+				ts.setHttpsTimeOut(60)
+				status_resp, header_resp, body_resp = ts.httpGet("http://47.107.172.3/php/index.php?s=/home/index/huan_cun&mingzi="..phone.."&nr=0",header_send,body_send)
+				if status_resp == 200 then
+					if tonumber(body_resp) == 1 then
+						toast("号码清除成功",1)
+						mSleep(1000)
+					else
+						toast(body_resp, 1)
+						mSleep(3000)
+						goto push
+					end
+				else
+					toast(body_resp, 1)
+					mSleep(3000)
+					goto push
+				end
 			end
 			writeFileString(userPath().."/res/phone_data.txt","","w",0)
 			toast("超过"..fz_error_times.."次注册失败，重新获取注册",1)
@@ -6426,23 +6430,23 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			elseif api_change == "13" and not clean_bool then
 				::push::
 				header_send = {}
-                body_send = {}
-                ts.setHttpsTimeOut(60)
-                status_resp, header_resp, body_resp = ts.httpGet("http://47.107.172.3/php/index.php?s=/home/index/huan_cun&mingzi="..phone.."&nr=0",header_send,body_send)
-                if status_resp == 200 then
-                	if tonumber(body_resp) == 1 then
-                		toast("号码清除成功",1)
-                		mSleep(1000)
-                	else
-                		toast(body_resp, 1)
-                		mSleep(3000)
-                		goto push
-                	end
-                else
-                	toast(body_resp, 1)
-                	mSleep(3000)
-                	goto push
-                end
+				body_send = {}
+				ts.setHttpsTimeOut(60)
+				status_resp, header_resp, body_resp = ts.httpGet("http://47.107.172.3/php/index.php?s=/home/index/huan_cun&mingzi="..phone.."&nr=0",header_send,body_send)
+				if status_resp == 200 then
+					if tonumber(body_resp) == 1 then
+						toast("号码清除成功",1)
+						mSleep(1000)
+					else
+						toast(body_resp, 1)
+						mSleep(3000)
+						goto push
+					end
+				else
+					toast(body_resp, 1)
+					mSleep(3000)
+					goto push
+				end
 			end
 			writeFileString(userPath().."/res/phone_data.txt","","w",0)
 		end
@@ -6665,7 +6669,7 @@ function model:main()
 				elseif replaceFile == "5" then
 					file_name = "721.plist"
 				end
-				
+
 				self:replace_file(file_name)
 			end
 
@@ -6840,7 +6844,7 @@ function beforeUserExit()
 			black_url = "http://api.hegrace-safex.cn/yhapi.ashx?act=addBlack&token="..phone_token.."&pid="..pid.."&reason="..urlEncoder("获取失败")
 		end
 
-		::addblack::
+--		::addblack::
 		local sz = require("sz")        --登陆
 		local szhttp = require("szocket.http")
 		local res, code = szhttp.request(black_url)
@@ -6849,13 +6853,16 @@ function beforeUserExit()
 			data = strSplit(res, "|")
 			if data[1] == "1" then
 				toast("拉黑手机号码",1)
-			elseif data[2] == "-5" then
-				if api_change == "12" then
-					black_url = "http://api.hegrace-safex.cn/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
-					goto addblack
-				end
-			else
-				goto addblack
+--			elseif data[2] == "-5" then
+--				if api_change == "12" then
+--					black_url = "http://api.hegrace-safex.cn/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
+--					goto addblack
+--				elseif api_change == "2" then
+					
+--				end
+--			else
+--				mSleep(time)
+--				goto addblack
 			end
 		end
 	end
