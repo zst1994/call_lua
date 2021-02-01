@@ -767,6 +767,8 @@ function model:getAccount()
 end
 
 function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikcNameType, changePass)
+	Nickname = "已经注册过的账号无昵称"
+	
 	runApp(self.mm_bid)
 	mSleep(1000)
 	t1 = ts.ms()
