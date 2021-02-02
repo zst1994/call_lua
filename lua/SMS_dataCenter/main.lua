@@ -956,8 +956,13 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 										if api_change == "12" then
 											black_url = "http://api.hegrace-safex.cn/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
 											goto addblack
+										elseif api_change == "2" then
+											black_url = "http://api.ma37.com/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
+											goto addblack
 										end
 									else
+										toast(res,1)
+										mSleep(2000)
 										goto addblack
 									end
 								end
@@ -1385,7 +1390,9 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 						goto get_mess
 					end
 				else
-					toast(code,0)
+					toast("获取验证码失败"..code..body_resp,1)
+					mSleep(5000)
+					get_time = get_time + 1
 					goto get_mess
 				end
 
@@ -1495,7 +1502,9 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 						goto get_mess
 					end
 				else
-					toast(code,0)
+					toast("获取验证码失败"..code..body_resp,1)
+					mSleep(5000)
+					get_time = get_time + 1
 					goto get_mess
 				end
 
@@ -3416,8 +3425,13 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 						if api_change == "12" then
 							black_url = "http://api.hegrace-safex.cn/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
 							goto addblack
+						elseif api_change == "2" then
+							black_url = "http://api.ma37.com/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
+							goto addblack
 						end
 					else
+						toast(res,1)
+						mSleep(2000)
 						goto addblack
 					end
 				end
@@ -3717,8 +3731,13 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 						if api_change == "12" then
 							black_url = "http://api.hegrace-safex.cn/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
 							goto addblack
+						elseif api_change == "2" then
+							black_url = "http://api.ma37.com/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
+							goto addblack
 						end
 					else
+						toast(res,1)
+						mSleep(2000)
 						goto addblack
 					end
 				end
@@ -3855,8 +3874,13 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 						if api_change == "12" then
 							black_url = "http://api.hegrace-safex.cn/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
 							goto addblack
+						elseif api_change == "2" then
+							black_url = "http://api.ma37.com/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
+							goto addblack
 						end
 					else
+						toast(res,1)
+						mSleep(2000)
 						goto addblack
 					end
 				end
@@ -4264,8 +4288,13 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 								if api_change == "12" then
 									black_url = "http://api.hegrace-safex.cn/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
 									goto addblack
+								elseif api_change == "2" then
+									black_url = "http://api.ma37.com/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
+									goto addblack
 								end
 							else
+								toast(res,1)
+								mSleep(2000)
 								goto addblack
 							end
 						end
@@ -6348,8 +6377,13 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 						if api_change == "12" then
 							black_url = "http://api.hegrace-safex.cn/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
 							goto addblack
+						elseif api_change == "2" then
+							black_url = "http://api.ma37.com/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
+							goto addblack
 						end
 					else
+						toast(res,1)
+						mSleep(2000)
 						goto addblack
 					end
 				end
@@ -6844,7 +6878,7 @@ function beforeUserExit()
 			black_url = "http://api.hegrace-safex.cn/yhapi.ashx?act=addBlack&token="..phone_token.."&pid="..pid.."&reason="..urlEncoder("获取失败")
 		end
 
---		::addblack::
+		::addblack::
 		local sz = require("sz")        --登陆
 		local szhttp = require("szocket.http")
 		local res, code = szhttp.request(black_url)
@@ -6853,16 +6887,18 @@ function beforeUserExit()
 			data = strSplit(res, "|")
 			if data[1] == "1" then
 				toast("拉黑手机号码",1)
---			elseif data[2] == "-5" then
---				if api_change == "12" then
---					black_url = "http://api.hegrace-safex.cn/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
---					goto addblack
---				elseif api_change == "2" then
-					
---				end
---			else
---				mSleep(time)
---				goto addblack
+			elseif data[2] == "-5" then
+				if api_change == "12" then
+					black_url = "http://api.hegrace-safex.cn/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
+					goto addblack
+				elseif api_change == "2" then
+					black_url = "http://api.ma37.com/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
+					goto addblack
+				end
+			else
+				toast(res,1)
+				mSleep(2000)
+				goto addblack
 			end
 		end
 	end
