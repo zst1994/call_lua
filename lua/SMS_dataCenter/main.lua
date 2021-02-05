@@ -6702,6 +6702,8 @@ function model:main()
 					file_name = "720.plist"
 				elseif replaceFile == "5" then
 					file_name = "721.plist"
+				elseif replaceFile == "6" then
+					file_name = "801.plist"
 				end
 
 				self:replace_file(file_name)
