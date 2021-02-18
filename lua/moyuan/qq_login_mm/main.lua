@@ -1108,24 +1108,35 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			self.subName = "注册过"
 			goto get_mmId
 		end
-
-		mSleep(200)
-		if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) == 0x808080 or getColor(676,258) == 0x818181 then
-			if getColor(655,211) == 0xffffff then
-				toast("切换下一个账号", 1)
-				mSleep(500)
-				table.remove(self.qqList, 1)
-				writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
-				self:getAccount()
-				inputAgain = true
-				goto hk
-			elseif getColor(683,209) == 0xffffff then
-				toast("切换下一个账号,重新新机", 1)
-				mSleep(500)
-				table.remove(self.qqList, 1)
-				writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
-				goto over
-			end
+		
+		if getColor(677,357) == 0xbbbbbb then
+    		if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) == 0x808080 or getColor(676,258) == 0x818181 or getColor(78,468) == 0x000000 then
+    			if getColor(655,211) == 0xffffff then
+    				toast("切换下一个账号1", 1)
+    				mSleep(500)
+    				table.remove(self.qqList, 1)
+    				writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+    				writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
+    				self:getAccount()
+    				inputAgain = true
+    				goto hk
+    			elseif getColor(683,209) == 0xffffff then
+    				toast("切换下一个账号,重新新机", 1)
+    				mSleep(500)
+    				table.remove(self.qqList, 1)
+    				writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+    				goto over
+    			else
+    			    toast("切换下一个账号2", 1)
+    				mSleep(500)
+    				table.remove(self.qqList, 1)
+    				writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+    				writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
+    				self:getAccount()
+    				inputAgain = true
+    				goto hk
+    			end
+    		end
 		end
 
 		flag = isFrontApp(self.mm_bid)
@@ -1335,22 +1346,34 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 		end
 
 		mSleep(200)
-		if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) == 0x808080 or getColor(676,258) == 0x818181 then
-			if getColor(655,211) == 0xffffff then
-				toast("切换下一个账号", 1)
-				mSleep(500)
-				table.remove(self.qqList, 1)
-				writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
-				self:getAccount()
-				inputAgain = true
-				goto hk
-			elseif getColor(683,209) == 0xffffff then
-				toast("切换下一个账号,重新新机", 1)
-				mSleep(500)
-				table.remove(self.qqList, 1)
-				writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
-				goto over
-			end
+		if getColor(677,357) == 0xbbbbbb then
+    		if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) == 0x808080 or getColor(676,258) == 0x818181 or getColor(78,468) == 0x000000 then
+    			if getColor(655,211) == 0xffffff then
+    				toast("切换下一个账号1", 1)
+    				mSleep(500)
+    				table.remove(self.qqList, 1)
+    				writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+    				writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
+    				self:getAccount()
+    				inputAgain = true
+    				goto hk
+    			elseif getColor(683,209) == 0xffffff then
+    				toast("切换下一个账号,重新新机", 1)
+    				mSleep(500)
+    				table.remove(self.qqList, 1)
+    				writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+    				goto over
+    			else
+    			    toast("切换下一个账号2", 1)
+    				mSleep(500)
+    				table.remove(self.qqList, 1)
+    				writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+    				writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
+    				self:getAccount()
+    				inputAgain = true
+    				goto hk
+    			end
+    		end
 		end
 
 		--动态密码
@@ -1363,6 +1386,16 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
 			goto over
 		end
+		
+		--密保手机号
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0xffffff, "39|-1|0xffffff,77|2|0xffffff,-288|-26|0x0079ff,-290|31|0x0079ff,33|-31|0x0079ff,40|32|0x0079ff,370|-21|0x0079ff,370|28|0x0079ff,-132|112|0x0079ff", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+            mSleep(500)
+            toast("密保手机号")
+            mSleep(500)
+            goto over
+        end
 
 		--已经注册过，需要绑定手机号码
 		mSleep(200)
