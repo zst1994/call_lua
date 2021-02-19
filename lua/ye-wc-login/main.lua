@@ -9,6 +9,7 @@ model.wc_bid 			= ""
 model.wc_name			= ""
 model.wc_file			= ""
 model.awz_bid 			= ""
+model.axj_bid			= ""
 model.awz_newUrl        = ""
 model.awz_getparam      = ""
 
@@ -204,20 +205,22 @@ function model:vpn()
 end
 
 function model:clear_App()
+	clear_bid = self.awz_bid
 	::run_again::
-	closeApp(self.awz_bid)
+	closeApp(clear_bid)
 	mSleep(math.random(200, 500))
-	runApp(self.awz_bid)
+	runApp(clear_bid)
 	mSleep(math.random(500, 1500))
 
 	while true do
 		mSleep(500)
-		flag = isFrontApp(self.awz_bid)
+		flag = isFrontApp(clear_bid)
 		if flag == 1 then
 			if getColor(147,456) == 0x6f7179 then
 				break
 			end
 		else
+			clear_bid = self.axj_bid
 			goto run_again
 		end
 	end
@@ -300,6 +303,7 @@ function model:getConfig()
 		self.awz_bid = string.gsub(tab[4],"%s+","")
 		self.awz_newUrl = string.gsub(tab[5],"%s+","")
 -- 		self.awz_getparam = string.gsub(tab[6],"%s+","")
+		self.axj_bid = string.gsub(tab[7],"%s+","")
 		toast("获取配置信息成功",1)
 		mSleep(1000)
 	else
@@ -2215,7 +2219,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 						mSleep(math.random(1000, 1500))
 						toast("安全验证",1)
 					end
-					
+
 					mSleep(math.random(500, 700))
 					x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 100, 0, 0, 749, 1333)
 					if x~=-1 and y~=-1 then
@@ -2351,7 +2355,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					mSleep(math.random(1000, 1500))
 					toast("安全验证",1)
 				end
-				
+
 				mSleep(math.random(500, 700))
 				x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 100, 0, 0, 749, 1333)
 				if x~=-1 and y~=-1 then
@@ -2980,7 +2984,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					if data[1] == "1" then
 						toast("释放号码成功",1)
 					elseif data[2] == "手机号不存在" then
-					    toast(data[2],1)
+						toast(data[2],1)
 					else
 						toast("释放号码失败，重新释放："..tostring(res),1)
 						mSleep(5000)
@@ -3002,7 +3006,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					if data[1] == "1" then
 						toast("拉黑手机号码",1)
 					elseif data[2] == "手机号不存在" then
-					    toast(data[2],1)
+						toast(data[2],1)
 					else
 						toast("拉黑失败"..tostring(res),1)
 						mSleep(2000)
@@ -4341,7 +4345,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 									if data[1] == "1" then
 										toast("释放号码成功",1)
 									elseif data[2] == "手机号不存在" then
-					                    toast(data[2],1)
+										toast(data[2],1)
 									else
 										toast("释放号码失败，重新释放："..tostring(res),1)
 										mSleep(5000)
@@ -4363,7 +4367,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 									if data[1] == "1" then
 										toast("拉黑手机号码",1)
 									elseif data[2] == "手机号不存在" then
-					                    toast(data[2],1)
+										toast(data[2],1)
 									else
 										toast("拉黑失败"..tostring(res),1)
 										mSleep(2000)
@@ -5809,7 +5813,7 @@ function model:main()
 
 	self:getConfig()
 
-	
+
 	local bool = isFileExist(userPath().."/res/info/wc_version.txt")
 	if bool then
 		txt = readFileString(userPath().."/res/info/wc_version.txt")--读取文件内容，返回全部内容的 string

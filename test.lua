@@ -1328,3 +1328,92 @@ end
 -- end
 
 
+
+--         <string>momologinauthorize</string>
+--          <string>momochatsdk</string>
+--          <string>momochs</string>
+--          <string>momoSDK</string>
+--          <string>wb2041542309</string>
+--          <string>rm165934com.wemomo.momoappdemo1</string>
+--          <string>momochat</string>
+--          <string>momotencent</string>
+--          <string>tbopen24634004</string>
+
+--openURL("momochat://rm165934com.wemomo.momoappdemo1")
+
+mSleep(500)
+x,y = findMultiColorInRegionFuzzy( 0x4cd3ea, "59|0|0x4cd3ea,21|0|0x4cd3ea,21|-10|0x4cd3ea,21|11|0x4cd3ea,21|-5|0xffffff", 100, 0, 0, 749, 1333)
+--dialog((x - 3).."---" .. (y + 22), time)
+--x,y = findMultiColorInRegionFuzzy( 0x4cd3ea, "-21|-4|0x4cd3ea,36|-5|0x4cd3ea,4|-11|0x4cd3ea,4|7|0x4cd3ea", 90, 0, 0, 749, 1333)
+--if x ~= -1 then
+--	mSleep(200)
+--	if getColor(x + 470, y - 45) ~= 0xffffff then
+--dialog(x.."---" .. y, time)
+--	end
+--end
+
+API = "Hk8Ve2Duh6QCR5XUxLpRxPyv"
+Secret  = "fD0az8pW8lNhGptCZC4TPfMWX5CyVtnh"
+
+tab_CHN_ENG = {
+	language_type = "CHN_ENG",
+	detect_direction = "true",
+	detect_language = "true",
+	ocrType = 3
+}
+
+::getBaiDuToken1::
+local code,access_token = getAccessToken(API,Secret)
+if code then
+	::snap1::
+
+	local content_name = userPath() .. "/res/baiduAI_content_name1.jpg"
+
+	--内容
+	if x > 430 then
+		snapshot(content_name, x - 320, y - 27, x - 3, y + 22) 
+	else
+		snapshot(content_name, x - 180, y - 27, x - 3, y + 22) 
+	end
+--	snapshot(content_name, 142,  424, 315,  483) 
+	mSleep(500)
+
+	local code, body = baiduAI(access_token,content_name,tab_CHN_ENG)
+	if code then
+		local tmp = json.decode(body)
+		if #tmp.words_result > 0 then
+			content_num = string.lower(tmp.words_result[1].words)
+		else
+			toast("识别内容失败\n" .. tostring(body),1)
+			mSleep(3000)
+			goto snap1
+		end
+	else
+		toast("识别内容失败\n" .. tostring(body),1)
+		mSleep(3000)
+		goto snap1
+	end
+
+	if content_num ~= nil and #content_num >= 1 then
+		toast("识别内容：\r\n"..content_num,1)
+	else
+		toast("识别内容失败,重新截图识别" .. tostring(body),1)
+		mSleep(3000)
+		goto snap1
+	end
+else
+	toast("获取token失败",1)
+	goto getBaiDuToken1
+end
+
+ts.config.open(userPath().."/res/test.plist")
+--ts.config.save(content_num,1) 
+coin = ts.config.get(content_num)   
+if coin then
+	dialog("11", time)
+else
+
+	dialog("22", time)
+end
+ts.config.close(true)
+
