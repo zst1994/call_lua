@@ -1384,13 +1384,13 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 						yzm_bool = true
 						newstatus = "成功"
 					else
-						toast("获取验证码失败"..code..body_resp,1)
+						toast("获取验证码失败"..code..tostring(body_resp),1)
 						mSleep(5000)
 						get_time = get_time + 1
 						goto get_mess
 					end
 				else
-					toast("获取验证码失败"..code..body_resp,1)
+					toast("获取验证码失败"..code..tostring(body_resp),1)
 					mSleep(5000)
 					get_time = get_time + 1
 					goto get_mess
@@ -1771,6 +1771,67 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 			elseif api_change == "14" then
 				yzm_bool = false
 				::get_mess::
+				if get_time > tonumber(messGetTime) then
+					restart_time = restart_time + 1
+					if restart_time > tonumber(messSendTime) then
+						status = 2
+						yzm_mess = ""
+						::AddBlackPhone::
+						header_send = {}
+						body_send = {}
+						ts.setHttpsTimeOut(60)
+						status_resp, header_resp, body_resp = ts.httpGet("http://www.58yzm.com/AddBlackPhone?Token=" .. yzm_token .. "&MSGID=" .. MSGID,header_send,body_send)
+						if status_resp == 200 then
+							tmp = json.decode(body_resp)
+							if tmp.code == "0" or tmp.code == 0 then
+								toast(tmp.msg, 1)
+								mSleep(1000)
+							else
+								toast(tmp.msg, 1)
+								mSleep(3000)
+								goto AddBlackPhone
+							end
+						else
+							toast(body_resp, 1)
+							mSleep(3000)
+							goto AddBlackPhone
+						end
+						lua_restart()
+					else
+						mSleep(500)
+						if fz_type ~= "3" then
+							self:change_vpn()
+						else
+							setVPNEnable(true)
+						end
+						mSleep(math.random(2000, 3000))
+						randomsTap(372,  749, 3)
+						mSleep(math.random(1000, 1500))
+						randomsTap(368, 1039,5)
+						mSleep(math.random(3000, 5000))
+						while (true) do
+							mSleep(500)
+							if getColor(369,  614) == 0x9ce6bf and getColor(374,  668) == 0x9ce6bf then
+								break
+							else
+								toast("等待验证码重新发送",1)
+								mSleep(3000)
+							end
+						end
+
+						if fz_type ~= "3" then
+							setVPNEnable(true)
+						else
+							setVPNEnable(false)
+						end
+						get_time = 1
+						mSleep(2000)
+						goto get_code_again
+					end
+				else
+					goto get_mess
+				end
+
 				local ts = require("ts")
 				header_send = {}
 				body_send = {}
@@ -1785,81 +1846,21 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 							mSleep(5000)
 							get_time = get_time + 1
 							--messGetTime,messSendTime
-							if get_time > tonumber(messGetTime) then
-								restart_time = restart_time + 1
-								if restart_time > tonumber(messSendTime) then
-									status = 2
-									yzm_mess = ""
-									::AddBlackPhone::
-									header_send = {}
-									body_send = {}
-									ts.setHttpsTimeOut(60)
-									status_resp, header_resp, body_resp = ts.httpGet("http://www.58yzm.com/AddBlackPhone?Token=" .. yzm_token .. "&MSGID=" .. MSGID,header_send,body_send)
-									if status_resp == 200 then
-										tmp = json.decode(body_resp)
-										if tmp.code == "0" or tmp.code == 0 then
-											toast(tmp.msg, 1)
-											mSleep(1000)
-										else
-											toast(tmp.msg, 1)
-											mSleep(3000)
-											goto AddBlackPhone
-										end
-									else
-										toast(body_resp, 1)
-										mSleep(3000)
-										goto AddBlackPhone
-									end
-									lua_restart()
-								else
-									mSleep(500)
-									if fz_type ~= "3" then
-										self:change_vpn()
-									else
-										setVPNEnable(true)
-									end
-									mSleep(math.random(2000, 3000))
-									randomsTap(372,  749, 3)
-									mSleep(math.random(1000, 1500))
-									randomsTap(368, 1039,5)
-									mSleep(math.random(3000, 5000))
-									while (true) do
-										mSleep(500)
-										if getColor(369,  614) == 0x9ce6bf and getColor(374,  668) == 0x9ce6bf then
-											break
-										else
-											toast("等待验证码重新发送",1)
-											mSleep(3000)
-										end
-									end
-
-									if fz_type ~= "3" then
-										setVPNEnable(true)
-									else
-										setVPNEnable(false)
-									end
-									get_time = 1
-									mSleep(2000)
-									goto get_code_again
-								end
-							else
-								goto get_mess
-							end
 						elseif #yzm_mess == 6 then
 							toast(yzm_mess,1)
 						else
 							toast(code..body_resp,1)
-							mSleep(1000)
+							mSleep(8000)
 							goto get_mess
 						end
 					else
 						toast(code..body_resp,1)
-						mSleep(1000)
+						mSleep(8000)
 						goto get_mess
 					end
 				else
 					toast(code,0)
-					mSleep(1000)
+					mSleep(8000)
 					goto get_mess
 				end
 			end
@@ -3429,7 +3430,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		else
 			phone = telphone
 		end
-	elseif api_change == "3"  or api_change == "7" or api_change == "8" or api_change == "13" or api_change == "14" then
+	elseif api_change == "3"  or api_change == "7" or api_change == "8" or api_change == "13" then
 		phone = telphone
 	elseif api_change == "4" then
 		b,c = string.find(string.sub(telphone,1,#country_num),country_num)
@@ -3446,6 +3447,8 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		end
 
 		phone = string.sub(telphone, #country_num + 1 ,#telphone)
+	elseif api_change == "14" then
+		phone = string.sub(telphone, #country_num + 2 ,#telphone)
 	end
 
 	toast(phone,1)
@@ -5672,7 +5675,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 
 			if get_wechatError_six then
 				toast("写入异常数据",1)
-				if api_change == "7" or api_change == "8" or api_change == "9" or api_change == "11" or api_change == "13" or api_change == "14" then
+				if api_change == "7" or api_change == "8" or api_change == "9" or api_change == "11" or api_change == "13" then
 					if api_change == "9" or api_change == "11" then
 						codeUrl = ""
 					end
@@ -5691,7 +5694,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					codeUrl = ""
 				end
 
-				if api_change == "7" or api_change == "8" or api_change == "9" or api_change == "11" or api_change == "13" or api_change == "14" then
+				if api_change == "7" or api_change == "8" or api_change == "9" or api_change == "11" or api_change == "13" then
 					all_data = wx.."----"..password.."----"..data.."----"..wxid.."----"..ip.."----"..now.."----"..urlEncoder(codeUrl)
 				else
 					all_data = wx.."----"..password.."----"..data.."----"..wxid.."----"..ip.."----"..now.."----null"

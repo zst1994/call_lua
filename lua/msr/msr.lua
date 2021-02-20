@@ -1441,10 +1441,10 @@ function model:loginAccount(code_connection,getPhoneToken,getPhoneCity,loginPass
 	if data_six_two or error_wc then
 		six_data = self:getData()
 		mSleep(500)
-		toast(six_data);
+		toast(six_data)
 		mSleep(500)
 		time = getNetTime()
-		sj=os.date("%Y年%m月%d日%H点%M分%S秒",time)
+		sj = os.date("%Y年%m月%d日%H点%M分%S秒",time)
 		mSleep(200)
 		toast(sj)       --或这样
 		mSleep(500)

@@ -85,9 +85,14 @@ function model:mmAutomation()
 					if location then
 						age_group = strSplit(ageGroup,"-")
 						if #age_group == 2 then
-							age_left = (tonumber(age_group[1]) - oldAgeGroup[1] + 1) * 28
+							if string.gsub(location_txt,"%s+","") == "64-678-684-680" then
+								age_left = (tonumber(age_group[1]) - oldAgeGroup[1] + 1) * 28
+							else
+								age_left = (tonumber(age_group[1]) - oldAgeGroup[1]) * 28
+							end
+
 							age_right = (oldAgeGroup[2] - tonumber(age_group[2])) * 28
-							
+
 							if age_left > 0 then
 								fx_left = 0
 								mSleep(500)
@@ -95,20 +100,24 @@ function model:mmAutomation()
 							else
 								fx_left = 180
 								mSleep(500)
-								moveTowards(tonumber(location[1]) - 28, tonumber(location[2]), fx_left, math.abs(age_left) + 28, 10)
+								moveTowards(tonumber(location[1]), tonumber(location[2]), fx_left, math.abs(age_left), 10)
 							end
 							
 							if age_right > 0 then
 								fx_right = 180
-								mSleep(1000)
+								mSleep(500)
 								moveTowards(tonumber(location[3]), tonumber(location[4]), fx_right, math.abs(age_right), 10)
 							else
 								fx_right = 0
-								mSleep(1000)
-								moveTowards(tonumber(location[3]), tonumber(location[4]), fx_right, math.abs(age_right) + 28, 10)
+								age_right = age_right - 14
+								mSleep(500)
+								moveTowards(tonumber(location[3]), tonumber(location[4]), fx_right, math.abs(age_right), 10)
 							end
+							nLog("age_left:"..age_left)
+							nLog("age_right:"..age_right)
 							
-							self:saveStringFile(self.ageLocationPath, tonumber(location[1]) + age_left .. "-" .. location[2] .. "-" .. tonumber(location[3]) - age_right .. "-" .. location[4], "w", "保存数据成功")
+							self:saveStringFile(userPath().."/res/ageLocation.txt", tonumber(location[1]) + age_left .. "-" .. location[2] .. "-" .. tonumber(location[3]) - age_right .. "-" .. location[4], "w", "保存数据成功")
+							nLog(tonumber(location[1]) + age_left .. "-" .. location[2] .. "-" .. tonumber(location[3]) - age_right .. "-" .. location[4])
 						end
 					end
 					
@@ -138,7 +147,7 @@ function model:mmAutomation()
 		while (true) do
 			--判断性别再判断是否有在线字样颜色不是白色
 			mSleep(200)
-			x,y = findMultiColorInRegionFuzzy( 0x4cd3ea, "-21|-4|0x4cd3ea,36|-5|0x4cd3ea,4|-11|0x4cd3ea,4|7|0x4cd3ea", 90, 0, 0, 749, 1333)
+			x,y = findMultiColorInRegionFuzzy( 0x4cd3ea, "-21|-4|0x4cd3ea,36|-5|0x4cd3ea,4|-11|0x4cd3ea,4|7|0x4cd3ea", 90, 0, 0, 749, 430)
 			if x ~= -1 then
 				mSleep(200)
 				--判断位置是否大于300，大于300再滚动一个距离，可能有图片，防止下次重新打招呼
@@ -280,6 +289,10 @@ function model:mmAutomation()
 					moveTowards(418,  824, 90, 200, 5)
 					mSleep(1000)
 				end
+			else
+				mSleep(500)
+				moveTowards(418,  824, 90, 200, 5)
+				mSleep(1000)
 			end
 		end
 	elseif way == "1" then
@@ -373,7 +386,7 @@ function model:main()
 			},
 			{
 				["type"] = "Label",
-				["text"] = "输入第一句回复术语(多个术语用-隔开)",
+				["text"] = "输入第一句随机打招呼术语(多个术语用-隔开)",
 				["size"] = 15,
 				["align"] = "center",
 				["color"] = "255,0,255",
@@ -401,8 +414,7 @@ function model:main()
 		oldAgeGroup = strSplit(choice[2], "-")
 		toast(choice[2],1)
 		mSleep(1000)
-
-		mSleep(200)
+		
 		if string.gsub(choice_txt,"%s+","") ~= lookUser .. "|" .. string.gsub(ageGroup,"%s+","") .. "|" .. onLinePeople then
 			self:saveStringFile(self.ageFilePath, lookUser .. "|" .. string.gsub(ageGroup,"%s+","") .. "|" .. onLinePeople, "w", "保存年龄段成功")
 			self.choice = true

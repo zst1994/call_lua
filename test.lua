@@ -1341,8 +1341,8 @@ end
 
 --openURL("momochat://rm165934com.wemomo.momoappdemo1")
 
-mSleep(500)
-x,y = findMultiColorInRegionFuzzy( 0x4cd3ea, "59|0|0x4cd3ea,21|0|0x4cd3ea,21|-10|0x4cd3ea,21|11|0x4cd3ea,21|-5|0xffffff", 100, 0, 0, 749, 1333)
+--mSleep(500)
+--x,y = findMultiColorInRegionFuzzy( 0x4cd3ea, "59|0|0x4cd3ea,21|0|0x4cd3ea,21|-10|0x4cd3ea,21|11|0x4cd3ea,21|-5|0xffffff", 100, 0, 0, 749, 1333)
 --dialog((x - 3).."---" .. (y + 22), time)
 --x,y = findMultiColorInRegionFuzzy( 0x4cd3ea, "-21|-4|0x4cd3ea,36|-5|0x4cd3ea,4|-11|0x4cd3ea,4|7|0x4cd3ea", 90, 0, 0, 749, 1333)
 --if x ~= -1 then
@@ -1362,58 +1362,98 @@ tab_CHN_ENG = {
 	ocrType = 3
 }
 
-::getBaiDuToken1::
-local code,access_token = getAccessToken(API,Secret)
-if code then
-	::snap1::
+--::getBaiDuToken1::
+--local code,access_token = getAccessToken(API,Secret)
+--if code then
+--	::snap1::
 
-	local content_name = userPath() .. "/res/baiduAI_content_name1.jpg"
+--	local content_name = userPath() .. "/res/baiduAI_content_name1.jpg"
 
-	--内容
-	if x > 430 then
-		snapshot(content_name, x - 320, y - 27, x - 3, y + 22) 
-	else
-		snapshot(content_name, x - 180, y - 27, x - 3, y + 22) 
-	end
---	snapshot(content_name, 142,  424, 315,  483) 
-	mSleep(500)
+--	--内容
+--	if x > 430 then
+--		snapshot(content_name, x - 320, y - 27, x - 3, y + 22) 
+--	else
+--		snapshot(content_name, x - 180, y - 27, x - 3, y + 22) 
+--	end
+----	snapshot(content_name, 142,  424, 315,  483) 
+--	mSleep(500)
 
-	local code, body = baiduAI(access_token,content_name,tab_CHN_ENG)
-	if code then
-		local tmp = json.decode(body)
-		if #tmp.words_result > 0 then
-			content_num = string.lower(tmp.words_result[1].words)
-		else
-			toast("识别内容失败\n" .. tostring(body),1)
-			mSleep(3000)
-			goto snap1
-		end
-	else
-		toast("识别内容失败\n" .. tostring(body),1)
-		mSleep(3000)
-		goto snap1
-	end
+--	local code, body = baiduAI(access_token,content_name,tab_CHN_ENG)
+--	if code then
+--		local tmp = json.decode(body)
+--		if #tmp.words_result > 0 then
+--			content_num = string.lower(tmp.words_result[1].words)
+--		else
+--			toast("识别内容失败\n" .. tostring(body),1)
+--			mSleep(3000)
+--			goto snap1
+--		end
+--	else
+--		toast("识别内容失败\n" .. tostring(body),1)
+--		mSleep(3000)
+--		goto snap1
+--	end
 
-	if content_num ~= nil and #content_num >= 1 then
-		toast("识别内容：\r\n"..content_num,1)
-	else
-		toast("识别内容失败,重新截图识别" .. tostring(body),1)
-		mSleep(3000)
-		goto snap1
-	end
-else
-	toast("获取token失败",1)
-	goto getBaiDuToken1
+--	if content_num ~= nil and #content_num >= 1 then
+--		toast("识别内容：\r\n"..content_num,1)
+--	else
+--		toast("识别内容失败,重新截图识别" .. tostring(body),1)
+--		mSleep(3000)
+--		goto snap1
+--	end
+--else
+--	toast("获取token失败",1)
+--	goto getBaiDuToken1
+--end
+
+accountFilePath   = userPath() .. "/res/accountData.txt"
+
+mSleep(200)
+tab = readFile(accountFilePath) 
+if #tab > 0 then 
+	searchAccount = string.gsub(tab[1], "%s+", "")
+	toast(searchAccount,1)
+	table.remove(tab, 1)
+	writeFile(accountFilePath, tab, "w", 1)
 end
 
-ts.config.open(userPath().."/res/test.plist")
---ts.config.save(content_num,1) 
-coin = ts.config.get(content_num)   
-if coin then
-	dialog("11", time)
-else
+--64-678-684-680
+--a = 23
+--b = 35
+----moveTowards(575, 678, 0, 28 * 2, 10)
 
-	dialog("22", time)
-end
-ts.config.close(true)
+--aaa = "232-678-544-680"
+--age_group = strSplit("21-38","-")
+--location = strSplit(aaa, "-")
+--if #age_group == 2 then
+--	if aaa == "64-678-684-680" then
+--		age_left = (tonumber(age_group[1]) - a + 1) * 28
+--	else
+--		age_left = (tonumber(age_group[1]) - a) * 28
+--	end
 
+--	age_right = (b - tonumber(age_group[2])) * 28
+
+--	if age_left > 0 then
+--		fx_left = 0
+--		mSleep(500)
+--		moveTowards(tonumber(location[1]), tonumber(location[2]), fx_left, math.abs(age_left), 10)
+--	else
+--		fx_left = 180
+--		mSleep(500)
+--		moveTowards(tonumber(location[1]), tonumber(location[2]), fx_left, math.abs(age_left), 10)
+--	end
+
+--	if age_right > 0 then
+--		fx_right = 180
+--		mSleep(500)
+--		moveTowards(tonumber(location[3]), tonumber(location[4]), fx_right, math.abs(age_right), 10)
+--	else
+--		fx_right = 0
+--		age_right = age_right - 14
+--		mSleep(500)
+--		moveTowards(tonumber(location[3]), tonumber(location[4]), fx_right, math.abs(age_right), 10)
+--	end
+
+--	saveStringFile(userPath().."/res/ageLocation.txt", tonumber(location[1]) + age_left .. "-" .. location[2] .. "-" .. tonumber(location[3]) - age_right .. "-" .. location[4], "w", "保存数据成功")
+--end
