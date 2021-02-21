@@ -1457,3 +1457,5 @@ end
 
 --	saveStringFile(userPath().."/res/ageLocation.txt", tonumber(location[1]) + age_left .. "-" .. location[2] .. "-" .. tonumber(location[3]) - age_right .. "-" .. location[4], "w", "保存数据成功")
 --end
+
+dialog("text",5)

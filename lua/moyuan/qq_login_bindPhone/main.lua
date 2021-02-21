@@ -1,24 +1,25 @@
 --陌陌-qq号码注册绑定手机卡
 require "TSLib"
-local ts = require("ts")
-local json = ts.json
-local sz = require("sz") --登陆
-local http = require("szocket.http")
+local ts              = require("ts")
+local json            = ts.json
+local sz              = require("sz") --登陆
+local http            = require("szocket.http")
 
-local model = {}
+local model           = {}
 
-model.awz_bid = "com.superdev.AMG"
-model.mm_bid = "com.wemomo.momoappdemo1"
+model.awz_bid         = "com.superdev.AMG"
+model.mm_bid          = "com.wemomo.momoappdemo1"
 
-model.qqAcount = ""
-model.qqPassword = ""
+model.qqAcount        = ""
+model.qqPassword      = ""
 
-model.phone_table = {}
-model.phone = ""
-model.code_token = ""
-model.mm_yzm = ""
+model.phone_table     = {}
+model.phone           = ""
+model.code_token      = ""
+model.mm_yzm          = ""
 
-model.subName = ""
+model.mm_accountId    = ""
+model.subName         = ""
 
 math.randomseed(getRndNum()) -- 随机种子初始化真随机数
 
@@ -51,10 +52,30 @@ end
 local AMG = {
 	Next = (function()  --下一条
 			model:Check_AMG()
-			local res, code = http.request("http://127.0.0.1:8080/cmd?fun=nextRecord");
-			if code == 200 then
-				return model:Check_AMG_Result()
+			while (true) do
+			    mSleep(200)
+			    x,y = findMultiColorInRegionFuzzy(0x000000, "44|-1|0x000000,79|0|0x000000,-25|154|0x007aff,0|155|0x007aff,17|155|0x007aff,56|161|0x007aff,-22|253|0x007aff,35|251|0x097fff,81|243|0x007aff", 90, 0, 0, 750, 1334, { orient = 2 })
+                if x ~= -1 then
+                    mSleep(500)
+                    tap(x,y)
+                    mSleep(500)
+                end
+                
+                mSleep(200)
+                x,y = findMultiColorInRegionFuzzy(0x007aff, "-35|6|0x007aff,-47|-13|0x067dff,-23|-12|0x007aff,37|-12|0x007aff,35|8|0x007aff,29|4|0x007aff,45|4|0x007aff", 90, 0, 0, 750, 1334, { orient = 2 })
+                if x ~= -1 then
+                    mSleep(500)
+                    tap(x,y)
+                    mSleep(2000)
+                    break
+                end
 			end
+			
+			return model:Check_AMG_Result()
+-- 			local res, code = http.request("http://127.0.0.1:8080/cmd?fun=nextRecord");
+-- 			if code == 200 then
+-- 				return model:Check_AMG_Result()
+-- 			end
 		end),
 	First = (function() --还原第一条记录
 			model:Check_AMG()
@@ -225,72 +246,70 @@ function model:get_mess()
 	yzm_time1 = ts.ms()
 
 	::get_yzm::
-
 	header_send = {}
 	body_send = {}
 	ts.setHttpsTimeOut(60)
 	status_resp, header_resp, body_resp = ts.httpGet(self.code_token, header_send, body_send)
-	toast(tostring(body_resp), 1)
-	mSleep(1000)
+	mSleep(500)
 	if status_resp == 200 then
-		tmp = json.decode(body_resp)
-		if tmp ~= nil or type(tmp) ~= "nil" then
-			if tmp.message ~= "No has message" then
-				local i, j = string.find(tmp.message, "%d+%d+%d+%d+%d+%d+")
-				if i > 0 then
-					self.mm_yzm = string.sub(tmp.message, i, j)
-					toast(tmp.message, 1)
-					mSleep(2000)
-					return true
-				else
-					toast(tmp.message, 1)
-					mSleep(3000)
-					goto get_yzm
-				end
+	    local i, j = string.find(body_resp, "%d+%d+%d+%d+%d+%d+")
+    	if i > 0 then
+    		self.mm_yzm = string.match(body_resp,"%d+")
+    		toast(self.mm_yzm, 1)
+    		mSleep(2000)
+    		return true
+    	else
+    		yzm_time2 = ts.ms()
+			if os.difftime(yzm_time2, yzm_time1) > 65 then
+				toast("验证码获取失败，结束下一个", 1)
+				mSleep(3000)
+				return false
 			else
-			    yzm_time2 = ts.ms()
-
-				if os.difftime(yzm_time2, yzm_time1) > 65 then
-					toast("验证码获取失败，结束下一个", 1)
-					mSleep(3000)
-					return false
-				else
-					toast(tmp.message, 1)
-    				mSleep(3000)
-    				goto get_yzm
-				end
-				-- mSleep(500)
-				-- if get_code_num > 2 then
-				-- 	toast("验证码重新获取超过2次失败，结束下一个", 1)
-				-- 	mSleep(3000)
-				-- 	return false
-				-- else
-				-- 	yzm_time2 = ts.ms()
-
-				-- 	if os.difftime(yzm_time2, yzm_time1) > 65 then
-				-- 		mSleep(500)
-				-- 		tap(491,  489)
-				-- 		mSleep(1000)
-				-- 		toast("重新获取验证码：" .. get_code_num, 1)
-				-- 		mSleep(1000)
-				-- 		get_code_num = get_code_num + 1
-				-- 		goto get_yzm_restart
-				-- 	end
-					
-				-- 	toast(tmp.message, 1)
-				-- 	mSleep(3000)
-				-- 	goto get_yzm
-				-- end
+				toast(tmp.message, 1)
+				mSleep(3000)
+				goto get_yzm
 			end
-		else
-			toast(tostring(body_resp), 1)
-			mSleep(3000)
-			goto get_yzm
-		end
+			-- mSleep(500)
+			-- if get_code_num > 2 then
+			-- 	toast("验证码重新获取超过2次失败，结束下一个", 1)
+			-- 	mSleep(3000)
+			-- 	return false
+			-- else
+			-- 	yzm_time2 = ts.ms()
+
+			-- 	if os.difftime(yzm_time2, yzm_time1) > 65 then
+			-- 		mSleep(500)
+			-- 		tap(491,  489)
+			-- 		mSleep(1000)
+			-- 		toast("重新获取验证码：" .. get_code_num, 1)
+			-- 		mSleep(1000)
+			-- 		get_code_num = get_code_num + 1
+			-- 		goto get_yzm_restart
+			-- 	end
+				
+			-- 	toast(tmp.message, 1)
+			-- 	mSleep(3000)
+			-- 	goto get_yzm
+			-- end
+    	end
 	else
 		toast(tostring(body_resp), 1)
 		mSleep(3000)
 		goto get_yzm
+	end
+end
+
+function model:getMMId(path)
+	local a = io.popen("ls " .. path)
+	local f = {}
+	for l in a:lines() do
+		b = string.find(l, "u.(%d%d%d%d%d%d%d%d%d)_main.sqlite")
+		if type(b) ~= "nil" then
+			c = string.match(l, "%d%d%d%d%d%d%d%d%d")
+			toast("陌陌id:" .. c, 1)
+			mSleep(1000)
+			return c
+		end
 	end
 end
 
@@ -518,6 +537,12 @@ function model:mm()
 			mSleep(500)
 			toast("定位服务未开启2", 1)
 			mSleep(500)
+		end
+		
+		flag = isFrontApp(self.mm_bid)
+		if flag == 0 then
+			runApp(self.mm_bid)
+			mSleep(3000)
 		end
 
 		self:timeOutRestart(t1)
@@ -1034,6 +1059,7 @@ function model:mm()
 			end
 
 			--保存
+			mSleep(200)
 			if getColor(628,   85) == 0x3bb3ff  and getColor(690,   79) == 0xffffff or getColor(612,   79) == 0x3bb3ff  and getColor(676,   79) == 0xffffff then
 				mSleep(500)
 				tap(621,   61)
@@ -1212,33 +1238,36 @@ function model:mm()
 		--输入号码
 		mSleep(200)
 		if getColor(629, 1264) == 0 then
-			for i = 1, #(self.phone) do
-				mSleep(300)
-				num = string.sub(self.phone, i, i)
-				mSleep(100)
-				if num == "0" then
-					tap(373, 1281)
-				elseif num == "1" then
-					tap(132, 955)
-				elseif num == "2" then
-					tap(377, 944)
-				elseif num == "3" then
-					tap(634, 941)
-				elseif num == "4" then
-					tap(128, 1063)
-				elseif num == "5" then
-					tap(374, 1061)
-				elseif num == "6" then
-					tap(628, 1055)
-				elseif num == "7" then
-					tap(119, 1165)
-				elseif num == "8" then
-					tap(378, 1160)
-				elseif num == "9" then
-					tap(633, 1164)
-				end
-				mSleep(100)
-			end
+		    mSleep(500)
+		    inputStr(self.phone)
+		    mSleep(500)
+-- 			for i = 1, #(self.phone) do
+-- 				mSleep(300)
+-- 				num = string.sub(self.phone, i, i)
+-- 				mSleep(100)
+-- 				if num == "0" then
+-- 					tap(373, 1281)
+-- 				elseif num == "1" then
+-- 					tap(132, 955)
+-- 				elseif num == "2" then
+-- 					tap(377, 944)
+-- 				elseif num == "3" then
+-- 					tap(634, 941)
+-- 				elseif num == "4" then
+-- 					tap(128, 1063)
+-- 				elseif num == "5" then
+-- 					tap(374, 1061)
+-- 				elseif num == "6" then
+-- 					tap(628, 1055)
+-- 				elseif num == "7" then
+-- 					tap(119, 1165)
+-- 				elseif num == "8" then
+-- 					tap(378, 1160)
+-- 				elseif num == "9" then
+-- 					tap(633, 1164)
+-- 				end
+-- 				mSleep(100)
+-- 			end
 		end
 
 		mSleep(200)
@@ -1248,14 +1277,18 @@ function model:mm()
 			mSleep(1000)
 			tap(215,  485)
 			mSleep(500)
-			back_again = back_again + 1
-			if back_again > 1 then
-				break
-			else
-				mSleep(500)
-				tap(60,   84)
-				mSleep(2000)
-				goto get_phone_agagin
+			if inputPhoneAgain == "1" then
+    			back_again = back_again + 1
+    			if back_again > 1 then
+    				break
+    			else
+    				mSleep(500)
+    				tap(60,   84)
+    				mSleep(2000)
+    				goto get_phone_agagin
+    			end
+    		else
+    		    break
 			end
 		end
 
@@ -1294,7 +1327,7 @@ function model:mm()
 				end
 				mSleep(100)
 			end
-			mSleep(2000)
+			mSleep(1000)
 			tap(370,  661)
 			mSleep(5000)
 			self.subName = "绑定号码成功=="..self.phone
@@ -1415,6 +1448,8 @@ function model:mm()
 	toast(new_name,1)
 	mSleep(1000)
 	if AMG.Rename(old_name, new_name) == true then
+	    self.mm_accountId = self:getMMId(appDataPath(self.mm_bid) .. "/Documents")
+	    writeFileString(userPath().."/res/绑定手机号记录.txt", self.mm_accountId .. "----" .. self.phone .. "----" .. self.code_token,"a",1)
 		toast("重命名当前记录 " .. old_name .. " 为 " .. new_name, 3)
 	end
 
@@ -1526,13 +1561,26 @@ function model:main()
 				["list"] = "换头像,不换头像",
 				["select"] = "0",
 				["countperline"] = "4"
+			},
+			{
+				["type"] = "Label",
+				["text"] = "是否需要输入两次号码",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255"
+			},
+			{
+				["type"] = "RadioGroup",
+				["list"] = "不需要,需要",
+				["select"] = "0",
+				["countperline"] = "4"
 			}
 		}
 	}
 
 	local MyJsonString = json.encode(MyTable)
 
-	ret, old_pass, password, searchFriend, searchAccount, changeHeader = showUI(MyJsonString)
+	ret, old_pass, password, searchFriend, searchAccount, changeHeader, inputPhoneAgain = showUI(MyJsonString)
 	if ret == 0 then
 		dialog("取消运行脚本", 3)
 		luaExit()

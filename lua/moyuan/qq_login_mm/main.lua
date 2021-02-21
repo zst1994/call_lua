@@ -1116,7 +1116,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
     				mSleep(500)
     				table.remove(self.qqList, 1)
     				writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
-    				writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
+    				-- writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
     				self:getAccount()
     				inputAgain = true
     				goto hk
@@ -1131,7 +1131,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
     				mSleep(500)
     				table.remove(self.qqList, 1)
     				writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
-    				writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
+    				-- writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
     				self:getAccount()
     				inputAgain = true
     				goto hk
@@ -1353,7 +1353,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
     				mSleep(500)
     				table.remove(self.qqList, 1)
     				writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
-    				writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
+    				-- writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
     				self:getAccount()
     				inputAgain = true
     				goto hk
@@ -1368,7 +1368,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
     				mSleep(500)
     				table.remove(self.qqList, 1)
     				writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
-    				writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
+    				-- writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
     				self:getAccount()
     				inputAgain = true
     				goto hk
@@ -1443,6 +1443,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 		--首页
 		mSleep(200)
 		if getColor(206, 109) == 0x323333 and getColor(370, 99) == 0x323333 or
+		getColor(411, 176) == 0x323333 and getColor(419, 135) == 0x323333 or
 		getColor(45, 109) == 0x323333 and getColor(222, 95) == 0x323333 or
 		getColor(206, 156) == 0x323333 and getColor(336, 157) == 0x323333 or
 		getColor(206,  153) == 0x313232 and getColor(371,  131) == 0x313232 then
@@ -1612,6 +1613,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 		--首页
 		mSleep(200)
 		if getColor(206, 109) == 0x323333 and getColor(370, 99) == 0x323333 or
+		getColor(411, 176) == 0x323333 and getColor(419, 135) == 0x323333 or
 		getColor(45, 109) == 0x323333 and getColor(222, 95) == 0x323333 or
 		getColor(206, 156) == 0x323333 and getColor(336, 157) == 0x323333 or
 		getColor(206,  153) == 0x313232 and getColor(371,  131) == 0x313232 then
@@ -2403,7 +2405,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 
 	--重命名当前记录名
 	local old_name = AMG.Get_Name()
-	local new_name = self.mm_accountId .. "----QQ----" .. self.subName .. "----" .. Nickname .. "----" .. self.phone_type .. "----" .. self.sys_version .. "----" .. self.city .. "----" .. sj
+	local new_name = self.mm_accountId .. "----" .. self.subName .. "----" .. self.qqAcount .. "----" .. self.qqPassword .. "----" .. sj
 	toast(new_name,1)
 	mSleep(1000)
 	if AMG.Rename(old_name, new_name) == true then
