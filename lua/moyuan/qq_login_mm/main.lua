@@ -2021,7 +2021,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 
 			--搜索用户
 			mSleep(200)
-			if getColor(55,  184) == 0xffaf1a and getColor(108,  179) == 0x000000 then
+			if getColor(55,  184) == 0xffaf1a and getColor(108,  179) == 0x000000 or getColor(584,84) == 0x8e8e93 then
 				mSleep(500)
 				randomTap(108,  179, 4)
 				mSleep(500)
