@@ -1458,4 +1458,9 @@ end
 --	saveStringFile(userPath().."/res/ageLocation.txt", tonumber(location[1]) + age_left .. "-" .. location[2] .. "-" .. tonumber(location[3]) - age_right .. "-" .. location[4], "w", "保存数据成功")
 --end
 
-dialog("text",5)
+	mSleep(200)
+		x, y = findMultiColorInRegionFuzzy(0x323333,"16|-1|0x323333,8|7|0x323333,10|19|0x323333,24|26|0x323333,30|13|0x323333,25|-7|0x323333,54|-3|0x323333,83|8|0x323333,66|-8|0x323333",90,0,0,750,1334,{orient = 2})
+		if x ~= -1 then
+		    dialog("text",0)
+		end
+	    

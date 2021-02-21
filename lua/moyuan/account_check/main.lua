@@ -84,7 +84,7 @@ function model:main()
 		mSleep(200)
 		tab = readFile(self.accountFilePath) 
 		if #tab > 0 then 
-			searchAccount = string.gsub(tab[1], "%s+", "")
+			searchAccount = strSplit(string.gsub(tab[1], "%s+", ""),"----")[1]
 			table.remove(tab, 1)
 			writeFile(self.accountFilePath, tab, "w", 1)
 
