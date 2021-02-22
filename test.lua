@@ -1352,15 +1352,15 @@ end
 --	end
 --end
 
-API = "Hk8Ve2Duh6QCR5XUxLpRxPyv"
-Secret  = "fD0az8pW8lNhGptCZC4TPfMWX5CyVtnh"
+--API = "Hk8Ve2Duh6QCR5XUxLpRxPyv"
+--Secret  = "fD0az8pW8lNhGptCZC4TPfMWX5CyVtnh"
 
-tab_CHN_ENG = {
-	language_type = "CHN_ENG",
-	detect_direction = "true",
-	detect_language = "true",
-	ocrType = 3
-}
+--tab_CHN_ENG = {
+--	language_type = "CHN_ENG",
+--	detect_direction = "true",
+--	detect_language = "true",
+--	ocrType = 3
+--}
 
 --::getBaiDuToken1::
 --local code,access_token = getAccessToken(API,Secret)
@@ -1370,12 +1370,12 @@ tab_CHN_ENG = {
 --	local content_name = userPath() .. "/res/baiduAI_content_name1.jpg"
 
 --	--内容
---	if x > 430 then
---		snapshot(content_name, x - 320, y - 27, x - 3, y + 22) 
---	else
---		snapshot(content_name, x - 180, y - 27, x - 3, y + 22) 
---	end
-----	snapshot(content_name, 142,  424, 315,  483) 
+----	if x > 430 then
+----		snapshot(content_name, x - 320, y - 27, x - 3, y + 22) 
+----	else
+----		snapshot(content_name, x - 180, y - 27, x - 3, y + 22) 
+----	end
+--	snapshot(content_name, 187,  42, 598,  88) 
 --	mSleep(500)
 
 --	local code, body = baiduAI(access_token,content_name,tab_CHN_ENG)
@@ -1406,16 +1406,7 @@ tab_CHN_ENG = {
 --	goto getBaiDuToken1
 --end
 
-accountFilePath   = userPath() .. "/res/accountData.txt"
 
-mSleep(200)
-tab = readFile(accountFilePath) 
-if #tab > 0 then 
-	searchAccount = string.gsub(tab[1], "%s+", "")
-	toast(searchAccount,1)
-	table.remove(tab, 1)
-	writeFile(accountFilePath, tab, "w", 1)
-end
 
 --64-678-684-680
 --a = 23
@@ -1458,9 +1449,3 @@ end
 --	saveStringFile(userPath().."/res/ageLocation.txt", tonumber(location[1]) + age_left .. "-" .. location[2] .. "-" .. tonumber(location[3]) - age_right .. "-" .. location[4], "w", "保存数据成功")
 --end
 
-	mSleep(200)
-		x, y = findMultiColorInRegionFuzzy(0x323333,"16|-1|0x323333,8|7|0x323333,10|19|0x323333,24|26|0x323333,30|13|0x323333,25|-7|0x323333,54|-3|0x323333,83|8|0x323333,66|-8|0x323333",90,0,0,750,1334,{orient = 2})
-		if x ~= -1 then
-		    dialog("text",0)
-		end
-	    

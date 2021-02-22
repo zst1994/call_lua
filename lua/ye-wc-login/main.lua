@@ -303,7 +303,10 @@ function model:getConfig()
 		self.awz_bid = string.gsub(tab[4],"%s+","")
 		self.awz_newUrl = string.gsub(tab[5],"%s+","")
 -- 		self.awz_getparam = string.gsub(tab[6],"%s+","")
-		self.axj_bid = string.gsub(tab[7],"%s+","")
+		
+		if tab[7] then
+			self.axj_bid = string.gsub(tab[7],"%s+","")
+		end
 		toast("获取配置信息成功",1)
 		mSleep(1000)
 	else
@@ -1081,7 +1084,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			mSleep(1000)
 			goto get_phone
 		end
-	elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16"  then
+	elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16" or vpn_stauts == "19" then
 		::get_phone::
 		mSleep(500)
 		local sz = require("sz")        --登陆
@@ -1094,7 +1097,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				mSleep(200)
 				if vpn_stauts == "13" then
 					telphone = data[4]
-				elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16"  then
+				elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" or vpn_stauts == "19" then
 					telphone = data[5]
 					pid = data[2]
 				end
@@ -1719,7 +1722,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		end
 	end
 
-	if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "3" or vpn_stauts == "5" or vpn_stauts == "6" or vpn_stauts == "7" or vpn_stauts == "8" or vpn_stauts == "9" or vpn_stauts == "11" or vpn_stauts == "12" or vpn_stauts == "13" or vpn_stauts == "14" or vpn_stauts == "15" or vpn_stauts == "16" or vpn_stauts == "17" or vpn_stauts == "18" then
+	if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "3" or vpn_stauts == "5" 
+	or vpn_stauts == "6" or vpn_stauts == "7" or vpn_stauts == "8" or vpn_stauts == "9" 
+	or vpn_stauts == "11" or vpn_stauts == "12" or vpn_stauts == "13" or vpn_stauts == "14" 
+	or vpn_stauts == "15" or vpn_stauts == "16" or vpn_stauts == "17" or vpn_stauts == "18" 
+	or vpn_stauts == "19" then
 		country_id = kn_country
 	elseif vpn_stauts == "4" or vpn_stauts == "10" then
 		country_id = country_code
@@ -1742,7 +1749,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		phone = telphone
 	elseif vpn_stauts == "5" or vpn_stauts == "8" or vpn_stauts == "12" or vpn_stauts == "15" then
 		phone = string.sub(telphone, #country_id + 1,#telphone)
-	elseif vpn_stauts == "2" or vpn_stauts == "7" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "14" or vpn_stauts == "16" then
+	elseif vpn_stauts == "2" or vpn_stauts == "7" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "14" or vpn_stauts == "16" or vpn_stauts == "19" then
 		if vpn_stauts == "14" then
 			telphone = string.match(telphone,"%d+")
 		end
@@ -2790,11 +2797,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					end
 				end
 			end
-		elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16" then		--奥迪
+		elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16" or vpn_stauts == "19" then		--奥迪
 			if addBlack == "0" then
 				if vpn_stauts == "13" then
 					setRel_url = ksUrl.."/yhapi.ashx?act=setRel&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone
-				elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" then
+				elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" or vpn_stauts == "19" then
 					setRel_url = ksUrl.."/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
 				end
 
@@ -2837,7 +2844,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 				if vpn_stauts == "13" then
 					black_url = ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
-				elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" then
+				elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" or vpn_stauts == "19" then
 					black_url = ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&pid="..pid.."&reason="..urlEncoder("获取失败")
 				end
 
@@ -3202,7 +3209,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					mSleep(3000)
 					goto get_mess
 				end
-			elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16" then
+			elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16" or vpn_stauts == "19" then
 				if country_id == "60" then
 					all_time = 15
 				else
@@ -3212,8 +3219,8 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				::get_mess::
 				second_time = os.time()
 				diff_time = os.difftime(second_time,first_time)
-				if diff_time > 600000 then
-					goto over
+				if diff_time > 600 then
+					restart_time = 3
 				else
 					toast(diff_time,1)
 					mSleep(1000)
@@ -3256,7 +3263,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					if addBlack == "0" then
 						if vpn_stauts == "13" then
 							setRel_url = ksUrl.."/yhapi.ashx?act=setRel&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone
-						elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" then
+						elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" or vpn_stauts == "19" then
 							setRel_url = ksUrl.."/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
 						end
 
@@ -3286,7 +3293,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					else
 						if vpn_stauts == "13" then
 							black_url = ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
-						elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" then
+						elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" or vpn_stauts == "19" then
 							black_url = ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&pid="..pid.."&reason="..urlEncoder("获取失败")
 						end
 
@@ -3319,7 +3326,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 				if vpn_stauts == "13" then
 					getPhoneCode_url = ksUrl.."/yhapi.ashx?act=getPhoneCode&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone
-				elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" then
+				elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" or vpn_stauts == "19" then
 					getPhoneCode_url = ksUrl.."/yhapi.ashx?act=getPhoneCode&token="..phone_token.."&pid="..pid
 				end
 
@@ -5550,7 +5557,7 @@ function model:main()
 			},
 			{
 				["type"] = "RadioGroup",                    
-				["list"] = "柠檬,卡农注册,奥迪,52,俄罗斯1,东帝汶,服务器取号,俄罗斯2,各国API,老友,SMS,越南,各国API2,奶茶,柠檬2,老司机,水煮鱼,松鼠,自用",
+				["list"] = "柠檬,卡农注册,奥迪,52,俄罗斯1,东帝汶,服务器取号,俄罗斯2,各国API,老友,SMS,越南,各国API2,奶茶,柠檬2,老司机,水煮鱼,松鼠,自用,火猫",
 				["select"] = "0",  
 				["countperline"] = "4",
 			},
@@ -5858,9 +5865,12 @@ function model:main()
 		elseif vpn_stauts == "16" then
 			ksUrl = "http://api.hegrace-safex.cn"
 			ApiName = "api_huqianjin_m8k"
+		elseif vpn_stauts == "19" then
+			ksUrl = "http://api.ma37.com"
+			ApiName = "api_huqianjin_m1p"
 		end
 
-		if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16" then
+		if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16" or vpn_stauts == "19" then
 			mSleep(500)
 			if kn_country == "" or kn_country == "默认值" then
 				dialog("国家区号不能为空，请重新运行脚本设置国家区号", 3)
@@ -5886,7 +5896,7 @@ function model:main()
 			end
 		end
 
-		if vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16" then
+		if vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16" or vpn_stauts == "19" then
 			::get_token::
 			local sz = require("sz");
 			local http = require("szocket.http")

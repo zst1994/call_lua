@@ -80,7 +80,7 @@ function model:mmAutomation()
 					elseif lookUser == "2" then
 						self:click(456,  513)
 					end
-					
+
 					mSleep(500)
 					if location then
 						age_group = strSplit(ageGroup,"-")
@@ -102,7 +102,7 @@ function model:mmAutomation()
 								mSleep(500)
 								moveTowards(tonumber(location[1]), tonumber(location[2]), fx_left, math.abs(age_left), 10)
 							end
-							
+
 							if age_right > 0 then
 								fx_right = 180
 								mSleep(500)
@@ -115,12 +115,12 @@ function model:mmAutomation()
 							end
 							nLog("age_left:"..age_left)
 							nLog("age_right:"..age_right)
-							
+
 							self:saveStringFile(userPath().."/res/ageLocation.txt", tonumber(location[1]) + age_left .. "-" .. location[2] .. "-" .. tonumber(location[3]) - age_right .. "-" .. location[4], "w", "保存数据成功")
 							nLog(tonumber(location[1]) + age_left .. "-" .. location[2] .. "-" .. tonumber(location[3]) - age_right .. "-" .. location[4])
 						end
 					end
-					
+
 					mSleep(500)
 					if getColor(643,  781) == 0xffffff then
 						if onLinePeople == "1" then
@@ -131,7 +131,7 @@ function model:mmAutomation()
 							self:click(643,  781)
 						end
 					end
-					
+
 					mSleep(500)
 					self:click(118, 1246)
 					break
@@ -143,7 +143,7 @@ function model:mmAutomation()
 				break
 			end
 		end
-		
+
 		while (true) do
 			--判断性别再判断是否有在线字样颜色不是白色
 			mSleep(200)
@@ -156,7 +156,7 @@ function model:mmAutomation()
 					moveTowards(418,  824, 90, 200, 5)
 					mSleep(1000)
 				end
-				
+
 				--判断是否是在线用户
 				mSleep(200)
 				if getColor(x + 470, y - 45) ~= 0xffffff then
@@ -172,7 +172,7 @@ function model:mmAutomation()
 							break
 						end
 					end
-					
+
 					while (true) do
 						mSleep(200)
 						if getColor(673, 1247) ~= 0xffffff and getColor(328, 1254) == 0xffffff then
@@ -182,7 +182,7 @@ function model:mmAutomation()
 							--打招呼(禁止添加新关注直接点击打招呼)
 							self:click(124, 1247)
 						end
-						
+
 						mSleep(200)
 						if getColor(630, 1196) == 0xaaaaaa and getColor(641, 1196) == 0xaaaaaa then
 							mSleep(500)
@@ -191,23 +191,19 @@ function model:mmAutomation()
 								::getBaiDuToken1::
 								local code,access_token = getAccessToken(self.API,self.Secret)
 								if code then
-									::snap1::
 									local content_name = userPath() .. "/res/baiduAI_content_name1.jpg"
-									
 									--内容
 									if x > 430 then
 										snapshot(content_name, x - 320, y - 27, x - 3, y + 22) 
 									else
 										snapshot(content_name, x - 180, y - 27, x - 3, y + 22) 
 									end
-									
 									mSleep(500)
 									local code, body = baiduAI(access_token,content_name,self.tab_CHN_ENG)
 									if code then
 										local tmp = json.decode(body)
 										if #tmp.words_result > 0 then
 											content_num = string.lower(tmp.words_result[1].words)
-											
 											ts.config.open(self.sendMessUserPath)
 											key = ts.config.get(content_num)   
 											if key then 
@@ -220,7 +216,6 @@ function model:mmAutomation()
 											else
 												ts.config.save(content_num,1) 
 											end
-											
 											ts.config.close(true)
 										else
 											self:click(53, 81)
@@ -238,7 +233,7 @@ function model:mmAutomation()
 										mSleep(1000)
 										break
 									end
-									
+
 									if content_num ~= nil and #content_num >= 1 then
 										toast("识别内容：\r\n"..content_num,1)
 										mSleep(1000)
@@ -255,7 +250,7 @@ function model:mmAutomation()
 									goto getBaiDuToken1
 								end
 							end
-							
+
 							num = math.random(1, #reply_terms)
 							self:click(473, 1203)
 							mSleep(500)
@@ -269,7 +264,7 @@ function model:mmAutomation()
 							break
 						end
 					end
-					
+
 					while (true) do
 						--判断是否返回首页
 						mSleep(200)
@@ -304,7 +299,73 @@ function model:mmAutomation()
 				--判断是否是在附近的人的页面，不是就切换
 				mSleep(200)
 				self:click(376, 1281)
-				break
+			end
+			
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy( 0xf85543, "18|1|0xf85543,8|-10|0xf85543,9|11|0xf85543,-4|-51|0xaaaaaa,-5|-42|0xaaaaaa,19|-121|0xffffff,30|-150|0xffffff", 100, 0, 0, 749, 1233)
+			if x ~= -1 then
+				self:click(x, y)
+				while (true) do
+					mSleep(200)
+					if getColor(689, 1284) == 0x323333 then
+						::getBaiDuToken::
+						local code,access_token = getAccessToken(API,Secret)
+						if code then
+							::snap1::
+							local content_name = userPath() .. "/res/baiduAI_content_name1.jpg"
+							--内容
+							snapshot(content_name, 187,  42, 598,  88) 
+							mSleep(500)
+							local code, body = baiduAI(access_token,content_name,tab_CHN_ENG)
+							if code then
+								local tmp = json.decode(body)
+								if #tmp.words_result > 0 then
+									content_num = string.lower(tmp.words_result[1].words)
+									ts.config.open(self.sendMessUserPath)
+									key = ts.config.get(content_num)   
+									if key then 
+										ts.config.delete(content_num)  
+										ts.config.save(content_num,tonumber(key) + 1)
+										self:click(477, 1170)
+										mSleep(500)
+										inputStr("1111111")
+										mSleep(500)
+										key = "ReturnOrEnter"
+										keyDown(key)
+										keyUp(key)
+										mSleep(500)
+										self:click(55, 84)
+									end
+									ts.config.close(true)
+								else
+									toast("识别内容失败\n" .. tostring(body),1)
+									mSleep(3000)
+									goto snap1
+								end
+							else
+								toast("识别内容失败\n" .. tostring(body),1)
+								mSleep(3000)
+								goto snap1
+							end
+
+							if content_num ~= nil and #content_num >= 1 then
+								toast("识别内容：\r\n"..content_num,1)
+							else
+								toast("识别内容失败,重新截图识别" .. tostring(body),1)
+								mSleep(3000)
+								goto snap1
+							end
+						else
+							toast("获取token失败",1)
+							goto getBaiDuToken
+						end
+						break
+					end
+				end
+			else
+				mSleep(500)
+				moveTowards(418,  824, 90, 200, 5)
+				mSleep(1000)
 			end
 		end
 	end
@@ -414,7 +475,7 @@ function model:main()
 		oldAgeGroup = strSplit(choice[2], "-")
 		toast(choice[2],1)
 		mSleep(1000)
-		
+
 		if string.gsub(choice_txt,"%s+","") ~= lookUser .. "|" .. string.gsub(ageGroup,"%s+","") .. "|" .. onLinePeople then
 			self:saveStringFile(self.ageFilePath, lookUser .. "|" .. string.gsub(ageGroup,"%s+","") .. "|" .. onLinePeople, "w", "保存年龄段成功")
 			self.choice = true
