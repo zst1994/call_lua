@@ -971,7 +971,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 		if getColor(239, 629) == 0x12b7f5 then
 			if inputAgain then
 				mSleep(500)
-				randomTap(620,  357, 3)
+				tap(620,  357)
 				mSleep(1000)
 				for var=1,20 do
 					mSleep(100)
@@ -979,7 +979,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 					keyUp("DeleteOrBackspace")  
 				end
 				mSleep(500)
-				randomTap(620,  469, 3)
+				tap(620,  469)
 				mSleep(1000)
 				for var=1,20 do
 					mSleep(100)
@@ -993,12 +993,12 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				mSleep(200)
 				if getColor(676,  357) == 0xbbbbbb or getColor(599,354) == 0xffffff then
 					mSleep(500)
-					randomTap(447, 477, 4)
+					tap(447, 477)
 					mSleep(500)
 					break
 				else
 					mSleep(500)
-					randomTap(395, 357, 4)
+					tap(395, 357)
 					mSleep(2000)
 					inputStr(self.qqAcount)
 					mSleep(1000)
@@ -1009,12 +1009,12 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				mSleep(200)
 				if getColor(677,  469) == 0xbbbbbb or getColor(163,471) == 0x000000 then
 					mSleep(500)
-					randomTap(239, 629, 4)
+					tap(239, 629)
 					mSleep(500)
 					break
 				else
 					mSleep(500)
-					randomTap(447, 477, 4)
+					tap(447, 477)
 					mSleep(500)
 					inputStr(self.qqPassword)
 					mSleep(1000)
@@ -1025,7 +1025,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 		mSleep(200)
 		if getColor(391,541) == 0x12b7f5 and getColor(379,884) == 0x000000 then
 			mSleep(500)
-			randomTap(379,884,4)
+			tap(379,884)
 			mSleep(500)
 			table.remove(self.qqList, 1)
 			writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
@@ -1109,6 +1109,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			goto get_mmId
 		end
 		
+		mSleep(200)
 		if getColor(677,357) == 0xbbbbbb then
     		if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) == 0x808080 or getColor(676,258) == 0x818181 or getColor(78,468) == 0x000000 then
     			if getColor(655,211) == 0xffffff then
