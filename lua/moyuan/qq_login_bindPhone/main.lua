@@ -381,6 +381,20 @@ function model:mm()
 				inputAgain = false
 			end
 		end
+		
+		--网络好像有问题
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0x007aff, "29|1|0x007aff,-122|-107|0x000000,-98|-106|0x000000,-68|-103|0x000000,-68|-119|0x000000,-33|-107|0x000000,86|-106|0x000000,104|-106|0x000000,140|-108|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+            mSleep(500)
+			tap(x,  y)
+			mSleep(1000)
+			self:vpn()
+			mSleep(500)
+			tap(246,  807)
+			mSleep(2000)
+			toast("网络好像有问题", 1)
+        end
 
 		--密码错误
 		mSleep(200)
@@ -482,6 +496,27 @@ function model:mm()
 			tap(377, 1042)
 			mSleep(500)
 			toast("有新版本", 1)
+			mSleep(500)
+		end
+		
+		--内测体验资格
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0xaaaaaa, "17|0|0xaaaaaa,29|1|0xaaaaaa,43|4|0xaaaaaa,-58|-4|0xaaaaaa,-185|-101|0x3bb3fa,1|-135|0x3bb3fa,175|-98|0x3bb3fa,-51|-89|0xffffff,12|-95|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+            mSleep(500)
+			tap(x, y)
+			mSleep(500)
+			toast("以后再说", 1)
+			mSleep(500)
+        end
+        
+        --招呼一下
+		mSleep(200)
+		if getColor(669,130) == 0xbde1f7 and getColor(702,131) == 0xbde1f7 then
+			mSleep(500)
+			tap(669,130)
+			mSleep(500)
+			toast("跳过招呼一下", 1)
 			mSleep(500)
 		end
 
@@ -891,6 +926,17 @@ function model:mm()
 			if x ~= -1 then
 				self.subName = "异常"
 				goto reName
+			end
+			
+			--填写你的收入
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy(0xaaaaaa, "33|3|0xaaaaaa,76|10|0xaaaaaa,-123|-97|0x3bb3fa,197|-89|0x3bb3fa,50|-889|0x323333,-64|-893|0x323333,-12|-890|0x323333,27|-886|0x323333,89|-892|0x323333", 90, 0, 0, 750, 1334, { orient = 2 })
+			if x~=-1 and y~=-1 then
+				mSleep(500)
+				tap(x, y)
+				mSleep(500)
+				toast("填写你的收入",1)
+				mSleep(500)
 			end
 
 			--你的家乡
