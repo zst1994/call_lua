@@ -1448,34 +1448,21 @@ end
 
 --	saveStringFile(userPath().."/res/ageLocation.txt", tonumber(location[1]) + age_left .. "-" .. location[2] .. "-" .. tonumber(location[3]) - age_right .. "-" .. location[4], "w", "保存数据成功")
 --end
---填写你的收入
-			mSleep(200)
-			x,y = findMultiColorInRegionFuzzy(0xaaaaaa, "33|3|0xaaaaaa,76|10|0xaaaaaa,-123|-97|0x3bb3fa,197|-89|0x3bb3fa,50|-889|0x323333,-64|-893|0x323333,-12|-890|0x323333,27|-886|0x323333,89|-892|0x323333", 90, 0, 0, 750, 1334, { orient = 2 })
-			if x~=-1 and y~=-1 then
-				mSleep(500)
-				tap(x, y)
-				mSleep(500)
-				toast("填写你的收入",1)
-				mSleep(500)
-			end
-		    --填写你的收入
-			mSleep(200)
-			x,y = findMultiColorInRegionFuzzy(0xaaaaaa, "33|3|0xaaaaaa,76|10|0xaaaaaa,-123|-97|0x3bb3fa,197|-89|0x3bb3fa,50|-889|0x323333,-64|-893|0x323333,-12|-890|0x323333,27|-886|0x323333,89|-892|0x323333", 90, 0, 0, 750, 1334, { orient = 2 })
-			if x~=-1 and y~=-1 then
-				mSleep(500)
-				tap(x, y)
-				mSleep(500)
-				toast("填写你的收入1",1)
-				mSleep(500)
-			end
-			
-		    --填写你的收入
-			mSleep(200)
-			x,y = findMultiColorInRegionFuzzy(0xacacad, "226|-350|0xf9f9f9,-20|-137|0x5eb1f5,-8|-68|0x5eb1f5,143|-109|0x5eb1f5,-110|-900|0x323232,-70|-891|0x323232,-20|-894|0x323232,42|-900|0x323232,58|-908|0x323232", 90, 0, 0, 750, 1334, { orient = 2 })
-            if x~=-1 and y~=-1 then
-				mSleep(500)
-				tap(x, y)
-				mSleep(500)
-				toast("填写你的收入2",1)
-				mSleep(500)
-            end
+
+
+
+
+
+
+get_code_num = 0
+
+::get_yzm_restart::
+yzm_time1 = ts.ms()
+
+::get_yzm::
+header_send = {}
+body_send = {}
+ts.setHttpsTimeOut(60)
+status_resp, header_resp, body_resp = ts.httpGet("http://81.69.38.179/SMS/rest/MSService?state=5&code=momomo_ee4213942757f4bb35e9db36edd20965", header_send, body_send)
+mSleep(500)
+dialog(status_resp, time)

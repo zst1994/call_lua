@@ -53,24 +53,24 @@ local AMG = {
 	Next = (function()  --下一条
 			model:Check_AMG()
 			while (true) do
-			    mSleep(200)
-			    x,y = findMultiColorInRegionFuzzy(0x000000, "44|-1|0x000000,79|0|0x000000,-25|154|0x007aff,0|155|0x007aff,17|155|0x007aff,56|161|0x007aff,-22|253|0x007aff,35|251|0x097fff,81|243|0x007aff", 90, 0, 0, 750, 1334, { orient = 2 })
-                if x ~= -1 then
-                    mSleep(500)
-                    tap(x,y)
-                    mSleep(500)
-                end
-                
-                mSleep(200)
-                x,y = findMultiColorInRegionFuzzy(0x007aff, "-35|6|0x007aff,-47|-13|0x067dff,-23|-12|0x007aff,37|-12|0x007aff,35|8|0x007aff,29|4|0x007aff,45|4|0x007aff", 90, 0, 0, 750, 1334, { orient = 2 })
-                if x ~= -1 then
-                    mSleep(500)
-                    tap(x,y)
-                    mSleep(2000)
-                    break
-                end
+				mSleep(200)
+				x,y = findMultiColorInRegionFuzzy(0x000000, "44|-1|0x000000,79|0|0x000000,-25|154|0x007aff,0|155|0x007aff,17|155|0x007aff,56|161|0x007aff,-22|253|0x007aff,35|251|0x097fff,81|243|0x007aff", 90, 0, 0, 750, 1334, { orient = 2 })
+				if x ~= -1 then
+					mSleep(500)
+					tap(x,y)
+					mSleep(500)
+				end
+
+				mSleep(200)
+				x,y = findMultiColorInRegionFuzzy(0x007aff, "-35|6|0x007aff,-47|-13|0x067dff,-23|-12|0x007aff,37|-12|0x007aff,35|8|0x007aff,29|4|0x007aff,45|4|0x007aff", 90, 0, 0, 750, 1334, { orient = 2 })
+				if x ~= -1 then
+					mSleep(500)
+					tap(x,y)
+					mSleep(2000)
+					break
+				end
 			end
-			
+
 			return model:Check_AMG_Result()
 -- 			local res, code = http.request("http://127.0.0.1:8080/cmd?fun=nextRecord");
 -- 			if code == 200 then
@@ -252,14 +252,14 @@ function model:get_mess()
 	status_resp, header_resp, body_resp = ts.httpGet(self.code_token, header_send, body_send)
 	mSleep(500)
 	if status_resp == 200 then
-	    local i, j = string.find(body_resp, "%d+%d+%d+%d+%d+%d+")
-    	if i > 0 then
-    		self.mm_yzm = string.match(body_resp,"%d+")
-    		toast(self.mm_yzm, 1)
-    		mSleep(2000)
-    		return true
-    	else
-    		yzm_time2 = ts.ms()
+		local i, j = string.find(body_resp, "%d+%d+%d+%d+%d+%d+")
+		if i > 0 then
+			self.mm_yzm = string.match(body_resp,"%d+")
+			toast(self.mm_yzm, 1)
+			mSleep(2000)
+			return true
+		else
+			yzm_time2 = ts.ms()
 			if os.difftime(yzm_time2, yzm_time1) > 65 then
 				toast("验证码获取失败，结束下一个", 1)
 				mSleep(3000)
@@ -286,16 +286,23 @@ function model:get_mess()
 			-- 		get_code_num = get_code_num + 1
 			-- 		goto get_yzm_restart
 			-- 	end
-				
+
 			-- 	toast(tmp.message, 1)
 			-- 	mSleep(3000)
 			-- 	goto get_yzm
 			-- end
-    	end
+		end
 	else
-		toast(tostring(body_resp), 1)
-		mSleep(3000)
-		goto get_yzm
+		yzm_time2 = ts.ms()
+		if os.difftime(yzm_time2, yzm_time1) > 65 then
+			toast("验证码获取失败，结束下一个"..tostring(body_resp), 1)
+			mSleep(3000)
+			return false
+		else
+			toast(tostring(body_resp), 1)
+			mSleep(3000)
+			goto get_yzm
+		end
 	end
 end
 
@@ -381,12 +388,12 @@ function model:mm()
 				inputAgain = false
 			end
 		end
-		
+
 		--网络好像有问题
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy(0x007aff, "29|1|0x007aff,-122|-107|0x000000,-98|-106|0x000000,-68|-103|0x000000,-68|-119|0x000000,-33|-107|0x000000,86|-106|0x000000,104|-106|0x000000,140|-108|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
-        if x ~= -1 then
-            mSleep(500)
+		if x ~= -1 then
+			mSleep(500)
 			tap(x,  y)
 			mSleep(1000)
 			self:vpn()
@@ -394,7 +401,7 @@ function model:mm()
 			tap(246,  807)
 			mSleep(2000)
 			toast("网络好像有问题", 1)
-        end
+		end
 
 		--密码错误
 		mSleep(200)
@@ -498,19 +505,19 @@ function model:mm()
 			toast("有新版本", 1)
 			mSleep(500)
 		end
-		
+
 		--内测体验资格
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy(0xaaaaaa, "17|0|0xaaaaaa,29|1|0xaaaaaa,43|4|0xaaaaaa,-58|-4|0xaaaaaa,-185|-101|0x3bb3fa,1|-135|0x3bb3fa,175|-98|0x3bb3fa,-51|-89|0xffffff,12|-95|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
-        if x ~= -1 then
-            mSleep(500)
+		if x ~= -1 then
+			mSleep(500)
 			tap(x, y)
 			mSleep(500)
 			toast("以后再说", 1)
 			mSleep(500)
-        end
-        
-        --招呼一下
+		end
+
+		--招呼一下
 		mSleep(200)
 		if getColor(669,130) == 0xbde1f7 and getColor(702,131) == 0xbde1f7 then
 			mSleep(500)
@@ -573,7 +580,7 @@ function model:mm()
 			toast("定位服务未开启2", 1)
 			mSleep(500)
 		end
-		
+
 		flag = isFrontApp(self.mm_bid)
 		if flag == 0 then
 			runApp(self.mm_bid)
@@ -927,7 +934,7 @@ function model:mm()
 				self.subName = "异常"
 				goto reName
 			end
-			
+
 			--填写你的收入
 			mSleep(200)
 			x,y = findMultiColorInRegionFuzzy(0xaaaaaa, "33|3|0xaaaaaa,76|10|0xaaaaaa,-123|-97|0x3bb3fa,197|-89|0x3bb3fa,50|-889|0x323333,-64|-893|0x323333,-12|-890|0x323333,27|-886|0x323333,89|-892|0x323333", 90, 0, 0, 750, 1334, { orient = 2 })
@@ -1221,13 +1228,13 @@ function model:mm()
 
 		self:timeOutRestart(t1)
 	end
-	
+
 	back_again = 0
 	getPhoneAgain = false
-	
+
 	::get_phone_agagin::
 	if getPhoneAgain then
-	    self:getPhoneAndToken()
+		self:getPhoneAndToken()
 	end
 
 	t1 = ts.ms()
@@ -1284,9 +1291,9 @@ function model:mm()
 		--输入号码
 		mSleep(200)
 		if getColor(629, 1264) == 0 then
-		    mSleep(500)
-		    inputStr(self.phone)
-		    mSleep(500)
+			mSleep(500)
+			inputStr(self.phone)
+			mSleep(500)
 -- 			for i = 1, #(self.phone) do
 -- 				mSleep(300)
 -- 				num = string.sub(self.phone, i, i)
@@ -1324,17 +1331,17 @@ function model:mm()
 			tap(215,  485)
 			mSleep(500)
 			if inputPhoneAgain == "1" then
-    			back_again = back_again + 1
-    			if back_again > 1 then
-    				break
-    			else
-    				mSleep(500)
-    				tap(60,   84)
-    				mSleep(2000)
-    				goto get_phone_agagin
-    			end
-    		else
-    		    break
+				back_again = back_again + 1
+				if back_again > 1 then
+					break
+				else
+					mSleep(500)
+					tap(60,   84)
+					mSleep(2000)
+					goto get_phone_agagin
+				end
+			else
+				break
 			end
 		end
 
@@ -1421,15 +1428,15 @@ function model:mm()
 			toast("设置",1)
 			mSleep(500)
 		end
-		
+
 		--退出修改绑定手机号码
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy(0x3bb3fa, "169|-29|0x3bb3fa,159|41|0x3bb3fa,393|-14|0x3bb3fa,52|6|0xffffff,123|5|0xffffff,258|2|0xffffff,106|-1011|0x000000,149|-1012|0x000000,218|-1010|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
-        if x ~= -1 then
-            mSleep(500)
+		if x ~= -1 then
+			mSleep(500)
 			tap(57, 84)
 			mSleep(500)
-        end
+		end
 
 		--.密码修改    2.密码修改  图标没加载出来    3.密码修改  图标加载一个
 		mSleep(200)
@@ -1494,8 +1501,8 @@ function model:mm()
 	toast(new_name,1)
 	mSleep(1000)
 	if AMG.Rename(old_name, new_name) == true then
-	    self.mm_accountId = self:getMMId(appDataPath(self.mm_bid) .. "/Documents")
-	    writeFileString(userPath().."/res/绑定手机号记录.txt", self.mm_accountId .. "----" .. self.phone .. "----" .. self.code_token,"a",1)
+		self.mm_accountId = self:getMMId(appDataPath(self.mm_bid) .. "/Documents")
+		writeFileString(userPath().."/res/绑定手机号记录.txt", self.mm_accountId .. "----" .. self.phone .. "----" .. self.code_token,"a",1)
 		toast("重命名当前记录 " .. old_name .. " 为 " .. new_name, 3)
 	end
 
@@ -1673,14 +1680,14 @@ function model:main()
 				toast(fileName, 1)
 				mSleep(1000)
 
-		--		saveImageToAlbum(fileName)
+				--		saveImageToAlbum(fileName)
 				saveImageToAlbum(userPath() .. "/res/picFile/" .. fileName)
 				mSleep(500)
-		--		saveImageToAlbum(fileName)
+				--		saveImageToAlbum(fileName)
 				saveImageToAlbum(userPath() .. "/res/picFile/" .. fileName)
 				mSleep(2000)
 
-		--		self:deleteImage(fileName)
+				--		self:deleteImage(fileName)
 				self:deleteImage(userPath() .. "/res/picFile/" .. fileName)
 			end
 

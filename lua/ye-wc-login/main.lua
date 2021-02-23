@@ -306,6 +306,8 @@ function model:getConfig()
 		
 		if tab[7] then
 			self.axj_bid = string.gsub(tab[7],"%s+","")
+		else
+			self.axj_bid = self.awz_bid
 		end
 		toast("获取配置信息成功",1)
 		mSleep(1000)
@@ -5860,7 +5862,7 @@ function model:main()
 			ksUrl = "http://web.lyf5.com"
 			ApiName = "huqianjin42"
 		elseif vpn_stauts == "13" then
-			ksUrl = "http://web.jiaotai56.com"
+			ksUrl = "http://web1.520mqn.com"
 			ApiName = "huqianjin89"
 		elseif vpn_stauts == "16" then
 			ksUrl = "http://api.hegrace-safex.cn"

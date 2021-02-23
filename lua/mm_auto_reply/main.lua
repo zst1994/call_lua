@@ -1,3 +1,4 @@
+--陌陌自动回复私信
 require "TSLib"
 local ts                = require("ts")
 local json 				= ts.json
