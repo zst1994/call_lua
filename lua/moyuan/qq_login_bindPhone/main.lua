@@ -20,6 +20,7 @@ model.mm_yzm          = ""
 
 model.mm_accountId    = ""
 model.subName         = ""
+model.subNameBool     = true
 
 math.randomseed(getRndNum()) -- 随机种子初始化真随机数
 
@@ -402,15 +403,26 @@ function model:mm()
 			mSleep(2000)
 			toast("网络好像有问题", 1)
 		end
-
+		
+		--验证码校验
+		mSleep(200)
+        x,y = findMultiColorInRegionFuzzy(0xafbabf, "174|-228|0x000000,173|-214|0x000000,190|-220|0x000000,190|-203|0x000000,209|-214|0x000000,225|-216|0x000000,279|-212|0x000000,312|-214|0x000000,329|-202|0x000000", 100, 0, 0, 750, 1334, { orient = 2 })
+		if x ~= -1 then
+			toast("验证码校验", 1)
+			mSleep(1000)
+			self.subName = "验证码校验"
+			self.subNameBool = false
+			goto reName
+		end
+		
 		--密码错误
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0x007aff, "8|0|0x007aff,18|-8|0x007aff,42|7|0x007aff,57|7|0x007aff,281|-9|0x007aff,356|10|0x007aff,116|-96|0x000000,153|-104|0x000000,327|-95|0x000000", 90, 0, 0, 749, 1333)
 		if x ~= -1 then
-			mSleep(math.random(500, 700))
 			toast("密码错误", 1)
 			mSleep(1000)
 			self.subName = "密码错误"
+			self.subNameBool = false
 			goto reName
 		end
 
@@ -418,10 +430,10 @@ function model:mm()
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0x007aff, "16|0|0x007aff,46|0|0x007aff,-87|-113|0x000000,-76|-109|0x000000,-65|-109|0x000000,-41|-111|0x000000,88|-104|0x000000,109|-101|0x000000,137|-108|0x000000", 90, 0, 0, 749, 1333)
 		if x ~= -1 then
-			mSleep(math.random(500, 700))
 			toast("用户名密码错误", 1)
 			mSleep(1000)
 			self.subName = "密码错误"
+			self.subNameBool = false
 			goto reName
 		end
 
@@ -932,6 +944,7 @@ function model:mm()
 			x,y = findMultiColorInRegionFuzzy(0x3bb3fa, "14|62|0x3bb3fa,11|29|0xc5e8fe,31|28|0xc5e8fe,623|9|0x3bb3fa,623|57|0x3bb3fa,344|-5|0x3bb3fa,343|64|0x3bb3fa,592|-64|0x323333,624|-54|0x323333", 90, 0, 0, 750, 1334, { orient = 2 })
 			if x ~= -1 then
 				self.subName = "异常"
+				self.subNameBool = false
 				goto reName
 			end
 
@@ -1216,6 +1229,7 @@ function model:mm()
 				break
 			else
 				self.subName = "账号已经绑定过手机号码"
+				self.subNameBool = false
 				toast("账号已经绑定过手机号码",1)
 				mSleep(500)
 				goto reName
@@ -1501,9 +1515,12 @@ function model:mm()
 	toast(new_name,1)
 	mSleep(1000)
 	if AMG.Rename(old_name, new_name) == true then
-		self.mm_accountId = self:getMMId(appDataPath(self.mm_bid) .. "/Documents")
-		writeFileString(userPath().."/res/绑定手机号记录.txt", self.mm_accountId .. "----" .. self.phone .. "----" .. self.code_token,"a",1)
-		toast("重命名当前记录 " .. old_name .. " 为 " .. new_name, 3)
+	    if self.subNameBool then
+    		self.mm_accountId = self:getMMId(appDataPath(self.mm_bid) .. "/Documents")
+    		writeFileString(userPath().."/res/绑定手机号记录.txt", self.mm_accountId .. "----" .. self.phone .. "----" .. self.code_token,"a",1)
+    		toast("重命名当前记录 " .. old_name .. " 为 " .. new_name, 3)
+	    end
+	    self.subNameBool = true
 	end
 
 	::over::
