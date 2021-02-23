@@ -796,7 +796,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_type,vpn_stau
 	elseif vpn_stauts == "12" then
 		::get_balance::
 		ts.setHttpsTimeOut(60) 
-		code,header_resp, body_resp = ts.httpsGet("https://sms-activate.ru/stubs/handler_api.php?api_key=968b85c58A9607A8d984ddA617e03f8f&action=getBalance", header_send,body_send)
+		code,header_resp, body_resp = ts.httpsGet("https://sms-activate.ru/stubs/handler_api.php?api_key=524310de0Afb2ecee681d4b2658dc776&action=getBalance", header_send,body_send)
 
 		if code == 200 then
 			balance = strSplit(body_resp,":")
@@ -822,7 +822,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_type,vpn_stau
 
 		::get_phone::
 		ts.setHttpsTimeOut(60) 
-		code,header_resp, body_resp = ts.httpsGet("https://sms-activate.ru/stubs/handler_api.php?api_key=968b85c58A9607A8d984ddA617e03f8f&action=getNumber&service=wb&country="..countryId, header_send,body_send)
+		code,header_resp, body_resp = ts.httpsGet("https://sms-activate.ru/stubs/handler_api.php?api_key=524310de0Afb2ecee681d4b2658dc776&action=getNumber&service=wb&country="..countryId, header_send,body_send)
 		if code == 200 then
 			tmp = strSplit(body_resp,":")
 			if tmp[1] == "ACCESS_NUMBER" then
@@ -842,7 +842,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_type,vpn_stau
 	elseif vpn_stauts == "13" then
 		::get_balance::
 		ts.setHttpsTimeOut(60) 
-		code,header_resp, body_resp = ts.httpsGet("https://onlinesim.ru/api/getBalance.php?apikey=aabbffc1db791e1ea7cd6ec9511f561b", header_send,body_send)
+		code,header_resp, body_resp = ts.httpsGet("https://onlinesim.ru/api/getBalance.php?apikey=bcb1b80fa2205988503a0efac37574af", header_send,body_send)
 
 		if code == 200 then
 			tmp = json.decode(body_resp)
@@ -868,7 +868,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_type,vpn_stau
 
 		::get_tzid::
 		ts.setHttpsTimeOut(60) 
-		code,header_resp, body_resp = ts.httpsGet("https://onlinesim.ru/api/getNum.php?apikey=aabbffc1db791e1ea7cd6ec9511f561b&service=WeChat&country="..countryId, header_send,body_send)
+		code,header_resp, body_resp = ts.httpsGet("https://onlinesim.ru/api/getNum.php?apikey=bcb1b80fa2205988503a0efac37574af&service=WeChat&country="..countryId, header_send,body_send)
 		if code == 200 then
 			tmp = json.decode(body_resp)
 			if tmp.response == 1 then
@@ -887,7 +887,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_type,vpn_stau
 		
 		::get_phone::
 		ts.setHttpsTimeOut(60) 
-		code,header_resp, body_resp = ts.httpsGet("https://onlinesim.ru/api/getState.php?apikey=aabbffc1db791e1ea7cd6ec9511f561b&tzid="..tz_id.."&message_to_code=1", header_send,body_send)
+		code,header_resp, body_resp = ts.httpsGet("https://onlinesim.ru/api/getState.php?apikey=bcb1b80fa2205988503a0efac37574af&tzid="..tz_id.."&message_to_code=1", header_send,body_send)
 		if code == 200 then
 			tmp = json.decode(body_resp)
 			if tmp[1].response == "TZ_NUM_WAIT" then
@@ -907,7 +907,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_type,vpn_stau
 		::get_phone::
 		local sz = require("sz")        --登陆
 		local http = require("szocket.http")
-		local res, code = http.request("http://opapi.lemon91.com/out/ext_api/getMobileCode?name=liao1787&pwd=liao1787414&pid="..kn_id.."&cuy="..countryId.."&num=1&noblack=0&serial=2&secret_key="..tableKey)
+		local res, code = http.request("http://opapi.sms-5g.com/out/ext_api/getMobileCode?name=liao1787&pwd=liao20160926&pid="..kn_id.."&cuy="..countryId.."&num=1&noblack=0&serial=2&secret_key="..tableKey)
 
 		mSleep(500)
 		if code == 200 then
@@ -1008,8 +1008,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_type,vpn_stau
 		mSleep(100)
 	end
 
-	toast(country_id,1)
-	mSleep(1000)
+	mSleep(500)
 	for i = 1, #(country_id) do
 		mSleep(300)
 		num = string.sub(country_id,i,i)
@@ -2022,7 +2021,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_type,vpn_stau
 				::addblack::
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
-				local res, code = http.request("http://opapi.lemon9191.com/out/ext_api/passMobile?name=liao1787&pwd=liao1787414&pn="..telphone.."&pid="..kn_id.."&serial=2")
+				local res, code = http.request("http://opapi.sms-5g.com/out/ext_api/passMobile?name=liao1787&pwd=liao20160926&pn="..telphone.."&pid="..kn_id.."&serial=2")
 				mSleep(500)
 				if code == 200 then
 					tmp = json.decode(res)
@@ -2038,7 +2037,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_type,vpn_stau
 				::addblack::
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
-				local res, code = http.request("http://opapi.lemon9191.com/out/ext_api/addBlack?name=liao1787&pwd=liao1787414&pn="..telphone.."&pid="..kn_id.."&serial=2")
+				local res, code = http.request("http://opapi.sms-5g.com/out/ext_api/addBlack?name=liao1787&pwd=liao20160926&pn="..telphone.."&pid="..kn_id.."&serial=2")
 				mSleep(500)
 				if code == 200 then
 					tmp = json.decode(res)
@@ -2153,13 +2152,13 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_type,vpn_stau
 		elseif vpn_stauts == "13" then
 		    ::black::
 			ts.setHttpsTimeOut(60) 
-			code,header_resp, body_resp = ts.httpsGet("http://onlinesim.ru/api/setOperationRevise.php?apikey=aabbffc1db791e1ea7cd6ec9511f561b&tzid="..tz_id, header_send,body_send)
+			code,header_resp, body_resp = ts.httpsGet("http://onlinesim.ru/api/setOperationRevise.php?apikey=bcb1b80fa2205988503a0efac37574af&tzid="..tz_id, header_send,body_send)
 			if code == 200 then
 				tmp = json.decode(body_resp)
 				if tmp.response == 1 or tmp.response == "1" then
 					::setOperationOk::
 					ts.setHttpsTimeOut(60) 
-					code,header_resp, body_resp = ts.httpsGet("http://onlinesim.ru/api/setOperationOk.php?apikey=aabbffc1db791e1ea7cd6ec9511f561b&tzid="..tz_id, header_send,body_send)
+					code,header_resp, body_resp = ts.httpsGet("http://onlinesim.ru/api/setOperationOk.php?apikey=bcb1b80fa2205988503a0efac37574af&tzid="..tz_id, header_send,body_send)
 					if code == 200 then
 						tmp = json.decode(body_resp)
 						if tmp.response == 1 or tmp.response == "1" then
@@ -2831,7 +2830,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_type,vpn_stau
 							toast("暂未查询到验证码，请稍后再试"..get_time,1)
 							mSleep(2000)
 							get_time = get_time + 1
-							if get_time > 15 then
+							if get_time > 25 then
 								if country_id == "886" then
 									mSleep(500)
 									setVPNEnable(true)
@@ -2891,7 +2890,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_type,vpn_stau
 			elseif vpn_stauts == "12" then
 				::get_mess::
 				ts.setHttpsTimeOut(60) 
-				code,header_resp, body_resp = ts.httpsGet("https://sms-activate.ru/stubs/handler_api.php?api_key=968b85c58A9607A8d984ddA617e03f8f&action=getFullSms&id="..phone_id, header_send,body_send)
+				code,header_resp, body_resp = ts.httpsGet("https://sms-activate.ru/stubs/handler_api.php?api_key=524310de0Afb2ecee681d4b2658dc776&action=getFullSms&id="..phone_id, header_send,body_send)
 				if code == 200 then
 					tmp = strSplit(body_resp,":")
 					if tmp[1] == "FULL_SMS" then
@@ -2901,7 +2900,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_type,vpn_stau
 						toast("暂未查询到验证码，请稍后再试"..get_time,1)
 						mSleep(2000)
 						get_time = get_time + 1
-						if get_time > 15 then
+						if get_time > 25 then
 							if country_id == "886" then
 								mSleep(500)
 								setVPNEnable(true)
@@ -2931,7 +2930,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_type,vpn_stau
 						if restart_time > 1 then
 							::black::
 							ts.setHttpsTimeOut(60) 
-							code,header_resp, body_resp = ts.httpsGet("https://sms-activate.ru/stubs/handler_api.php?api_key=968b85c58A9607A8d984ddA617e03f8f&action=setStatus&status=8&id="..phone_id, header_send,body_send)
+							code,header_resp, body_resp = ts.httpsGet("https://sms-activate.ru/stubs/handler_api.php?api_key=524310de0Afb2ecee681d4b2658dc776&action=setStatus&status=8&id="..phone_id, header_send,body_send)
 							if code == 200 then
 								tmp = strSplit(body_resp,":")
 								if tmp[1] == "ACCESS_CANCEL" then
@@ -2956,7 +2955,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_type,vpn_stau
 			elseif vpn_stauts == "13" then
 				::get_mess::
 				ts.setHttpsTimeOut(60) 
-				code,header_resp, body_resp = ts.httpsGet("https://onlinesim.ru/api/getState.php?apikey=aabbffc1db791e1ea7cd6ec9511f561b&tzid="..tz_id.."&message_to_code=1", header_send,body_send)
+				code,header_resp, body_resp = ts.httpsGet("https://onlinesim.ru/api/getState.php?apikey=bcb1b80fa2205988503a0efac37574af&tzid="..tz_id.."&message_to_code=1", header_send,body_send)
 				if code == 200 then
 				    tmp = json.decode(body_resp)
         			if tmp[1].response == "TZ_NUM_ANSWER" then
@@ -2996,13 +2995,13 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_type,vpn_stau
 						if restart_time > 1 then
 							::black::
 							ts.setHttpsTimeOut(60) 
-							code,header_resp, body_resp = ts.httpsGet("http://onlinesim.ru/api/setOperationRevise.php?apikey=aabbffc1db791e1ea7cd6ec9511f561b&tzid="..tz_id, header_send,body_send)
+							code,header_resp, body_resp = ts.httpsGet("http://onlinesim.ru/api/setOperationRevise.php?apikey=bcb1b80fa2205988503a0efac37574af&tzid="..tz_id, header_send,body_send)
 							if code == 200 then
 								tmp = json.decode(body_resp)
 								if tmp.response == 1 or tmp.response == "1" then
 									::setOperationOk::
         							ts.setHttpsTimeOut(60) 
-        							code,header_resp, body_resp = ts.httpsGet("http://onlinesim.ru/api/setOperationOk.php?apikey=aabbffc1db791e1ea7cd6ec9511f561b&tzid="..tz_id, header_send,body_send)
+        							code,header_resp, body_resp = ts.httpsGet("http://onlinesim.ru/api/setOperationOk.php?apikey=bcb1b80fa2205988503a0efac37574af&tzid="..tz_id, header_send,body_send)
         							if code == 200 then
         								tmp = json.decode(body_resp)
         								if tmp.response == 1 or tmp.response == "1" then
@@ -3037,7 +3036,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_type,vpn_stau
 				mSleep(500)
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
-				local res, code = http.request("http://opapi.lemon91.com/out/ext_api/getMsg?name=liao1787&pwd=liao1787414&pn="..telphone.."&pid="..kn_id.."&serial=2")
+				local res, code = http.request("http://opapi.sms-5g.com/out/ext_api/getMsg?name=liao1787&pwd=liao20160926&pn="..telphone.."&pid="..kn_id.."&serial=2")
 				mSleep(500)
 				if code == 200 then
 					tmp = json.decode(res)
@@ -3049,11 +3048,39 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_type,vpn_stau
 						mSleep(2000)
 						get_time = get_time + 1
 						if get_time > 25 then
+							if country_id == "886" then
+								mSleep(500)
+								setVPNEnable(true)
+								mSleep(math.random(2000, 3000))
+								randomsTap(372,  749, 3)
+								mSleep(math.random(1000, 1500))
+								randomsTap(368, 1039,5)
+								mSleep(math.random(5000, 6000))
+								setVPNEnable(false)
+							else
+								mSleep(500)
+								setVPNEnable(true)
+								mSleep(math.random(2000, 3000))
+								randomsTap(372,  749, 3)
+								mSleep(math.random(1000, 1500))
+								randomsTap(368, 1039,5)
+								mSleep(math.random(5000, 6000))
+								setVPNEnable(false)
+							end
+							get_time = 1
+							restart_time = restart_time + 1
+							caozuo_more = true
+							toast("重新获取验证码"..restart_time,1)
+							goto caozuo_more
+						end
+
+						if restart_time > 1 then
+							
 							if addBlack == "0" then
 								::addblack::
 								local sz = require("sz")        --登陆
 								local http = require("szocket.http")
-								local res, code = http.request("http://opapi.lemon9191.com/out/ext_api/passMobile?name=liao1787&pwd=liao1787414&pn="..telphone.."&pid="..kn_id.."&serial=2")
+								local res, code = http.request("http://opapi.sms-5g.com/out/ext_api/passMobile?name=liao1787&pwd=liao20160926&pn="..telphone.."&pid="..kn_id.."&serial=2")
 								mSleep(500)
 								if code == 200 then
 									tmp = json.decode(res)
@@ -3069,7 +3096,7 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_type,vpn_stau
 								::addblack::
 								local sz = require("sz")        --登陆
 								local http = require("szocket.http")
-								local res, code = http.request("http://opapi.lemon9191.com/out/ext_api/addBlack?name=liao1787&pwd=liao1787414&pn="..telphone.."&pid="..kn_id.."&serial=2")
+								local res, code = http.request("http://opapi.sms-5g.com/out/ext_api/addBlack?name=liao1787&pwd=liao20160926&pn="..telphone.."&pid="..kn_id.."&serial=2")
 								mSleep(500)
 								if code == 200 then
 									tmp = json.decode(res)
