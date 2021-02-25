@@ -105,14 +105,6 @@ local AMG = {
 		end)
 }
 
-function model:timeOutRestart(t1)
-	t2 = ts.ms()
-
-	if os.difftime(t2, t1) > 120 then
-		lua_restart()
-	end
-end
-
 --遍历文件
 function model:getList(path)
 	local a = io.popen("ls " .. path)
@@ -198,6 +190,16 @@ function model:vpn()
 			mSleep(2000)
 			goto get_vpn
 		end
+	end
+end
+
+function model:timeOutRestart(t1)
+	t2 = ts.ms()
+
+	if os.difftime(t2, t1) > 120 then
+		lua_restart()
+	else
+		toast("距离重启脚本还有"..(120 - os.difftime(t2, t1)) .. "秒",1)
 	end
 end
 
@@ -600,8 +602,10 @@ function model:mm()
 		end
 
 		self:timeOutRestart(t1)
+		mSleep(1000)
 	end
-
+    
+    t1 = ts.ms()
 	while (true) do
 		--注册登录
 		mSleep(math.random(500, 700))
@@ -686,6 +690,15 @@ function model:mm()
 			toast("定位服务未开启2", 1)
 			mSleep(500)
 		end
+		
+		flag = isFrontApp(self.mm_bid)
+		if flag == 0 then
+			runApp(self.mm_bid)
+			mSleep(3000)
+		end
+		
+		self:timeOutRestart(t1)
+		mSleep(1000)
 	end
 
 	if searchFriend == "0" then
@@ -820,6 +833,7 @@ function model:mm()
 				break
 			end
 			self:timeOutRestart(t1)
+			mSleep(1000)
 		end
 	end
 
@@ -935,6 +949,7 @@ function model:mm()
 			end
 
 			self:timeOutRestart(t1)
+			mSleep(1000)
 		end
 
 		t1 = ts.ms()
@@ -1074,6 +1089,7 @@ function model:mm()
 			end
 
 			self:timeOutRestart(t1)
+			mSleep(1000)
 		end
 
 		t1 = ts.ms()
@@ -1111,6 +1127,7 @@ function model:mm()
 			end
 
 			self:timeOutRestart(t1)
+			mSleep(1000)
 		end
 
 		t1 = ts.ms()
@@ -1162,6 +1179,7 @@ function model:mm()
 			end
 
 			self:timeOutRestart(t1)
+			mSleep(1000)
 		end
 	end
 
@@ -1189,6 +1207,7 @@ function model:mm()
 		end
 
 		self:timeOutRestart(t1)
+		mSleep(1000)
 	end
 
 	t1 = ts.ms()
@@ -1241,6 +1260,7 @@ function model:mm()
 		end
 
 		self:timeOutRestart(t1)
+		mSleep(1000)
 	end
 
 	back_again = 0
@@ -1290,6 +1310,7 @@ function model:mm()
 		end
 
 		self:timeOutRestart(t1)
+		mSleep(1000)
 	end
 
 	t1 = ts.ms()
@@ -1308,33 +1329,6 @@ function model:mm()
 			mSleep(500)
 			inputStr(self.phone)
 			mSleep(500)
--- 			for i = 1, #(self.phone) do
--- 				mSleep(300)
--- 				num = string.sub(self.phone, i, i)
--- 				mSleep(100)
--- 				if num == "0" then
--- 					tap(373, 1281)
--- 				elseif num == "1" then
--- 					tap(132, 955)
--- 				elseif num == "2" then
--- 					tap(377, 944)
--- 				elseif num == "3" then
--- 					tap(634, 941)
--- 				elseif num == "4" then
--- 					tap(128, 1063)
--- 				elseif num == "5" then
--- 					tap(374, 1061)
--- 				elseif num == "6" then
--- 					tap(628, 1055)
--- 				elseif num == "7" then
--- 					tap(119, 1165)
--- 				elseif num == "8" then
--- 					tap(378, 1160)
--- 				elseif num == "9" then
--- 					tap(633, 1164)
--- 				end
--- 				mSleep(100)
--- 			end
 		end
 
 		mSleep(200)
@@ -1360,6 +1354,7 @@ function model:mm()
 		end
 
 		self:timeOutRestart(t1)
+		mSleep(1000)
 	end
 
 	getMessStatus = self:get_mess()
@@ -1482,6 +1477,7 @@ function model:mm()
 				end
 
 				self:timeOutRestart(t1)
+				mSleep(1000)
 			end
 
 			mSleep(500)
@@ -1498,6 +1494,7 @@ function model:mm()
 				end
 
 				self:timeOutRestart(t1)
+				mSleep(1000)
 			end
 			mSleep(500)
 			tap(666, 81)
@@ -1506,6 +1503,7 @@ function model:mm()
 		end
 
 		self:timeOutRestart(t1)
+		mSleep(1000)
 	end
 
 	::reName::
