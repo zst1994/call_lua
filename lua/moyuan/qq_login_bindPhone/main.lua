@@ -198,8 +198,6 @@ function model:timeOutRestart(t1)
 
 	if os.difftime(t2, t1) > 120 then
 		lua_restart()
-	else
-		toast("距离重启脚本还有"..(120 - os.difftime(t2, t1)) .. "秒",1)
 	end
 end
 

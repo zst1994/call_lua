@@ -786,6 +786,25 @@ function model:getAccount()
 	end
 end
 
+function model:clear_input()
+    mSleep(500)
+	tap(620,  357)
+	mSleep(1000)
+	for var=1,20 do
+		mSleep(100)
+		keyDown("DeleteOrBackspace")
+		keyUp("DeleteOrBackspace")  
+	end
+	mSleep(500)
+	tap(620,  469)
+	mSleep(1000)
+	for var=1,20 do
+		mSleep(100)
+		keyDown("DeleteOrBackspace")
+		keyUp("DeleteOrBackspace")  
+	end
+end
+
 function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikcNameType, changePass)
 	Nickname = "已经注册过的账号无昵称"
 
@@ -970,22 +989,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 		mSleep(200)
 		if getColor(239, 629) == 0x12b7f5 then
 			if inputAgain then
-				mSleep(500)
-				tap(620,  357)
-				mSleep(1000)
-				for var=1,20 do
-					mSleep(100)
-					keyDown("DeleteOrBackspace")
-					keyUp("DeleteOrBackspace")  
-				end
-				mSleep(500)
-				tap(620,  469)
-				mSleep(1000)
-				for var=1,20 do
-					mSleep(100)
-					keyDown("DeleteOrBackspace")
-					keyUp("DeleteOrBackspace")  
-				end
+				self:clear_input()
 			end
 
 			mSleep(5000)
@@ -1119,6 +1123,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
     				writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
     				-- writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
     				self:getAccount()
+    				self:clear_input()
     				inputAgain = true
     				goto hk
     			elseif getColor(683,209) == 0xffffff then
@@ -1356,6 +1361,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
     				writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
     				-- writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
     				self:getAccount()
+    				self:clear_input()
     				inputAgain = true
     				goto hk
     			elseif getColor(683,209) == 0xffffff then
