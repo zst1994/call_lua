@@ -379,7 +379,13 @@ function model:readFileBase64(path)
 end
 
 function model:clear_App()
-    clear_bid = self.awz_bid
+    name = getAppName(self.awz_bid) 
+    if #name > 0 then
+       clear_bid = self.awz_bid 
+    else 
+        clear_bid = self.axj_bid
+    end
+    
 	::run_again::
 	mSleep(200)
 	closeApp(clear_bid)
@@ -395,7 +401,6 @@ function model:clear_App()
 				break
 			end
 		else
-			clear_bid = self.axj_bid
 			goto run_again
 		end
 	end

@@ -1531,14 +1531,10 @@ end
 
 
 
-			--相册
-			mSleep(200)
-			x,y = findMultiColorInRegionFuzzy( 0xff3b30, "6|0|0xff3b30,12|0|0xff3b30,23|0|0xff3b30,30|0|0xff3b30,41|1|0xff3b30,62|3|0xff3b30", 90, 0, 0, 749, 1333)
-			if x~=-1 and y~=-1 then
-			    dialog(x..y,0)
-				mSleep(500)
-				tap(x,y + 120)
-				mSleep(500)
-				toast("相册",1)
-				mSleep(500)
-			end
+	name = getAppName("YOY") 
+   if #name > 0 then
+       dialog(name,0)
+    else 
+        dialog("111",0)
+   end
+    
