@@ -50,7 +50,7 @@ function model:moves()
 	mnm = "0|9|0,0|19|0,0|60|0,0|84|0,84|84|0,84|-1|0,61|-1|0,23|-1|0,23|84|0"
 
 	toast("滑动",1)
-	mSleep(math.random(500, 700))
+	mSleep(200)
 	keepScreen(true)
 	mSleep(1000)
 	snapshot("test_3.jpg", 33, 503, 711, 892)
@@ -61,10 +61,9 @@ function model:moves()
 		toast("正在计算",1)
 		mSleep(math.random(500, 1000))
 		keepScreen(false)
-		point = ts.imgFindColor(userPath().."/res/tmp.jpg", 0, mnm, 300, 4, 749, 1333);   
-		mSleep(math.random(500, 1000))
+		point = ts.imgFindColor(userPath().."/res/tmp.jpg", 0, mnm, 300, 4, 749, 1333)
 		if type(point) == "table"  and #point ~=0  then
-			mSleep(500)
+			mSleep(200)
 			x_len = point[1].x
 			toast(x_len,1)
 			return x_len
@@ -79,10 +78,10 @@ function model:moves()
 end
 
 function model:change_vpn()
-	mSleep(500)
+	mSleep(200)
 	runApp("com.liguangming.Shadowrocket")
 	while true do
-		mSleep(500)
+		mSleep(200)
 		if getColor(547,101) == 0x2473bd then
 			mSleep(500)
 			tap(365,670)
@@ -94,7 +93,7 @@ function model:change_vpn()
 			break
 		end
 
-		mSleep(500)
+		mSleep(200)
 		if getColor(547,101) == 0x4386c5 then
 			mSleep(500)
 			tap(365,710)
@@ -109,10 +108,10 @@ function model:change_vpn()
 end
 
 function model:change_GNvpn()
-	mSleep(500)
+	mSleep(200)
 	runApp("com.liguangming.Shadowrocket")
 	while true do
-		mSleep(500)
+		mSleep(200)
 		if getColor(547,101) == 0x2473bd then
 			mSleep(500)
 			tap(365,579)
@@ -122,7 +121,7 @@ function model:change_GNvpn()
 			break
 		end
 
-		mSleep(500)
+		mSleep(200)
 		if getColor(547,101) == 0x4386c5 then
 			mSleep(500)
 			tap(365,630)
@@ -136,12 +135,11 @@ end
 
 function model:changeGWIP(ip_userName,ip_country)
 	while true do
-		mSleep(500)
+		mSleep(200)
 		list = readFile(userPath().."/res/phone_num.txt")
 		toast(list[1],1)
 		mSleep(100)
 		status_resp, header_resp,body_resp = ts.httpGet("http://refresh.rola-ip.co/refresh?user="..ip_userName..tonumber(list[1]).."&country="..ip_country)
-		mSleep(1000)
 		toast(body_resp,1)
 		if status_resp == 200 then--打开网站成功
 			local 返回号 = json.decode(body_resp)["Ret"]
@@ -168,12 +166,11 @@ end
 
 function model:changeGNIP(ip_userName,place_id,iptimes)
 	while true do
-		mSleep(500)
+		mSleep(200)
 		list = readFile(userPath().."/res/phone_num.txt")
 		toast(list[1],1)
 		mSleep(100)
 		status_resp, header_resp,body_resp = ts.httpGet("http://refresh.come-ip.site/refresh?token=4bf88e14&time="..iptimes.."&protocol=socks5&isp=0&user="..ip_userName..tonumber(list[1]).."&province="..place_id)
-		mSleep(1000)
 		if (status_resp==200) then--打开网站成功
 			local 返回号=json.decode(body_resp)["Msg"]
 			if (返回号=="成功") then
@@ -197,9 +194,8 @@ function model:changeGNIP(ip_userName,place_id,iptimes)
 	end
 end
 
-
 function model:service_GWvpn()
-	mSleep(1000)
+	mSleep(200)
 	toast("更换国外vpn")
 	mSleep(1000)
 	r = runApp("com.apple.Preferences");    --运行设置
@@ -208,7 +204,7 @@ function model:service_GWvpn()
 	mSleep(500)
 	while true do
 		toast("寻找vpn")
-		mSleep(2000)
+		mSleep(200)
 		local tab = {
 			"e0000fc0007f8000fe0001fc0003f80007f0000f0000300000000030001f000fe007f001fc00fe007f000fc000e000000000000000000000000fffffffffffffffe0060e0060e0060e0060e0060e0060e0060e0060600e0701c03c3c03ff800ff0001000000000000000000fffffffffffffff7c0001e0000f00007c0001e0000f80003c0001e0000780003c0001f0000700003fffffffffffffff$vpn$414$20$62",
 		}
@@ -243,7 +239,7 @@ function model:service_GWvpn()
 end
 
 function model:service_GNvpn()
-	mSleep(1000)
+	mSleep(200)
 	toast("更换国内vpn")
 	mSleep(1000)
 	r = runApp("com.apple.Preferences");    --运行设置
@@ -252,7 +248,7 @@ function model:service_GNvpn()
 	mSleep(500)
 	while true do
 		toast("寻找vpn")
-		mSleep(2000)
+		mSleep(200)
 		local tab = {
 			"e0000fc0007f8000fe0001fc0003f80007f0000f0000300000000030001f000fe007f001fc00fe007f000fc000e000000000000000000000000fffffffffffffffe0060e0060e0060e0060e0060e0060e0060e0060600e0701c03c3c03ff800ff0001000000000000000000fffffffffffffff7c0001e0000f00007c0001e0000f80003c0001e0000780003c0001f0000700003fffffffffffffff$vpn$414$20$62",
 		}
@@ -286,7 +282,7 @@ end
 
 
 function model:vpn()
-	mSleep(math.random(1000, 1500))
+	mSleep(200)
 	setVPNEnable(false)
 	setVPNEnable(false)
 	setVPNEnable(false)
@@ -295,13 +291,13 @@ function model:vpn()
 --	toast(old_data,1)
 
 	::get_vpn::
-	mSleep(math.random(500, 700))
+	mSleep(200)
 	flag = getVPNStatus()
 	if flag.active then
 		toast("打开状态",1)
 		setVPNEnable(false)
 		for var= 1, 10 do
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			toast("等待vpn切换"..var,1)
 			mSleep(math.random(500, 700))
 		end
@@ -385,14 +381,14 @@ end
 function model:clear_App()
     clear_bid = self.awz_bid
 	::run_again::
-	mSleep(500)
+	mSleep(200)
 	closeApp(clear_bid)
 	mSleep(math.random(1000, 1500))
 	runApp(clear_bid)
 	mSleep(1000*math.random(3, 6))
 
 	while true do
-		mSleep(500)
+		mSleep(200)
 		flag = isFrontApp(clear_bid)
 		if flag == 1 then
 			if getColor(147,456) == 0x6f7179 then
@@ -516,9 +512,7 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 			body_send = string.format("key=%s&url=%s&tel=%s&area=%s&mark=%s",sumbit_key, hk_url, phone, country_num,list[1])
 			ts.setHttpsTimeOut(80)--安卓不支持设置超时时间 
 			status_resp, header_resp, body_resp  = ts.httpPost("http://api.tvnxl.com/xd/tj", header_send, body_send, true)
-			mSleep(1000)
 			if status_resp == 200 then
-				mSleep(500)
 				local tmp = json.decode(body_resp)
 				if tmp.success then
 					oId = tmp.data.oId
@@ -547,7 +541,6 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 			ts.setHttpsTimeOut(60)
 			code,header_resp, body_resp = ts.httpsPost("http://api.qianxing666.com/api/open-api/orders/submit", header_send,body_send)
 			if code == 200 then
-				mSleep(500)
 				local tmp = json.decode(body_resp)
 				if tmp.success then
 					orderId = tmp.obj.orderId
@@ -591,10 +584,10 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 		::backLogin::
 		status_time = 0
 		while (true) do
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x7c160,"282|6|0x7c160,121|9|0xffffff,136|-18|0x7c160,133|39|0x7c160,99|-812|0x7c160,165|-790|0x7c160,128|-792|0xffffff", 90, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
-				mSleep(math.random(500, 700))
+				mSleep(200)
 				toast("辅助成功",1)
 				mSleep(2000)
 				if not backLogin then
@@ -629,7 +622,7 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 				mSleep(4500)
 			end
 
-			mSleep(500)
+			mSleep(200)
 			x,y = findMultiColorInRegionFuzzy( 0xfa5151, "49|1|0xfa5151,-154|787|0x07c160,180|843|0x07c160,186|795|0x07c160,-130|847|0x07c160", 90, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
 				mSleep(math.random(500, 700))
@@ -639,7 +632,7 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 				break
 			end
 
-			mSleep(500)
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0xf9514e,"45|4|0xf9514e,-117|815|0x5c160,161|819|0x5c160", 90, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
 				mSleep(math.random(500, 700))
@@ -667,7 +660,7 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 	if status == 1 or fz_bool or tiaoma_bool or phone_help then
 		while true do
 			--返回注册流程
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x7c160,"282|6|0x7c160,121|9|0xffffff,136|-18|0x7c160,133|39|0x7c160,99|-812|0x7c160,165|-790|0x7c160,128|-792|0xffffff", 90, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
 				mSleep(math.random(500, 700))
@@ -675,6 +668,7 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 				mSleep(math.random(1200, 1700))
 			end
 
+            mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 100, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
 				mSleep(math.random(1500, 2700))
@@ -697,7 +691,7 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 				break
 			end
 
-			mSleep(math.random(500,700))
+			mSleep(200)
 			if getColor(390,822) == 0x576b95 and getColor(363,822) == 0x576b95 then
 				mSleep(500)
 				randomTap(390,822,5)
@@ -756,7 +750,7 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 			::reset_codes::
 			if api_change == "0" then
 				while (true) do
-					mSleep(math.random(500, 700))
+					mSleep(200)
 					local sz = require("sz");
 					local szhttp = require("szocket.http")
 					local res, code = szhttp.request("http://47.104.246.33/onlinesim.php?cmd=getsms&apikey="..getPhone_key.."&tzid="..tzid)
@@ -830,7 +824,7 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 				end
 			elseif api_change == "1" then
 				while true do
-					mSleep(500)
+					mSleep(200)
 					local sz = require("sz")        --登陆
 					local szhttp = require("szocket.http")
 					local res, code = szhttp.request("http://simsms.org/priemnik.php?metod=get_sms&country="..SMS_country.."&service=opt67&apikey=Zn8GvDXIzN6iRiJyZIc4tmJS0Ziidv&id="..pay_id)
@@ -920,11 +914,9 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 				end
 
 				::get_mess::
-				mSleep(500)
 				local sz = require("sz")        --登陆
 				local szhttp = require("szocket.http")
 				local res, code = szhttp.request(getPhoneCode_url)
-				mSleep(500)
 				if code == 200 then
 					data = strSplit(res, "|")
 					if data[1] == "1" then
@@ -950,7 +942,6 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 								local sz = require("sz")        --登陆
 								local szhttp = require("szocket.http")
 								local res, code = szhttp.request(black_url)
-								mSleep(500)
 								if code == 200 then
 									data = strSplit(res, "|")
 									if data[1] == "1" then
@@ -1177,11 +1168,9 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 				mSleep(3000)
 
 				::get_mess::
-				mSleep(500)
 				local sz = require("sz")        --登陆
 				local szhttp = require("szocket.http")
 				local res, code = szhttp.request("http://www2.smspva.net/out/ext_api/getMsg?name="..username.."&pwd="..user_pass.."&pn="..telphone.."&pid="..work_id.."&&serial=2")
-				mSleep(500)
 				if code == 200 then
 					tmp = json.decode(res)
 					if tmp.code == 200 then
@@ -2576,7 +2565,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 	mSleep(math.random(1000, 1500))
 	if login_times == "0" then
 		while (true) do
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x,y = findMultiColorInRegionFuzzy( 0x07c160, "171|-1|0x07c160,57|-5|0xffffff,-163|-3|0xf2f2f2,-411|1|0xf2f2f2,-266|-6|0x06ae56", 90, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
 				mSleep(math.random(500, 700))
@@ -2586,7 +2575,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				break
 			end
 
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			flag = isFrontApp(self.wc_bid)
 			if flag == 0 then
 				goto run_app
@@ -2595,7 +2584,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 	else
 		-- 		if data_sel[1] == "0" then
 		while (true) do
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x,y = findMultiColorInRegionFuzzy( 0x07c160, "171|-1|0x07c160,57|-5|0xffffff,-163|-3|0xf2f2f2,-411|1|0xf2f2f2,-266|-6|0x06ae56", 90, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
 				mSleep(math.random(500, 700))
@@ -2605,7 +2594,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				break
 			end
 
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			flag = isFrontApp(self.wc_bid)
 			if flag == 0 then
 				goto run_app
@@ -2633,7 +2622,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 	::start::
 	while (true) do
 		--10系统
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0xf2f2f2,"458|9|0xf2f2f2,291|-94|0x576b95",100,0,0,749,1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -2642,7 +2631,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		end
 
 		--11系统
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x9ce6bf,"194|0|0xd7f5e5,530|-7|0x9ce6bf,234|-36|0x9ce6bf,229|28|0x9ce6bf",90,0,700,749,1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(200, 500))
@@ -2652,7 +2641,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		end
 
 		--点击模态框10
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0x1a1a1a,"11|2|0x1a1a1a,44|1|0x1a1a1a,79|-1|0x1a1a1a,114|-1|0x1a1a1a,153|3|0x1a1a1a,187|3|0x1a1a1a", 90, 228, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -2661,7 +2650,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		end
 
 		--点击模态框11
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0,"10|7|0,22|7|0,45|4|0,80|3|0,117|3|0,153|8|0,178|8|0", 90, 228, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -2673,14 +2662,14 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 	--添加头像
 	if addHeaderPicLogin == "0" then	
 		while true do
-			mSleep(500)
+			mSleep(200)
 			if getColor(416,404) == 0x2bb00 then
 				mSleep(500)
 				randomTap(377,357,4)
 				mSleep(500)
 			end
 
-			mSleep(500)
+			mSleep(200)
 			if getColor(328,1175) == 0 and getColor(328,1175) == 0 then
 				mSleep(500)
 				randomTap(328,1175,4)
@@ -2690,21 +2679,21 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		end
 
 		while true do
-			mSleep(500)
+			mSleep(200)
 			if getColor(328,1175) == 0 and getColor(328,1175) == 0 then
 				mSleep(500)
 				randomTap(328,1175,4)
 				mSleep(500)
 			end
 
-			mSleep(500)
+			mSleep(200)
 			if getColor(258,84) == 0xefefef and getColor(249,199) == 0 then
 				mSleep(500)
 				randomTap(418,185,4)
 				mSleep(500)
 			end
 
-			mSleep(500)
+			mSleep(200)
 			if getColor(426,97) == 0x2f2f2f and getColor(311,92) == 0x2f2f2f then
 				mSleep(500)
 				randomTap(95,221,4)
@@ -2714,14 +2703,14 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		end
 
 		while true do
-			mSleep(500)
+			mSleep(200)
 			if getColor(426,97) == 0x2f2f2f and getColor(311,92) == 0x2f2f2f then
 				mSleep(500)
 				randomTap(95,221,4)
 				mSleep(500)
 			end
 
-			mSleep(500)
+			mSleep(200)
 			if getColor(580,1276) == 0 and getColor(663,1272) == 0xffffff then
 				mSleep(1500)
 				randomTap(663,1272,4)
@@ -2805,7 +2794,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				local sz = require("sz")        --登陆
 				local szhttp = require("szocket.http")
 				local res, code = szhttp.request(url.."/yhapi.ashx?act=getPhone&token="..phone_token.."&iid="..work_id.."&mobile="..mobile)
-				mSleep(500)
 				if code == 200 then
 					data = strSplit(res, "|")
 					if data[1] == "1" then
@@ -2830,8 +2818,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				local sz = require("sz")        --登陆
 				local szhttp = require("szocket.http")
 				local res, code = szhttp.request(url.."/yhapi.ashx?act=getPhone&token="..phone_token.."&iid="..work_id)
-
-				mSleep(500)
 				if code == 200 then
 					data = strSplit(res, "|")
 					if data[1] == "1" then
@@ -2866,8 +2852,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		local sz = require("sz")        --登陆
 		local szhttp = require("szocket.http")
 		local res, code = szhttp.request("http://47.56.103.47/api.php?action=Login&user="..username.."&pwd="..user_pass)
-
-		mSleep(500)
 		if code == 200 then
 			data = strSplit(res, ",")
 			if data[1] == "ok" then
@@ -2886,8 +2870,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		local sz = require("sz")        --登陆
 		local szhttp = require("szocket.http")
 		local res, code = szhttp.request("http://47.56.103.47/api.php?action=GetNumber&token="..tokens.."&pid="..work_id)
-
-		mSleep(500)
 		if code == 200 then
 			data = strSplit(res, ",")
 			if data[1] == "ok" then
@@ -2910,8 +2892,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		local sz = require("sz")        --登陆
 		local szhttp = require("szocket.http")
 		local res, code = szhttp.request("http://129.204.138.57:11223/api/Camel/login?uname="..username.."&upwd="..user_pass)
-
-		mSleep(500)
 		if code == 200 then
 			tmp = json.decode(res)
 			if tmp.Status == 200 then
@@ -2930,8 +2910,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		local sz = require("sz")        --登陆
 		local szhttp = require("szocket.http")
 		local res, code = szhttp.request("http://129.204.138.57:11223/api/Camel/getphone?token="..tokens.."&rid="..work_id.."&idn="..SMS_country)
-
-		mSleep(500)
 		if code == 200 then
 			tmp = json.decode(res)
 			if tmp.Status == 200 then
@@ -2955,11 +2933,9 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		mSleep(3000)
 
 		::get_phone::
-		mSleep(500)
 		local sz = require("sz")        --登陆
 		local szhttp = require("szocket.http")
 		local res, code = szhttp.request("http://www2.smspva.net/out/ext_api/getMobile?name="..username.."&pwd="..user_pass.."&cuy="..SMS_country.."&pid="..work_id.."&num=1&noblack=0&serial=2&secret_key="..getPhone_key)
-		mSleep(500)
 		if code == 200 then
 			tmp = json.decode(res)
 			if tmp.code == 200 then
@@ -2992,11 +2968,9 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				toast("号码文件有号码",1)
 			else
 				::get_user::
-				mSleep(500)
 				local sz = require("sz")        --登陆
 				local szhttp = require("szocket.http")
 				local res, code = szhttp.request("http://47.104.246.33/api.php?cmd=balance&token="..getPhone_key.."&username="..username)
-				mSleep(500)
 				if code == 200 then
 					tmp = json.decode(res)
 					if tmp.msg == "success" then
@@ -3022,11 +2996,9 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				end
 
 				::get_phone::
-				mSleep(500)
 				local sz = require("sz")        --登陆
 				local szhttp = require("szocket.http")
 				local res, code = szhttp.request("http://47.104.246.33/api.php?cmd=mobile&token="..getPhone_key.."&src=tl&app=WeChat&username="..username)
-				mSleep(500)
 				if code == 200 then
 					tmp = json.decode(res)
 					if tmp.msg == "success" then
@@ -3069,7 +3041,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				local sz = require("sz")        --登陆
 				local szhttp = require("szocket.http")
 				local res, code = szhttp.request("http://47.104.246.33/phone.php?cmd=getphone")
-				nLog(res)
 				if code == 200 then
 					tmp = strSplit(res, "|")
 					if #tmp == 2 then
@@ -3110,7 +3081,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				local sz = require("sz")        --登陆
 				local szhttp = require("szocket.http")
 				local res, code = szhttp.request("http://47.104.246.33/phone1.php?cmd=getphone")
-				nLog(res)
 				if code == 200 then
 					tmp = strSplit(res, "|")
 					if #tmp == 2 then
@@ -3275,7 +3245,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 	if country_id == "0" then
 		--昵称
 		while true do
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0,"7|2|0,20|-2|0,22|-9|0,40|15|0,55|3|0,58|-5|0", 90, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
 				mSleep(500)
@@ -3287,10 +3257,9 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 
 		if nickName == "0" then  --英文
 			nickName = self:randomStr("`~#^&*-=!@$;/|QWERTYUIOPASDF`~#^&*-=!@$;/|GHJKLZXCVBNM`~#^&*-=!@$;/|qwertyuiopasd`~#^&*-=!@$;/|fghjklzxcvbnm`~#^&*-=!@$;/|", math.random(7, 10))
-			mSleep(math.random(500, 700))
 			--检测是否有删除按钮
 			while (true) do
-				mSleep(500)
+				mSleep(200)
 				x,y = findMultiColorInRegionFuzzy( 0xcccccc, "11|-9|0xcccccc,20|0|0xcccccc,11|10|0xcccccc,10|-1|0xffffff,5|-5|0xffffff,15|4|0xffffff,15|-5|0xffffff,7|4|0xffffff", 90, 630, 89, 749, 1333)
 				toast(y, 1)
 				if x~=-1 and y~=-1 then
@@ -3303,13 +3272,11 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				end
 			end
 		elseif nickName == "1" then  --特殊符号
-			mSleep(math.random(500, 700))
 			--			inputStr("르㸏مฬ้๊سمرًς.έل")
 
 			--检测是否有删除按钮
-			mSleep(500)
 			while (true) do
-				mSleep(500)
+				mSleep(200)
 				x,y = findMultiColorInRegionFuzzy( 0xcccccc, "11|-9|0xcccccc,20|0|0xcccccc,11|10|0xcccccc,10|-1|0xffffff,5|-5|0xffffff,15|4|0xffffff,15|-5|0xffffff,7|4|0xffffff", 90, 630, 89, 749, 1333)
 				toast(y, 1)
 				if x~=-1 and y~=-1 then
@@ -3327,7 +3294,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 	--国家／地区
 	while (true) do
 		--10
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x1a1a1a,"22|0|0x1a1a1a,27|27|0x1a1a1a,0|24|0x1a1a1a,14|12|0x1a1a1a,36|5|0x1a1a1a,64|4|0x1a1a1a", 90, 0, 0, 749, 431)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -3336,7 +3303,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			break
 		end
 		--11
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0,"27|26|0,3|25|0,17|-2|0,14|6|0,35|2|0,63|1|0", 90, 0, 0, 749, 701)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -3355,7 +3322,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 	end
 
 	--输入国家区号
-	mSleep(math.random(500, 700))
+	mSleep(200)
 	if api_change == "0" or api_change == "2" or api_change == "3" or api_change == "4" 
 	or api_change == "5" or api_change == "6" or api_change == "7" or api_change == "8" 
 	or api_change == "9" or api_change == "10" or api_change == "11" or api_change == "12" 
@@ -3365,7 +3332,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		country_num = tmp.CountryCode
 	end
 
-	mSleep(math.random(500, 700))
+	mSleep(200)
 	for i = 1, #(country_num) do
 		mSleep(math.random(500, 700))
 		num = string.sub(country_num,i,i)
@@ -3394,7 +3361,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 
 	--密码
 	while (true) do
-		mSleep(math.random(500, 1000))
+		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0x1a1a1a, "15|-4|0x1a1a1a,28|0|0x1a1a1a,14|17|0x1a1a1a,3|20|0x1a1a1a,25|18|0x1a1a1a,37|15|0x1a1a1a,53|-5|0x1a1a1a,58|16|0x1a1a1a,83|9|0xffffff", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -3403,7 +3370,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			break
 		end
 
-		mSleep(math.random(500, 1000))
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0,"28|1|0,15|-2|0,14|20|0,3|22|0,26|20|0,38|18|0,54|-3|0,53|18|0", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -3413,7 +3380,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		end
 	end
 
-	mSleep(math.random(500, 700))
 	if api_change == "0" then
 		if country_id == "0" then
 			phone = string.sub(service_phone,5,#service_phone)
@@ -3484,13 +3450,10 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 	end
 
 	if password == "0" then
-		mSleep(500)
 		password = "vip"..string.sub(phone,#phone-4,#phone)
 	elseif password == "1" then
-		mSleep(500)
 		password = self:randomStr("qwertyuiopasdfghjklzxcvbnm", 4)..self:randomStr("1234567890",4)
 	elseif password == "2" then
-		mSleep(500)
 		password = "llmm"..string.sub(phone,#phone-3,#phone)
 	end
 	toast(password,1)
@@ -3498,7 +3461,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 
 	--密码
 	while (true) do
-		mSleep(math.random(1000, 1500))
+		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0x1a1a1a, "15|-4|0x1a1a1a,28|0|0x1a1a1a,14|17|0x1a1a1a,3|20|0x1a1a1a,25|18|0x1a1a1a,37|15|0x1a1a1a,53|-5|0x1a1a1a,58|16|0x1a1a1a,83|9|0xffffff", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -3509,7 +3472,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			break
 		end
 
-		mSleep(math.random(500, 1000))
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0,"28|1|0,15|-2|0,14|20|0,3|22|0,26|20|0,38|18|0,54|-3|0,53|18|0", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -3523,11 +3486,11 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 
 	::change_again::
 	if localNetwork == "1" then
-		if vpn_country == "0" then
-			self:changeGNIP(ip_userName,place_id,iptimes)
-		elseif vpn_country == "1" then
-			self:changeGWIP(ip_userName,ip_country)
-		end
+-- 		if vpn_country == "0" then
+-- 			self:changeGNIP(ip_userName,place_id,iptimes)
+-- 		elseif vpn_country == "1" then
+-- 			self:changeGWIP(ip_userName,ip_country)
+-- 		end
 
 		if fz_type ~= "3" then
 			mSleep(1000)
@@ -3540,7 +3503,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 	if wc_version == "1" then
 		--点击协议
 		while (true) do
-			mSleep(math.random(500, 1000))
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0,"28|1|0,15|-2|0,14|20|0,3|22|0,26|20|0,38|18|0,54|-3|0,53|18|0", 90, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
 				mSleep(math.random(500, 700))
@@ -3582,7 +3545,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				local sz = require("sz")        --登陆
 				local szhttp = require("szocket.http")
 				local res, code = szhttp.request(black_url)
-				mSleep(500)
 				if code == 200 then
 					data = strSplit(res, "|")
 					if data[1] == "1" then
@@ -3603,11 +3565,9 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				end
 			elseif api_change == "7" then
 				::push::
-				mSleep(500)
 				local sz = require("sz")        --登陆
 				local szhttp = require("szocket.http")
 				local res, code = szhttp.request("http://47.104.246.33/phone.php?cmd=poststatus&phone="..phone.."&status=失败")
-				mSleep(500)
 				if code == 200 then
 					if reTxtUtf8(res) == "反馈成功" then
 						toast("号码状态标记成功",1)
@@ -3621,11 +3581,9 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				end
 			elseif api_change == "8" then
 				::push::
-				mSleep(500)
 				local sz = require("sz")        --登陆
 				local szhttp = require("szocket.http")
 				local res, code = szhttp.request("http://47.104.246.33/phone1.php?cmd=poststatus&phone="..phone.."&status=失败")
-				mSleep(500)
 				if code == 200 then
 					if reTxtUtf8(res) == "反馈成功" then
 						toast("号码状态标记成功",1)
@@ -3725,7 +3683,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 
 	--协议后下一步
 	while (true) do
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0xffffff, "-63|12|0x07c160,128|13|0x07c160,54|13|0xffffff,295|-2|0x07c160,-262|6|0x07c160", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -3733,7 +3691,8 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			mSleep(math.random(500, 700))
 			break
 		end
-
+        
+        mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x9ce6bf,"540|-7|0x9ce6bf,270|30|0x9ce6bf,270|-89|0x576b95",90,0,0,749,1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -3784,7 +3743,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 							local sz = require("sz")        --登陆
 							local szhttp = require("szocket.http")
 							local res, code = szhttp.request(url.."/yhapi.ashx?act=getPhone&token="..phone_token.."&iid="..work_id.."&mobile="..telphone)
-							mSleep(500)
 							if code == 200 then
 								data = strSplit(res, "|")
 								if data[1] == "1" then
@@ -3812,7 +3770,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		end
 
 		if country_num == "86" then
-			mSleep(math.random(500, 700))
+		    mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0xd8f0d8,"-254|21|0x9ed99d,368|13|0x9ed99d,61|-20|0x9ed99d,49|46|0x9ed99d",100, 0, 920, 749, 1333)
 			if x~=-1 and y~=-1 then
 				flag = getVPNStatus()
@@ -3835,7 +3793,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				mSleep(math.random(1000, 2000))
 			end
 		else
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0xc2c2c2,"13|19|0xc2c2c2,52|12|0xc2c2c2,83|0|0xc2c2c2,84|16|0xc2c2c2,-111|-5|0xf2f2f2,219|43|0xf2f2f2,274|18|0xededed,-172|9|0xededed", 100, 0, 920, 749, 1333)
 			if x~=-1 and y~=-1 then
 				flag = getVPNStatus()
@@ -3853,7 +3811,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				mSleep(math.random(1000, 2000))
 				break
 			else
-				mSleep(math.random(500, 700))
+				mSleep(200)
 				x,y = findMultiColorInRegionFuzzy( 0xc2c2c2, "-148|-7|0xf2f2f2,140|2|0xf2f2f2,245|2|0xededed,-175|6|0xf2f2f2", 100, 0, 920, 749, 1333)
 				if x~=-1 and y~=-1 then
 					flag = getVPNStatus()
@@ -3879,7 +3837,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		end
 
 		--欧盟国家需要多下一步
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0xffffff,"37|5|0xffffff,-108|11|0x7c160,37|-16|0x7c160,182|8|0x7c160,42|34|0x7c160", 100, 0, 1000, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -3889,7 +3847,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		end
 
 		--无效手机号码
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x576b95,"-28|1|0x576b95,-38|-232|0,20|-223|0,-195|149|0x36030,159|133|0x36030", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(200, 500))
@@ -3909,7 +3867,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				local sz = require("sz")        --登陆
 				local szhttp = require("szocket.http")
 				local res, code = szhttp.request(black_url)
-				mSleep(500)
 				if code == 200 then
 					data = strSplit(res, "|")
 					if data[1] == "1" then
@@ -3935,7 +3892,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 
 		if net_check then
 			--网络出错，轻触屏幕重新加载
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0xc9c9c9,"16|156|0xc9c9c9,-18|151|0xc9c9c9,-66|105|0xc9c9c9,-56|29|0xc9c9c9,36|6|0xc9c9c9,64|130|0xc9c9c9,2|79|0xffffff,22|-251|0xefeff4", 90, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
 				setVPNEnable(false)
@@ -3969,7 +3926,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 	--隐秘政策：下一步
 	while (true) do
 		if country_num == "86" then
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0xd8f0d8,"-254|21|0x9ed99d,368|13|0x9ed99d,61|-20|0x9ed99d,49|46|0x9ed99d",100, 0, 966, 749, 1333)
 			if x~=-1 and y~=-1 then
 				mSleep(math.random(500, 1000))
@@ -3977,14 +3934,14 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				mSleep(math.random(1000, 2000))
 			end
 		else
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x,y = findMultiColorInRegionFuzzy( 0xcdcdcd, "48|13|0xcdcdcd,80|4|0xcdcdcd,-87|11|0xfafafa,186|13|0xfafafa,50|34|0xfafafa,265|13|0xffffff", 100, 0, 966, 749, 1333)
 			if x~=-1 and y~=-1 then
 				mSleep(math.random(500, 1000))
 				randomTap(x-240, y-112,1)
 				mSleep(math.random(1000, 2000))
 			else
-				mSleep(math.random(500, 700))
+				mSleep(200)
 				x,y = findMultiColorInRegionFuzzy( 0xc2c2c2, "-148|-7|0xf2f2f2,140|2|0xf2f2f2,245|2|0xededed,-175|6|0xf2f2f2", 100, 0, 1145, 749, 1333)
 				if x~=-1 and y~=-1 then
 					mSleep(math.random(500, 1000))
@@ -3994,7 +3951,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			end
 		end
 
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		if getColor(272,1235) == 0x1aad19 then
 			mSleep(math.random(2500, 4700))
 			randomTap(272,1235,10)
@@ -4004,7 +3961,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			ys_next = ys_next + 1
 		end
 
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		if getColor(300, 1201) == 0x07c160 then
 			mSleep(math.random(1000, 1700))
 			randomTap(370, 1204,10)
@@ -4015,7 +3972,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		end
 
 		--欧盟国家
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		if getColor(289,1106) == 0x7c160 and getColor(372,1107) == 0xffffff then
 			mSleep(math.random(1000, 1700))
 			randomTap(289,1108,10)
@@ -4024,7 +3981,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			ys_next = ys_next + 1
 		end
 
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		if getColor(353,  287) == 0x10aeff and getColor(304, 1105) == 0x07c160 then
 			toast("准备安全验证",1)
 			mSleep(2000)
@@ -4032,7 +3989,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		end
 
 		--无效手机号码
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x576b95,"-28|1|0x576b95,-38|-232|0,20|-223|0,-195|149|0x36030,159|133|0x36030", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(200, 500))
@@ -4052,7 +4009,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				local sz = require("sz")        --登陆
 				local szhttp = require("szocket.http")
 				local res, code = szhttp.request(black_url)
-				mSleep(500)
 				if code == 200 then
 					data = strSplit(res, "|")
 					if data[1] == "1" then
@@ -4076,7 +4032,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			lua_restart()
 		end
 
-		mSleep(500)
+		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0x576b95, "-28|5|0x576b95,17|-156|0x000000,-147|-170|0x000000,169|-95|0xf9f7fa", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(200, 500))
@@ -4116,7 +4072,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		body_send = string.format("key=%s&url=%s&tel=%s&area=%s&scanType=%s&regid=%s",fz_key, hk_url, phone, country_num,2,regid)
 		ts.setHttpsTimeOut(80)--安卓不支持设置超时时间 
 		status_resp, header_resp, body_resp  = ts.httpPost("http://api.tvnxl.com/xd/tj", header_send, body_send, true)
-		mSleep(1000)
 		if status_resp == 200 then
 			mSleep(500)
 			local tmp = json.decode(body_resp)
@@ -4143,7 +4098,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		body_send = string.format("url=%s&mark=%s&merchant=%s",hk_url, phone, fz_key)
 		ts.setHttpsTimeOut(80)--安卓不支持设置超时时间 
 		status_resp, header_resp, body_resp  = ts.httpPost("http://api.004461.cn/create.action", header_send, body_send, true)
-		mSleep(1000)
 		if status_resp == 200 then
 			mSleep(500)
 			local tmp = json.decode(body_resp)
@@ -4170,7 +4124,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 	::get_pic::
 	safe_time = 0
 	while (true) do
-		mSleep(math.random(700, 900))
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x10aeff,"55|8|0x10aeff,-79|817|0x7c160,116|822|0x7c160", 100, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			if hk_way == "1" then
@@ -4196,7 +4150,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 	if cheack_bool then
 		if fz_type == "3" then
 			while (true) do
-				mSleep(math.random(500, 700))
+				mSleep(200)
 				if getColor(118,  948) == 0x007aff then
 					mSleep(math.random(500, 700))
 					randomTap(56, 81, 8)
@@ -4204,7 +4158,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					break
 				end
 
-				mSleep(math.random(700, 900))
+				mSleep(200)
 				x, y = findMultiColorInRegionFuzzy(0x10aeff,"55|8|0x10aeff,-79|817|0x7c160,116|822|0x7c160", 100, 0, 0, 749, 1333)
 				if x~=-1 and y~=-1 then
 					mSleep(math.random(1000, 1500))
@@ -4225,7 +4179,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		safe = 0
 		hk_time = 0
 		while (true) do
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			if getColor(118,  948) == 0x007aff then
 				x_lens = self:moves()
 				if tonumber(x_lens) > 0 then
@@ -4244,7 +4198,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				hk_time = hk_time + 1
 			end
 
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x,y = findMultiColorInRegionFuzzy( 0x000000, "-8|9|0x000000,12|1|0x000000,12|14|0x000000,-1|18|0x000000,27|21|0x000000,50|21|0x000000,18|11|0xffffff,538|558|0xb3b3b3", 90, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
 				mSleep(math.random(1000, 1500))
@@ -4253,7 +4207,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				goto get_pic
 			end
 
-			mSleep(math.random(700, 900))
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x10aeff,"55|8|0x10aeff,-79|817|0x7c160,116|822|0x7c160", 100, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
 				mSleep(math.random(1000, 1500))
@@ -4288,7 +4242,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 
 		--二维码识别
 		while (true) do
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			if getColor(132,  766) == 0x000000 and getColor(132, 1058) == 0x000000 then
 				imgDecode = false
 
@@ -4424,7 +4378,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			end
 
 			if hk_way == "0" then
-				mSleep(math.random(500, 700))
+				mSleep(200)
 				if getColor(118,  948) == 0x007aff then
 					mSleep(math.random(500, 1000))
 					randomTap(603, 1032,5)
@@ -4434,7 +4388,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			end
 
 			if api_change == "7" or api_change == "8" or api_change == "9" or api_change == "11" or api_change == "13" or api_change == "14" then
-				mSleep(math.random(500, 700))
+				mSleep(200)
 				x, y = findMultiColorInRegionFuzzy(0x576b95,"-38|1|0x576b95,-314|-9|0x181819,-356|-3|0x181819,-157|-155|0,24|-174|0",90, 0, 0, 749, 1333)
 				if x~=-1 and y~=-1 then
 					toast("操作频繁",1)
@@ -4446,12 +4400,10 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		end
 	elseif fz_type == "3" then
 		while (true) do
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			if getColor(132, 766) == 0x000000 and getColor(54,648) == 0x808080 then
-				mSleep(500)
 				next_again_time = next_again_time + 1
 				if next_again_time > tonumber(fz_error_times) then
-					mSleep(500)
 					if api_change == "2" or api_change == "10" or api_change == "12" then
 						if api_change == "10" then
 							black_url = "http://web1.520mqn.com/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..work_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
@@ -4465,7 +4417,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 						local sz = require("sz")        --登陆
 						local szhttp = require("szocket.http")
 						local res, code = szhttp.request(black_url)
-						mSleep(500)
 						toast(res,1)
 						if code == 200 then
 							data = strSplit(res, "|")
@@ -4490,7 +4441,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 						local sz = require("sz")        --登陆
 						local szhttp = require("szocket.http")
 						local res, code = szhttp.request("http://129.204.138.57:11223/api/Camel/addblack?token="..tokens.."&skey="..skey)
-						mSleep(500)
 						if code == 200 then
 							tmp = json.decode(res)
 							if tmp.Status == 200 then
@@ -4508,7 +4458,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					goto over
 				else
 					while true do
-						mSleep(math.random(500, 700))
+						mSleep(200)
 						x, y = findMultiColorInRegionFuzzy(0x7c160,"621|3|0x7c160,622|68|0x7c160,6|64|0x7c160,323|35|0xffffff,355|31|0xffffff,281|41|0xffffff", 100, 0, 0, 749, 1333)
 						if x~=-1 and y~=-1 then
 							break
@@ -4526,12 +4476,11 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				end
 			end
 
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 100, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
-				mSleep(math.random(500, 700))
+				mSleep(200)
 				toast("短信界面",1)
-
 				if needConnetMove == "0" then
 					t1 = ts.ms()
 					while true do
@@ -4554,7 +4503,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			end
 
 			if hk_way == "0" then
-				mSleep(math.random(500, 700))
+				mSleep(200)
 				if getColor(118,  948) == 0x007aff then
 					mSleep(math.random(500, 1000))
 					randomTap(603, 1032,5)
@@ -4563,7 +4512,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				end
 			end
 
-			mSleep(math.random(500,700))
+			mSleep(200)
 			if getColor(390,822) == 0x576b95 and getColor(363,822) == 0x576b95 then
 				mSleep(500)
 				randomTap(390,822,5)
@@ -4574,9 +4523,8 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		end
 	elseif fz_type == "1" or fz_type == "2" or fz_type == "4" or fz_type == "5" or fz_type == "6" or fz_type == "8" then
 		while (true) do
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			if getColor(132,  766) == 0x000000 or getColor(256,  639) == 0x9ce6bf then
-				mSleep(500)
 				if fz_type == "1" then
 					::put_work::
 					header_send = {
@@ -4584,7 +4532,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					body_send = string.format("userKey=%s&phone=%s&region=%s&receiveProvinceId=%s",fz_key, phone, country_num, fz_province)
 					ts.setHttpsTimeOut(80)--安卓不支持设置超时时间 
 					status_resp, header_resp, body_resp  = ts.httpPost("http://ymka.ymassist.com/assist/api/order/submitPhone", header_send, body_send, true)
-					mSleep(1000)
 					if status_resp == 200 then
 						mSleep(500)
 						local tmp = json.decode(body_resp)
@@ -4605,7 +4552,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					body_send = string.format("phone=%s&region=%s",phone,country_num)
 					ts.setHttpsTimeOut(60)--安卓不支持设置超时时间 
 					status_resp, header_resp, body_resp  = ts.httpPost("http://ymka.ymassist.com/assist/api/order/queryPhone", header_send, body_send, true)
-					mSleep(1000)
 					if status_resp == 200 then
 						local tmp = json.decode(body_resp)
 						if tmp.success then
@@ -4639,9 +4585,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 
 					ts.setHttpsTimeOut(80)--安卓不支持设置超时时间 
 					status_resp, header_resp, body_resp  = ts.httpPost("http://api.004461.cn/phone.action", header_send, body_send, true)
-					mSleep(1000)
 					if status_resp == 200 then
-						mSleep(500)
 						local tmp = json.decode(body_resp)
 						if tmp.code == "200" then
 							toast("发布成功，20秒后开始查询",1)
@@ -4660,10 +4604,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 
 					ts.setHttpsTimeOut(60)--安卓不支持设置超时时间 
 					status_resp, header_resp, body_resp  = ts.httpPost("http://api.004461.cn/inquiry.action", header_send, body_send, true)
-
-					mSleep(1000)
 					if status_resp == 200 then
-						mSleep(500)
 						local tmp = json.decode(body_resp)
 						if tmp.data.status == 2 then
 							ewm_url_bool = true
@@ -4692,13 +4633,9 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					header_send = {
 					}
 					body_send = string.format("key=%s&tel=%s&area=%s", fz_key, phone, country_num)
-
 					ts.setHttpsTimeOut(80)--安卓不支持设置超时时间 
 					status_resp, header_resp, body_resp  = ts.httpPost("http://api.tvnxl.com/xd/phonetj", header_send, body_send, true)
-					mSleep(1000)
-					nLog(body_resp)
 					if status_resp == 200 then
-						mSleep(500)
 						local tmp = json.decode(body_resp)
 						if tmp.success then
 							id = tmp.data.id
@@ -4718,10 +4655,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 
 					ts.setHttpsTimeOut(60)--安卓不支持设置超时时间 
 					status_resp, header_resp, body_resp  = ts.httpPost("http://api.tvnxl.com/xd/phonecx", header_send, body_send, true)
-					nLog(body_resp)
-					mSleep(1000)
 					if status_resp == 200 then
-						mSleep(500)
 						local tmp = json.decode(body_resp)
 						if tmp.success then
 							if tmp.data.status == 3 then
@@ -4774,7 +4708,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					end
 
 					while true do
-						mSleep(math.random(500, 700))
+						mSleep(200)
 						x, y = findMultiColorInRegionFuzzy(0x7c160,"282|6|0x7c160,121|9|0xffffff,136|-18|0x7c160,133|39|0x7c160,99|-812|0x7c160,165|-790|0x7c160,128|-792|0xffffff", 90, 0, 0, 749, 1333)
 						if x~=-1 and y~=-1 then
 							mSleep(math.random(500, 700))
@@ -4783,12 +4717,12 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 							break
 						end
 
-						mSleep(500)
+						mSleep(200)
 						if getColor(256,  639) == 0x9ce6bf then
 							break
 						end
 
-						mSleep(500)
+						mSleep(200)
 						x,y = findMultiColorInRegionFuzzy( 0xfa5151, "49|1|0xfa5151,-154|787|0x07c160,180|843|0x07c160,186|795|0x07c160,-130|847|0x07c160", 90, 0, 0, 749, 1333)
 						if x~=-1 and y~=-1 then
 							mSleep(math.random(500, 700))
@@ -4811,7 +4745,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				end
 
 				while true do
-					mSleep(math.random(500, 700))
+					mSleep(200)
 					x, y = findMultiColorInRegionFuzzy(0x7c160,"282|6|0x7c160,121|9|0xffffff,136|-18|0x7c160,133|39|0x7c160,99|-812|0x7c160,165|-790|0x7c160,128|-792|0xffffff", 90, 0, 0, 749, 1333)
 					if x~=-1 and y~=-1 then
 						mSleep(math.random(500, 700))
@@ -4820,7 +4754,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 						toast("返回注册流程",1)
 					end
 
-					mSleep(math.random(500, 700))
+					mSleep(200)
 					x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 100, 0, 0, 749, 1333)
 					if x~=-1 and y~=-1 then
 						toast("辅助成功，短信界面",1)
@@ -4830,7 +4764,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 						break
 					end
 
-					mSleep(math.random(500, 700))
+					mSleep(200)
 					x, y = findMultiColorInRegionFuzzy(0,"136|3|0,-73|686|0x7c160,330|683|0x7c160,170|683|0xffffff,116|826|0x6ae56,205|815|0x6ae56",100, 0, 0, 749, 1333)
 					if x~=-1 and y~=-1 then
 						toast("辅助成功，发码界面",1)
@@ -4845,7 +4779,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			end
 
 			if hk_way == "0" then
-				mSleep(math.random(500, 700))
+				mSleep(200)
 				if getColor(118,  948) == 0x007aff then
 					mSleep(math.random(500, 1000))
 					randomTap(603, 1032,5)
@@ -4855,7 +4789,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			end
 
 			if api_change == "7" or api_change == "8" or api_change == "9" or api_change == "11" or api_change == "13" or api_change == "14" then
-				mSleep(math.random(500, 700))
+				mSleep(200)
 				x, y = findMultiColorInRegionFuzzy(0x576b95,"-38|1|0x576b95,-314|-9|0x181819,-356|-3|0x181819,-157|-155|0,24|-174|0",90, 0, 0, 749, 1333)
 				if x~=-1 and y~=-1 then
 					toast("操作频繁",1)
@@ -4868,7 +4802,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 
 		if fm_bool then
 			while true do
-				mSleep(math.random(500, 700))
+				mSleep(200)
 				x, y = findMultiColorInRegionFuzzy(0,"136|3|0,-73|686|0x7c160,330|683|0x7c160,170|683|0xffffff,116|826|0x6ae56,205|815|0x6ae56",100, 0, 0, 749, 1333)
 				if x~=-1 and y~=-1 then
 					mSleep(500)
@@ -5196,7 +5130,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				else
 					goto over
 				end
-
 			end
 		elseif fz_type == "3" then
 			writeFileString(userPath().."/res/phone_data.txt","","w",0)
@@ -5247,7 +5180,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				local sz = require("sz");
 				local szhttp = require("szocket.http")
 				local res, code = szhttp.request("http://api.tvnxl.com/xd/xg?key="..fz_key.."&oId="..old.."&sts=success")
-
 				if code == 200 then
 					tmp = json.decode(res)
 					if tmp.success then
@@ -5309,7 +5241,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				goto over
 			end
 		else
-			mSleep(500)
+			mSleep(200)
 			if not fm_bool then
 				mSleep(math.random(500, 700))
 				randomTap(54, 79, 5)
@@ -5325,7 +5257,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 	if country_id ~= "0" then
 		mSleep(500)
 		while true do
-			mSleep(500)
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x343434,"49|-24|0x343434,2|547|0x9de7bf,326|537|0x9de7bf", 90, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
 				mSleep(math.random(500, 700))
@@ -5336,7 +5268,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			end
 
 			--不是我的，继续注册
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x6ae56,"38|-2|0x6ae56,136|6|0x6ae56,182|-5|0x6ae56,261|-7|0x6ae56,290|-5|0x6ae56,-131|-11|0xf2f2f2,433|-3|0xf2f2f2", 90, 0, 0, 749,  1333)
 			if x~=-1 and y~=-1 then
 				mSleep(math.random(500, 700))
@@ -5345,7 +5277,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				toast("不是我的，继续注册1",1)
 			end
 
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x6ae56,"47|-11|0x6ae56,-98|-24|0x6ae56,-223|-18|0xededed,285|-15|0xededed", 90, 0, 0, 749,  1333)
 			if x~=-1 and y~=-1 then
 				mSleep(math.random(500, 700))
@@ -5355,7 +5287,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			end
 
 			--不是我的，继续注册
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x6ae56,"36|1|0x6ae56,136|5|0x6ae56,181|-7|0x6ae56,294|-7|0x6ae56,371|0|0xf2f2f2,-98|-3|0xf2f2f2", 90, 0, 0, 749,  1333)
 			if x~=-1 and y~=-1 then
 				mSleep(math.random(500, 700))
@@ -5368,9 +5300,8 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		if nickName == "0" then  --英文
 			nickName = self:randomStr("`~#^&*-=!@$;/|QWERTYUIOPASDF`~#^&*-=!@$;/|GHJKLZXCVBNM`~#^&*-=!@$;/|qwertyuiopasd`~#^&*-=!@$;/|fghjklzxcvbnm`~#^&*-=!@$;/|", math.random(7, 10))
 			--检测是否有删除按钮
-			mSleep(500)
 			while (true) do
-				mSleep(500)
+				mSleep(200)
 				x,y = findMultiColorInRegionFuzzy( 0xcccccc, "11|-9|0xcccccc,20|0|0xcccccc,11|10|0xcccccc,10|-1|0xffffff,5|-5|0xffffff,15|4|0xffffff,15|-5|0xffffff,7|4|0xffffff", 90, 630, 89, 749, 1333)
 				toast(y, 1)
 				if x~=-1 and y~=-1 then
@@ -5383,13 +5314,10 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				end
 			end
 		elseif nickName == "1" then  --特殊符号
-			mSleep(math.random(500, 700))
-			--			inputStr("르㸏مฬ้๊سمرًς.έل")
-
+-- 			inputStr("르㸏مฬ้๊سمرًς.έل")
 			--检测是否有删除按钮
-			mSleep(500)
 			while (true) do
-				mSleep(500)
+				mSleep(200)
 				x,y = findMultiColorInRegionFuzzy( 0xcccccc, "11|-9|0xcccccc,20|0|0xcccccc,11|10|0xcccccc,10|-1|0xffffff,5|-5|0xffffff,15|4|0xffffff,15|-5|0xffffff,7|4|0xffffff", 90, 630, 89, 749, 1333)
 				toast(y, 1)
 				if x~=-1 and y~=-1 then
@@ -5410,7 +5338,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 
 		while true do
 			--填写生日
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0,"49|-16|0,-5|344|0x9ed99d,365|339|0x9ed99d", 100, 0, 0, 749, 800)
 			if x~=-1 and y~=-1 then
 				mSleep(math.random(1000, 1700))
@@ -5419,7 +5347,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				toast("点击生日",1)
 			end
 
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			if getColor(701,813) == 0x1aad19 then
 				mSleep(math.random(1000, 1700))
 				randomTap(685,813,3)
@@ -5427,7 +5355,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				toast("确定",1)
 			end
 
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			if getColor(276,660) == 0x1aad19 then
 				mSleep(math.random(1000, 1700))
 				randomTap(378,659,8)
@@ -5441,7 +5369,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 	not_get_code = 0
 	while (true) do
 		--通讯录匹配
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0x576b95, "4|13|0x576b95,14|-4|0x576b95,14|6|0x576b95,18|18|0x576b95", 90, 0, 0, 645,  845)
 		if x~=-1 and y~=-1 then
 			mSleep(500)
@@ -5450,7 +5378,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			break
 		end
 
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x1565fc,"1|14|0x1565fc,12|-4|0x1565fc,16|6|0x1565fc,12|21|0x1565fc,-174|-247|0", 90, 0, 0, 645,  845)
 		if x~=-1 and y~=-1 then
 			mSleep(500)
@@ -5460,7 +5388,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		end
 
 		--不是我的，继续注册
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x6ae56,"38|-2|0x6ae56,136|6|0x6ae56,182|-5|0x6ae56,261|-7|0x6ae56,290|-5|0x6ae56,-131|-11|0xf2f2f2,433|-3|0xf2f2f2", 90, 0, 0, 749,  1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -5469,7 +5397,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			toast("不是我的，继续注册1",1)
 		end
 
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x6ae56,"47|-11|0x6ae56,-98|-24|0x6ae56,-223|-18|0xededed,285|-15|0xededed", 90, 0, 0, 749,  1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -5479,7 +5407,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		end
 
 		--不是我的，继续注册
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x6ae56,"36|1|0x6ae56,136|5|0x6ae56,181|-7|0x6ae56,294|-7|0x6ae56,371|0|0xf2f2f2,-98|-3|0xf2f2f2", 90, 0, 0, 749,  1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -5488,25 +5416,25 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			toast("不是我的，继续注册3",1)
 		end
 
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		if getColor(492, 1266) == 0x576b95 and getColor(561, 1262) == 0x576b95 then
 			toast("封号1",1)
 			break
 		end
 
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		if getColor(346, 803) == 0x576b95 and getColor(390, 796) == 0x576b95 then
 			toast("封号2",1)
 			break
 		end
 
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		if getColor(362,797) == 0x576b95 and getColor(391,800) == 0x576b95 then
 			toast("账号状态异常",1)
 			break
 		end
 
-		mSleep(math.random(500,700))
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x576b95,"-27|-1|0x576b95,-261|-189|0,-225|-188|0,173|-182|0,-218|219|0x36030,158|207|0x36030", 90, 0, 0, 749,  1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -5523,7 +5451,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		end
 
 		--注册异常
-		mSleep(500)
+		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0x576b95, "-28|3|0x576b95,-136|-177|0x000000,-66|-179|0x000000,54|-175|0x000000,199|-180|0x000000", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			dialog("注册异常",0)
@@ -5542,7 +5470,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 	get_wechatError_six = false
 	while (true) do
 		--通讯录匹配
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0x576b95, "4|13|0x576b95,14|-4|0x576b95,14|6|0x576b95,18|18|0x576b95", 90, 0, 0, 645,  845)
 		if x~=-1 and y~=-1 then
 			mSleep(500)
@@ -5551,7 +5479,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			break
 		end
 
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x1565fc,"1|14|0x1565fc,12|-4|0x1565fc,16|6|0x1565fc,12|21|0x1565fc,-174|-247|0", 90, 0, 0, 645,  845)
 		if x~=-1 and y~=-1 then
 			mSleep(500)
@@ -5560,7 +5488,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			break
 		end
 
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		if getColor(492, 1266) == 0x576b95 and getColor(561, 1262) == 0x576b95 then
 			mSleep(500)
 			randomTap(362,797,4)
@@ -5571,7 +5499,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			break
 		end
 
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		if getColor(346, 803) == 0x576b95 and getColor(390, 796) == 0x576b95 then
 			mSleep(500)
 			randomTap(362,797,4)
@@ -5582,7 +5510,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			break
 		end
 
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		if getColor(362,797) == 0x576b95 and getColor(391,800) == 0x576b95 then
 			mSleep(500)
 			randomTap(362,797,4)
@@ -5749,7 +5677,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 
 			if updateNickName == "0" then
 				while true do
-					mSleep(math.random(500, 700))
+					mSleep(200)
 					x, y = findMultiColorInRegionFuzzy(0x1565fc,"1|14|0x1565fc,12|-4|0x1565fc,16|6|0x1565fc,12|21|0x1565fc,-174|-247|0", 90, 0, 0, 749, 1333)
 					if x~=-1 and y~=-1 then
 						mSleep(500)
@@ -5757,7 +5685,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 						mSleep(500)
 					end
 
-					mSleep(math.random(500, 700))
+					mSleep(200)
 					x, y = findMultiColorInRegionFuzzy(0x7c160,"483|-9|0x7c160,155|2|0xffffff,159|95|0x576b95,225|92|0x576b95,246|99|0x576b95", 90, 0, 1013, 749,  1333)
 					if x~=-1 and y~=-1 then    
 						mSleep(math.random(500, 700))
@@ -5766,7 +5694,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 						toast("加朋友",1)
 					end
 
-					mSleep(math.random(500, 700))
+					mSleep(200)
 					x, y = findMultiColorInRegionFuzzy(0x7c160,"191|19|0,565|19|0,104|13|0xfafafa,616|24|0xfafafa", 90, 0, 1013, 749,  1333)
 					if x~=-1 and y~=-1 then
 						mSleep(math.random(500, 700))
@@ -5780,7 +5708,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 
 				if data_six_two then
 					while true do
-						mSleep(500)
+						mSleep(200)
 						if getColor(653,1277) == 0x7c160 then
 							mSleep(math.random(500, 700))
 							randomTap(359,430,6)
@@ -5794,7 +5722,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 						end
 
 						--通过siri
-						mSleep(500)
+						mSleep(200)
 						if getColor(513,833) == 0x7aff then
 							mSleep(math.random(500, 700))
 							randomTap(513,833,6)
@@ -5804,7 +5732,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					end
 
 					while true do
-						mSleep(math.random(500, 700))
+						mSleep(200)
 						x, y = findMultiColorInRegionFuzzy(0x181818,"36|-14|0x181818,60|5|0x181818,102|-2|0x181818,267|-1|0xf2f2f2", 90, 0, 0, 749,  1333)
 						if x~=-1 and y~=-1 then
 							mSleep(math.random(500, 700))
@@ -5814,7 +5742,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 							break
 						end
 
-						mSleep(700)
+						mSleep(200)
 						if getColor(653,1277) == 0x7c160 then
 							mSleep(math.random(500, 700))
 							randomTap(359,430,6)
@@ -5823,7 +5751,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					end
 
 					while true do
-						mSleep(math.random(500, 700))
+						mSleep(200)
 						x, y = findMultiColorInRegionFuzzy(0x181818,"36|-14|0x181818,60|5|0x181818,102|-2|0x181818,267|-1|0xf2f2f2", 90, 0, 0, 749,  1333)
 						if x~=-1 and y~=-1 then
 							mSleep(math.random(500, 700))
@@ -5831,7 +5759,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 							mSleep(math.random(500, 700))
 						end
 
-						mSleep(500)
+						mSleep(200)
 						if getColor(617,82) == 0x9ce6bf then
 							mSleep(math.random(800, 1200))
 							randomTap(555,188,6)
@@ -5914,7 +5842,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 							--检测是否有删除按钮
 							mSleep(500)
 							while (true) do
-								mSleep(500)
+								mSleep(200)
 								x,y = findMultiColorInRegionFuzzy( 0xcccccc, "11|-9|0xcccccc,20|0|0xcccccc,11|10|0xcccccc,10|-1|0xffffff,5|-5|0xffffff,15|4|0xffffff,15|-5|0xffffff,7|4|0xffffff", 90, 630, 89, 749, 1333)
 								toast(y, 1)
 								if x~=-1 and y~=-1 then
@@ -5954,7 +5882,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			local sz = require("sz");
 			local szhttp = require("szocket.http")
 			local res, code = szhttp.request("http://cardapi.mabang18.com/mbapi/generic/getprovincesort")
-			nLog(res)
 			if code == 200 then
 				tmp = json.decode(res)
 				if #tmp.data > 3 then
@@ -5977,7 +5904,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				local sz = require("sz");
 				local szhttp = require("szocket.http")
 				local res, code = szhttp.request("http://api.tvnxl.com/xd/xg?key="..fz_key.."&oId="..old.."&sts=success")
-
 				if code == 200 then
 					tmp = json.decode(res)
 					if tmp.success then
@@ -6015,7 +5941,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				::push_work::
 				header_send = {}
 				body_send = string.format("userKey=%s&orderId=%s&status=%s",fz_key,taskId,1)
-
 				ts.setHttpsTimeOut(60)--安卓不支持设置超时时间 
 				status_resp, header_resp, body_resp  = ts.httpPost("http://cardapi.mabang18.com/mbapi/order/mark", header_send, body_send, true)
 				if status_resp == 200 then
@@ -6109,7 +6034,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			elseif fz_type == "12" then
 				::push_work::
 				header_send = {token=string.format("%s", sumbit_key)}
-
 				body_send = string.format("taskId=%s&status=%s", taskId, 2)
 				ts.setHttpsTimeOut(60) -- 安卓不支持设置超时时间
 				code,header_resp, body_resp = ts.httpPost("https://ctpu.chitutask.com/api/task/status", header_send,body_send)
@@ -6558,7 +6482,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				local sz = require("sz")        --登陆
 				local szhttp = require("szocket.http")
 				local res, code = szhttp.request(black_url)
-				mSleep(500)
 				if code == 200 then
 					data = strSplit(res, "|")
 					if data[1] == "1" then
@@ -6579,11 +6502,9 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				end
 			elseif api_change == "7" and not clean_bool then
 				::push::
-				mSleep(500)
 				local sz = require("sz")        --登陆
 				local szhttp = require("szocket.http")
 				local res, code = szhttp.request("http://47.104.246.33/phone.php?cmd=poststatus&phone="..phone.."&status=失败")
-				mSleep(500)
 				if code == 200 then
 					if reTxtUtf8(res) == "反馈成功" then
 						toast("号码状态标记成功",1)
@@ -6597,11 +6518,9 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				end
 			elseif api_change == "8" and not clean_bool then
 				::push::
-				mSleep(500)
 				local sz = require("sz")        --登陆
 				local szhttp = require("szocket.http")
 				local res, code = szhttp.request("http://47.104.246.33/phone1.php?cmd=poststatus&phone="..phone.."&status=失败")
-				mSleep(500)
 				if code == 200 then
 					if reTxtUtf8(res) == "反馈成功" then
 						toast("号码状态标记成功",1)
@@ -6826,7 +6745,6 @@ function model:main()
 			local sz = require("sz");
 			local szhttp = require("szocket.http")
 			local res, code = szhttp.request("http://cardapi.mabang18.com/mbapi/generic/getprovincesort")
-			nLog(res)
 			if code == 200 then
 				tmp = json.decode(res)
 				if #tmp.data > 3 then
@@ -6848,10 +6766,10 @@ function model:main()
 		get_six_two = false
 		while true do
 			if vpn_country == "0" then
-				mSleep(500)
+				mSleep(200)
 				runApp("com.liguangming.Shadowrocket")
 				while true do
-					mSleep(500)
+					mSleep(200)
 					if getColor(547,101) == 0x2473bd then
 						mSleep(500)
 						tap(365,579)
@@ -6859,7 +6777,7 @@ function model:main()
 						break
 					end
 
-					mSleep(500)
+					mSleep(200)
 					if getColor(547,101) == 0x4386c5 then
 						mSleep(500)
 						tap(365,630)
@@ -6868,10 +6786,10 @@ function model:main()
 					end
 				end
 			elseif vpn_country == "1" then
-				mSleep(500)
+				mSleep(200)
 				runApp("com.liguangming.Shadowrocket")
 				while true do
-					mSleep(500)
+					mSleep(200)
 					if getColor(547,101) == 0x2473bd then
 						mSleep(500)
 						tap(365,670)
@@ -6879,7 +6797,7 @@ function model:main()
 						break
 					end
 
-					mSleep(500)
+					mSleep(200)
 					if getColor(547,101) == 0x4386c5 then
 						mSleep(500)
 						tap(365,710)
@@ -7054,7 +6972,6 @@ function model:main()
 			local sz = require("sz")       
 			local szhttp = require("szocket.http")
 			local res, code = szhttp.request(send_api.."?time="..time.."&info="..all_data)
-
 			if code == 200 then
 				if tostring(res) == "success" then
 					mSleep(500)
@@ -7077,7 +6994,7 @@ function model:main()
 end
 
 function beforeUserExit()
-	mSleep(500)
+	mSleep(200)
 	setVPNEnable(false)
 	mSleep(2000)
 	writeFileString(userPath().."/res/phone_data.txt","","w",0)
@@ -7095,7 +7012,6 @@ function beforeUserExit()
 		local sz = require("sz")        --登陆
 		local szhttp = require("szocket.http")
 		local res, code = szhttp.request(black_url)
-		mSleep(500)
 		if code == 200 then
 			data = strSplit(res, "|")
 			if data[1] == "1" then
