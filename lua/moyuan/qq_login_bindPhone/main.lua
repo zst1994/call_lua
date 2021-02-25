@@ -529,13 +529,14 @@ function model:mm()
 			mSleep(500)
 		end
 
-		--招呼一下
+		--跳过：招呼一下/分享到动态
 		mSleep(200)
-		if getColor(669,130) == 0xbde1f7 and getColor(702,131) == 0xbde1f7 then
+		if getColor(669,130) == 0xbde1f7 and getColor(702,131) == 0xbde1f7
+		or getColor(669,130) == 0x3bb3fa and getColor(702,130) == 0x3bb3fa then
 			mSleep(500)
 			tap(669,130)
 			mSleep(500)
-			toast("跳过招呼一下", 1)
+			toast("跳过", 1)
 			mSleep(500)
 		end
 
@@ -1015,6 +1016,17 @@ function model:mm()
 				toast("头像3",1)
 				mSleep(500)
 			end
+			
+			--点击头像
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy(0x3bb3fa, "5|-2|0x3bb3fa,5|-7|0x3bb3fa,5|6|0x3bb3fa,8|6|0x3bb3fa,11|6|0x3bb3fa,20|6|0x3bb3fa,27|6|0x3bb3fa,34|6|0x3bb3fa,11|-19|0xf9f9f9", 100, 0, 0, 750, 1334, { orient = 2 })
+            if x~=-1 and y~=-1 then
+				mSleep(500)
+				tap(x - 140,y)
+				mSleep(500)
+				toast("头像4",1)
+				mSleep(500)
+			end
 
 			--访问照片
 			mSleep(200)
@@ -1031,9 +1043,15 @@ function model:mm()
 			mSleep(200)
 			x,y = findMultiColorInRegionFuzzy( 0xff3b30, "6|0|0xff3b30,12|0|0xff3b30,23|0|0xff3b30,30|0|0xff3b30,41|1|0xff3b30,62|3|0xff3b30", 90, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
-				mSleep(500)
-				tap(x,y + 120)
-				mSleep(500)
+			    if y > 1110 then
+			        mSleep(500)
+    				tap(x,y - 220)
+    				mSleep(500)
+			    else
+    				mSleep(500)
+    				tap(x,y + 120)
+    				mSleep(500)
+			    end
 				toast("相册",1)
 				mSleep(500)
 			end

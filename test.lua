@@ -1,10 +1,10 @@
 local ts = require("ts")
 local json = ts.json --使用 JSON 模組前必須插入這一句
---local sz = require("sz")
---local socket = require("socket")
---local http = require("szocket.http")
---require("TSLib")
---local sqlite3 = sz.sqlite3
+local sz = require("sz")
+local socket = require("socket")
+local http = require("szocket.http")
+require("TSLib")
+local sqlite3 = sz.sqlite3
 
 --local sz = require("sz")
 --local cjson = sz.json
@@ -1452,79 +1452,93 @@ end
 
 
 
-local ts = require("ts")
-local json = ts.json 
+-- local ts = require("ts")
+-- local json = ts.json 
 
-function imgupload2(_url,path,imageName)
-	local sz 				= require("sz")
-	local socket 			= require ("socket");
-	local http 			    = require("szocket.http")
-	local respbody 			= {}
-	local _end 				='\r\n'..[[--abcd--]]..'\r\n'
-	local reqfile			= io.open(path)
-	local size              = io.open(path):seek("end")
+-- function imgupload2(_url,path,imageName)
+-- 	local sz 				= require("sz")
+-- 	local socket 			= require ("socket");
+-- 	local http 			    = require("szocket.http")
+-- 	local respbody 			= {}
+-- 	local _end 				='\r\n'..[[--abcd--]]..'\r\n'
+-- 	local reqfile			= io.open(path)
+-- 	local size              = io.open(path):seek("end")
 	
-	local res, code, rsp_body = http.request {
-		method = "POST",
-		url = _url,
-		headers = {
-			["Content-Type"] =  "multipart/form-data;boundary=abcd",
-			["Content-Length"] = #imageName + size + #_end,
-			["origin"] = "https://cli.im",
-		},
-		source = ltn12.source.cat(ltn12.source.string(imageName),ltn12.source.file(reqfile),ltn12.source.string(_end)),
-		sink = ltn12.sink.table(respbody)
-	}
+-- 	local res, code, rsp_body = http.request {
+-- 		method = "POST",
+-- 		url = _url,
+-- 		headers = {
+-- 			["Content-Type"] =  "multipart/form-data;boundary=abcd",
+-- 			["Content-Length"] = #imageName + size + #_end,
+-- 			["origin"] = "https://cli.im",
+-- 		},
+-- 		source = ltn12.source.cat(ltn12.source.string(imageName),ltn12.source.file(reqfile),ltn12.source.string(_end)),
+-- 		sink = ltn12.sink.table(respbody)
+-- 	}
 	
-	if code  == 200 then
-		return table.concat(respbody)
-	else
-		return nil
-	end
-end
+-- 	if code  == 200 then
+-- 		return table.concat(respbody)
+-- 	else
+-- 		return nil
+-- 	end
+-- end
 
-function getUrl(path)
-	::ewm_go::
-	url = "https://upload.api.cli.im/upload.php?kid=cliim";
-	local _file1 = [[--abcd]]..'\r\n'..[[Content-Disposition: form-data; name="Filedata"; filename="1.png"]]..'\r\n'..[[Content-Type: image/png]]..'\r\n\r\n'
-	aa = imgupload2(url, path, _file1);
-	toast(aa, 1)
-	mSleep(1000)
-	if aa ~= nil then
-		local tmp = json.decode(aa)["data"]["path"]
-		header_send = {
-			["Content-Type"] = "application/x-www-form-urlencoded; charset=UTF-8",
-		}
-		body_send = {
-			["img"] = tmp,
-		}
-		ts.setHttpsTimeOut(60)
-		code,header_resp, body_resp = ts.httpsPost("https://cli.im/apis/up/deqrimg", header_send,body_send)
-		if code == 200 then
-			local tmp = json.decode(body_resp)
-			if tmp.status == 1 then
-				ewm_url = tmp["info"]["data"][1]
-				return ewm_url
-			else
-				toast("二维码解析失败:"..tostring(body_resp),1)
-				mSleep(2000)
-				goto ewm_go
+-- function getUrl(path)
+-- 	::ewm_go::
+-- 	url = "https://upload.api.cli.im/upload.php?kid=cliim";
+-- 	local _file1 = [[--abcd]]..'\r\n'..[[Content-Disposition: form-data; name="Filedata"; filename="1.png"]]..'\r\n'..[[Content-Type: image/png]]..'\r\n\r\n'
+-- 	aa = imgupload2(url, path, _file1);
+-- 	toast(aa, 1)
+-- 	mSleep(1000)
+-- 	if aa ~= nil then
+-- 		local tmp = json.decode(aa)["data"]["path"]
+-- 		header_send = {
+-- 			["Content-Type"] = "application/x-www-form-urlencoded; charset=UTF-8",
+-- 		}
+-- 		body_send = {
+-- 			["img"] = tmp,
+-- 		}
+-- 		ts.setHttpsTimeOut(60)
+-- 		code,header_resp, body_resp = ts.httpsPost("https://cli.im/apis/up/deqrimg", header_send,body_send)
+-- 		if code == 200 then
+-- 			local tmp = json.decode(body_resp)
+-- 			if tmp.status == 1 then
+-- 				ewm_url = tmp["info"]["data"][1]
+-- 				return ewm_url
+-- 			else
+-- 				toast("二维码解析失败:"..tostring(body_resp),1)
+-- 				mSleep(2000)
+-- 				goto ewm_go
+-- 			end
+-- 		else
+-- 			toast("二维码解析失败:"..tostring(body_resp),1)
+-- 			mSleep(2000)
+-- 			goto ewm_go
+-- 		end
+-- 	else
+-- 		toast("二维码图片上传失败:"..tostring(aa),1)
+-- 		mSleep(2000)
+-- 		goto ewm_go
+-- 	end
+-- end
+
+-- path = userPath() .. "/res/1.png"
+
+-- snapshot("1.png", 213,  323, 537,  646)
+
+-- url = getUrl(path)
+-- dialog(url, time)
+
+
+
+			--相册
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy( 0xff3b30, "6|0|0xff3b30,12|0|0xff3b30,23|0|0xff3b30,30|0|0xff3b30,41|1|0xff3b30,62|3|0xff3b30", 90, 0, 0, 749, 1333)
+			if x~=-1 and y~=-1 then
+			    dialog(x..y,0)
+				mSleep(500)
+				tap(x,y + 120)
+				mSleep(500)
+				toast("相册",1)
+				mSleep(500)
 			end
-		else
-			toast("二维码解析失败:"..tostring(body_resp),1)
-			mSleep(2000)
-			goto ewm_go
-		end
-	else
-		toast("二维码图片上传失败:"..tostring(aa),1)
-		mSleep(2000)
-		goto ewm_go
-	end
-end
-
-path = userPath() .. "/res/1.png"
-
-snapshot("1.png", 213,  323, 537,  646)
-
-url = getUrl(path)
-dialog(url, time)
