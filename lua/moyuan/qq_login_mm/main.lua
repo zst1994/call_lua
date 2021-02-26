@@ -51,6 +51,8 @@ function model:Check_AMG()
 			mSleep(3000)
 		end
 	end
+	
+	self:vpn()
 end
 
 --检查执行结果
@@ -671,7 +673,7 @@ function model:Net()
 	end
 end
 
-function model:vpn(openPingNet)
+function model:vpn()
 	::get_vpn::
 	old_data = self:getIP() --获取IP
 	if old_data and old_data ~= "" then
@@ -2673,7 +2675,6 @@ function model:main()
 			self:deleteImage(userPath() .. "/res/picFile/" .. fileName)
 		end
 
-		self:vpn(openPingNet)
 		self:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 		self:mm(password, sex, searchFriend, searchAccount, changeHeader, nikcNameType, changePass)
 	end

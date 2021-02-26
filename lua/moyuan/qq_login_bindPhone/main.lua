@@ -57,6 +57,7 @@ local AMG = {
 				mSleep(200)
 				x,y = findMultiColorInRegionFuzzy(0x000000, "44|-1|0x000000,79|0|0x000000,-25|154|0x007aff,0|155|0x007aff,17|155|0x007aff,56|161|0x007aff,-22|253|0x007aff,35|251|0x097fff,81|243|0x007aff", 90, 0, 0, 750, 1334, { orient = 2 })
 				if x ~= -1 then
+					model:vpn()
 					mSleep(500)
 					tap(x,y)
 					mSleep(500)
@@ -1692,8 +1693,6 @@ function model:main()
 		closeApp(self.mm_bid, 0)
 		setVPNEnable(false)
 		mSleep(1000)
-
-		self:vpn()
 
 		--下一条并检查是否最后一条
 		if AMG.Next() == true then
