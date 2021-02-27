@@ -51,8 +51,6 @@ function model:Check_AMG()
 			mSleep(3000)
 		end
 	end
-	
-	self:vpn()
 end
 
 --检查执行结果
@@ -77,6 +75,7 @@ local AMG = {
 	New = (function()
 			--一键新机
 			model:Check_AMG()
+			model:vpn()
 			local res, code = http.request("http://127.0.0.1:8080/cmd?fun=newRecord")
 			if code == 200 then
 				return model:Check_AMG_Result()
