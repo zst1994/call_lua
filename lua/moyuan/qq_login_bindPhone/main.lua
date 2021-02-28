@@ -147,34 +147,46 @@ function model:vpn()
 	if old_data and old_data ~= "" then
 		toast(old_data, 1)
 	end
-
-	mSleep(math.random(500, 1500))
-	flag = getVPNStatus()
-	if flag.active then
-		toast("打开状态", 1)
-		setVPNEnable(false)
-		setVPNEnable(false)
-		for var = 1, 10 do
-			mSleep(math.random(200, 500))
-			toast("等待vpn切换" .. var, 1)
-			mSleep(math.random(200, 500))
-		end
-		goto get_vpn
-	else
-		toast("关闭状态", 1)
-	end
-
-	t1 = ts.ms()
-	setVPNEnable(true)
-	mSleep(1000 * math.random(2, 4))
-
+    
+    if networkMode == "0" then
+    	mSleep(math.random(500, 1500))
+    	flag = getVPNStatus()
+    	if flag.active then
+    		toast("打开状态", 1)
+    		setVPNEnable(false)
+    		setVPNEnable(false)
+    		for var = 1, 10 do
+    			mSleep(math.random(200, 500))
+    			toast("等待vpn切换" .. var, 1)
+    			mSleep(math.random(200, 500))
+    		end
+    		goto get_vpn
+    	else
+    		toast("关闭状态", 1)
+    	end
+    
+    	setVPNEnable(true)
+    	mSleep(1000 * math.random(2, 4))
+    elseif networkMode == "1" then
+        mSleep(math.random(500, 1500))
+        setAirplaneMode(true)
+    	mSleep(1000 * math.random(10, 14))
+    	setAirplaneMode(false)
+    	mSleep(4000)
+    end
+    
+    t1 = ts.ms()
 	while true do
 		new_data = getNetIP() --获取IP
 		if new_data and new_data ~= "" then
 			toast(new_data, 1)
 			if new_data ~= old_data then
 				mSleep(1000)
-				toast("vpn链接成功")
+				if networkMode == "0" then
+				    toast("vpn链接成功")
+				elseif networkMode == "1" then
+				    toast("wifi链接成功")
+				end
 				mSleep(1000)
 				break
 			end
@@ -183,9 +195,11 @@ function model:vpn()
 		t2 = ts.ms()
 
 		if os.difftime(t2, t1) > 10 then
-			setVPNEnable(false)
-			setVPNEnable(false)
-			setVPNEnable(false)
+		    if networkMode == "0" then
+			    setVPNEnable(false)
+    			setVPNEnable(false)
+    			setVPNEnable(false)
+			end
 			mSleep(2000)
 			toast("ip地址一样，重新打开", 1)
 			mSleep(2000)
@@ -1252,11 +1266,11 @@ function model:mm()
 		--.密码修改    2.密码修改  图标没加载出来    3.密码修改  图标加载一个
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0x323333, "12|16|0x323333,2|16|0x323333,23|16|0x323333,35|17|0x323333,40|13|0x323333,58|11|0x323333,68|11|0x323333,99|10|0x323333,128|10|0xffffff", 90, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			--手机绑定红色图标
 			mSleep(500)
-			x,y = findMultiColorInRegionFuzzy( 0xef7070, "-9|0|0xffffff,-14|0|0xef7070,-1|-12|0xef7070,-1|-9|0xffffff,12|1|0xef7070,9|1|0xffffff,-1|14|0xef7070,-1|12|0xffffff", 90, 0, 0, 749, 1333)
-			if x~=-1 and y~=-1 then
+			x,y = findMultiColorInRegionFuzzy( 0xef7070, "-9|0|0xffffff,-14|0|0xef7070,-1|-12|0xef7070,-1|-9|0xffffff,12|1|0xef7070,9|1|0xffffff,-1|14|0xef7070,-1|12|0xffffff", 100, 0, 0, 749, 1333)
+			if x ~= -1 and y ~= -1 then
 				mSleep(500)
 				tap(x - 100, y)
 				mSleep(500)
@@ -1659,13 +1673,26 @@ function model:main()
 				["list"] = "不需要,需要",
 				["select"] = "0",
 				["countperline"] = "4"
+			},
+			{
+				["type"] = "Label",
+				["text"] = "选择网络方式",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255"
+			},
+			{
+				["type"] = "RadioGroup",
+				["list"] = "wifi,4G",
+				["select"] = "0",
+				["countperline"] = "4"
 			}
 		}
 	}
 
 	local MyJsonString = json.encode(MyTable)
 
-	ret, old_pass, password, searchFriend, searchAccount, changeHeader, inputPhoneAgain = showUI(MyJsonString)
+	ret, old_pass, password, searchFriend, searchAccount, changeHeader, inputPhoneAgain, networkMode = showUI(MyJsonString)
 	if ret == 0 then
 		dialog("取消运行脚本", 3)
 		luaExit()
@@ -1693,6 +1720,13 @@ function model:main()
 		closeApp(self.mm_bid, 0)
 		setVPNEnable(false)
 		mSleep(1000)
+		
+		if networkMode == "0" then
+		    setWifiEnable(true) 
+		elseif networkMode == "1" then
+		    setWifiEnable(false) 
+		end
+		mSleep(2000)
 
 		--下一条并检查是否最后一条
 		if AMG.Next() == true then
