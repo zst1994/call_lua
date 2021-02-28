@@ -986,6 +986,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 	::hk::
 
 	t1 = ts.ms()
+	hk_whiteBool = true
 	while (true) do
 		mSleep(200)
 		if getColor(239, 629) == 0x12b7f5 then
@@ -1036,6 +1037,25 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
 			self:getAccount()
 			inputAgain = true
+		end
+		
+		--滑块白色为加载出图片
+		mSleep(200)
+		if getColor(83,413) == 0xefefef and getColor(691,1038) == 0xefefef then
+		    if hk_whiteBool then
+		        t3 = ts.ms()
+		        hk_whiteBool = false
+		    end
+		    
+		    if os.difftime(ts.ms(), t3) > 5 then
+        		mSleep(500)
+    			setVPNEnable(false)
+    			mSleep(2000)
+    			self:vpn()
+    			hk_whiteBool = true
+    			toast("滑块未加载成功",1)
+            	mSleep(1000)
+		    end
 		end
 
 		mSleep(200)
