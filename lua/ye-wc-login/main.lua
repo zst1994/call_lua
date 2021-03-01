@@ -303,7 +303,7 @@ function model:getConfig()
 		self.awz_bid = string.gsub(tab[4],"%s+","")
 		self.awz_newUrl = string.gsub(tab[5],"%s+","")
 -- 		self.awz_getparam = string.gsub(tab[6],"%s+","")
-		
+
 		if tab[7] then
 			self.axj_bid = string.gsub(tab[7],"%s+","")
 		else
@@ -1453,51 +1453,51 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			mSleep(5000)
 			goto get_phone
 		end
-	elseif vpn_stauts == "14" then
+	elseif vpn_stauts == "14" or vpn_stauts == "20" then
 		::get_phone::
 		header_send = {
 			["Content-Type"] = "application/json"
 		}
 		body_send = {
-			["appKey"] = "x727KdG1",
-			["secretKey"] = "cc128a0c117a4493b2827de05c150909",
+			["appKey"] = appKey,
+			["secretKey"] = secretKey,
 			["infos"] = {
 				{
-					["productId"] = 3,
+					["productId"] = productId,
 					["abbr"] = countryId,
 					["number"] = 1
 				}
 			},
 		}
 		ts.setHttpsTimeOut(60)
-		code,header_resp, body_resp = ts.httpPost("http://gvU6e7.g7e6.com:20083/api/phone", header_send,body_send)
+		code,header_resp, body_resp = ts.httpPost(ksUrl .. "/api/phone", header_send,body_send)
 		if code == 200 then
 			mSleep(500)
 			local tmp = json.decode(body_resp)
-			if tmp.status == 0 then
+			if tmp.status == 0 or tmp.status == "0" then
 				taskId = tmp.phones[1].phoneNodes[1].taskId
 				telphone = tmp.phones[1].phoneNodes[1].phone
 				toast(telphone.."\r\n"..taskId,1)
-			elseif tmp.status == 20000 then
+			elseif tmp.status == 20000 or tmp.status == "20000" then
 				toast("暂无手机号",1)
 				mSleep(5000)
 				goto get_phone
-			elseif tmp.status == 20001 then
+			elseif tmp.status == 20001 or tmp.status == "20001" then
 				toast("参数为空",1)
 				mSleep(5000)
 				goto get_phone
-			elseif tmp.status == 20002 then
+			elseif tmp.status == 20002 or tmp.status == "20002" then
 				toast("任务已完成",1)
 				mSleep(5000)
-			elseif tmp.status == 20003 then
+			elseif tmp.status == 20003 or tmp.status == "20003" then
 				toast("任务已关闭",1)
 				mSleep(5000)
 				goto get_phone
-			elseif tmp.status == 20004 then
+			elseif tmp.status == 20004 or tmp.status == "20004" then
 				toast("下发上限，等待成功反馈同步后继续下发",1)
 				mSleep(5000)
 				goto get_phone
-			elseif tmp.status == 20006 then
+			elseif tmp.status == 20006 or tmp.status == "20006" then
 				toast("appKey或者secretKey不正确",1)
 				mSleep(5000)
 				goto get_phone
@@ -1728,7 +1728,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 	or vpn_stauts == "6" or vpn_stauts == "7" or vpn_stauts == "8" or vpn_stauts == "9" 
 	or vpn_stauts == "11" or vpn_stauts == "12" or vpn_stauts == "13" or vpn_stauts == "14" 
 	or vpn_stauts == "15" or vpn_stauts == "16" or vpn_stauts == "17" or vpn_stauts == "18" 
-	or vpn_stauts == "19" then
+	or vpn_stauts == "19" or vpn_stauts == "20" then
 		country_id = kn_country
 	elseif vpn_stauts == "4" or vpn_stauts == "10" then
 		country_id = country_code
@@ -1747,12 +1747,14 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		mSleep(math.random(200, 300))
 	end
 
-	if vpn_stauts == "1" or vpn_stauts == "3" or vpn_stauts == "4" or vpn_stauts == "6" or vpn_stauts == "10" or vpn_stauts == "11" or vpn_stauts == "17" or vpn_stauts == "18" then
+	if vpn_stauts == "1" or vpn_stauts == "3" or vpn_stauts == "4" or vpn_stauts == "6" or vpn_stauts == "10" 
+	or vpn_stauts == "11" or vpn_stauts == "17" or vpn_stauts == "18" then
 		phone = telphone
 	elseif vpn_stauts == "5" or vpn_stauts == "8" or vpn_stauts == "12" or vpn_stauts == "15" then
 		phone = string.sub(telphone, #country_id + 1,#telphone)
-	elseif vpn_stauts == "2" or vpn_stauts == "7" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "14" or vpn_stauts == "16" or vpn_stauts == "19" then
-		if vpn_stauts == "14" then
+	elseif vpn_stauts == "2" or vpn_stauts == "7" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "14" 
+	or vpn_stauts == "16" or vpn_stauts == "19" or vpn_stauts == "20" then
+		if vpn_stauts == "14" or vpn_stauts == "20" then
 			telphone = string.match(telphone,"%d+")
 		end
 
@@ -4008,7 +4010,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					mSleep(5000)
 					goto get_mess
 				end
-			elseif vpn_stauts == "14" then
+			elseif vpn_stauts == "14" or vpn_stauts == "20" then
 				::get_mess::
 				self:sendSMSKQ()
 
@@ -4017,8 +4019,8 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					["Content-Type"] = "application/json"
 				}
 				body_send = {
-					["appKey"] = "x727KdG1",
-					["secretKey"] = "cc128a0c117a4493b2827de05c150909",
+					["appKey"] = appKey,
+					["secretKey"] = secretKey,
 					["taskIds"] = {
 						{
 							["taskId"] = taskId,
@@ -4026,13 +4028,13 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					},
 				}
 				ts.setHttpsTimeOut(60)
-				code,header_resp, body_resp = ts.httpPost("http://gvU6e7.g7e6.com:20083/api/code", header_send,body_send)
+				code,header_resp, body_resp = ts.httpPost(ksUrl .. "/api/code", header_send,body_send)
 				toast(body_resp,1)
 				mSleep(500)
 				if code == 200 then
 					mSleep(500)
 					local tmp = json.decode(body_resp)
-					if tmp.status == 0 and #tmp.codes > 0 then
+					if tmp.status == 0 and #tmp.codes > 0 or tmp.status == "0" and #tmp.codes > 0 then
 						code = tmp.codes[1].code
 						mess_yzm = string.match(code,"%d%d%d%d%d%d")
 					else
@@ -5559,7 +5561,7 @@ function model:main()
 			},
 			{
 				["type"] = "RadioGroup",                    
-				["list"] = "柠檬,卡农注册,奥迪,52,俄罗斯1,东帝汶,服务器取号,俄罗斯2,各国API,老友,SMS,越南,各国API2,奶茶,柠檬2,老司机,水煮鱼,松鼠,自用,火猫",
+				["list"] = "柠檬,卡农注册,奥迪,52,俄罗斯1,东帝汶,服务器取号,俄罗斯2,各国API,老友,SMS,越南,各国API2,奶茶,柠檬2,老司机,水煮鱼,松鼠,自用,火猫,k76sk",
 				["select"] = "0",  
 				["countperline"] = "4",
 			},
@@ -5871,6 +5873,19 @@ function model:main()
 			ksUrl = "http://api.ma37.com"
 			ApiName = "api_huqianjin_m1p"
 		end
+
+		if vpn_stauts == "14" then
+			appKey = "x727KdG1"
+			secretKey = "cc128a0c117a4493b2827de05c150909"
+			productId = 3
+			ksUrl = "http://gvU6e7.g7e6.com:20083"
+		elseif vpn_stauts == "20" then
+			appKey = "oIYEBCM8"
+			secretKey = "b4343a772db14dd1bee548421e937576"
+			productId = "4"
+			ksUrl = "http://k76sk.com:20083"
+		end
+
 
 		if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16" or vpn_stauts == "19" then
 			mSleep(500)
