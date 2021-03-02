@@ -216,6 +216,17 @@ function model:timeOutRestart(t1)
 	end
 end
 
+function model:timeOutCallBack(t1)
+	t2 = ts.ms()
+	if os.difftime(t2, t1) > 15 then
+	    mSleep(500)
+	    closeApp(self.mm_bid, 0)
+	    mSleep(1000)
+	    self:vpn()
+	    self:mm()
+	end
+end
+
 function model:getPhoneAndToken()
 	self.phone_table = readFile(userPath() .. "/res/phoneNum.txt")
 	if self.phone_table then
@@ -1159,6 +1170,7 @@ function model:mm()
 
 			self:timeOutRestart(t1)
 			mSleep(1000)
+			self:timeOutCallBack(t1)
 		end
 
 		t1 = ts.ms()
@@ -1342,6 +1354,7 @@ function model:mm()
 
 		self:timeOutRestart(t1)
 		mSleep(1000)
+		self:timeOutCallBack(t1)
 	end
 
 	t1 = ts.ms()
@@ -1562,7 +1575,7 @@ function model:main()
 		["width"] = w,
 		["height"] = h,
 		["config"] = "save_001.dat",
-		["timer"] = 50,
+		["timer"] = 30,
 		views = {
 			{
 				["type"] = "Label",
