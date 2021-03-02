@@ -966,7 +966,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					setAirplaneMode(false)
 				end
 			end
-			
+
 			mSleep(200)
 			if getColor(393,1170) == 0 then
 				mSleep(math.random(500, 700))
@@ -1027,7 +1027,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			randomsTap(549, 1240,10)
 			mSleep(math.random(200, 500))
 		end
-		
+
 		mSleep(200)
 		if getColor(393,1170) == 0 then
 			mSleep(math.random(500, 700))
@@ -1447,9 +1447,15 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		if code == 200 then
 			local tmp = json.decode(body_resp)
 			if tmp.status == 0 or tmp.status == "0" then
-				taskId = tmp.phones[1].phoneNodes[1].taskId
-				telphone = tmp.phones[1].phoneNodes[1].phone
-				toast(telphone.."\r\n"..taskId,1)
+				if #tmp.phones > 0 then
+					taskId = tmp.phones[1].phoneNodes[1].taskId
+					telphone = tmp.phones[1].phoneNodes[1].phone
+					toast(telphone.."\r\n"..taskId,1)
+				else
+					toast("暂无手机号",1)
+					mSleep(5000)
+					goto get_phone
+				end
 			elseif tmp.status == 20000 or tmp.status == "20000" then
 				toast("暂无手机号",1)
 				mSleep(5000)
@@ -4568,7 +4574,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 							setAirplaneMode(false)
 						end
 					end
-					
+
 					mSleep(200)
 					if getColor(393,1170) == 0 then
 						mSleep(math.random(500, 700))
@@ -4640,7 +4646,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 							setAirplaneMode(false)
 						end
 					end
-					
+
 					mSleep(200)
 					if getColor(393,1170) == 0 then
 						mSleep(math.random(500, 700))
@@ -4816,7 +4822,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 							setAirplaneMode(false)
 						end
 					end
-					
+
 					mSleep(200)
 					if getColor(393,1170) == 0 then
 						mSleep(math.random(500, 700))
@@ -5276,7 +5282,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 									setAirplaneMode(false)
 								end
 							end
-							
+
 							mSleep(200)
 							if getColor(393,1170) == 0 then
 								mSleep(math.random(500, 700))
@@ -5351,7 +5357,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					setAirplaneMode(false)
 				end
 			end
-			
+
 			mSleep(200)
 			if getColor(393,1170) == 0 then
 				mSleep(math.random(500, 700))

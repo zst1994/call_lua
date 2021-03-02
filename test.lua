@@ -1530,36 +1530,30 @@ end
 -- dialog(url, time)
 
 
-::put_work::
-header_send = {
-	["Content-Type"] = "application/json",
-}
-body_send = {
-	["appKey"] = "oIYEBCM8",
-	["secretKey"] = "b4343a772db14dd1bee548421e937576",
-	["infos"] = {
-		{
-			["productId"] = "4",
-			["abbr"] = "ph",
-			["number"] = 1
-		}
-	},
-}
-ts.setHttpsTimeOut(60)
-code,header_resp, body_resp = ts.httpPost("http://k76sk.com:20083/api/phone", header_send,body_send)
-dialog(body_resp, time)
---if code == 200 then
---	local tmp = json.decode(body_resp)
---	if tmp.success then
---		orderId = tmp.obj.orderId
---		toast("二维码辅助发布成功:"..orderId,1)
---		mSleep(5000)
---	else
---		mSleep(500)
---		toast("发布失败，6秒后重新发布",1)
---		mSleep(6000)
---		goto put_work
---	end
---else
---	goto put_work
---end
+--::put_work::
+--header_send = {
+--	["Content-Type"] = "application/json",
+--}
+--body_send = {
+--	["appKey"] = "oIYEBCM8",
+--	["secretKey"] = "b4343a772db14dd1bee548421e937576",
+--	["infos"] = {
+--		{
+--			["productId"] = "4",
+--			["abbr"] = "tw",
+--			["number"] = 1
+--		}
+--	},
+--}
+--ts.setHttpsTimeOut(60)
+--code,header_resp, body_resp = ts.httpPost("http://k76sk.com:20083/api/phone", header_send,body_send)
+--dialog(body_resp, time)
+
+
+
+local sz = require("sz");
+local http = require("szocket.http")
+--								https://api.v6.chat/api.php?url=https://v.qq.com/x/cover/mzc00200ooemehm.html
+local res, code = http.request("http://api.v6.chat/api.php?url=https://v.qq.com/x/cover/mzc00200iowe8bq.html")
+dialog(res, time)
+
