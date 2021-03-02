@@ -1143,10 +1143,11 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
     				table.remove(self.qqList, 1)
     				writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
     				-- writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
-    				self:getAccount()
-    				self:clear_input()
-    				inputAgain = true
-    				goto hk
+    				-- self:getAccount()
+    				-- self:clear_input()
+    				-- inputAgain = true
+    				-- goto hk
+    				goto over
     			elseif getColor(683,209) == 0xffffff then
     				toast("切换下一个账号,重新新机", 1)
     				mSleep(500)
@@ -1159,9 +1160,10 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
     				table.remove(self.qqList, 1)
     				writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
     				-- writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
-    				self:getAccount()
-    				inputAgain = true
-    				goto hk
+    				-- self:getAccount()
+    				-- inputAgain = true
+    				-- goto hk
+    				goto over
     			end
     		end
 		end
@@ -1381,10 +1383,11 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
     				table.remove(self.qqList, 1)
     				writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
     				-- writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
-    				self:getAccount()
-    				self:clear_input()
-    				inputAgain = true
-    				goto hk
+    				-- self:getAccount()
+    				-- self:clear_input()
+    				-- inputAgain = true
+    				-- goto hk
+    				goto over
     			elseif getColor(683,209) == 0xffffff then
     				toast("切换下一个账号,重新新机", 1)
     				mSleep(500)
@@ -1397,9 +1400,10 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
     				table.remove(self.qqList, 1)
     				writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
     				-- writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
-    				self:getAccount()
-    				inputAgain = true
-    				goto hk
+    				-- self:getAccount()
+    				-- inputAgain = true
+    				-- goto hk
+    				goto over
     			end
     		end
 		end
