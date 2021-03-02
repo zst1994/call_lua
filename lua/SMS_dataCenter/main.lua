@@ -7029,10 +7029,6 @@ function beforeUserExit()
 					black_url = "http://api.ma37.com/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
 					goto addblack
 				end
-			else
-				toast(res,1)
-				mSleep(2000)
-				goto addblack
 			end
 		end
 	end
