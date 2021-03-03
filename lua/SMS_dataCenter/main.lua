@@ -379,13 +379,13 @@ function model:readFileBase64(path)
 end
 
 function model:clear_App()
-    name = getAppName(self.awz_bid) 
-    if #name > 0 then
-       clear_bid = self.awz_bid 
-    else 
-        clear_bid = self.axj_bid
-    end
-    
+	name = getAppName(self.awz_bid) 
+	if #name > 0 then
+		clear_bid = self.awz_bid 
+	else 
+		clear_bid = self.axj_bid
+	end
+
 	::run_again::
 	mSleep(200)
 	closeApp(clear_bid)
@@ -404,7 +404,7 @@ function model:clear_App()
 			goto run_again
 		end
 	end
-	
+
 	::new_phone::
 	local sz = require("sz");
 	local szhttp = require("szocket.http")
@@ -673,7 +673,7 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 				mSleep(math.random(1200, 1700))
 			end
 
-            mSleep(200)
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 100, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
 				mSleep(math.random(1500, 2700))
@@ -911,7 +911,7 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 				--				end
 
 				if api_change == "10" then
-					getPhoneCode_url = "http://web1.520mqn.com/yhapi.ashx?act=getPhoneCode&token="..phone_token.."&iid="..work_id.."&mobile="..telphone
+					getPhoneCode_url = "http://web.jiemite.com/yhapi.ashx?act=getPhoneCode&token="..phone_token.."&iid="..work_id.."&mobile="..telphone
 				elseif api_change == "2" then
 					getPhoneCode_url = "http://api.ma37.com/yhapi.ashx?act=getPhoneCode&token="..phone_token.."&pid="..pid
 				elseif api_change == "12" then
@@ -935,7 +935,7 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 							restart_time = restart_time + 1
 							if restart_time > tonumber(messSendTime) then
 								if api_change == "10" then
-									black_url = "http://web1.520mqn.com/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..work_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
+									black_url = "http://web.jiemite.com/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..work_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
 								elseif api_change == "2" then
 									black_url = "http://api.ma37.com/yhapi.ashx?act=addBlack&token="..phone_token.."&pid="..pid.."&reason="..urlEncoder("获取失败")
 								elseif api_change == "12" then
@@ -2780,7 +2780,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		end
 	elseif api_change == "2" or api_change == "10" or api_change == "12" then
 		if api_change == "10" then
-			url = "http://web1.520mqn.com"
+			url = "http://web.jiemite.com"
 		elseif api_change == "2" then
 			url = "http://api.ma37.com"
 		elseif api_change == "12" then
@@ -3245,6 +3245,9 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			mSleep(3000)
 			goto get_phone
 		end
+	elseif api_change == "15" then
+		later_phone = self:randomStr("1234567890", 5)
+		telphone = simulation_phone + later_phone
 	end
 
 	if country_id == "0" then
@@ -3331,7 +3334,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 	if api_change == "0" or api_change == "2" or api_change == "3" or api_change == "4" 
 	or api_change == "5" or api_change == "6" or api_change == "7" or api_change == "8" 
 	or api_change == "9" or api_change == "10" or api_change == "11" or api_change == "12" 
-	or api_change == "13" or api_change == "14" then
+	or api_change == "13" or api_change == "14" or api_change == "15" then
 		country_num = phone_country
 	elseif api_change == "1" then
 		country_num = tmp.CountryCode
@@ -3404,7 +3407,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		else
 			phone = telphone
 		end
-	elseif api_change == "3"  or api_change == "7" or api_change == "8" or api_change == "13" then
+	elseif api_change == "3"  or api_change == "7" or api_change == "8" or api_change == "13" or api_change == "15" then
 		phone = telphone
 	elseif api_change == "4" then
 		b,c = string.find(string.sub(telphone,1,#country_num),country_num)
@@ -3539,7 +3542,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		else
 			if api_change == "2" or api_change == "10" or api_change == "12" then
 				if api_change == "10" then
-					black_url = "http://web1.520mqn.com/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..work_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
+					black_url = "http://web.jiemite.com/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..work_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
 				elseif api_change == "2" then
 					black_url = "http://api.ma37.com/yhapi.ashx?act=addBlack&token="..phone_token.."&pid="..pid.."&reason="..urlEncoder("获取失败")
 				elseif api_change == "12" then
@@ -3696,8 +3699,8 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			mSleep(math.random(500, 700))
 			break
 		end
-        
-        mSleep(200)
+
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x9ce6bf,"540|-7|0x9ce6bf,270|30|0x9ce6bf,270|-89|0x576b95",90,0,0,749,1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
@@ -3737,7 +3740,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					if not connetBool then
 						if api_change == "2" or api_change == "10" or api_change == "12" then
 							if api_change == "10" then
-								url = "http://web1.520mqn.com"
+								url = "http://web.jiemite.com"
 							elseif api_change == "2" then
 								url = "http://api.ma37.com"
 							elseif api_change == "12" then
@@ -3775,7 +3778,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		end
 
 		if country_num == "86" then
-		    mSleep(200)
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0xd8f0d8,"-254|21|0x9ed99d,368|13|0x9ed99d,61|-20|0x9ed99d,49|46|0x9ed99d",100, 0, 920, 749, 1333)
 			if x~=-1 and y~=-1 then
 				flag = getVPNStatus()
@@ -3861,7 +3864,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			toast("手机号码错误",1)
 			if api_change == "2" or api_change == "10" or api_change == "12" then
 				if api_change == "10" then
-					black_url = "http://web1.520mqn.com/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..work_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
+					black_url = "http://web.jiemite.com/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..work_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
 				elseif api_change == "2" then
 					black_url = "http://api.ma37.com/yhapi.ashx?act=addBlack&token="..phone_token.."&pid="..pid.."&reason="..urlEncoder("获取失败")
 				elseif api_change == "12" then
@@ -4003,7 +4006,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			toast("手机号码错误",1)
 			if api_change == "2" or api_change == "10" or api_change == "12" then
 				if api_change == "10" then
-					black_url = "http://web1.520mqn.com/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..work_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
+					black_url = "http://web.jiemite.com/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..work_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
 				elseif api_change == "2" then
 					black_url = "http://api.ma37.com/yhapi.ashx?act=addBlack&token="..phone_token.."&pid="..pid.."&reason="..urlEncoder("获取失败")
 				elseif api_change == "12" then
@@ -4411,7 +4414,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				if next_again_time > tonumber(fz_error_times) then
 					if api_change == "2" or api_change == "10" or api_change == "12" then
 						if api_change == "10" then
-							black_url = "http://web1.520mqn.com/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..work_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
+							black_url = "http://web.jiemite.com/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..work_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
 						elseif api_change == "2" then
 							black_url = "http://api.ma37.com/yhapi.ashx?act=addBlack&token="..phone_token.."&pid="..pid.."&reason="..urlEncoder("获取失败")
 						elseif api_change == "12" then
@@ -4486,25 +4489,31 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			if x~=-1 and y~=-1 then
 				mSleep(200)
 				toast("短信界面",1)
-				if needConnetMove == "0" then
-					t1 = ts.ms()
-					while true do
-						t2 = ts.ms()
+				if api_change == "15" then
+					playAudio(userPath().."/res/好运来.mp3")
+					mSleep(15000)
+					luaExit()
+				else
+					if needConnetMove == "0" then
+						t1 = ts.ms()
+						while true do
+							t2 = ts.ms()
 
-						if os.difftime(t2, t1) > tonumber(liandongTime) then
-							toast("等待"..liandongTime.."秒了，获取验证码", 1)
-							mSleep(1000)
-							break
-						else
-							toast(os.difftime(t2, t1),1)
-							mSleep(5000)
+							if os.difftime(t2, t1) > tonumber(liandongTime) then
+								toast("等待"..liandongTime.."秒了，获取验证码", 1)
+								mSleep(1000)
+								break
+							else
+								toast(os.difftime(t2, t1),1)
+								mSleep(5000)
+							end
 						end
 					end
-				end
 
-				ewm_url_bool = true
-				tiaoma_bool = true
-				break
+					ewm_url_bool = true
+					tiaoma_bool = true
+					break
+				end
 			end
 
 			if hk_way == "0" then
@@ -6476,7 +6485,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		else
 			if api_change == "2" or api_change == "10" or api_change == "12" and not clean_bool then
 				if api_change == "10" then
-					black_url = "http://web1.520mqn.com/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..work_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
+					black_url = "http://web.jiemite.com/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..work_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
 				elseif api_change == "2" then
 					black_url = "http://api.ma37.com/yhapi.ashx?act=addBlack&token="..phone_token.."&pid="..pid.."&reason="..urlEncoder("获取失败")
 				elseif api_change == "12" then
@@ -6723,7 +6732,7 @@ function model:main()
 			if api_change == "2" then
 				ksUrl = "http://api.ma37.com"
 			elseif api_change == "10" then
-				ksUrl = "http://web1.520mqn.com"
+				ksUrl = "http://web.jiemite.com"
 			elseif api_change == "12" then
 				ksUrl = "http://27.124.4.13"
 			end
@@ -7008,7 +7017,7 @@ function beforeUserExit()
 	writeFileString(userPath().."/res/data_sel.txt","0","w",0)
 	if api_change == "2" or api_change == "10" or api_change == "12" then
 		if api_change == "10" then
-			black_url = "http://web1.520mqn.com/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..work_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
+			black_url = "http://web.jiemite.com/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..work_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
 		elseif api_change == "2" then
 			black_url = "http://api.ma37.com/yhapi.ashx?act=addBlack&token="..phone_token.."&pid="..pid.."&reason="..urlEncoder("获取失败")
 		elseif api_change == "12" then

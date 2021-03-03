@@ -75,7 +75,11 @@ local AMG = {
 	New = (function()
 			--一键新机
 			model:Check_AMG()
-			model:vpn()
+			
+			if changeVPNWay == "1" then
+				model:vpn()
+			end
+			
 			local res, code = http.request("http://127.0.0.1:8080/cmd?fun=newRecord")
 			if code == 200 then
 				return model:Check_AMG_Result()
@@ -276,8 +280,8 @@ end
 function model:timeOutRestart(t1)
 	t2 = ts.ms()
 
-	if os.difftime(t2, t1) > 120 then
-		lua_restart()
+	if os.difftime(t2, t1) > 60 then
+		self:index()
 	else
 		toast("距离重启脚本还有"..(120 - os.difftime(t2, t1)) .. "秒",1)
 	end
@@ -2459,6 +2463,45 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 	::over::
 end
 
+function model:index()
+	while true do
+		self:getAccount()
+
+		closeApp(self.awz_bid, 0)
+		closeApp(self.mm_bid, 0)
+		setVPNEnable(false)
+		mSleep(1000)
+
+		changeHeader = "1"
+		if changeHeader == "0" then
+			clearAllPhotos()
+			mSleep(500)
+			clearAllPhotos()
+			mSleep(500)
+			fileName = self:downImage()
+			toast(fileName, 1)
+			mSleep(1000)
+
+			--		saveImageToAlbum(fileName)
+			saveImageToAlbum(userPath() .. "/res/picFile/" .. fileName)
+			mSleep(500)
+			--		saveImageToAlbum(fileName)
+			saveImageToAlbum(userPath() .. "/res/picFile/" .. fileName)
+			mSleep(2000)
+
+			--		self:deleteImage(fileName)
+			self:deleteImage(userPath() .. "/res/picFile/" .. fileName)
+		end
+		
+		if changeVPNWay == "0" then
+			self:vpn()
+		end
+		
+		self:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
+		self:mm(password, sex, searchFriend, searchAccount, changeHeader, nikcNameType, changePass)
+	end
+end
+
 function model:main()
 	local w, h = getScreenSize()
 	MyTable = {
@@ -2658,13 +2701,26 @@ function model:main()
 				["list"] = "暂不修改,amg接口修改,单选型号,单选版本,脚本随机型号系统修改",
 				["select"] = "0",
 				["countperline"] = "3"
+			},
+			{
+				["type"] = "Label",
+				["text"] = "选择vpn切换方式",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255"
+			},
+			{
+				["type"] = "RadioGroup",
+				["list"] = "先切vpn再打开软件,先打开软件再切vpn",
+				["select"] = "0",
+				["countperline"] = "3"
 			}
 		}
 	}
 
 	local MyJsonString = json.encode(MyTable)
 
-	ret, password, sex, searchFriend, searchAccount, changeHeader, nikcNameType, sysVersion, sysPhoneType, openPingNet, gpsAddress, changePass, editorWay = showUI(MyJsonString)
+	ret, password, sex, searchFriend, searchAccount, changeHeader, nikcNameType, sysVersion, sysPhoneType, openPingNet, gpsAddress, changePass, editorWay, changeVPNWay = showUI(MyJsonString)
 	if ret == 0 then
 		dialog("取消运行脚本", 3)
 		luaExit()
@@ -2677,38 +2733,7 @@ function model:main()
 		end
 	end
 
-	while true do
-		self:getAccount()
-
-		closeApp(self.awz_bid, 0)
-		closeApp(self.mm_bid, 0)
-		setVPNEnable(false)
-		mSleep(1000)
-
-		changeHeader = "1"
-		if changeHeader == "0" then
-			clearAllPhotos()
-			mSleep(500)
-			clearAllPhotos()
-			mSleep(500)
-			fileName = self:downImage()
-			toast(fileName, 1)
-			mSleep(1000)
-
-			--		saveImageToAlbum(fileName)
-			saveImageToAlbum(userPath() .. "/res/picFile/" .. fileName)
-			mSleep(500)
-			--		saveImageToAlbum(fileName)
-			saveImageToAlbum(userPath() .. "/res/picFile/" .. fileName)
-			mSleep(2000)
-
-			--		self:deleteImage(fileName)
-			self:deleteImage(userPath() .. "/res/picFile/" .. fileName)
-		end
-
-		self:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
-		self:mm(password, sex, searchFriend, searchAccount, changeHeader, nikcNameType, changePass)
-	end
+	self:index()
 end
 
 model:main()

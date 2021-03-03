@@ -212,7 +212,7 @@ function model:timeOutRestart(t1)
 	t2 = ts.ms()
 
 	if os.difftime(t2, t1) > 120 then
-		lua_restart()
+	    self:index()
 	end
 end
 
@@ -1568,6 +1568,53 @@ function model:mm()
 	::over::
 end
 
+function model:index()
+	while (true) do
+		closeApp(self.awz_bid, 0)
+		closeApp(self.mm_bid, 0)
+		setVPNEnable(false)
+		mSleep(1000)
+		
+		if networkMode == "0" then
+		    setWifiEnable(true) 
+		elseif networkMode == "1" then
+		    setWifiEnable(false) 
+		end
+		mSleep(2000)
+
+		--下一条并检查是否最后一条
+		if AMG.Next() == true then
+			if AMG.Get_Name() == "原始机器" then
+				dialog("最后一条数据了", 0)
+				lua_exit()
+			end
+
+			if changeHeader == "0" then
+				clearAllPhotos()
+				mSleep(500)
+				clearAllPhotos()
+				mSleep(500)
+				fileName = self:downImage()
+				toast(fileName, 1)
+				mSleep(1000)
+
+				--		saveImageToAlbum(fileName)
+				saveImageToAlbum(userPath() .. "/res/picFile/" .. fileName)
+				mSleep(500)
+				--		saveImageToAlbum(fileName)
+				saveImageToAlbum(userPath() .. "/res/picFile/" .. fileName)
+				mSleep(2000)
+
+				--		self:deleteImage(fileName)
+				self:deleteImage(userPath() .. "/res/picFile/" .. fileName)
+			end
+
+			self:getPhoneAndToken()
+			self:mm()
+		end
+	end
+end
+
 function model:main()
 	local w, h = getScreenSize()
 	MyTable = {
@@ -1728,50 +1775,7 @@ function model:main()
 		end
 	end
 
-	while (true) do
-		closeApp(self.awz_bid, 0)
-		closeApp(self.mm_bid, 0)
-		setVPNEnable(false)
-		mSleep(1000)
-		
-		if networkMode == "0" then
-		    setWifiEnable(true) 
-		elseif networkMode == "1" then
-		    setWifiEnable(false) 
-		end
-		mSleep(2000)
-
-		--下一条并检查是否最后一条
-		if AMG.Next() == true then
-			if AMG.Get_Name() == "原始机器" then
-				dialog("最后一条数据了", 0)
-				lua_exit()
-			end
-
-			if changeHeader == "0" then
-				clearAllPhotos()
-				mSleep(500)
-				clearAllPhotos()
-				mSleep(500)
-				fileName = self:downImage()
-				toast(fileName, 1)
-				mSleep(1000)
-
-				--		saveImageToAlbum(fileName)
-				saveImageToAlbum(userPath() .. "/res/picFile/" .. fileName)
-				mSleep(500)
-				--		saveImageToAlbum(fileName)
-				saveImageToAlbum(userPath() .. "/res/picFile/" .. fileName)
-				mSleep(2000)
-
-				--		self:deleteImage(fileName)
-				self:deleteImage(userPath() .. "/res/picFile/" .. fileName)
-			end
-
-			self:getPhoneAndToken()
-			self:mm()
-		end
-	end
+	self:index()
 end
 
 model:main()

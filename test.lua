@@ -1551,9 +1551,8 @@ end
 
 
 
-local sz = require("sz");
-local http = require("szocket.http")
---								https://api.v6.chat/api.php?url=https://v.qq.com/x/cover/mzc00200ooemehm.html
-local res, code = http.request("http://api.v6.chat/api.php?url=https://v.qq.com/x/cover/mzc00200iowe8bq.html")
-dialog(res, time)
+mSleep(500)
+playAudio(userPath().."/res/好运来.mp3")
+mSleep(15000)
+luaExit()
 
