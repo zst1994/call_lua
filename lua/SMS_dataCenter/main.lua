@@ -4494,6 +4494,8 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					mSleep(500)
 					playAudio(userPath().."/res/好运来.mp3")
 					mSleep(15000)
+					setVPNEnable(false)
+					mSleep(500)
 					luaExit()
 				else
 					if needConnetMove == "0" then
