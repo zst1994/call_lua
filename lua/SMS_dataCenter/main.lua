@@ -3247,7 +3247,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		end
 	elseif api_change == "15" then
 		later_phone = self:randomStr("1234567890", 5)
-		telphone = simulation_phone + later_phone
+		telphone = simulation_phone .. later_phone
 	end
 
 	if country_id == "0" then
@@ -4490,6 +4490,8 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				mSleep(200)
 				toast("短信界面",1)
 				if api_change == "15" then
+					setVolumeLevel(0.5)
+					mSleep(500)
 					playAudio(userPath().."/res/好运来.mp3")
 					mSleep(15000)
 					luaExit()
