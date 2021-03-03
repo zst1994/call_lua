@@ -4410,8 +4410,8 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		while (true) do
 			mSleep(200)
 			if getColor(132, 766) == 0x000000 and getColor(54,648) == 0x808080 then
-				next_again_time = tonumber(next_again_time) + 1
-				if tonumber(next_again_time) > tonumber(fz_error_times) then
+				next_again_time = next_again_time + 1
+				if next_again_time > tonumber(fz_error_times) then
 					if api_change == "2" or api_change == "10" or api_change == "12" then
 						if api_change == "10" then
 							black_url = "http://web.jiemite.com/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..work_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
