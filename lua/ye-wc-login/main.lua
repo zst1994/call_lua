@@ -5777,7 +5777,7 @@ function model:main()
 			ksUrl = "http://web.lyf5.com"
 			ApiName = "huqianjin42"
 		elseif vpn_stauts == "13" then
-			ksUrl = "http://web1.520mqn.com"
+			ksUrl = "http://web.jiemite.com"
 			ApiName = "huqianjin89"
 		elseif vpn_stauts == "16" then
 			ksUrl = "http://api.hegrace-safex.cn"

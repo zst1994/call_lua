@@ -211,19 +211,8 @@ end
 function model:timeOutRestart(t1)
 	t2 = ts.ms()
 
-	if os.difftime(t2, t1) > 120 then
+	if os.difftime(t2, t1) > 60 then
 	    self:index()
-	end
-end
-
-function model:timeOutCallBack(t1)
-	t2 = ts.ms()
-	if os.difftime(t2, t1) > 15 then
-	    mSleep(500)
-	    closeApp(self.mm_bid, 0)
-	    mSleep(1000)
-	    self:vpn()
-	    self:mm()
 	end
 end
 
@@ -490,6 +479,16 @@ function model:mm()
 			tap(x + 20, y + 10)
 			mSleep(math.random(500, 700))
 			toast("上传照片3", 1)
+			mSleep(1000)
+		end
+		
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0x323333, "-12|-12|0x323333,13|-12|0x323333,-11|11|0x323333,12|12|0x323333,65|859|0x3bb3fa,595|863|0x3bb3fa,280|852|0xffffff,363|868|0xffffff,319|821|0x3bb3fa", 90, 0, 0, 750, 1334, { orient = 2 })
+		if x ~= -1 and y ~= -1 then
+			mSleep(500)
+			tap(x, y)
+			mSleep(500)
+			toast("立即打卡1", 1)
 			mSleep(1000)
 		end
 
@@ -1170,7 +1169,6 @@ function model:mm()
 
 			self:timeOutRestart(t1)
 			mSleep(1000)
-			self:timeOutCallBack(t1)
 		end
 
 		t1 = ts.ms()
@@ -1354,7 +1352,6 @@ function model:mm()
 
 		self:timeOutRestart(t1)
 		mSleep(1000)
-		self:timeOutCallBack(t1)
 	end
 
 	t1 = ts.ms()
@@ -1436,7 +1433,7 @@ function model:mm()
 			mSleep(1000)
 			tap(370,  661)
 			mSleep(5000)
-			self.subName = "绑定号码成功=="..self.phone
+			self.subName = "绑定号码成功----"..self.phone
 			self:remove_phone()
 		end
 	else
@@ -1551,18 +1548,17 @@ function model:mm()
 	end
 
 	::reName::
+	self.mm_accountId = self:getMMId(appDataPath(self.mm_bid) .. "/Documents")
 	--重命名当前记录名
 	local old_name = AMG.Get_Name()
-	local new_name = old_name .. "----" .. self.subName
-	toast(new_name,1)
-	mSleep(1000)
+	local new_name = self.mm_accountId .. "----" .. self.subName
 	if AMG.Rename(old_name, new_name) == true then
 	    if self.subNameBool then
-    		self.mm_accountId = self:getMMId(appDataPath(self.mm_bid) .. "/Documents")
     		writeFileString(userPath().."/res/绑定手机号记录.txt", self.mm_accountId .. "----" .. self.phone .. "----" .. self.code_token,"a",1)
-    		toast("重命名当前记录 " .. old_name .. " 为 " .. new_name, 3)
 	    end
 	    self.subNameBool = true
+	    toast("重命名当前记录 " .. old_name .. " 为 " .. new_name, 1)
+	    mSleep(1000)
 	end
 
 	::over::
@@ -1570,8 +1566,11 @@ end
 
 function model:index()
 	while (true) do
+	    mSleep(500)
 		closeApp(self.awz_bid, 0)
+		mSleep(500)
 		closeApp(self.mm_bid, 0)
+		mSleep(500)
 		setVPNEnable(false)
 		mSleep(1000)
 		

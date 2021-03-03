@@ -1551,8 +1551,15 @@ end
 
 
 
-mSleep(500)
-playAudio(userPath().."/res/好运来.mp3")
-mSleep(15000)
-luaExit()
+mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0x323333, "-12|-12|0x323333,13|-12|0x323333,-11|11|0x323333,12|12|0x323333,65|859|0x3bb3fa,595|863|0x3bb3fa,280|852|0xffffff,363|868|0xffffff,319|821|0x3bb3fa", 90, 0, 0, 750, 1334, { orient = 2 })
+		if x ~= -1 and y ~= -1 then
+			mSleep(500)
+			tap(x, y)
+			mSleep(500)
+			toast("立即打卡1", 1)
+			mSleep(1000)
+		end
+		
+
 
