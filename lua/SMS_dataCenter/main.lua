@@ -6838,6 +6838,8 @@ function model:main()
 					file_name = "721.plist"
 				elseif replaceFile == "6" then
 					file_name = "801.plist"
+				elseif replaceFile == "7" then
+					file_name = "802.plist"
 				end
 
 				self:replace_file(file_name)
