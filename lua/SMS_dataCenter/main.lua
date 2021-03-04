@@ -3462,7 +3462,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		if x~=-1 and y~=-1 then
 			mSleep(500)
 			randomTap(x+400,y,8)
-			mSleep(math.random(500, 700))
+			mSleep(math.random(1000, 1700))
 			inputStr(password)
 			mSleep(math.random(500, 700))
 			break
@@ -3473,7 +3473,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		if x~=-1 and y~=-1 then
 			mSleep(500)
 			randomTap(x+400,y,8)
-			mSleep(math.random(500, 700))
+			mSleep(math.random(1000, 1700))
 			inputStr(password)
 			mSleep(math.random(500, 700))
 			break
