@@ -3454,7 +3454,8 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 	elseif password == "2" then
 		password = "llmm"..string.sub(phone,#phone-3,#phone)
 	end
-
+    
+    writePasteboard(password)
 	--密码
 	while (true) do
 		mSleep(200)
@@ -3463,7 +3464,10 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			mSleep(500)
 			randomTap(x+400,y,8)
 			mSleep(math.random(1000, 1700))
-			inputStr(password)
+            keyDown("RightGUI") 
+            keyDown("v")
+            keyUp("v")
+            keyUp("RightGUI")
 			mSleep(math.random(500, 700))
 			break
 		end
@@ -3474,7 +3478,10 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			mSleep(500)
 			randomTap(x+400,y,8)
 			mSleep(math.random(1000, 1700))
-			inputStr(password)
+			keyDown("RightGUI") 
+            keyDown("v")
+            keyUp("v")
+            keyUp("RightGUI")
 			mSleep(math.random(500, 700))
 			break
 		end
