@@ -1560,10 +1560,5 @@ end
 -- 			toast("立即打卡1", 1)
 -- 			mSleep(1000)
 -- 		end
-		writePasteboard("1111111")
-keyDown("RightGUI") 
-keyDown("v")
-keyUp("v")
-keyUp("RightGUI")
 
 

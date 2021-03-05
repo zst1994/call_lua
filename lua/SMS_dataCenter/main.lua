@@ -388,7 +388,9 @@ function model:clear_App()
 
 	::run_again::
 	closeApp(clear_bid)
+	mSleep(500)
 	runApp(clear_bid)
+	mSleep(1000)
 
 	while true do
 		mSleep(200)
@@ -4475,6 +4477,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					mSleep(1000)
 					setVPNEnable(false)
 					mSleep(1000)
+					cheack_bool = true
 					goto next_again
 				end
 			end
