@@ -117,10 +117,10 @@ function model:main()
 
 				mSleep(200)
 				if getColor(77, 1243) ~= 0xffffff and getColor(52,  84) == 0xffffff then
-					mSleep(200)
-					if getColor(669,  828) == 0x3bb3fa then
+					mSleep(500)
+					if getColor(362,798) == 0x3bb3fa then
 						self:saveStringFile(self.errorFilePath, searchAccount .. "----账号异常", "a", "账号异常保存成功")
-					elseif getColor(669,  828) == 0xffffff then
+					elseif getColor(362,798) == 0xffffff then
 						self:shibie()
 						self:saveStringFile(self.successFilePath, searchAccount .. "----" .. self.content_num, "a", "正常账号保存成功")
 					end

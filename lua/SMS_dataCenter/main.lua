@@ -3821,16 +3821,18 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				mSleep(200)
 				x,y = findMultiColorInRegionFuzzy( 0xc2c2c2, "-148|-7|0xf2f2f2,140|2|0xf2f2f2,245|2|0xededed,-175|6|0xf2f2f2", 100, 0, 920, 749, 1333)
 				if x~=-1 and y~=-1 then
-					flag = getVPNStatus()
-					if not flag.active then
-						self:changeGWIP(ip_userName,ip_country)
-					end
-
-					if set_vpn then
-						ip = self:vpn()
-						toast(ip,1)
-						mSleep(500)
-					end
+				    if not cheack_bool then
+    					flag = getVPNStatus()
+    					if not flag.active then
+    						self:changeGWIP(ip_userName,ip_country)
+    					end
+    
+    					if set_vpn then
+    						ip = self:vpn()
+    						toast(ip,1)
+    						mSleep(500)
+    					end
+				    end
 					mSleep(500)
 					randomTap(x, y-112,1)
 					mSleep(500)
@@ -4408,7 +4410,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			mSleep(200)
 			if getColor(132, 766) == 0x000000 and getColor(54,648) == 0x808080 or getColor(44, 1286) == 0x576b95 and getColor(121, 1281) == 0x576b95 then
 				next_again_time = next_again_time + 1
-				if next_again_time > tonumber(fz_error_times) then
+				if next_again_time >= tonumber(fz_error_times) then
 					if api_change == "2" or api_change == "10" or api_change == "12" then
 						if api_change == "10" then
 							black_url = "http://web.jiemite.com/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..work_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
@@ -4477,7 +4479,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					mSleep(1000)
 					setVPNEnable(false)
 					mSleep(1000)
-					cheack_bool = true
 					goto next_again
 				end
 			end
