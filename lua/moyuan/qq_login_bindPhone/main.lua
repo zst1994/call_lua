@@ -1459,6 +1459,16 @@ function model:mm()
 
 	t1 = ts.ms()
 	while true do
+	    --提交验证码卡住了
+	    mSleep(200)
+		if getColor(254,657) == 0xf3f3f3 and getColor(352,654) == 0xcdcdcd and getColor(226,273) == 0x000000 then
+			mSleep(500)
+			tap(57, 84)
+			mSleep(500)
+			toast("提交验证码卡住了返回",1)
+			mSleep(500)
+		end
+		
 		--设置
 		mSleep(200)
 		if getColor(342, 80) == 0 and getColor(386, 79) == 0 then

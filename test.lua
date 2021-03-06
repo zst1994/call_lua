@@ -1352,15 +1352,15 @@ end
 --	end
 --end
 
---API = "Hk8Ve2Duh6QCR5XUxLpRxPyv"
---Secret  = "fD0az8pW8lNhGptCZC4TPfMWX5CyVtnh"
+-- API = "Hk8Ve2Duh6QCR5XUxLpRxPyv"
+-- Secret  = "fD0az8pW8lNhGptCZC4TPfMWX5CyVtnh"
 
---tab_CHN_ENG = {
---	language_type = "CHN_ENG",
---	detect_direction = "true",
---	detect_language = "true",
---	ocrType = 3
---}
+-- tab_CHN_ENG = {
+-- 	language_type = "CHN_ENG",
+-- 	detect_direction = "true",
+-- 	detect_language = "true",
+-- 	ocrType = 3
+-- }
 
 --::getBaiDuToken1::
 --local code,access_token = getAccessToken(API,Secret)
@@ -1561,4 +1561,14 @@ end
 -- 			mSleep(1000)
 -- 		end
 
-
+	--vpn连接
+	mSleep(200)
+	x,y = findMultiColorInRegionFuzzy(0x1382ff, "-4|4|0x1382ff,5|10|0x1382ff,2|19|0x1382ff,12|-1|0x1382ff,17|8|0x1382ff,10|13|0x1382ff,24|13|0x1382ff,13|26|0x1382ff,17|19|0x1382ff", 90, 0, 0, 750, 1334, { orient = 2 })
+	if x ~= -1 then
+		mSleep(500)
+		randomTap(x,y,4)
+		mSleep(500)
+		setVPNEnable(true)
+		toast("好",1)
+		mSleep(3000)
+	end

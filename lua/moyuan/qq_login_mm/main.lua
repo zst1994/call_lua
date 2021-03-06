@@ -626,6 +626,17 @@ function model:vpn_connection()
 		toast("好",1)
 		mSleep(3000)
 	end
+	
+	--网络连接失败：知道了
+	mSleep(200)
+	x,y = findMultiColorInRegionFuzzy(0x007aff, "34|5|0x007aff,66|5|0x007aff,63|-11|0x007aff,-63|-102|0x000000,-44|-102|0x000000,3|-98|0x000000,53|-105|0x000000,49|-140|0x000000,4|-142|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+    if x ~= -1 then
+		mSleep(500)
+		randomTap(x,y,4)
+		mSleep(500)
+		toast("知道了",1)
+		mSleep(1000)
+	end
 end
 
 function model:getIP()
