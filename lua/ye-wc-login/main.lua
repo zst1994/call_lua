@@ -1322,80 +1322,83 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			goto get_phone
 		end
 	elseif vpn_stauts == "11" then
-		::get_balance::
-		local ts = require("ts")
+		::get_token::
 		header_send = {}
 		body_send = {}
 		ts.setHttpsTimeOut(60) 
-		code,header_resp, body_resp = ts.httpsGet("https://chothuesimcode.com/api?act=account&apik=6b133584", header_send,body_send)
+		code,header_resp, body_resp = ts.httpsGet("http://vinasim.xyz/operate.php?myfun=gettoken&username=huqianjin&userpwd=huqianjin", header_send,body_send)
 		if code == 200 then
-			tmp = json.decode(body_resp)
-			if tmp.ResponseCode == 0 then
-				if tmp.Result.Balance > 4.5 then
-					toast("当前金额为:"..tmp.Result.Balance,1)
-				else
-					dialog("平台余额不足",0)
-					lua_exit()
-				end
+			tmp = strSplit(body_resp,"|")
+			if tmp[1] == 0 or tmp[1] == "0" then
+				token = tmp[2]
+				toast(token,1)
+				mSleep(1000)
 			else
-				toast("获取金额失败:"..body_resp,1)
+				toast("获取token失败:"..body_resp,1)
 				mSleep(5000)
-				goto get_balance
+				goto get_token
 			end
 		else
-			toast("获取金额失败:"..body_resp,1)
+			toast("请求token接口失败:"..body_resp,1)
 			mSleep(5000)
-			goto get_balance
+			goto get_token
 		end
 
-		::get_app::
-		local ts = require("ts")
+		::get_money::
 		header_send = {}
 		body_send = {}
 		ts.setHttpsTimeOut(60) 
-		code,header_resp, body_resp = ts.httpsGet("https://chothuesimcode.com/api?act=app&apik=6b133584", header_send,body_send)
+		code,header_resp, body_resp = ts.httpsGet("http://vinasim.xyz/operate.php?myfun=getmoney&token=" .. token, header_send,body_send)
 		if code == 200 then
-			tmp = json.decode(body_resp)
-			if tmp.ResponseCode == 0 then
-				for k,v in ipairs(tmp.Result) do
-					if v.Name == self.wc_name then
-						id = v.Id
-						toast("项目id:"..id,1)
-						mSleep(1000)
-						break
-					end
+			tmp = strSplit(body_resp,"|")
+			if tmp[1] == 0 or tmp[1] == "0" then
+				if tonumber(tmp[2]) <= 10 then
+				    toast("用户余额低于10",1)
+				    mSleep(3000)
+				    goto get_money
+				else
+				    toast("用户余额:"..tmp[2],1)
+				    mSleep(1000)
 				end
 			else
-				toast("获取项目id失败:"..body_resp,1)
+				toast("获取用户余额失败:"..body_resp,1)
 				mSleep(5000)
-				goto get_app
+				goto get_money
 			end
 		else
-			toast("获取项目id失败:"..body_resp,1)
+			toast("请求用户余额接口失败:"..body_resp,1)
 			mSleep(5000)
-			goto get_app
+			goto get_money
 		end
 
 		::get_phone::
-		local ts = require("ts")
 		header_send = {}
 		body_send = {}
 		ts.setHttpsTimeOut(60) 
-		code,header_resp, body_resp = ts.httpsGet("https://chothuesimcode.com/api?act=number&apik=6b133584&appId="..id, header_send,body_send)
+		code,header_resp, body_resp = ts.httpsGet("http://vinasim.xyz/operate.php?myfun=getphone&mytoken=" .. token .. "&pid=1001", header_send,body_send)
 		if code == 200 then
-			tmp = json.decode(body_resp)
-			if tmp.ResponseCode == 0 then
-				telphone = tmp.Result.Number
-				telphoneID = tmp.Result.Id
-				toast(telphone.."\r\n"..telphoneID,1)
-				mSleep(1000)
+			tmp = strSplit(body_resp,"|")
+			if tmp[1] == 0 or tmp[1] == "0" then
+				telphone = tmp[2]
+			elseif tmp[1] == 0 or tmp[1] == "1" then
+			    toast("余额不足",1)
+				mSleep(5000)
+				goto get_phone
+			elseif tmp[1] == 0 or tmp[1] == "2" then
+			    toast("无可用号码",1)
+				mSleep(5000)
+				goto get_phone
+			elseif tmp[1] == 0 or tmp[1] == "3" then
+	            toast("token错误",1)
+				mSleep(5000)
+				goto get_phone
 			else
 				toast("获取号码失败:"..body_resp,1)
 				mSleep(5000)
 				goto get_phone
 			end
 		else
-			toast("获取号码失败:"..body_resp,1)
+			toast("请求获取号码接口失败:"..body_resp,1)
 			mSleep(5000)
 			goto get_phone
 		end
@@ -1700,12 +1703,14 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 	if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "3" or vpn_stauts == "5" 
 	or vpn_stauts == "6" or vpn_stauts == "7" or vpn_stauts == "8" or vpn_stauts == "9" 
-	or vpn_stauts == "11" or vpn_stauts == "12" or vpn_stauts == "13" or vpn_stauts == "14" 
-	or vpn_stauts == "15" or vpn_stauts == "16" or vpn_stauts == "17" or vpn_stauts == "18" 
-	or vpn_stauts == "19" or vpn_stauts == "20" then
+	or vpn_stauts == "12" or vpn_stauts == "13" or vpn_stauts == "14" or vpn_stauts == "15" 
+	or vpn_stauts == "16" or vpn_stauts == "17" or vpn_stauts == "18" or vpn_stauts == "19" 
+	or vpn_stauts == "20" then
 		country_id = kn_country
 	elseif vpn_stauts == "4" or vpn_stauts == "10" then
 		country_id = country_code
+	elseif vpn_stauts == "11" then
+	    country_id = "84"
 	else
 		if country_len == "0" then
 			lens = 1
@@ -2858,21 +2863,22 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			end
 		elseif vpn_stauts == "11" then
 			::black::
-			local ts = require("ts")
 			header_send = {}
 			body_send = {}
 			ts.setHttpsTimeOut(60) 
-			code,header_resp, body_resp = ts.httpsGet("https://chothuesimcode.com/api?act=expired&apik=6b133584&id="..telphoneID, header_send,body_send)
+			code,header_resp, body_resp = ts.httpsGet("http://vinasim.xyz/operate.php?myfun=addblack&mobile=" .. telphone .. "&token=" .. token .. "&pid=1001", header_send,body_send)
 			if code == 200 then
-				tmp = json.decode(body_resp)
-				if tmp.ResponseCode == 0 then
-					toast("已成功取消", 1)
-				else
-					toast("取消失败",1)
+    			if body_resp == "ok" then
+    				toast("拉黑成功",1)
+					mSleep(500)
+    			else
+    				toast("拉黑失败:"..tostring(body_resp),1)
+					mSleep(5000)
 					goto black
-				end
+    			end
 			else
-				toast("取消失败",1)
+				toast("请求拉黑接口失败:"..tostring(body_resp),1)
+				mSleep(5000)
 				goto black
 			end
 		elseif vpn_stauts == "15" then
@@ -3781,89 +3787,97 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			elseif vpn_stauts == "11" then
 				::get_mess::
 				self:sendSMSKQ()
+				
+                if get_time > 15 then
+					if country_id ~= "886" then
+						if content_type == "1" then
+							mSleep(math.random(2000, 3000))
+							randomsTap(372,  749, 3)
+							mSleep(math.random(1000, 1500))
+							randomsTap(368, 1039,5)
+							mSleep(math.random(5000, 6000))
+						else
+							mSleep(500)
+							setVPNEnable(true)
+							mSleep(math.random(2000, 3000))
+							randomsTap(372,  749, 3)
+							mSleep(math.random(1000, 1500))
+							randomsTap(368, 1039,5)
+							mSleep(math.random(5000, 6000))
+							if content_type ~= "3" then
+								setVPNEnable(false)
+							end
+						end
+					end
+					get_time = 1
+					restart_time = restart_time + 1
+					caozuo_more = true
+					toast("重新获取验证码"..restart_time,1)
+					goto caozuo_more
+				end
 
+				if restart_time > 1 then
+					::black::
+					header_send = {}
+        			body_send = {}
+        			ts.setHttpsTimeOut(60) 
+        			code,header_resp, body_resp = ts.httpsGet("http://vinasim.xyz/operate.php?myfun=addblack&mobile=" .. telphone .. "&token=" .. token .. "&pid=1001", header_send,body_send)
+        			if code == 200 then
+        				if body_resp == "ok" then
+            				toast("拉黑成功",1)
+        					mSleep(500)
+            			else
+            				toast("拉黑失败:"..tostring(body_resp),1)
+        					mSleep(5000)
+        					goto black
+            			end
+        			else
+        				toast("请求拉黑接口失败:"..tostring(body_resp),1)
+        				mSleep(5000)
+        				goto black
+        			end
+					goto over
+				end
+				
 				header_send = {}
 				body_send = {}
 				ts.setHttpsTimeOut(60) 
-				code,header_resp, body_resp = ts.httpsGet("https://chothuesimcode.com/api?act=code&apik=6b133584&id="..telphoneID, header_send,body_send)
+				code,header_resp, body_resp = ts.httpsGet("http://vinasim.xyz/operate.php?myfun=getcodes&mytoken=" .. token .. "&mobile=" .. telphone .. "&pid=1001", header_send,body_send)
 				if code == 200 then
-					tmp = json.decode(body_resp)
-					if tmp.ResponseCode == 0 then
-						mess_yzm = tmp.Result.Code
-						toast(tmp.Result.SMS,1)
+					tmp = strSplit(body_resp,"|")
+    			    if tmp[1] == 0 or tmp[1] == "0" then
+						mess_yzm = tmp[2]
+						toast(mess_yzm,1)
 						mSleep(1000)
-					elseif tmp.ResponseCode == 1 then
-						toast("暂未查询到验证码，请稍后再试"..get_time,1)
+					elseif tmp[1] == 1 or tmp[1] == "1" then
+						toast("尚未收到验证码:"..get_time,1)
 						mSleep(2000)
 						get_time = get_time + 1
-						if get_time > 15 then
-							if country_id == "886" then
-								mSleep(500)
-								setVPNEnable(true)
-								mSleep(math.random(2000, 3000))
-								randomsTap(372,  749, 3)
-								mSleep(math.random(1000, 1500))
-								randomsTap(368, 1039,5)
-								mSleep(math.random(5000, 6000))
-								if content_type ~= "3" then
-									setVPNEnable(false)
-								end
-							else
-								if content_type == "1" then
-									mSleep(math.random(2000, 3000))
-									randomsTap(372,  749, 3)
-									mSleep(math.random(1000, 1500))
-									randomsTap(368, 1039,5)
-									mSleep(math.random(5000, 6000))
-								else
-									mSleep(500)
-									setVPNEnable(true)
-									mSleep(math.random(2000, 3000))
-									randomsTap(372,  749, 3)
-									mSleep(math.random(1000, 1500))
-									randomsTap(368, 1039,5)
-									mSleep(math.random(5000, 6000))
-									if content_type ~= "3" then
-										setVPNEnable(false)
-									end
-								end
-							end
-							get_time = 1
-							restart_time = restart_time + 1
-							caozuo_more = true
-							toast("重新获取验证码"..restart_time,1)
-							goto caozuo_more
-						end
-
-						if restart_time > 1 then
-							::black::
-							local ts = require("ts")
-							header_send = {}
-							body_send = {}
-							ts.setHttpsTimeOut(60) 
-							code,header_resp, body_resp = ts.httpsGet("https://chothuesimcode.com/api?act=expired&apik=6b133584&id="..telphoneID, header_send,body_send)
-							if code == 200 then
-								tmp = json.decode(body_resp)
-								if tmp.ResponseCode == 0 then
-									toast("已成功取消", 1)
-								else
-									toast("取消失败",1)
-									goto black
-								end
-							else
-								toast("取消失败",1)
-								goto black
-							end
-							goto over
-						end
 						goto get_mess
+					elseif tmp[1] == 3 or tmp[1] == "3" then
+						toast("余额不足:"..get_time,1)
+						mSleep(2000)
+						goto get_mess
+					elseif tmp[1] == 2 or tmp[1] == "2" then
+						toast("号码不存在或非本帐号获取",1)
+						mSleep(2000)
+						goto over
+					elseif tmp[1] == 4 or tmp[1] == "4" then
+						toast("无此号码(可能已换卡):",1)
+						mSleep(2000)
+						goto over
+					elseif tmp[1] == 5 or tmp[1] == "5" then
+						toast("错误的TOKEN:"..get_time,1)
+						mSleep(2000)
+						goto over
 					else
 						toast("获取验证码失败，重新获取:"..body_resp,1)
 						mSleep(3000)
+						get_time = get_time + 1
 						goto get_mess
 					end
 				else
-					toast("获取验证码失败，重新获取",1)
+					toast("请求验证码接口失败，重新请求",1)
 					mSleep(3000)
 					goto get_mess
 				end

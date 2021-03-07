@@ -1602,21 +1602,28 @@ end
 
 -- six_data = getData()
 -- dialog(six_data,0)
-local ts = require("ts")
-			local plist = ts.plist
-			local plfilename = userPath() .. "/res/LocalInfo.lst" --设置plist路径
-			local tmp2 = plist.read(plfilename)                --读取 PLIST 文件内容并返回一个 TABLE
-			for k, v in pairs(tmp2) do
-				if k == "$objects" then
-					for i = 3 ,5 do
-						if tonumber(v[i]) then
-							wx = v[i]
-							wxid = v[i-1]
-							break
-						end	
-					end	
-				end	
-			end
-			
-dialog(wx,0)
-dialog(wxid,0)
+
+
+-- 获取token  http://vinasim.xyz/operate.php?myfun=gettoken&username=用户名&userpwd=密码 0|获取到的token 成功 
+--   成功实例: 0|6dd36a4e44688d665b44112383a58ad5 1|error      错误的用户名或密码 
+    
+-- 查询余额 http://vinasim.xyz/operate.php?myfun=getmoney&token=token 0|余额 成功 
+--     1|error 该用户不存在 
+    
+-- 获取手机号码 http://vinasim.xyz/operate.php?myfun=getphone&mytoken=token&pid=pid 0|获取到的号码 成功 
+--   成功实例: 0|365512456 (越南电话号码为9位数字) 1|nomoney 余额不足 
+--     2|nomobile 无可用号码   
+--     3|tokenerror token错误 
+    
+-- 获取验证码 http://vinasim.xyz/operate.php?myfun=getcodes&mytoken=token&mobile=手机号码&pid=pid 0|获取到的验证码 成功 
+--   成功实例: 0|3245 验证码位数一般为4到6位数字 1|nomsg  尚未收到验证码 
+--     2|error  号码不存在或非本帐号获取 
+--     3|nomoney 余额不足 
+--     4|nonumber 无此号码(可能已换卡) 
+--     5|tokenerror 错误的TOKEN 
+    
+-- 加黑 http://vinasim.xyz/operate.php?myfun=addblack&mobile=手机号码&token=token&pid=pid 0|ok 成功 
+--     1|error 失败 
+
+    
+-- 其他说明：微信的pid为1001
