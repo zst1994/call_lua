@@ -266,11 +266,10 @@ function model:get_mess()
 	body_send = {}
 	ts.setHttpsTimeOut(60)
 	status_resp, header_resp, body_resp = ts.httpGet(self.code_token, header_send, body_send)
-	mSleep(500)
 	if status_resp == 200 then
 		local i, j = string.find(body_resp, "%d+%d+%d+%d+%d+%d+")
 		if i > 0 then
-			self.mm_yzm = string.match(body_resp,"%d+")
+			self.mm_yzm = string.match(body_resp,"%d+%d+%d+%d+%d+%d+")
 			toast(self.mm_yzm, 1)
 			mSleep(2000)
 			return true
@@ -285,33 +284,11 @@ function model:get_mess()
 				mSleep(3000)
 				goto get_yzm
 			end
-			-- mSleep(500)
-			-- if get_code_num > 2 then
-			-- 	toast("验证码重新获取超过2次失败，结束下一个", 1)
-			-- 	mSleep(3000)
-			-- 	return false
-			-- else
-			-- 	yzm_time2 = ts.ms()
-
-			-- 	if os.difftime(yzm_time2, yzm_time1) > 65 then
-			-- 		mSleep(500)
-			-- 		tap(491,  489)
-			-- 		mSleep(1000)
-			-- 		toast("重新获取验证码：" .. get_code_num, 1)
-			-- 		mSleep(1000)
-			-- 		get_code_num = get_code_num + 1
-			-- 		goto get_yzm_restart
-			-- 	end
-
-			-- 	toast(tmp.message, 1)
-			-- 	mSleep(3000)
-			-- 	goto get_yzm
-			-- end
 		end
 	else
 		yzm_time2 = ts.ms()
 		if os.difftime(yzm_time2, yzm_time1) > 65 then
-			toast("验证码获取失败，结束下一个"..tostring(body_resp), 1)
+			toast("验证码获取失败，结束下一个:"..tostring(body_resp), 1)
 			mSleep(3000)
 			return false
 		else

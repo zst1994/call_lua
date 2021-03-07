@@ -1603,27 +1603,32 @@ end
 -- six_data = getData()
 -- dialog(six_data,0)
 
+::get_yzm::
+	header_send = {}
+	body_send = {}
+	ts.setHttpsTimeOut(60)
+	status_resp, header_resp, body_resp = ts.httpGet("http://51.79.78.109/api_gsim/v1/public/getSmsByToken?token=240f6af0-6385-4817-a839-132b8e6d2e62", header_send, body_send)
+	dialog(status_resp..body_resp,0)
+	if status_resp == 200 then
+		local i, j = string.find(body_resp, "%d+%d+%d+%d+%d+%d+")
+		if i > 0 then
+			mm_yzm = string.match(body_resp, "%d+%d+%d+%d+%d+%d+")
+			toast(mm_yzm, 1)
+			mSleep(2000)
+			return true
+		else
+			yzm_time2 = ts.ms()
+			if os.difftime(yzm_time2, yzm_time1) > 65 then
+				toast("验证码获取失败，结束下一个", 1)
+				mSleep(3000)
+				return false
+			else
+				toast(body_resp, 1)
+				mSleep(3000)
+				goto get_yzm
+			end
+		end
+	end
+	
 
--- 获取token  http://vinasim.xyz/operate.php?myfun=gettoken&username=用户名&userpwd=密码 0|获取到的token 成功 
---   成功实例: 0|6dd36a4e44688d665b44112383a58ad5 1|error      错误的用户名或密码 
-    
--- 查询余额 http://vinasim.xyz/operate.php?myfun=getmoney&token=token 0|余额 成功 
---     1|error 该用户不存在 
-    
--- 获取手机号码 http://vinasim.xyz/operate.php?myfun=getphone&mytoken=token&pid=pid 0|获取到的号码 成功 
---   成功实例: 0|365512456 (越南电话号码为9位数字) 1|nomoney 余额不足 
---     2|nomobile 无可用号码   
---     3|tokenerror token错误 
-    
--- 获取验证码 http://vinasim.xyz/operate.php?myfun=getcodes&mytoken=token&mobile=手机号码&pid=pid 0|获取到的验证码 成功 
---   成功实例: 0|3245 验证码位数一般为4到6位数字 1|nomsg  尚未收到验证码 
---     2|error  号码不存在或非本帐号获取 
---     3|nomoney 余额不足 
---     4|nonumber 无此号码(可能已换卡) 
---     5|tokenerror 错误的TOKEN 
-    
--- 加黑 http://vinasim.xyz/operate.php?myfun=addblack&mobile=手机号码&token=token&pid=pid 0|ok 成功 
---     1|error 失败 
 
-    
--- 其他说明：微信的pid为1001
