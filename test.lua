@@ -1561,14 +1561,62 @@ end
 -- 			mSleep(1000)
 -- 		end
 
-	--vpn连接
-	mSleep(200)
-	x,y = findMultiColorInRegionFuzzy(0x1382ff, "-4|4|0x1382ff,5|10|0x1382ff,2|19|0x1382ff,12|-1|0x1382ff,17|8|0x1382ff,10|13|0x1382ff,24|13|0x1382ff,13|26|0x1382ff,17|19|0x1382ff", 90, 0, 0, 750, 1334, { orient = 2 })
-	if x ~= -1 then
-		mSleep(500)
-		randomTap(x,y,4)
-		mSleep(500)
-		setVPNEnable(true)
-		toast("好",1)
-		mSleep(3000)
-	end
+
+
+function getData() --获取six-two-data (可以用的)
+	local getList = function(path) 
+		local a = io.popen("ls "..path) 
+		local f = {}; 
+		for l in a:lines() do 
+			table.insert(f,l) 
+		end 
+		return f 
+	end 
+	local Wildcard = getList("/var/mobile/Containers/Data/Application") 
+	for var = 1,#Wildcard do 
+		local file = io.open("/var/mobile/Containers/Data/Application/"..Wildcard[var].."/Library/WechatPrivate/wx.dat","rb") 
+		if file then 
+		    local ts = require("ts")
+			local plist = ts.plist
+			local plfilename = "/var/mobile/Containers/Data/Application/"..Wildcard[var].."/Library/LocalInfo.lst" --设置plist路径
+			local tmp2 = plist.read(plfilename)                --读取 PLIST 文件内容并返回一个 TABLE
+			for k, v in pairs(tmp2) do
+				if k == "$objects" then
+					for i = 3 ,5 do
+						if tonumber(v[i]) then
+							wx = v[i]
+							wxid = v[i-1]
+							break
+						end	
+					end	
+				end	
+			end
+			local str = file:read("*a") 
+			file:close() 
+			require"sz" 
+			local str = string.tohex(str) --16进制编码 
+			return str 
+		end 
+	end 
+end 
+
+-- six_data = getData()
+-- dialog(six_data,0)
+local ts = require("ts")
+			local plist = ts.plist
+			local plfilename = userPath() .. "/res/LocalInfo.lst" --设置plist路径
+			local tmp2 = plist.read(plfilename)                --读取 PLIST 文件内容并返回一个 TABLE
+			for k, v in pairs(tmp2) do
+				if k == "$objects" then
+					for i = 3 ,5 do
+						if tonumber(v[i]) then
+							wx = v[i]
+							wxid = v[i-1]
+							break
+						end	
+					end	
+				end	
+			end
+			
+dialog(wx,0)
+dialog(wxid,0)

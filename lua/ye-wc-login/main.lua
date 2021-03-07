@@ -185,7 +185,7 @@ function model:vpn()
 		setVPNEnable(false)
 		mSleep(math.random(200, 500))
 		x,y = findMultiColorInRegionFuzzy( 0x007aff, "3|15|0x007aff,19|10|0x007aff,-50|-128|0x000000,-34|-147|0x000000,3|-127|0x000000,37|-132|0x000000,59|-135|0x000000", 90, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(math.random(200, 500))
 			randomsTap(x,y,10)
 			mSleep(math.random(200, 500))
@@ -193,7 +193,7 @@ function model:vpn()
 
 		--好
 		x,y = findMultiColorInRegionFuzzy( 0x007aff, "1|20|0x007aff,11|0|0x007aff,18|17|0x007aff,14|27|0x007aff", 90, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(math.random(200, 500))
 			randomsTap(x,y,10)
 			mSleep(math.random(200, 500))
@@ -448,7 +448,7 @@ function model:ewm(phone,country_id,ewm_url,fz_terrace,load_ewm_bool,base_six_fo
 	while (true) do
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy(0x7c160,"279|8|0x7c160,133|-829|0x7c160,160|-785|0x7c160,128|-659|0x191919,216|-659|0x191919", 90, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(200)
 			self:vpn()
 			mSleep(math.random(3500, 5700))
@@ -466,7 +466,7 @@ function model:ewm(phone,country_id,ewm_url,fz_terrace,load_ewm_bool,base_six_fo
 
 		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 100, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			setVPNEnable(false)
 			mSleep(4000)
 			break
@@ -611,7 +611,7 @@ function model:idCard(countryCode)
 --					--设置
 --					mSleep(200)
 --					x, y = findMultiColorInRegionFuzzy(0x1485ee,"0|13|0x1485ee,58|2|0x191919,63|13|0x191919,77|6|0x191919,97|11|0x191919,116|13|0x191919,106|20|0x444444", 90, 0, 0, 749, 1333)
---					if x~=-1 and y~=-1 then
+--					if x ~= -1 and y ~= -1 then
 --						mSleep(1000)
 --						randomTap(x + 300,y,2)
 --						mSleep(1000)
@@ -638,7 +638,7 @@ function model:idCard(countryCode)
 --					--实名问题
 --					mSleep(200)
 --					x, y = findMultiColorInRegionFuzzy(0x191919,"21|0|0x191919,11|10|0x191919,34|12|0x191919,41|-3|0x191919,57|7|0x191919,78|7|0x191919,92|7|0x191919,102|0|0x191919,-40|37|0xf6b460", 90, 0, 0, 749, 1333)
---					if x~=-1 and y~=-1 then
+--					if x ~= -1 and y ~= -1 then
 --						mSleep(3000)
 --						randomTap(x + 10,y + 10,2)
 --						mSleep(3000)
@@ -702,7 +702,7 @@ function model:idCard(countryCode)
 --		--二维码收款
 --		mSleep(200)
 --		x, y = findMultiColorInRegionFuzzy(0x509863,"-225|-9|0xffffff,-206|-13|0xffffff,-187|3|0xffffff,-173|-4|0xffffff,-399|-6|0x509863,96|-67|0x439057", 100, 0, 0, 749, 1333)
---		if x~=-1 and y~=-1 then
+--		if x ~= -1 and y ~= -1 then
 --			mSleep(3000)
 --			randomTap(x + 100, y, 2)
 --			mSleep(1000)
@@ -722,7 +722,7 @@ function model:idCard(countryCode)
 --	while (true) do
 --		mSleep(200)
 --		x,y = findMultiColorInRegionFuzzy( 0x1aad19, "31|-1|0x1aad19,-405|-1198|0x000000,-344|-1199|0x000000,-301|-1198|0x000000", 90, 0, 0, 749, 1333)
---		if x~=-1 and y~=-1 then
+--		if x ~= -1 and y ~= -1 then
 --			mSleep(500)
 --			randomTap(x,y,2)
 --			mSleep(1000)
@@ -856,7 +856,7 @@ function model:idCard(countryCode)
 
 --		mSleep(200)
 --		if getColor(90,1267) == 0x7c160 or getColor(654,1279) == 0x7c160 then
---			toast("wwxx",1)
+--			toast("wc",1)
 --			break
 --		else
 --			mSleep(500)
@@ -869,7 +869,7 @@ end
 function model:sendSMSKQ()
 	mSleep(200)
 	x, y = findMultiColorInRegionFuzzy(0x576b95,"17|-2|0x576b95,45|1|0x576b95,44|-16|0x576b95,-223|-274|0,-194|-237|0,247|-186|0,-26|-134|0,43|-144|0", 90, 0, 0, 749, 1333)
-	if x~=-1 and y~=-1 then
+	if x ~= -1 and y ~= -1 then
 		mSleep(math.random(200, 500))
 		randomsTap(x, y, 4)
 		mSleep(math.random(200, 500))
@@ -936,7 +936,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 	while (true) do
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0x07c160, "171|-1|0x07c160,57|-5|0xffffff,-163|-3|0xf2f2f2,-411|1|0xf2f2f2,-266|-6|0x06ae56", 90, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			if airplaneStatus == "1" then
 				mSleep(math.random(200, 500))
 				setAirplaneMode(true)
@@ -989,7 +989,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		--11系统
 		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x9ce6bf,"161|-2|0xd7f5e5,387|-10|0x9ce6bf,163|30|0x9ce6bf,156|-31|0x9ce6bf",90,0,831,749,1053)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(math.random(200, 500))
 			toast("注册页面",1)
 			break
@@ -998,7 +998,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		--点击模态框10
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0x1a1a1a,"11|2|0x1a1a1a,44|1|0x1a1a1a,79|-1|0x1a1a1a,114|-1|0x1a1a1a,153|3|0x1a1a1a,187|3|0x1a1a1a", 90, 228, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(math.random(200, 500))
 			randomsTap(x,y,10)
 			mSleep(math.random(200, 500))
@@ -1007,7 +1007,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		--点击模态框11
 		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0,"10|7|0,22|7|0,45|4|0,80|3|0,117|3|0,153|8|0,178|8|0", 90, 228, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(math.random(500, 700))
 			randomsTap(367,1042,10)
 			mSleep(math.random(500, 700))
@@ -1022,7 +1022,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0x07c160, "171|-1|0x07c160,57|-5|0xffffff,-163|-3|0xf2f2f2,-411|1|0xf2f2f2,-266|-6|0x06ae56", 90, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(math.random(200, 500))
 			randomsTap(549, 1240,10)
 			mSleep(math.random(200, 500))
@@ -1748,7 +1748,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			--707版本
 			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0,"21|17|0,36|21|0,41|4|0,-15|12|0", 90, 0, 0, 749, 701)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				mSleep(math.random(200, 500))
 				randomsTap(348, 518, 8)
 				mSleep(math.random(200, 500))
@@ -1765,7 +1765,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					mSleep(200)
 					x,y = findMultiColorInRegionFuzzy( 0xcccccc, "11|-9|0xcccccc,20|0|0xcccccc,11|10|0xcccccc,10|-1|0xffffff,5|-5|0xffffff,15|4|0xffffff,15|-5|0xffffff,7|4|0xffffff", 90, 630, 89, 749, 1333)
 					toast(y, 1)
-					if x~=-1 and y~=-1 then
+					if x ~= -1 and y ~= -1 then
 						break
 					else
 						mSleep(500)
@@ -1784,7 +1784,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		--707版本
 		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0,"27|26|0,3|25|0,17|-2|0,14|6|0,35|2|0,63|1|0", 90, 0, 0, 749, 701)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(math.random(200, 500))
 			randomsTap(x+110,y+90, 6)
 			mSleep(math.random(200, 500))
@@ -1841,7 +1841,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 	while (true) do
 		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0,"28|1|0,15|-2|0,14|20|0,3|22|0,26|20|0,38|18|0,54|-3|0,53|18|0", 90, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(math.random(200, 500))
 			randomsTap(x+400,y-70,8)
 			mSleep(math.random(200, 500))
@@ -1882,7 +1882,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 	while (true) do
 		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0,"28|1|0,15|-2|0,14|20|0,3|22|0,26|20|0,38|18|0,54|-3|0,53|18|0", 90, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(math.random(200, 500))
 			randomsTap(x+400,y,8)
 			mSleep(math.random(500, 700))
@@ -1916,7 +1916,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 	while (true) do
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0xffffff, "-63|12|0x07c160,128|13|0x07c160,54|13|0xffffff,295|-2|0x07c160,-262|6|0x07c160", 90, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(math.random(200, 500))
 			randomsTap(x,y,10)
 			mSleep(math.random(200, 500))
@@ -1925,7 +1925,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x9ce6bf,"540|-7|0x9ce6bf,270|30|0x9ce6bf,270|-89|0x576b95",90,0,0,749,1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(math.random(200, 500))
 			randomsTap(x+100,y,10)
 			mSleep(math.random(200, 500))
@@ -1938,7 +1938,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		while (true) do
 			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x7c160,"309|7|0x7c160,304|54|0x7c160,-12|57|0x7c160,-49|31|0xededed,382|32|0xededed,156|25|0xffffff", 90, 0, 0, 749, 1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				mSleep(math.random(200, 500))
 				randomsTap(x,y,10)
 				mSleep(math.random(200, 500))
@@ -1956,7 +1956,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		if EU_countries == "0" then
 			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x7c160,"309|7|0x7c160,304|54|0x7c160,-12|57|0x7c160,-49|31|0xededed,382|32|0xededed,156|25|0xffffff", 90, 0, 0, 749, 1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				mSleep(math.random(200, 500))
 				randomsTap(x,y,10)
 				mSleep(math.random(200, 500))
@@ -1966,7 +1966,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0xc2c2c2,"13|19|0xc2c2c2,52|12|0xc2c2c2,83|0|0xc2c2c2,84|16|0xc2c2c2,-111|-5|0xf2f2f2,219|43|0xf2f2f2,274|18|0xededed,-172|9|0xededed", 100, 0, 924, 749, 1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				mSleep(math.random(500, 1000))
 				randomsTap(x - 240, y-95,1)
 				mSleep(math.random(3000, 5000))
@@ -1979,7 +1979,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		else
 			mSleep(200)
 			x,y = findMultiColorInRegionFuzzy( 0xcdcdcd, "48|13|0xcdcdcd,80|4|0xcdcdcd,-87|11|0xfafafa,186|13|0xfafafa,50|34|0xfafafa,265|13|0xffffff", 100, 0, 966, 749, 1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				mSleep(math.random(200, 500))
 				randomsTap(x-240, y-98,2)
 				mSleep(math.random(200, 500))
@@ -1987,7 +1987,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			else
 				mSleep(200)
 				x,y = findMultiColorInRegionFuzzy( 0xc2c2c2, "-148|-7|0xf2f2f2,140|2|0xf2f2f2,245|2|0xededed,-175|6|0xf2f2f2", 100, 0, 1145, 749, 1333)
-				if x~=-1 and y~=-1 then
+				if x ~= -1 and y ~= -1 then
 					mSleep(math.random(500, 1000))
 					randomsTap(x, y-112,1)
 					mSleep(math.random(3000, 5000))
@@ -2046,14 +2046,14 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0xcdcdcd, "48|13|0xcdcdcd,80|4|0xcdcdcd,-87|11|0xfafafa,186|13|0xfafafa,50|34|0xfafafa,265|13|0xffffff", 100, 0, 966, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			toast("再次勾选隐秘政策",1)
 			mSleep(1000)
 			goto ymzc
 		else
 			mSleep(200)
 			x,y = findMultiColorInRegionFuzzy( 0xc2c2c2, "-148|-7|0xf2f2f2,140|2|0xf2f2f2,245|2|0xededed,-175|6|0xf2f2f2", 100, 0, 1145, 749, 1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				toast("再次勾选隐秘政策",1)
 				mSleep(1000)
 				goto ymzc
@@ -2063,7 +2063,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		--欧盟
 		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0xc2c2c2,"13|19|0xc2c2c2,52|12|0xc2c2c2,83|0|0xc2c2c2,84|16|0xc2c2c2,-111|-5|0xf2f2f2,219|43|0xf2f2f2,274|18|0xededed,-172|9|0xededed", 100, 0, 924, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			toast("欧盟再次勾选隐秘政策",1)
 			mSleep(1000)
 			goto ymzc
@@ -2085,7 +2085,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x576b95,"-28|0|0x576b95,-41|-242|0,1|-228|0,35|-239|0,79|-83|0xf9f7fa", 90, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(500)
 			randomsTap(x,y,5)
 			mSleep(1000)
@@ -2103,7 +2103,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x576b95,"17|-1|0x576b95,46|-2|0x576b95,46|-17|0x576b95,-223|-162|0,-87|-157|0,-52|-162|0,24|-174|0,168|-162|0,227|-153|0", 90, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(500)
 			randomsTap(x,y,5)
 			mSleep(1000)
@@ -2122,7 +2122,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 	while (true) do
 		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x10aeff,"55|8|0x10aeff,-79|817|0x7c160,116|822|0x7c160", 100, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(math.random(1000, 1500))
 			randomsTap(372, 1105,6)
 			mSleep(math.random(1000, 1500))
@@ -2161,7 +2161,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 					mSleep(200)
 					x, y = findMultiColorInRegionFuzzy(0x10aeff,"55|8|0x10aeff,-79|817|0x7c160,116|822|0x7c160", 100, 0, 0, 749, 1333)
-					if x~=-1 and y~=-1 then
+					if x ~= -1 and y ~= -1 then
 						mSleep(math.random(1000, 1500))
 						randomsTap(372, 1105,6)
 						mSleep(math.random(1000, 1500))
@@ -2197,7 +2197,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 					mSleep(200)
 					x, y = findMultiColorInRegionFuzzy(0x10aeff,"55|8|0x10aeff,-79|817|0x7c160,116|822|0x7c160", 100, 0, 0, 749, 1333)
-					if x~=-1 and y~=-1 then
+					if x ~= -1 and y ~= -1 then
 						mSleep(math.random(1000, 1500))
 						randomsTap(372, 1105,10)
 						mSleep(math.random(1000, 1500))
@@ -2206,7 +2206,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 					mSleep(200)
 					x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 100, 0, 0, 749, 1333)
-					if x~=-1 and y~=-1 then
+					if x ~= -1 and y ~= -1 then
 						toast("跳过滑块，短信界面",1)
 						mSleep(1000)
 						break
@@ -2333,7 +2333,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 				mSleep(200)
 				x, y = findMultiColorInRegionFuzzy(0x10aeff,"55|8|0x10aeff,-79|817|0x7c160,116|822|0x7c160", 100, 0, 0, 749, 1333)
-				if x~=-1 and y~=-1 then
+				if x ~= -1 and y ~= -1 then
 					mSleep(math.random(1000, 1500))
 					randomsTap(372, 1105,10)
 					mSleep(math.random(1000, 1500))
@@ -2342,7 +2342,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 				mSleep(200)
 				x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 100, 0, 0, 749, 1333)
-				if x~=-1 and y~=-1 then
+				if x ~= -1 and y ~= -1 then
 					toast("跳过滑块，短信界面",1)
 					mSleep(1000)
 					break
@@ -2478,7 +2478,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 			mSleep(200)
 			x,y = findMultiColorInRegionFuzzy(0x7c160,"279|8|0x7c160,133|-829|0x7c160,160|-785|0x7c160,128|-659|0x191919,216|-659|0x191919", 90, 0, 0, 749, 1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				mSleep(math.random(500, 700))
 				randomsTap(373, 1099,10)
 				mSleep(math.random(500, 700))
@@ -2488,7 +2488,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 100, 0, 0, 749, 1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				toast("辅助成功，短信界面",1)
 				mSleep(1000)
 				break
@@ -2502,7 +2502,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 	while true do
 		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 90, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			if content_type == "0" or login_type == "2" or content_type == "2" then
 				mSleep(500)
 				setVPNEnable(false)
@@ -2526,7 +2526,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0,"136|3|0,-73|686|0x7c160,330|683|0x7c160,170|683|0xffffff,116|826|0x6ae56,205|815|0x6ae56",100, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			if vpn_stauts == "2" or vpn_stauts == "9"  then
 				local m = TSVersions()
 				local a = ts.version()
@@ -2653,14 +2653,14 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			mSleep(500)
 			randomsTap(390,822,5)
 			mSleep(500)
-			toast("拒收wwxx登录",1)
+			toast("拒收wc登录",1)
 			tiaoma_next = true
 			goto kq
 		end
 
 		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x576b95,"-38|1|0x576b95,-314|-9|0x181819,-356|-3|0x181819,-157|-155|0,24|-174|0",90, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			toast("操作频繁",1)
 			mSleep(500)
 			setVPNEnable(false)
@@ -2687,7 +2687,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x10aeff,"55|8|0x10aeff,-79|817|0x7c160,116|822|0x7c160", 100, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(math.random(1000, 1500))
 			randomsTap(372, 1105,6)
 			mSleep(math.random(1000, 1500))
@@ -4446,7 +4446,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			if EU_countries == "0" then
 				mSleep(200)
 				x, y = findMultiColorInRegionFuzzy(0x343434,"49|-24|0x343434,2|547|0x9de7bf,326|537|0x9de7bf", 90, 0, 0, 749, 1333)
-				if x~=-1 and y~=-1 then
+				if x ~= -1 and y ~= -1 then
 					mSleep(math.random(500, 700))
 					randomsTap(355,590,8)
 					mSleep(math.random(500, 700))
@@ -4462,7 +4462,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 						mSleep(200)
 						x,y = findMultiColorInRegionFuzzy( 0xcccccc, "11|-9|0xcccccc,20|0|0xcccccc,11|10|0xcccccc,10|-1|0xffffff,5|-5|0xffffff,15|4|0xffffff,15|-5|0xffffff,7|4|0xffffff", 90, 630, 89, 749, 1333)
 						toast(y, 1)
-						if x~=-1 and y~=-1 then
+						if x ~= -1 and y ~= -1 then
 							break
 						else
 							mSleep(500)
@@ -4479,7 +4479,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 						--填写生日
 						mSleep(200)
 						x, y = findMultiColorInRegionFuzzy(0,"49|-16|0,-5|344|0x9ed99d,365|339|0x9ed99d", 100, 0, 0, 749, 800)
-						if x~=-1 and y~=-1 then
+						if x ~= -1 and y ~= -1 then
 							mSleep(math.random(1000, 1700))
 							randomsTap(384,447,8)
 							mSleep(math.random(500, 700))
@@ -4510,7 +4510,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			--不是我的，继续注册
 			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x6ae56,"36|1|0x6ae56,136|5|0x6ae56,181|-7|0x6ae56,294|-7|0x6ae56,371|0|0xf2f2f2,-98|-3|0xf2f2f2", 90, 0, 0, 749,  1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				mSleep(math.random(500, 700))
 				toast("不是我的，继续注册",1)
 				break
@@ -4519,9 +4519,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x576b95,"28|-1|0x576b95,-84|141|0x36030,164|141|0x36030,-208|-180|0,-121|-230|0", 90, 0, 0, 749,  1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				mSleep(math.random(500, 700))
-				toast("手机号近期注册过wwxx",1)
+				toast("手机号近期注册过wc",1)
 				break
 			end
 
@@ -4534,7 +4534,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x1565fc,"6|13|0x1565fc,17|-5|0x1565fc,19|6|0x1565fc,17|20|0x1565fc", 90, 0, 0, 749,  1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				mSleep(math.random(500, 700))
 				toast("通讯录",1)
 				break
@@ -4542,7 +4542,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x576b95,"-28|-1|0x576b95,-6|-15|0x576b95,-135|-165|0,-70|-164|0,-14|-155|0", 90, 0, 0, 749, 1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				mSleep(500)
 				randomsTap(x,  y, 3)
 				mSleep(1000)
@@ -4593,7 +4593,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 					mSleep(200)
 					x,y = findMultiColorInRegionFuzzy( 0x07c160, "171|-1|0x07c160,57|-5|0xffffff,-163|-3|0xf2f2f2,-411|1|0xf2f2f2,-266|-6|0x06ae56", 90, 0, 0, 749, 1333)
-					if x~=-1 and y~=-1 then
+					if x ~= -1 and y ~= -1 then
 						mSleep(math.random(200, 500))
 						randomsTap(549, 1240,10)
 						mSleep(math.random(200, 500))
@@ -4612,7 +4612,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			--环境异常
 			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x576b95,"-44|3|0x576b95,-252|-185|0,-207|-203|0,-186|-191|0,-151|-193|0,-66|-177|0,53|-181|0,-47|-141|0,-14|-59|0xe0dee1", 100, 0, 0, 749, 1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				self:sendServerStatus(telphone,"环境异常")
 
 				mSleep(500)
@@ -4665,7 +4665,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 					mSleep(200)
 					x,y = findMultiColorInRegionFuzzy( 0x07c160, "171|-1|0x07c160,57|-5|0xffffff,-163|-3|0xf2f2f2,-411|1|0xf2f2f2,-266|-6|0x06ae56", 90, 0, 0, 749, 1333)
-					if x~=-1 and y~=-1 then
+					if x ~= -1 and y ~= -1 then
 						mSleep(math.random(200, 500))
 						randomsTap(549, 1240,10)
 						mSleep(math.random(200, 500))
@@ -4684,7 +4684,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			if EU_countries == "0" then
 				mSleep(200)
 				x, y = findMultiColorInRegionFuzzy(0x343434,"49|-24|0x343434,2|547|0x9de7bf,326|537|0x9de7bf", 90, 0, 0, 749, 1333)
-				if x~=-1 and y~=-1 then
+				if x ~= -1 and y ~= -1 then
 					mSleep(math.random(500, 700))
 					randomsTap(355,590,8)
 					mSleep(math.random(500, 700))
@@ -4700,7 +4700,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 						mSleep(200)
 						x,y = findMultiColorInRegionFuzzy( 0xcccccc, "11|-9|0xcccccc,20|0|0xcccccc,11|10|0xcccccc,10|-1|0xffffff,5|-5|0xffffff,15|4|0xffffff,15|-5|0xffffff,7|4|0xffffff", 90, 630, 89, 749, 1333)
 						toast(y, 1)
-						if x~=-1 and y~=-1 then
+						if x ~= -1 and y ~= -1 then
 							break
 						else
 							mSleep(500)
@@ -4717,7 +4717,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 						--填写生日
 						mSleep(200)
 						x, y = findMultiColorInRegionFuzzy(0,"49|-16|0,-5|344|0x9ed99d,365|339|0x9ed99d", 100, 0, 0, 749, 800)
-						if x~=-1 and y~=-1 then
+						if x ~= -1 and y ~= -1 then
 							mSleep(math.random(1000, 1700))
 							randomsTap(384,447,8)
 							mSleep(math.random(500, 700))
@@ -4748,7 +4748,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			--不是我的，继续注册
 			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x6ae56,"36|1|0x6ae56,136|5|0x6ae56,181|-7|0x6ae56,294|-7|0x6ae56,371|0|0xf2f2f2,-98|-3|0xf2f2f2", 90, 0, 0, 749,  1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				mSleep(math.random(500, 700))
 				randomsTap(x,y,8)
 				mSleep(math.random(500, 700))
@@ -4757,11 +4757,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x576b95,"28|-1|0x576b95,-84|141|0x36030,164|141|0x36030,-208|-180|0,-121|-230|0", 90, 0, 0, 749,  1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				mSleep(math.random(500, 700))
 				randomsTap(x,y,8)
 				mSleep(math.random(500, 700))
-				toast("手机号近期注册过wwxx",1)
+				toast("手机号近期注册过wc",1)
 				self:sendServerStatus(telphone,"最近注册")
 				goto over
 			end
@@ -4775,7 +4775,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x1565fc,"6|13|0x1565fc,17|-5|0x1565fc,19|6|0x1565fc,17|20|0x1565fc", 90, 0, 0, 749,  1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				mSleep(math.random(500, 700))
 				--				randomsTap(x-250,y,8)
 				--				mSleep(math.random(500, 700))
@@ -4786,7 +4786,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			--环境异常
 			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x576b95,"-44|3|0x576b95,-252|-185|0,-207|-203|0,-186|-191|0,-151|-193|0,-66|-177|0,53|-181|0,-47|-141|0,-14|-59|0xe0dee1", 100, 0, 0, 749, 1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				self:sendServerStatus(telphone,"环境异常")
 
 				mSleep(500)
@@ -4841,7 +4841,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 					mSleep(200)
 					x,y = findMultiColorInRegionFuzzy( 0x07c160, "171|-1|0x07c160,57|-5|0xffffff,-163|-3|0xf2f2f2,-411|1|0xf2f2f2,-266|-6|0x06ae56", 90, 0, 0, 749, 1333)
-					if x~=-1 and y~=-1 then
+					if x ~= -1 and y ~= -1 then
 						mSleep(math.random(200, 500))
 						randomsTap(549, 1240,10)
 						mSleep(math.random(200, 500))
@@ -4858,7 +4858,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		while true do
 			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x1565fc,"6|13|0x1565fc,17|-5|0x1565fc,19|6|0x1565fc,17|20|0x1565fc", 90, 0, 0, 749,  1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				mSleep(math.random(500, 700))
 				--				randomsTap(x-250,y,8)
 				--				mSleep(math.random(500, 700))
@@ -4869,7 +4869,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x7c160,"483|-9|0x7c160,155|2|0xffffff,159|95|0x576b95,225|92|0x576b95,246|99|0x576b95", 90, 0, 1013, 749,  1333)
-			if x~=-1 and y~=-1 then    
+			if x ~= -1 and y ~= -1 then    
 				mSleep(math.random(500, 700))
 				randomsTap(375,1274,6)
 				mSleep(math.random(500, 700))
@@ -4878,11 +4878,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x7c160,"191|19|0,565|19|0,104|13|0xfafafa,616|24|0xfafafa", 90, 0, 1013, 749,  1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				mSleep(math.random(500, 700))
 				randomsTap(653,1278,6)
 				mSleep(math.random(500, 700))
-				toast("wwxx界面",1)
+				toast("wc界面",1)
 				data_six_two = true
 				break
 			end
@@ -4916,14 +4916,14 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		--					mSleep(math.random(1000, 1700))
 		--					randomsTap(513,833,6)
 		--					mSleep(math.random(500, 700))
-		--					toast("通过siri打开wwxx",1)
+		--					toast("通过siri打开wc",1)
 		--				end
 		--			end
 
 		--			while true do
 		--				mSleep(200)
 		--				x, y = findMultiColorInRegionFuzzy(0x181818,"36|-14|0x181818,60|5|0x181818,102|-2|0x181818,267|-1|0xf2f2f2", 90, 0, 0, 749,  1333)
-		--				if x~=-1 and y~=-1 then
+		--				if x ~= -1 and y ~= -1 then
 		--					mSleep(math.random(500, 700))
 		--					randomsTap(653,350,6)
 		--					mSleep(math.random(500, 700))
@@ -5026,7 +5026,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		--						mSleep(500)
 		--						x,y = findMultiColorInRegionFuzzy( 0xcccccc, "11|-9|0xcccccc,20|0|0xcccccc,11|10|0xcccccc,10|-1|0xffffff,5|-5|0xffffff,15|4|0xffffff,15|-5|0xffffff,7|4|0xffffff", 90, 630, 89, 749, 1333)
 		--						toast(y, 1)
-		--						if x~=-1 and y~=-1 then
+		--						if x ~= -1 and y ~= -1 then
 		--							break
 		--						else
 		--							mSleep(500)
@@ -5091,6 +5091,21 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				for var = 1,#Wildcard do 
 					local file = io.open("/var/mobile/Containers/Data/Application/"..Wildcard[var]..self.wc_file,"rb") 
 					if file then 
+					    local ts = require("ts")
+            			local plist = ts.plist
+            			local plfilename = "/var/mobile/Containers/Data/Application/"..Wildcard[var].."/Library/LocalInfo.lst" --设置plist路径
+            			local tmp2 = plist.read(plfilename)                --读取 PLIST 文件内容并返回一个 TABLE
+            			for k, v in pairs(tmp2) do
+            				if k == "$objects" then
+            					for i = 3 ,5 do
+            						if tonumber(v[i]) then
+            							wc = v[i]
+            							wcid = v[i-1]
+            							break
+            						end	
+            					end	
+            				end	
+            			end
 						local str = file:read("*a") 
 						file:close() 
 						require"sz" 
@@ -5100,6 +5115,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				end 
 			end 
 			six_data = getData()
+			six_data = six_data .. "----" .. wcid
 			mSleep(500)
 			toast(six_data);
 			mSleep(500)
@@ -5186,7 +5202,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 							if getColor(654,1279) == 0x7c160 then
 								mSleep(500)
 								x,y = findMultiColorInRegionFuzzy( 0x191919, "5|13|0x191919,38|-7|0x191919,21|4|0x191919,57|8|0x191919,39|10|0x191919,54|18|0x444444,-77|5|0x1485ee", 90, 0, 680, 749, 1333)
-								if x~=-1 and y~=-1 then
+								if x ~= -1 and y ~= -1 then
 									mSleep(500)
 									randomTap(x,y,2)
 									mSleep(1000)
