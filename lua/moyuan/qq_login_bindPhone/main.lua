@@ -269,7 +269,7 @@ function model:get_mess()
 	if status_resp == 200 then
 		local i, j = string.find(body_resp, "%d+%d+%d+%d+%d+%d+")
 		if i > 0 then
-			self.mm_yzm = string.match(body_resp,"%d+%d+%d+%d+%d+%d+")
+			self.mm_yzm = string.match(body_resp,"%d+")
 			toast(self.mm_yzm, 1)
 			mSleep(2000)
 			return true

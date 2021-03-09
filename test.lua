@@ -1602,13 +1602,12 @@ end
 
 -- six_data = getData()
 -- dialog(six_data,0)
-
+yzm_time1 = ts.ms()
 ::get_yzm::
 	header_send = {}
 	body_send = {}
 	ts.setHttpsTimeOut(60)
-	status_resp, header_resp, body_resp = ts.httpGet("http://51.79.78.109/api_gsim/v1/public/getSmsByToken?token=240f6af0-6385-4817-a839-132b8e6d2e62", header_send, body_send)
-	dialog(status_resp..body_resp,0)
+	status_resp, header_resp, body_resp = ts.httpGet("http://81.69.38.179/SMS/rest/MSService?state=5&code=momomo_513def7dd1ab77a2b4fdd61182a6e0fb", header_send, body_send)
 	if status_resp == 200 then
 		local i, j = string.find(body_resp, "%d+%d+%d+%d+%d+%d+")
 		if i > 0 then
@@ -1618,7 +1617,7 @@ end
 			return true
 		else
 			yzm_time2 = ts.ms()
-			if os.difftime(yzm_time2, yzm_time1) > 65 then
+			if os.difftime(yzm_time2, yzm_time1) > 165 then
 				toast("验证码获取失败，结束下一个", 1)
 				mSleep(3000)
 				return false
@@ -1628,7 +1627,19 @@ end
 				goto get_yzm
 			end
 		end
+	else
+		yzm_time2 = ts.ms()
+		if os.difftime(yzm_time2, yzm_time1) > 165 then
+			toast("验证码获取失败，结束下一个:"..tostring(body_resp), 1)
+			mSleep(3000)
+			return false
+		else
+			toast(tostring(body_resp), 1)
+			mSleep(3000)
+			goto get_yzm
+		end
 	end
+	
 	
 
 
