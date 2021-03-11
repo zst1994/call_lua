@@ -3786,6 +3786,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				end
 			elseif vpn_stauts == "11" then
 				::get_mess::
+				mSleep(3000)
 				self:sendSMSKQ()
 				
                 if get_time > 15 then
