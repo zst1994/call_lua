@@ -362,6 +362,16 @@ function model:mm()
 			mSleep(500)
 			inputAgain = true
 		end
+		
+		--取消发动态
+		x,y = findMultiColorInRegionFuzzy( 0x7f7f7f, "33|6|0x7f7f7f,258|-4|0x000000,266|1|0x000000,298|10|0x000000,326|-2|0x000000,368|-10|0x000000,570|-3|0xf3f3f3,648|0|0xf3f3f3,595|-4|0xaaaaaa", 90, 0, 0, 749, 211)
+		if x ~= -1 then
+			mSleep(500)
+			tap(x, y)
+			mSleep(500)
+			toast("取消发动态", 1)
+			mSleep(500)
+		end
 
 		if inputAgain then
 			mSleep(200)
