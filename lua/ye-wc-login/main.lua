@@ -2868,7 +2868,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			ts.setHttpsTimeOut(60) 
 			code,header_resp, body_resp = ts.httpsGet("http://vinasim.xyz/operate.php?myfun=addblack&mobile=" .. telphone .. "&token=" .. token .. "&pid=1001", header_send,body_send)
 			if code == 200 then
-    			if body_resp == "ok" then
+    			if body_resp == "ok" or strSplit(body_resp,"|")[1] == 0 or strSplit(body_resp,"|")[1] == "0" then
     				toast("拉黑成功",1)
 					mSleep(500)
     			else
@@ -3824,7 +3824,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
         			ts.setHttpsTimeOut(60) 
         			code,header_resp, body_resp = ts.httpsGet("http://vinasim.xyz/operate.php?myfun=addblack&mobile=" .. telphone .. "&token=" .. token .. "&pid=1001", header_send,body_send)
         			if code == 200 then
-        				if body_resp == "ok" then
+        				if body_resp == "ok" or strSplit(body_resp,"|")[1] == 0 or strSplit(body_resp,"|")[1] == "0" then
             				toast("拉黑成功",1)
         					mSleep(500)
             			else
