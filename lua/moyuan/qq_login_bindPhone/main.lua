@@ -478,6 +478,16 @@ function model:mm()
 			toast("立即打卡1", 1)
 			mSleep(1000)
 		end
+		
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0x323333, "-11|-11|0x323333,13|-12|0x323333,11|11|0x323333,57|886|0x3bb3fa,571|885|0x3bb3fa,339|846|0x3bb3fa,315|924|0x3bb3fa,280|874|0xffffff,363|891|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+		if x ~= -1 and y ~= -1 then
+			mSleep(500)
+			tap(x, y)
+			mSleep(500)
+			toast("立即打卡2", 1)
+			mSleep(1000)
+		end
 
 		--下一步
 		mSleep(400)
@@ -993,6 +1003,17 @@ function model:mm()
 				tap(x, y)
 				mSleep(500)
 				toast("你的家乡",1)
+				mSleep(500)
+			end
+			
+			--立即展示
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy(0xd5d5d5, "-304|284|0x453577,-235|284|0x453577,-414|614|0x3bb3fa,-255|582|0x3bb3fa,-251|646|0x3bb3fa,-130|620|0x3bb3fa,-312|625|0xffffff,-278|614|0xffffff,-224|619|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+			if x~=-1 and y~=-1 then
+				mSleep(500)
+				tap(x, y)
+				mSleep(500)
+				toast("立即展示",1)
 				mSleep(500)
 			end
 

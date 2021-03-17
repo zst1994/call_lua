@@ -1610,11 +1610,11 @@ end
 --    dialog(k,0)
 --end
 mSleep(200)
-	x,y = findMultiColorInRegionFuzzy(0x1382ff, "-4|4|0x1382ff,5|10|0x1382ff,2|19|0x1382ff,12|-1|0x1382ff,17|8|0x1382ff,10|13|0x1382ff,24|13|0x1382ff,13|26|0x1382ff,17|19|0x1382ff", 90, 0, 0, 750, 1334, { orient = 2 })
-	if x ~= -1 then
-		mSleep(500)
-		randomTap(x,y,4)
-		mSleep(500)
-		toast("好",1)
-		mSleep(3000)
-	end
+		x,y = findMultiColorInRegionFuzzy(0x323333, "-11|-11|0x323333,13|-12|0x323333,11|11|0x323333,57|886|0x3bb3fa,571|885|0x3bb3fa,339|846|0x3bb3fa,315|924|0x3bb3fa,280|874|0xffffff,363|891|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+		if x ~= -1 and y ~= -1 then
+			mSleep(500)
+			tap(x, y)
+			mSleep(500)
+			toast("立即打卡2", 1)
+			mSleep(1000)
+		end
