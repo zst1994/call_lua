@@ -75,11 +75,11 @@ local AMG = {
 	New = (function()
 			--一键新机
 			model:Check_AMG()
-			
+
 			if changeVPNWay == "1" then
 				model:vpn()
 			end
-			
+
 			local res, code = http.request("http://127.0.0.1:8080/cmd?fun=newRecord")
 			if code == 200 then
 				return model:Check_AMG_Result()
@@ -626,11 +626,11 @@ function model:vpn_connection()
 		toast("好",1)
 		mSleep(3000)
 	end
-	
+
 	--网络连接失败：知道了
 	mSleep(200)
 	x,y = findMultiColorInRegionFuzzy(0x007aff, "34|5|0x007aff,66|5|0x007aff,63|-11|0x007aff,-63|-102|0x000000,-44|-102|0x000000,3|-98|0x000000,53|-105|0x000000,49|-140|0x000000,4|-142|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
-    if x ~= -1 then
+	if x ~= -1 then
 		mSleep(500)
 		randomTap(x,y,4)
 		mSleep(500)
@@ -1034,6 +1034,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				end
 			end
 
+			writePasteboard(self.qqPassword)
 			while (true) do
 				mSleep(200)
 				if getColor(677,  469) == 0xbbbbbb or getColor(163,471) == 0x000000 then
@@ -1045,7 +1046,10 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 					mSleep(500)
 					tap(447, 477)
 					mSleep(500)
-					inputStr(self.qqPassword)
+					keyDown("RightGUI")
+					keyDown("v")
+					keyUp("v")
+					keyUp("RightGUI")
 					mSleep(1000)
 				end
 			end
@@ -1431,6 +1435,18 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			end
 		end
 
+		--vpn连接: 好
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy( 0x007aff, "6|15|0x007aff,16|-5|0x007aff,20|15|0x007aff,-56|-177|0x000000,-48|-159|0x000000,-41|-179|0x000000,40|-167|0x000000,60|-171|0x000000", 90, 0, 0, 749, 1333)
+		if x ~= -1 then
+			mSleep(500)
+			tap(x,y)
+			mSleep(500)
+			toast("vpn连接", 1)
+			mSleep(500)
+			goto over
+		end
+		
 		--动态密码
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy(0xffffff, "56|-3|0xffffff,-190|-32|0x0078ff,-192|26|0x0078ff,27|27|0x0078ff,29|-33|0x0078ff,257|-29|0x0078ff,250|20|0x0078ff,244|-121|0x0078ff,335|-127|0x0078ff", 90, 0, 0, 750, 1334, { orient = 2 })
@@ -2503,11 +2519,11 @@ function model:index()
 			--		self:deleteImage(fileName)
 			self:deleteImage(userPath() .. "/res/picFile/" .. fileName)
 		end
-		
+
 		if changeVPNWay == "0" then
 			self:vpn()
 		end
-		
+
 		self:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 		self:mm(password, sex, searchFriend, searchAccount, changeHeader, nikcNameType, changePass)
 	end

@@ -1353,12 +1353,12 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			tmp = strSplit(body_resp,"|")
 			if tmp[1] == 0 or tmp[1] == "0" then
 				if tonumber(tmp[2]) <= 10 then
-				    toast("用户余额低于10",1)
-				    mSleep(3000)
-				    goto get_money
+					toast("用户余额低于10",1)
+					mSleep(3000)
+					goto get_money
 				else
-				    toast("用户余额:"..tmp[2],1)
-				    mSleep(1000)
+					toast("用户余额:"..tmp[2],1)
+					mSleep(1000)
 				end
 			else
 				toast("获取用户余额失败:"..body_resp,1)
@@ -1381,15 +1381,15 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			if tmp[1] == 0 or tmp[1] == "0" then
 				telphone = tmp[2]
 			elseif tmp[1] == 0 or tmp[1] == "1" then
-			    toast("余额不足",1)
+				toast("余额不足",1)
 				mSleep(5000)
 				goto get_phone
 			elseif tmp[1] == 0 or tmp[1] == "2" then
-			    toast("无可用号码",1)
+				toast("无可用号码",1)
 				mSleep(5000)
 				goto get_phone
 			elseif tmp[1] == 0 or tmp[1] == "3" then
-	            toast("token错误",1)
+				toast("token错误",1)
 				mSleep(5000)
 				goto get_phone
 			else
@@ -1670,6 +1670,20 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			mSleep(1000)
 			goto get_phone
 		end
+	elseif vpn_stauts == "21" then
+		if string.gsub(countryId,"%s+","") == "my" then
+			later_phone = self:randomStr("1234567890", 8)
+			telphone = "11" .. later_phone
+			kn_country = "60"
+		elseif string.gsub(countryId,"%s+","") == "vn" then
+			later_phone = self:randomStr("1234567890", 8)
+			telphone = "8" .. later_phone
+			kn_country = "84"
+		elseif string.gsub(countryId,"%s+","") == "id" then
+			later_phone = self:randomStr("1234567890", 9)
+			telphone = "81" .. later_phone
+			kn_country = "62"
+		end
 	else
 		::get_phone::
 		local sz = require("sz")        --登陆
@@ -1705,12 +1719,12 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 	or vpn_stauts == "6" or vpn_stauts == "7" or vpn_stauts == "8" or vpn_stauts == "9" 
 	or vpn_stauts == "12" or vpn_stauts == "13" or vpn_stauts == "14" or vpn_stauts == "15" 
 	or vpn_stauts == "16" or vpn_stauts == "17" or vpn_stauts == "18" or vpn_stauts == "19" 
-	or vpn_stauts == "20" then
+	or vpn_stauts == "20" or vpn_stauts == "21" then
 		country_id = kn_country
 	elseif vpn_stauts == "4" or vpn_stauts == "10" then
 		country_id = country_code
 	elseif vpn_stauts == "11" then
-	    country_id = "84"
+		country_id = "84"
 	else
 		if country_len == "0" then
 			lens = 1
@@ -1727,7 +1741,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 	end
 
 	if vpn_stauts == "1" or vpn_stauts == "3" or vpn_stauts == "4" or vpn_stauts == "6" or vpn_stauts == "10" 
-	or vpn_stauts == "11" or vpn_stauts == "17" or vpn_stauts == "18" then
+	or vpn_stauts == "11" or vpn_stauts == "17" or vpn_stauts == "18" or vpn_stauts == "21" then
 		phone = telphone
 	elseif vpn_stauts == "5" or vpn_stauts == "8" or vpn_stauts == "12" or vpn_stauts == "15" then
 		phone = string.sub(telphone, #country_id + 1,#telphone)
@@ -2508,25 +2522,31 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 90, 0, 0, 749, 1333)
 		if x ~= -1 and y ~= -1 then
-			if content_type == "0" or login_type == "2" or content_type == "2" then
+			if vpn_stauts == "21" then
+				dialog("测试平台跳码成功", 0)
 				mSleep(500)
-				setVPNEnable(false)
-			end
-			mSleep(math.random(1500, 2700))
-			randomsTap(412, 489,5)
-			mSleep(math.random(500, 700))
-			toast("接收短信中",1)
-			mess_bool = true
-			get_ms_code = true
-			mSleep(200)
-			if login_diff_bool then
-				for i = 5, 0 , -1 do
+				goto over
+			else
+				if content_type == "0" or login_type == "2" or content_type == "2" then
 					mSleep(500)
-					toast("倒计时："..((i + 1) * 5).."秒",1)
-					mSleep(3500)
+					setVPNEnable(false)
 				end
+				mSleep(math.random(1500, 2700))
+				randomsTap(412, 489,5)
+				mSleep(math.random(500, 700))
+				toast("接收短信中",1)
+				mess_bool = true
+				get_ms_code = true
+				mSleep(200)
+				if login_diff_bool then
+					for i = 5, 0 , -1 do
+						mSleep(500)
+						toast("倒计时："..((i + 1) * 5).."秒",1)
+						mSleep(3500)
+					end
+				end
+				break
 			end
-			break
 		end
 
 		mSleep(200)
@@ -2868,14 +2888,14 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			ts.setHttpsTimeOut(60) 
 			code,header_resp, body_resp = ts.httpsGet("http://vinasim.xyz/operate.php?myfun=addblack&mobile=" .. telphone .. "&token=" .. token .. "&pid=1001", header_send,body_send)
 			if code == 200 then
-    			if body_resp == "ok" or strSplit(body_resp,"|")[1] == 0 or strSplit(body_resp,"|")[1] == "0" then
-    				toast("拉黑成功",1)
+				if body_resp == "ok" or strSplit(body_resp,"|")[1] == 0 or strSplit(body_resp,"|")[1] == "0" then
+					toast("拉黑成功",1)
 					mSleep(500)
-    			else
-    				toast("拉黑失败:"..tostring(body_resp),1)
+				else
+					toast("拉黑失败:"..tostring(body_resp),1)
 					mSleep(5000)
 					goto black
-    			end
+				end
 			else
 				toast("请求拉黑接口失败:"..tostring(body_resp),1)
 				mSleep(5000)
@@ -3474,11 +3494,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					if reTxtUtf8(data[1]) == "OK" then
 						mess_yzm = string.match(data[2], '%d+%d+%d+%d+%d+%d+')
 						if ddwGet == "0" then
---							datatable = readFile(userPath().."/res/savePhone.txt")
---							table.remove(datatable, savePhone)
---							writeFile(userPath().."/res/test.txt",datatable,"w",1)
---							toast("获取验证码成功，删除文件里面这个号码",1)
---							mSleep(1000)
+							--							datatable = readFile(userPath().."/res/savePhone.txt")
+							--							table.remove(datatable, savePhone)
+							--							writeFile(userPath().."/res/test.txt",datatable,"w",1)
+							--							toast("获取验证码成功，删除文件里面这个号码",1)
+							--							mSleep(1000)
 							::update_platform::
 							local sz = require("sz")       
 							local http = require("szocket.http")
@@ -3788,8 +3808,8 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				::get_mess::
 				mSleep(3000)
 				self:sendSMSKQ()
-				
-                if get_time > 15 then
+
+				if get_time > 15 then
 					if country_id ~= "886" then
 						if content_type == "1" then
 							mSleep(math.random(2000, 3000))
@@ -3820,33 +3840,33 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				if restart_time > 1 then
 					::black::
 					header_send = {}
-        			body_send = {}
-        			ts.setHttpsTimeOut(60) 
-        			code,header_resp, body_resp = ts.httpsGet("http://vinasim.xyz/operate.php?myfun=addblack&mobile=" .. telphone .. "&token=" .. token .. "&pid=1001", header_send,body_send)
-        			if code == 200 then
-        				if body_resp == "ok" or strSplit(body_resp,"|")[1] == 0 or strSplit(body_resp,"|")[1] == "0" then
-            				toast("拉黑成功",1)
-        					mSleep(500)
-            			else
-            				toast("拉黑失败:"..tostring(body_resp),1)
-        					mSleep(5000)
-        					goto black
-            			end
-        			else
-        				toast("请求拉黑接口失败:"..tostring(body_resp),1)
-        				mSleep(5000)
-        				goto black
-        			end
+					body_send = {}
+					ts.setHttpsTimeOut(60) 
+					code,header_resp, body_resp = ts.httpsGet("http://vinasim.xyz/operate.php?myfun=addblack&mobile=" .. telphone .. "&token=" .. token .. "&pid=1001", header_send,body_send)
+					if code == 200 then
+						if body_resp == "ok" or strSplit(body_resp,"|")[1] == 0 or strSplit(body_resp,"|")[1] == "0" then
+							toast("拉黑成功",1)
+							mSleep(500)
+						else
+							toast("拉黑失败:"..tostring(body_resp),1)
+							mSleep(5000)
+							goto black
+						end
+					else
+						toast("请求拉黑接口失败:"..tostring(body_resp),1)
+						mSleep(5000)
+						goto black
+					end
 					goto over
 				end
-				
+
 				header_send = {}
 				body_send = {}
 				ts.setHttpsTimeOut(60) 
 				code,header_resp, body_resp = ts.httpsGet("http://vinasim.xyz/operate.php?myfun=getcodes&mytoken=" .. token .. "&mobile=" .. telphone .. "&pid=1001", header_send,body_send)
 				if code == 200 then
 					tmp = strSplit(body_resp,"|")
-    			    if tmp[1] == 0 or tmp[1] == "0" then
+					if tmp[1] == 0 or tmp[1] == "0" then
 						mess_yzm = tmp[2]
 						toast(mess_yzm,1)
 						mSleep(1000)
@@ -5106,21 +5126,21 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				for var = 1,#Wildcard do 
 					local file = io.open("/var/mobile/Containers/Data/Application/"..Wildcard[var]..self.wc_file,"rb") 
 					if file then 
-					    local ts = require("ts")
-            			local plist = ts.plist
-            			local plfilename = "/var/mobile/Containers/Data/Application/"..Wildcard[var].."/Library/LocalInfo.lst" --设置plist路径
-            			local tmp2 = plist.read(plfilename)                --读取 PLIST 文件内容并返回一个 TABLE
-            			for k, v in pairs(tmp2) do
-            				if k == "$objects" then
-            					for i = 3 ,5 do
-            						if tonumber(v[i]) then
-            							wc = v[i]
-            							wcid = v[i-1]
-            							break
-            						end	
-            					end	
-            				end	
-            			end
+						local ts = require("ts")
+						local plist = ts.plist
+						local plfilename = "/var/mobile/Containers/Data/Application/"..Wildcard[var].."/Library/LocalInfo.lst" --设置plist路径
+						local tmp2 = plist.read(plfilename)                --读取 PLIST 文件内容并返回一个 TABLE
+						for k, v in pairs(tmp2) do
+							if k == "$objects" then
+								for i = 3 ,5 do
+									if tonumber(v[i]) then
+										wc = v[i]
+										wcid = v[i-1]
+										break
+									end	
+								end	
+							end	
+						end
 						local str = file:read("*a") 
 						file:close() 
 						require"sz" 
@@ -5505,7 +5525,7 @@ function model:main()
 			},
 			{
 				["type"] = "RadioGroup",                    
-				["list"] = "柠檬,卡农注册,奥迪,52,俄罗斯1,东帝汶,服务器取号,俄罗斯2,各国API,老友,SMS,越南,各国API2,奶茶,柠檬2,老司机,水煮鱼,松鼠,自用,火猫,k76sk",
+				["list"] = "柠檬,卡农注册,奥迪,52,俄罗斯1,东帝汶,服务器取号,俄罗斯2,各国API,老友,SMS,越南,各国API2,奶茶,柠檬2,老司机,水煮鱼,松鼠,自用,火猫,k76sk,测试平台",
 				["select"] = "0",  
 				["countperline"] = "4",
 			},
@@ -5535,7 +5555,7 @@ function model:main()
 			},
 			{
 				["type"] = "Label",
-				["text"] = "设置柠檬/52/俄罗斯1/俄罗斯2/各国API的国家代码",
+				["text"] = "设置柠檬/52/俄罗斯1/俄罗斯2/各国API/测试平台的国家代码",
 				["size"] = 20,
 				["align"] = "center",
 				["color"] = "0,0,255",
