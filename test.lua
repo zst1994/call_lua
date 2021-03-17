@@ -1609,12 +1609,14 @@ end
 --for k,v in pairs (a) do
 --    dialog(k,0)
 --end
-mSleep(200)
-		x,y = findMultiColorInRegionFuzzy(0x323333, "-11|-11|0x323333,13|-12|0x323333,11|11|0x323333,57|886|0x3bb3fa,571|885|0x3bb3fa,339|846|0x3bb3fa,315|924|0x3bb3fa,280|874|0xffffff,363|891|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
-		if x ~= -1 and y ~= -1 then
+	--vpn连接
+		--vpn连接: 好
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy( 0x007aff, "6|15|0x007aff,16|-5|0x007aff,20|15|0x007aff,-56|-177|0x000000,-48|-159|0x000000,-41|-179|0x000000,40|-167|0x000000,60|-171|0x000000", 90, 0, 0, 749, 1333)
+		if x ~= -1 then
 			mSleep(500)
-			tap(x, y)
+			tap(x,y)
 			mSleep(500)
-			toast("立即打卡2", 1)
-			mSleep(1000)
+			toast("vpn连接", 1)
+			mSleep(500)
 		end
