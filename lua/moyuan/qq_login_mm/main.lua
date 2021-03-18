@@ -1513,7 +1513,8 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			toast("定位服务未开启", 1)
 			mSleep(500)
 			self.subName = "注册过"
-			goto get_mmId
+			self.updatePass = true
+			goto sy
 		end
 
 		--定位服务未开启
@@ -1524,7 +1525,8 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			toast("定位服务未开启2", 1)
 			mSleep(500)
 			self.subName = "注册过"
-			goto get_mmId
+			self.updatePass = true
+			goto sy
 		end
 
 		--跳过屏蔽通讯录
