@@ -1609,14 +1609,35 @@ end
 --for k,v in pairs (a) do
 --    dialog(k,0)
 --end
-	--vpn连接
-		--vpn连接: 好
-		mSleep(200)
-		x,y = findMultiColorInRegionFuzzy( 0x007aff, "6|15|0x007aff,16|-5|0x007aff,20|15|0x007aff,-56|-177|0x000000,-48|-159|0x000000,-41|-179|0x000000,40|-167|0x000000,60|-171|0x000000", 90, 0, 0, 749, 1333)
-		if x ~= -1 then
-			mSleep(500)
-			tap(x,y)
-			mSleep(500)
-			toast("vpn连接", 1)
-			mSleep(500)
-		end
+--填写你的收入
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy(0xaaaaaa, "33|3|0xaaaaaa,76|10|0xaaaaaa,-123|-97|0x3bb3fa,197|-89|0x3bb3fa,50|-889|0x323333,-64|-893|0x323333,-12|-890|0x323333,27|-886|0x323333,89|-892|0x323333", 90, 0, 0, 750, 1334, { orient = 2 })
+			if x~=-1 and y~=-1 then
+				mSleep(500)
+				tap(x, y)
+				mSleep(500)
+				toast("填写你的收入1",1)
+				mSleep(500)
+			end
+
+			--填写你的收入
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy(0xacacad, "226|-350|0xf9f9f9,-20|-137|0x5eb1f5,-8|-68|0x5eb1f5,143|-109|0x5eb1f5,-110|-900|0x323232,-70|-891|0x323232,-20|-894|0x323232,42|-900|0x323232,58|-908|0x323232", 90, 0, 0, 750, 1334, { orient = 2 })
+			if x~=-1 and y~=-1 then
+				mSleep(500)
+				tap(x, y)
+				mSleep(500)
+				toast("填写你的收入2",1)
+				mSleep(500)
+			end
+			
+			--填写你的收入
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy( 0xaaaaaa, "55|14|0xaaaaaa,-161|-99|0x3bb3fa,173|-106|0x3bb3fa,26|-128|0x3bb3fa,12|-60|0x3bb3fa,-97|-782|0x323333,-44|-788|0x323333,11|-781|0x323333,56|-785|0x323333", 90, 0, 0, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(500)
+				tap(x, y)
+				mSleep(500)
+				toast("填写你的收入3",1)
+				mSleep(500)
+			end

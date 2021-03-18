@@ -931,7 +931,18 @@ function model:mm()
 				mSleep(500)
 				tap(x, y)
 				mSleep(500)
-				toast("填写你的收入",1)
+				toast("填写你的收入1",1)
+				mSleep(500)
+			end
+			
+			--填写你的收入
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy( 0xaaaaaa, "55|14|0xaaaaaa,-161|-99|0x3bb3fa,173|-106|0x3bb3fa,26|-128|0x3bb3fa,12|-60|0x3bb3fa,-97|-782|0x323333,-44|-788|0x323333,11|-781|0x323333,56|-785|0x323333", 90, 0, 0, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(500)
+				tap(x, y)
+				mSleep(500)
+				toast("填写你的收入3",1)
 				mSleep(500)
 			end
 
@@ -991,7 +1002,18 @@ function model:mm()
 				mSleep(500)
 				tap(x, y)
 				mSleep(500)
-				toast("填写你的收入",1)
+				toast("填写你的收入1",1)
+				mSleep(500)
+			end
+			
+			--填写你的收入
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy( 0xaaaaaa, "55|14|0xaaaaaa,-161|-99|0x3bb3fa,173|-106|0x3bb3fa,26|-128|0x3bb3fa,12|-60|0x3bb3fa,-97|-782|0x323333,-44|-788|0x323333,11|-781|0x323333,56|-785|0x323333", 90, 0, 0, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(500)
+				tap(x, y)
+				mSleep(500)
+				toast("填写你的收入3",1)
 				mSleep(500)
 			end
 
