@@ -1197,11 +1197,11 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 					table.remove(self.qqList, 1)
 					writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
 					-- writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
-					-- self:getAccount()
-					-- self:clear_input()
-					-- inputAgain = true
-					-- goto hk
-					goto over
+					self:getAccount()
+					self:clear_input()
+					inputAgain = true
+					goto hk
+--					goto over
 				elseif getColor(683,209) == 0xffffff then
 					toast("切换下一个账号,重新新机", 1)
 					mSleep(500)
@@ -1662,7 +1662,8 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 					randomTap(526, 1229, 4)
 				end
 			end
-
+			
+			t1 = ts.ms()
 			while true do
 				mSleep(200)
 				if getColor(432, 732) == 0xffffff then
@@ -1681,6 +1682,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 					randomTap(431, 708, 4)
 					mSleep(1000)
 				end
+				
+				self:timeOutRestart(t1)
+				mSleep(1000)
 			end
 			break
 		end
