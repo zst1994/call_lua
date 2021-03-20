@@ -835,7 +835,7 @@ function model:clear_input()
 	mSleep(500)
 	tap(620,  469)
 	mSleep(1000)
-	for var=1,20 do
+	for var=1,30 do
 		mSleep(100)
 		keyDown("DeleteOrBackspace")
 		keyUp("DeleteOrBackspace")  
@@ -1437,11 +1437,11 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 					table.remove(self.qqList, 1)
 					writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
 					-- writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
-					-- self:getAccount()
-					-- self:clear_input()
-					-- inputAgain = true
-					-- goto hk
-					goto over
+					self:getAccount()
+					self:clear_input()
+					inputAgain = true
+					goto hk
+				-- 	goto over
 				elseif getColor(683,209) == 0xffffff then
 					toast("切换下一个账号,重新新机", 1)
 					mSleep(500)

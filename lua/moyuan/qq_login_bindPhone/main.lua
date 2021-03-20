@@ -72,18 +72,37 @@ local AMG = {
 					break
 				end
 			end
-
-			return model:Check_AMG_Result()
+			
+			while (true) do
+				mSleep(200)
+				x,y = findMultiColorInRegionFuzzy(0x000000, "44|-1|0x000000,79|0|0x000000,-25|154|0x007aff,0|155|0x007aff,17|155|0x007aff,56|161|0x007aff,-22|253|0x007aff,35|251|0x097fff,81|243|0x007aff", 90, 0, 0, 750, 1334, { orient = 2 })
+				if x ~= -1 then
+					mSleep(500)
+					break
+				else
+				    mSleep(500)
+				    tap(58,83)
+				    mSleep(500)
+				end
+			end
+			return true
+            
+-- 			return model:Check_AMG_Result()
+--             ::record::
 -- 			local res, code = http.request("http://127.0.0.1:8080/cmd?fun=nextRecord");
 -- 			if code == 200 then
 -- 				return model:Check_AMG_Result()
+-- 			else
+-- 			    toast("查看切换下一条结果失败，重新查看",1)
+-- 			    mSleep(2000)
+-- 			    goto record
 -- 			end
 		end),
 	First = (function() --还原第一条记录
 			model:Check_AMG()
 			local res, code = http.request("http://127.0.0.1:8080/cmd?fun=firstRecord");
 			if code == 200 then
-				return model:LCheck_AMG_Result()
+				return model:Check_AMG_Result()
 			end
 		end),
 	Get_Name = (function()
@@ -267,9 +286,9 @@ function model:get_mess()
 	ts.setHttpsTimeOut(60)
 	status_resp, header_resp, body_resp = ts.httpGet(self.code_token, header_send, body_send)
 	if status_resp == 200 then
-		local i, j = string.find(body_resp, "%d+%d+%d+%d+%d+%d+")
-		if i > 0 then
-			self.mm_yzm = string.match(body_resp,"%d+")
+	    if type(string.find(body_resp, "%d+%d+%d+%d+%d+%d+")) == "number" then
+	       -- local i, j = string.find(body_resp, "%d+%d+%d+%d+%d+%d+")
+	        self.mm_yzm = string.match(body_resp,"%d+")
 			toast(self.mm_yzm, 1)
 			mSleep(2000)
 			return true
@@ -280,7 +299,7 @@ function model:get_mess()
 				mSleep(3000)
 				return false
 			else
-				toast(tmp.message, 1)
+				toast(tostring(body_resp), 1)
 				mSleep(3000)
 				goto get_yzm
 			end
@@ -314,6 +333,9 @@ function model:getMMId(path)
 end
 
 function model:mm()
+    reRunApp = 0
+    
+    ::reRunAppAgagin::
 	runApp(self.mm_bid)
 	mSleep(1000)
 	t1 = ts.ms()
@@ -651,7 +673,14 @@ function model:mm()
 			toast("注册登录2",1)
 			mSleep(500)
 			inputAgain = true
-			goto input_again
+			if reRunApp > 2 then
+			    closeApp(self.mm_bid)
+			    mSleep(2000)
+			    goto reRunAppAgagin
+			else
+			    reRunApp = reRunApp + 1
+			    goto input_again
+			end
 		end
 
 		--更多
