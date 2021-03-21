@@ -254,7 +254,7 @@ function model:loginAccount()
 
 	while (true) do
 		mSleep(200)
-	    x,y = findMultiColorInRegionFuzzy(0x181818, "5|0|0x181818,10|0|0x181818,16|-1|0x181818,49|-2|0x181818,15|97|0x181818,38|94|0x181818,58|74|0x181818,55|95|0x181818", 90, 0, 0, 750, 1334, { orient = 2 })
+	    x,y = findMultiColorInRegionFuzzy(0x000000, "-5|0|0x000000,5|0|0x000000,11|0|0x000000,23|-1|0x000000,47|-1|0x000000,47|-7|0x000000,47|-14|0x000000,9|99|0x000000,49|95|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
         if x ~= -1 then
             writePasteboard(self.account)
             mSleep(200)
@@ -264,38 +264,87 @@ function model:loginAccount()
 			keyDown("v")
 			keyUp("v")
 			keyUp("RightGUI")
-			mSleep(200)
-			key = "ReturnOrEnter"
-            keyDown(key)
-            keyUp(key)
-            mSleep(200)
-            writePasteboard(self.password)
-            mSleep(200)
-            keyDown("RightGUI")
-			keyDown("v")
-			keyUp("v")
-			keyUp("RightGUI")
-			mSleep(200)
-			key = "ReturnOrEnter"
-            keyDown(key)
-            keyUp(key)
+			mSleep(500)
 			break
         end
 	end
 	
 	while (true) do
-	    --该微信账号因使用外挂被限制登录
 		mSleep(200)
-		x,y = findMultiColorInRegionFuzzy(0x576b95, "12|-1|0x576b95,40|1|0x576b95,-7|-313|0x1a1a1a,3|-300|0x1a1a1a,20|-303|0x1a1a1a,36|-311|0x1a1a1a,35|-293|0x1a1a1a,-4|-136|0x1a1a1a,9|-137|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
-        if x~=-1 and y~=-1 then
+	    x,y = findMultiColorInRegionFuzzy(0x000000, "-5|0|0x000000,5|0|0x000000,11|0|0x000000,23|-1|0x000000,47|-1|0x000000,47|-7|0x000000,47|-14|0x000000,9|99|0x000000,49|95|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+            writePasteboard(self.password)
+            mSleep(200)
+			randomTap(x + 300, y + 90,5)
 			mSleep(200)
-			tap(x - 300, y)
+			keyDown("RightGUI")
+			keyDown("v")
+			keyUp("v")
+			keyUp("RightGUI")
 			mSleep(500)
-			toast("微信账号因使用外挂被限制登录",1)
+        end
+        
+        mSleep(200)
+        x,y = findMultiColorInRegionFuzzy(0xffffff, "38|7|0xffffff,339|8|0x07c160,11|-34|0x07c160,-304|3|0x07c160,20|8|0x07c160", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+            mSleep(200)
+			tap(x, y)
 			mSleep(500)
-			self.subName = "微信账号因使用外挂被限制登录"
+			toast("登录",1)
+			mSleep(500)
 			break
         end
+	end
+	
+	while (true) do
+	    --出现滑块
+	    mSleep(100)
+	    if getColor(110,702) == 0x007aff and getColor(697,705) == 0xe4e4e4 then
+	        mSleep(500)
+			toast("出现滑块",1)
+			mSleep(500)
+			self.subName = "出现滑块"
+			break
+	    end
+	    
+	    --该微信帐号因使用了微信外挂、非官方客户端或模拟器，将永久限制登录，请尽快卸载对应的非法软件。若帐号内有资金，可轻触“确定”按相关指引进行操作。
+	    mSleep(50)
+	    x,y = findMultiColorInRegionFuzzy(0x576b95, "27|0|0x576b95,-330|-6|0x181819,-11|-329|0x000000,7|-331|0x000000,17|-334|0x000000,26|-319|0x000000,-26|-286|0x000000,-16|-270|0x000000,24|-289|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+            mSleep(200)
+			tap(x - 300, y)
+			mSleep(500)
+			toast("该微信帐号因使用了微信外挂、非官方客户端或模拟器，将永久限制登录，请尽快卸载对应的非法软件。若帐号内有资金，可轻触“确定”按相关指引进行操作。",1)
+			mSleep(500)
+			self.subName = "该微信帐号因使用了微信外挂、非官方客户端或模拟器，将永久限制登录，请尽快卸载对应的非法软件。若帐号内有资金，可轻触“确定”按相关指引进行操作。"
+			break
+        end
+        
+        --帐号或密码错误，请出现填写
+        mSleep(50)
+        x,y = findMultiColorInRegionFuzzy(0x576b95, "11|-1|0x576b95,40|0|0x576b95,-110|-155|0x000000,-100|-155|0x000000,-89|-156|0x000000,-72|-162|0x000000,-61|-158|0x000000,-27|-158|0x000000,8|-177|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+            mSleep(200)
+			tap(x - 300, y)
+			mSleep(500)
+			toast("帐号或密码错误，请出现填写")
+			mSleep(500)
+			self.subName = "帐号或密码错误，请出现填写"
+			break
+        end
+        
+-- 	    --该微信账号因使用外挂被限制登录
+-- 		mSleep(200)
+-- 		x,y = findMultiColorInRegionFuzzy(0x576b95, "12|-1|0x576b95,40|1|0x576b95,-7|-313|0x1a1a1a,3|-300|0x1a1a1a,20|-303|0x1a1a1a,36|-311|0x1a1a1a,35|-293|0x1a1a1a,-4|-136|0x1a1a1a,9|-137|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
+--         if x~=-1 and y~=-1 then
+-- 			mSleep(200)
+-- 			tap(x - 300, y)
+-- 			mSleep(500)
+-- 			toast("微信账号因使用外挂被限制登录",1)
+-- 			mSleep(500)
+-- 			self.subName = "微信账号因使用外挂被限制登录"
+-- 			break
+--         end
 	end
 	
 -- 	::login::
@@ -785,24 +834,24 @@ function model:loginAccount()
 --         end
 -- 	end
 
---     ::push::
--- 	header_send = {}
---     body_send = {}
---     ts.setHttpsTimeOut(60)
---     status_resp, header_resp,body_resp = ts.httpGet("http://47.104.246.33/phone1.php?cmd=poststatus&phone=" .. self.account .. "&status=" .. self.subName, header_send, body_send)
--- 	if status_resp == 200 then
--- 		if reTxtUtf8(body_resp) == "反馈成功" then
--- 			toast("号码状态标记成功",1)
--- 		else
--- 		    oast("号码标记失败，重新标记:"..tostring(body_resp),1)
--- 		    mSleep(3000)
--- 			goto push
--- 		end
--- 	else
--- 		toast("号码标记失败，重新标记:"..tostring(body_resp),1)
--- 		mSleep(3000)
--- 		goto push
--- 	end
+    ::push::
+	header_send = {}
+    body_send = {}
+    ts.setHttpsTimeOut(60)
+    status_resp, header_resp,body_resp = ts.httpGet("http://47.104.246.33/phone1.php?cmd=poststatus&phone=" .. self.account .. "&status=" .. self.subName, header_send, body_send)
+	if status_resp == 200 then
+		if reTxtUtf8(body_resp) == "反馈成功" then
+			toast("号码状态标记成功",1)
+		else
+		    oast("号码标记失败，重新标记:"..tostring(body_resp),1)
+		    mSleep(3000)
+			goto push
+		end
+	else
+		toast("号码标记失败，重新标记:"..tostring(body_resp),1)
+		mSleep(3000)
+		goto push
+	end
 
 	::over::
 end
