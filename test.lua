@@ -1604,16 +1604,35 @@ end
 -- dialog(six_data,0)
 
 
+local ts = require("ts")
+local plist = ts.plist
 
---a = {a=100, d="hello"}
---for k,v in pairs (a) do
---    dialog(k,0)
---end
-mSleep(200)
-				x, y = findMultiColorInRegionFuzzy(0x10aeff,"55|8|0x10aeff,-79|817|0x7c160,116|822|0x7c160", 100, 0, 0, 749, 1333)
-				if x ~= -1 and y ~= -1 then
-					mSleep(math.random(1000, 1500))
-					randomsTap(372, 1105,10)
-					mSleep(math.random(1000, 1500))
-					toast("安全验证",1)
-				end
+local plfilename = userPath().."/res/test.plist"
+
+local tmp2 = {}
+local p = {}
+p['创建当前时间']=os.date("%Y-%m-%d %H:%M %S",nowtime)
+p['进程']='抖音'
+p['数据']={}
+p['数据']['抖音号1']='qwe1111'
+p['数据']['抖音号2']='qwe2222'
+p['数据']['任务状态']=false
+p['数据']['任务进度']=9
+
+function writePlist(a)
+    for k,v in pairs (a) do
+        if type(k) == "table" then
+            writePlist(v)
+        else
+            tmp2[k] = v
+            plist.write(plfilename, tmp2)
+        end
+    end
+end
+
+writePlist(p)
+dialog("写入成功",0)
+
+    
+    
+    

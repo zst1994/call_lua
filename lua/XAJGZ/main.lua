@@ -32,7 +32,7 @@ function model:getAccount()
 	self.wcList = readFile(userPath() .. "/res/wc_account.txt")
 	if self.wcList then
 		if #self.wcList > 0 then
-			data = strSplit(string.gsub(self.wcList[1], "%s+", ""), "—-")
+			data = strSplit(string.gsub(self.wcList[1], "%s+", ""), "----")
 			self.wcAcount = data[1]
 			self.wcPassword = data[2]
 			toast("获取账号成功:" .. self.wcAcount .. "===" .. self.wcPassword,1)
@@ -191,6 +191,19 @@ function model:wc()
 			mSleep(500)
 			break
 		end
+		
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0x5b6b92, "12|0|0x5b6b92,18|0|0x5b6b92,40|-4|0x5b6b92,40|-15|0x5b6b92,-216|-166|0x1a1a1a,-196|-169|0x1a1a1a,-172|-169|0x1a1a1a,163|-167|0x1a1a1a,208|-161|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+            mSleep(200)
+			randomTap(x, y,5)
+			mSleep(500)
+			toast("登陆失败，切换下一个号",1)
+			mSleep(500)
+			table.remove(self.wcList, 1)
+			writeFile(userPath() .. "/res/wc_account.txt", self.wcList, "w", 1)
+			goto over
+        end
         
         mSleep(200)
 		if getColor(118,  704) == 0x007aff then
@@ -199,12 +212,18 @@ function model:wc()
 				mSleep(200)
 				moveTowards( 108,  704, 10, x_len - 65)
 				mSleep(3000)
-				break
 			else
 				mSleep(200)
 				randomTap(603, 1032,5)
 				mSleep(math.random(3000, 6000))
 			end
+		end
+		
+		mSleep(200)
+		x, y = findMultiColorInRegionFuzzy(0x10aeff,"55|8|0x10aeff,-79|817|0x7c160,116|822|0x7c160", 100, 0, 0, 749, 1333)
+		if x ~= -1 and y ~= -1 then
+			mSleep(200)
+            break
 		end
 	end
 	
@@ -232,13 +251,38 @@ function model:wc()
 			break
         end
 	end
+	
+	while (true) do
+	    mSleep(200)
+	    x,y = findMultiColorInRegionFuzzy(0xffffff, "30|-4|0xffffff,314|-3|0x50ab36,-273|-3|0x50ab36,12|-36|0x50ab36,10|33|0x50ab36,19|-304|0x54b936,1|-357|0xffffff,14|-440|0x54b936,-13|-188|0x060606", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+            mSleep(200)
+			randomTap(x, y,5)
+			mSleep(500)
+			toast("完成",1)
+			mSleep(500)
+        end
+        
+        mSleep(200)
+        x,y = findMultiColorInRegionFuzzy(0x5a6a91, "-2|-16|0x5a6a91,-321|-12|0x1a1a1a,-320|5|0x1a1a1a,-282|-380|0x1a1a1a,-97|-372|0x1a1a1a,-63|-374|0x1a1a1a,-63|-5|0xffffff,96|-15|0xffffff,-242|-6|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+            mSleep(500)
+			toast("进入界面成功",1)
+			mSleep(500)
+			break
+        end
+	end
+	
+	::over::
 end
 
 function model:main()
     self:getConfig()
-    self:getAccount()
-    self:clear_App()
-    self:wc()
+    while (true) do
+        self:getAccount()
+        self:clear_App()
+        self:wc()
+    end
 end
 
 model:main()
