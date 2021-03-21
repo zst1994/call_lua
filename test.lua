@@ -1652,3 +1652,31 @@ end
 			toast("帐号或密码错误，请出现填写")
 			mSleep(500)
         end
+        
+        
+        function getIp()
+            ::ip_addresss::
+    		local sz = require("sz");
+    		local szhttp = require("szocket.http")
+    		local res, code = szhttp.request("http://myip.ipip.net/")
+    		if code == 200 then
+    		    if type(string.match(res,"%d+.%d+.%d+.%d+")) == "string" then
+    		        return string.match(res,"%d+.%d+.%d+.%d+")
+    		    else
+    		        return false
+    		    end
+    		else
+    			return false
+    		end
+        end
+	
+	aa = getIp()
+	if aa then
+	    dialog(aa,0)
+	else
+	    dialog("text",0)
+	end
+    
+	
+	
+	

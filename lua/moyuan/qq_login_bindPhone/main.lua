@@ -160,11 +160,29 @@ function model:deleteImage(path)
 	end
 end
 
+function model:getNetIP()
+    ::ip_addresss::
+	local sz = require("sz");
+	local http = require("szocket.http")
+	local res, code = http.request("http://myip.ipip.net/")
+	if code == 200 then
+	    if type(string.match(res,"%d+.%d+.%d+.%d+")) == "string" then
+	        return string.match(res,"%d+.%d+.%d+.%d+")
+	    else
+	        return false
+	    end
+	else
+		return false
+	end
+end
+
 function model:vpn()
 	::get_vpn::
-	old_data = getNetIP() --获取IP
-	if old_data and old_data ~= "" then
+	old_data = self:getNetIP() --获取IP
+	if old_data then
 		toast(old_data, 1)
+	else
+	    goto get_vpn
 	end
     
     if networkMode == "0" then
@@ -196,8 +214,8 @@ function model:vpn()
     
     t1 = ts.ms()
 	while true do
-		new_data = getNetIP() --获取IP
-		if new_data and new_data ~= "" then
+		new_data = self:getNetIP() --获取IP
+		if new_data then
 			toast(new_data, 1)
 			if new_data ~= old_data then
 				mSleep(1000)
@@ -692,10 +710,24 @@ function model:mm()
 			mSleep(1000)
 			tap(x + 10, y - 10)
 			mSleep(500)
-			toast("更多",1)
+			toast("更多1",1)
 			mSleep(500)
 			break
 		end
+		
+		--更多
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0x323333, "6|0|0x323333,-6|0|0x323333,6|-6|0x5a5b5b,-127|3|0x383838,-153|2|0x323333,-274|-3|0x323333,-285|-1|0x323333,-53|-18|0xfcfcfc,-514|-25|0xfdfcfd", 90, 0, 1165, 747, 1330, { orient = 2 })
+        if x ~= -1 then
+            mSleep(500)
+			tap(x, y)
+			mSleep(1000)
+			tap(x, y)
+			mSleep(500)
+			toast("更多2",1)
+			mSleep(500)
+			break
+        end
 
 		--绑定手机
 		mSleep(200)
