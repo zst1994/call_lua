@@ -1684,8 +1684,8 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			telphone = "81" .. later_phone
 			kn_country = "62"
 		elseif string.gsub(countryId,"%s+","") == "za" then
-			later_phone = self:randomStr("1234567890", 7)
-			telphone = "72" .. later_phone
+			later_phone = self:randomStr("1234567890", 8)
+			telphone = "6" .. later_phone
 			kn_country = "27"
 		end
 	else
