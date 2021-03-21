@@ -1633,50 +1633,51 @@ end
 -- writePlist(p)
 -- dialog("写入成功",0)
 
- --该微信帐号因使用了微信外挂、非官方客户端或模拟器，将永久限制登录，请尽快卸载对应的非法软件。若帐号内有资金，可轻触“确定”按相关指引进行操作。
-	    x,y = findMultiColorInRegionFuzzy(0x576b95, "27|0|0x576b95,-330|-6|0x181819,-11|-329|0x000000,7|-331|0x000000,17|-334|0x000000,26|-319|0x000000,-26|-286|0x000000,-16|-270|0x000000,24|-289|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
-        if x ~= -1 then
-            mSleep(200)
-			tap(x - 300, y)
-			mSleep(500)
-			toast("该微信帐号因使用了微信外挂、非官方客户端或模拟器，将永久限制登录，请尽快卸载对应的非法软件。若帐号内有资金，可轻触“确定”按相关指引进行操作。",1)
-			mSleep(500)
-        end
+--  --该微信帐号因使用了微信外挂、非官方客户端或模拟器，将永久限制登录，请尽快卸载对应的非法软件。若帐号内有资金，可轻触“确定”按相关指引进行操作。
+-- 	    x,y = findMultiColorInRegionFuzzy(0x576b95, "27|0|0x576b95,-330|-6|0x181819,-11|-329|0x000000,7|-331|0x000000,17|-334|0x000000,26|-319|0x000000,-26|-286|0x000000,-16|-270|0x000000,24|-289|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+--         if x ~= -1 then
+--             mSleep(200)
+-- 			tap(x - 300, y)
+-- 			mSleep(500)
+-- 			toast("该微信帐号因使用了微信外挂、非官方客户端或模拟器，将永久限制登录，请尽快卸载对应的非法软件。若帐号内有资金，可轻触“确定”按相关指引进行操作。",1)
+-- 			mSleep(500)
+--         end
     
-    --帐号或密码错误，请出现填写
-        x,y = findMultiColorInRegionFuzzy(0x576b95, "11|-1|0x576b95,40|0|0x576b95,-110|-155|0x000000,-100|-155|0x000000,-89|-156|0x000000,-72|-162|0x000000,-61|-158|0x000000,-27|-158|0x000000,8|-177|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
-        if x ~= -1 then
-            mSleep(200)
-			tap(x - 300, y)
-			mSleep(500)
-			toast("帐号或密码错误，请出现填写")
-			mSleep(500)
-        end
+--     --帐号或密码错误，请出现填写
+--         x,y = findMultiColorInRegionFuzzy(0x576b95, "11|-1|0x576b95,40|0|0x576b95,-110|-155|0x000000,-100|-155|0x000000,-89|-156|0x000000,-72|-162|0x000000,-61|-158|0x000000,-27|-158|0x000000,8|-177|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+--         if x ~= -1 then
+--             mSleep(200)
+-- 			tap(x - 300, y)
+-- 			mSleep(500)
+-- 			toast("帐号或密码错误，请出现填写")
+-- 			mSleep(500)
+--         end
         
         
-        function getIp()
-            ::ip_addresss::
-    		local sz = require("sz");
-    		local szhttp = require("szocket.http")
-    		local res, code = szhttp.request("http://myip.ipip.net/")
-    		if code == 200 then
-    		    if type(string.match(res,"%d+.%d+.%d+.%d+")) == "string" then
-    		        return string.match(res,"%d+.%d+.%d+.%d+")
-    		    else
-    		        return false
-    		    end
-    		else
-    			return false
-    		end
-        end
+--         function getIp()
+--             ::ip_addresss::
+--     		local sz = require("sz");
+--     		local szhttp = require("szocket.http")
+--     		local res, code = szhttp.request("http://myip.ipip.net/")
+--     		if code == 200 then
+--     		    if type(string.match(res,"%d+.%d+.%d+.%d+")) == "string" then
+--     		        return string.match(res,"%d+.%d+.%d+.%d+")
+--     		    else
+--     		        return false
+--     		    end
+--     		else
+--     			return false
+--     		end
+--         end
 	
-	aa = getIp()
-	if aa then
-	    dialog(aa,0)
-	else
-	    dialog("text",0)
-	end
+-- 	aa = getIp()
+-- 	if aa then
+-- 	    dialog(aa,0)
+-- 	else
+-- 	    dialog("text",0)
+-- 	end
     
-	
+a = string.sub("012345678",1,1)
+dialog(a,0)
 	
 	

@@ -1687,6 +1687,15 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			later_phone = self:randomStr("1234567890", 8)
 			telphone = "6" .. later_phone
 			kn_country = "27"
+		elseif string.gsub(countryId,"%s+","") == "us" then
+		    ::get_test::
+			later_phone = self:randomStr("1234567890", 10)
+			if string.sub(later_phone, 1, 1) == "0" or string.sub(later_phone, 1, 1) == "1" then
+			    goto get_test
+			else
+			    telphone = later_phone
+			end
+			kn_country = "1"
 		end
 	else
 		::get_phone::
