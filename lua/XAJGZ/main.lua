@@ -37,6 +37,8 @@ function model:getAccount()
 			self.wcPassword = data[2]
 			toast("获取账号成功:" .. self.wcAcount .. "===" .. self.wcPassword,1)
 			mSleep(1000)
+			table.remove(self.wcList, 1)
+			writeFile(userPath() .. "/res/wc_account.txt", self.wcList, "w", 1)
 		else
 			dialog("没账号了", 0)
 			luaExit()
@@ -125,7 +127,7 @@ function model:moves()
 end
 
 function model:wc()
-    closeApp(self.wc_bid)
+	closeApp(self.wc_bid)
 	mSleep(500)
 	runApp(self.wc_bid)
 	mSleep(1000)
@@ -133,79 +135,109 @@ function model:wc()
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0x07c160, "171|-1|0x07c160,57|-5|0xffffff,-163|-3|0xf2f2f2,-411|1|0xf2f2f2,-266|-6|0x06ae56", 90, 0, 0, 749, 1333)
 		if x ~= -1 and y ~= -1 then
-		    mSleep(200)
+			mSleep(200)
 			randomTap(256, 1240,5)
 			mSleep(500)
 			toast("登陆",1)
 			mSleep(500)
 		end
-		
-		--邮箱登陆按钮
+
+		--邮箱登陆按钮 12系统
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy(0x576b95, "75|-6|0x576b95,104|4|0x576b95,-203|7|0x576b95,-214|2|0x576b95,-148|-384|0x181818,2|-374|0x181818", 90, 0, 0, 750, 1334, { orient = 2 })
-        if x ~= -1 then
-            mSleep(200)
+		if x ~= -1 then
+			mSleep(200)
 			randomTap(x, y,5)
 			mSleep(500)
 			toast("邮箱登陆按钮",1)
 			mSleep(500)
 			break
-        end
-	end
-	
-	while true do
-	    mSleep(200)
-	    x,y = findMultiColorInRegionFuzzy(0x181818, "5|0|0x181818,10|0|0x181818,16|-1|0x181818,49|-2|0x181818,15|97|0x181818,38|94|0x181818,58|74|0x181818,55|95|0x181818", 90, 0, 0, 750, 1334, { orient = 2 })
-        if x ~= -1 then
-            writePasteboard(self.wcAcount)
-            mSleep(200)
-			randomTap(x + 300, y,5)
+		end
+
+		--邮箱登陆按钮 13系统
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy( 0x5c6c92, "0|6|0x5c6c92,36|3|0x5c6c92,82|2|0x5c6c92,109|1|0x5c6c92,142|-1|0x5c6c92,-137|3|0x5c6c92,-124|-3|0x5c6c92,-97|0|0x5c6c92,-92|6|0x5c6c92", 90, 0, 0, 749, 1333)
+		if x ~= -1 then
 			mSleep(200)
-			keyDown("RightGUI")
-			keyDown("v")
-			keyUp("v")
-			keyUp("RightGUI")
-			mSleep(200)
-			key = "ReturnOrEnter"
-            keyDown(key)
-            keyUp(key)
-            mSleep(200)
-            writePasteboard(self.wcPassword)
-            mSleep(200)
-            keyDown("RightGUI")
-			keyDown("v")
-			keyUp("v")
-			keyUp("RightGUI")
-			mSleep(200)
-			key = "ReturnOrEnter"
-            keyDown(key)
-            keyUp(key)
+			randomTap(x, y,5)
+			mSleep(500)
+			toast("邮箱登陆按钮",1)
+			mSleep(500)
 			break
-        end
+		end
 	end
-	
+
+	sysver = getOSVer()    --获取系统版本
+	while true do
+		if sysver > "13" then
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy(0x181818, "5|0|0x181818,10|0|0x181818,16|-1|0x181818,49|-2|0x181818,15|97|0x181818,38|94|0x181818,58|74|0x181818,55|95|0x181818", 90, 0, 0, 750, 1334, { orient = 2 })
+			if x ~= -1 then
+				mSleep(200)
+				randomTap(x + 300, y,5)
+				mSleep(500)
+				inputStr(self.wcAcount)
+				mSleep(1000)
+				randomTap(x + 300, y + 90,5)
+				mSleep(500)
+				inputStr(self.wcPassword)
+				mSleep(1000)
+				randomTap(372, 841,3)
+				mSleep(1000)
+				break
+			end
+		else
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy(0x181818, "5|0|0x181818,10|0|0x181818,16|-1|0x181818,49|-2|0x181818,15|97|0x181818,38|94|0x181818,58|74|0x181818,55|95|0x181818", 90, 0, 0, 750, 1334, { orient = 2 })
+			if x ~= -1 then
+				writePasteboard(self.wcAcount)
+				mSleep(200)
+				randomTap(x + 300, y,5)
+				mSleep(200)
+				keyDown("RightGUI")
+				keyDown("v")
+				keyUp("v")
+				keyUp("RightGUI")
+				mSleep(200)
+				key = "ReturnOrEnter"
+				keyDown(key)
+				keyUp(key)
+				mSleep(200)
+				writePasteboard(self.wcPassword)
+				mSleep(200)
+				keyDown("RightGUI")
+				keyDown("v")
+				keyUp("v")
+				keyUp("RightGUI")
+				mSleep(200)
+				key = "ReturnOrEnter"
+				keyDown(key)
+				keyUp(key)
+				break
+			end
+		end
+	end
+
 	while (true) do
-        mSleep(200)
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x10aeff,"55|8|0x10aeff,-79|817|0x7c160,116|822|0x7c160", 100, 0, 0, 749, 1333)
 		if x ~= -1 and y ~= -1 then
 			mSleep(500)
 			break
 		end
-		
+
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy(0x5b6b92, "12|0|0x5b6b92,18|0|0x5b6b92,40|-4|0x5b6b92,40|-15|0x5b6b92,-216|-166|0x1a1a1a,-196|-169|0x1a1a1a,-172|-169|0x1a1a1a,163|-167|0x1a1a1a,208|-161|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
-        if x ~= -1 then
-            mSleep(200)
+		if x ~= -1 then
+			mSleep(200)
 			randomTap(x, y,5)
 			mSleep(500)
 			toast("登陆失败，切换下一个号",1)
 			mSleep(500)
-			table.remove(self.wcList, 1)
-			writeFile(userPath() .. "/res/wc_account.txt", self.wcList, "w", 1)
 			goto over
-        end
-        
-        mSleep(200)
+		end
+
+		mSleep(200)
 		if getColor(118,  704) == 0x007aff then
 			x_lens = self:moves()
 			if tonumber(x_lens) > 0 then
@@ -218,17 +250,17 @@ function model:wc()
 				mSleep(math.random(3000, 6000))
 			end
 		end
-		
+
 		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x10aeff,"55|8|0x10aeff,-79|817|0x7c160,116|822|0x7c160", 100, 0, 0, 749, 1333)
 		if x ~= -1 and y ~= -1 then
 			mSleep(200)
-            break
+			break
 		end
 	end
-	
+
 	while (true) do
-	    mSleep(200)
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x10aeff,"55|8|0x10aeff,-79|817|0x7c160,116|822|0x7c160", 100, 0, 0, 749, 1333)
 		if x ~= -1 and y ~= -1 then
 			mSleep(200)
@@ -237,52 +269,50 @@ function model:wc()
 			toast("安全验证",1)
 			mSleep(500)
 		end
-		
+
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy(0x000000, "17|-8|0x000000,17|5|0x000000,13|17|0x000000,31|9|0x000000,48|-5|0x000000,47|-1|0x000000,47|4|0x000000,48|17|0x000000,677|5|0xc8c8cd", 90, 0, 0, 750, 1334, { orient = 2 })
-        if x ~= -1 then
-            mSleep(200)
+		if x ~= -1 then
+			mSleep(200)
 			randomTap(x + 300, y,5)
 			mSleep(500)
-            toast("短信验证",1)
+			toast("短信验证",1)
 			mSleep(500)
-			table.remove(self.wcList, 1)
-			writeFile(userPath() .. "/res/wc_account.txt", self.wcList, "w", 1)
 			break
-        end
+		end
 	end
-	
+
 	while (true) do
-	    mSleep(200)
-	    x,y = findMultiColorInRegionFuzzy(0xffffff, "30|-4|0xffffff,314|-3|0x50ab36,-273|-3|0x50ab36,12|-36|0x50ab36,10|33|0x50ab36,19|-304|0x54b936,1|-357|0xffffff,14|-440|0x54b936,-13|-188|0x060606", 90, 0, 0, 750, 1334, { orient = 2 })
-        if x ~= -1 then
-            mSleep(200)
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0xffffff, "30|-4|0xffffff,314|-3|0x50ab36,-273|-3|0x50ab36,12|-36|0x50ab36,10|33|0x50ab36,19|-304|0x54b936,1|-357|0xffffff,14|-440|0x54b936,-13|-188|0x060606", 90, 0, 0, 750, 1334, { orient = 2 })
+		if x ~= -1 then
+			mSleep(200)
 			randomTap(x, y,5)
 			mSleep(500)
 			toast("完成",1)
 			mSleep(500)
-        end
-        
-        mSleep(200)
-        x,y = findMultiColorInRegionFuzzy(0x5a6a91, "-2|-16|0x5a6a91,-321|-12|0x1a1a1a,-320|5|0x1a1a1a,-282|-380|0x1a1a1a,-97|-372|0x1a1a1a,-63|-374|0x1a1a1a,-63|-5|0xffffff,96|-15|0xffffff,-242|-6|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
-        if x ~= -1 then
-            mSleep(500)
+		end
+
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0x5a6a91, "-2|-16|0x5a6a91,-321|-12|0x1a1a1a,-320|5|0x1a1a1a,-282|-380|0x1a1a1a,-97|-372|0x1a1a1a,-63|-374|0x1a1a1a,-63|-5|0xffffff,96|-15|0xffffff,-242|-6|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+		if x ~= -1 then
+			mSleep(500)
 			toast("进入界面成功",1)
 			mSleep(500)
 			break
-        end
+		end
 	end
-	
+
 	::over::
 end
 
 function model:main()
-    self:getConfig()
-    while (true) do
-        self:getAccount()
-        self:clear_App()
-        self:wc()
-    end
+	self:getConfig()
+	while (true) do
+		self:getAccount()
+		self:clear_App()
+		self:wc()
+	end
 end
 
 model:main()

@@ -1677,7 +1677,5 @@ end
 -- 	    dialog("text",0)
 -- 	end
     
-a = string.sub("012345678",1,1)
-dialog(a,0)
-	
-	
+sysver = getOSVer();    --获取系统版本
+dialog(tostring(sysver > "10.1"),5)
