@@ -167,65 +167,35 @@ function model:wc()
 		end
 	end
 
-	sysver = getOSVer()    --获取系统版本
 	while true do
-		if sysver > "13" then
-			mSleep(200)
-			x,y = findMultiColorInRegionFuzzy(0x181818, "5|0|0x181818,10|0|0x181818,16|-1|0x181818,49|-2|0x181818,15|97|0x181818,38|94|0x181818,58|74|0x181818,55|95|0x181818", 90, 0, 0, 750, 1334, { orient = 2 })
-			if x ~= -1 then
-				mSleep(200)
-				randomTap(x + 300, y,5)
-				mSleep(500)
-				inputStr(self.wcAcount)
-				mSleep(1000)
-				randomTap(x + 300, y + 90,5)
-				mSleep(500)
-				inputStr(self.wcPassword)
-				mSleep(1000)
-				randomTap(372, 841,3)
-				mSleep(1000)
-				break
-			end
-		else
-			mSleep(200)
-			x,y = findMultiColorInRegionFuzzy(0x181818, "5|0|0x181818,10|0|0x181818,16|-1|0x181818,49|-2|0x181818,15|97|0x181818,38|94|0x181818,58|74|0x181818,55|95|0x181818", 90, 0, 0, 750, 1334, { orient = 2 })
-			if x ~= -1 then
-				writePasteboard(self.wcAcount)
-				mSleep(200)
-				randomTap(x + 300, y,5)
-				mSleep(200)
-				keyDown("RightGUI")
-				keyDown("v")
-				keyUp("v")
-				keyUp("RightGUI")
-				mSleep(200)
-				key = "ReturnOrEnter"
-				keyDown(key)
-				keyUp(key)
-				mSleep(200)
-				writePasteboard(self.wcPassword)
-				mSleep(200)
-				keyDown("RightGUI")
-				keyDown("v")
-				keyUp("v")
-				keyUp("RightGUI")
-				mSleep(200)
-				key = "ReturnOrEnter"
-				keyDown(key)
-				keyUp(key)
-				break
-			end
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0x181818, "5|0|0x181818,10|0|0x181818,16|-1|0x181818,49|-2|0x181818,15|97|0x181818,38|94|0x181818,58|74|0x181818,55|95|0x181818", 90, 0, 0, 750, 1334, { orient = 2 })
+		if x ~= -1 then
+			mSleep(500)
+			tap(x + 300, y)
+			mSleep(2000)
+			inputKey(self.wcAcount)
+			mSleep(1000)
+			break
+		end
+	end
+	
+	while true do
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0x181818, "-12|0|0x181818,11|2|0x181818,24|-5|0x181818,30|-5|0x181818,40|-1|0x181818,40|-22|0x181818,-10|-97|0x181818,5|-97|0x181818,39|-98|0x181818", 90, 0, 0, 750, 1334, { orient = 2 })
+		if x ~= -1 then
+		    mSleep(500)
+			tap(x + 300, y)
+			mSleep(1000)
+			inputKey(self.wcPassword)
+			mSleep(1000)
+			randomTap(372, 841,3)
+			mSleep(1000)
+			break
 		end
 	end
 
 	while (true) do
-		mSleep(200)
-		x, y = findMultiColorInRegionFuzzy(0x10aeff,"55|8|0x10aeff,-79|817|0x7c160,116|822|0x7c160", 100, 0, 0, 749, 1333)
-		if x ~= -1 and y ~= -1 then
-			mSleep(500)
-			break
-		end
-
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy(0x5b6b92, "12|0|0x5b6b92,18|0|0x5b6b92,40|-4|0x5b6b92,40|-15|0x5b6b92,-216|-166|0x1a1a1a,-196|-169|0x1a1a1a,-172|-169|0x1a1a1a,163|-167|0x1a1a1a,208|-161|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
 		if x ~= -1 then
