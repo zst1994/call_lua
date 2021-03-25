@@ -340,7 +340,7 @@ function model:wc()
 					mSleep(math.random(3000, 6000))
 				end
 			end
-			
+
 			mSleep(200)
 			x,y = findMultiColorInRegionFuzzy( 0x56bf6a, "-245|1|0x56bf6a,54|-51|0x56bf6a,244|-12|0x56bf6a,37|34|0x56bf6a,-64|-2|0xffffff,90|-8|0xffffff,-30|-1429|0x4eabf9,64|-1422|0x4eabf9,4|-1428|0xffffff", 90, 0, 0, 1241, 2207)
 			if x ~= -1 and y ~= -1 then
@@ -382,7 +382,7 @@ function model:wc()
 				toast("安全验证",1)
 				mSleep(500)
 			end
-			
+
 			mSleep(200)
 			x,y = findMultiColorInRegionFuzzy( 0x000000, "1|7|0x000000,-7|12|0x000000,23|-5|0x000000,27|3|0x000000,49|15|0x000000,72|12|0x000000,99|14|0x000000,125|32|0x000000,188|12|0x000000", 90, 0, 0, 1241, 2207)
 			if x ~= -1 then
@@ -426,7 +426,7 @@ function model:wc()
 				toast("完成",1)
 				mSleep(500)
 			end
-			
+
 			mSleep(200)
 			x,y = findMultiColorInRegionFuzzy( 0x5b6b92, "-1|-22|0x5b6b92,6|18|0x5b6b92,-483|-7|0x1b1b1b,-423|-551|0x1b1b1b,-339|-555|0x1b1b1b,-301|-553|0x1b1b1b,-261|-550|0x1b1b1b,-236|-554|0x1b1b1b,-144|-552|0x1b1b1b", 90, 0, 0, 1241, 2207)
 			if x ~= -1 then
