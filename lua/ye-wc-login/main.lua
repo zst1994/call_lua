@@ -1084,7 +1084,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		if code == 200 then
 			data = strSplit(res, "|")
 			if data[1] == "1" then
-				mSleep(200)
 				if vpn_stauts == "13" then
 					telphone = data[4]
 				elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" or vpn_stauts == "19" then
@@ -1114,10 +1113,8 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			else
 				data = strSplit(res, ":")
 				if reTxtUtf8(data[1]) == "OK" then
-					mSleep(200)
 					telphone = data[2]
 					pid = data[3]
-					nLog(telphone)
 					toast(telphone,1)
 				elseif reTxtUtf8(data[1]) == "BAD" then
 					toast("获取手机号码失败，错误代码："..res,1)
@@ -1138,7 +1135,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		if code == 200 then
 			tmp = json.decode(res)
 			if tmp.phone_number then
-				mSleep(200)
 				telphone = tmp.phone_number
 				country_code = tmp.country_code
 				requestId = tmp.request_id
@@ -1163,7 +1159,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			if code == 200 then
 				data = strSplit(res, "：")
 				if tonumber(data[2]) > 0 then
-					mSleep(200)
 					telphone = data[2]
 					toast(telphone,1)
 				else
@@ -1186,7 +1181,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				if res ~= "NO" then
 					data = strSplit(res, "----")
 					if #data == 2 then
-						mSleep(200)
 						telphone = data[1]
 						ddwToken = data[2]
 						ddwData = res:atrim()
@@ -1228,20 +1222,15 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		end
 	elseif vpn_stauts == "6" then
 		::get_phone::
-		mSleep(500)
 		local sz = require("sz")        --登陆
 		local http = require("szocket.http")
 		local res, code = http.request("http://39.99.192.160/get_data")
 		if code == 200 then
 			tmp = json.decode(res)
 			if tmp.data.status then
-				mSleep(500)
 				telphone = tmp.data.account
-				mSleep(200)
 				code_url = tmp.data.link
-				mSleep(200)
 				result_id = tmp.data.id
-				mSleep(200)
 			elseif tmp.message == "没有可用数据" then
 				dialog("服务器当前没号码可用,即将退出运行",10)
 				lua_exit()
@@ -1261,7 +1250,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		if code == 200 then
 			tmp = json.decode(res)
 			if tmp.application_id == 2 then
-				mSleep(200)
 				telphone = tmp.number
 				requestId = tmp.request_id
 				toast(telphone,1)
@@ -1697,6 +1685,29 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			end
 			kn_country = "1"
 		end
+	elseif vpn_stauts == "22" then
+		::get_phone::
+		local sz = require("sz")        --登陆
+		local http = require("szocket.http")
+		local res, code = http.request("http://39.99.192.160/get_data")
+		if code == 200 then
+			tmp = json.decode(res)
+			if tmp.data.status then
+				telphone = tmp.data.account
+				code_url = tmp.data.link
+				result_id = tmp.data.id
+				kn_country = "976"
+			elseif tmp.message == "没有可用数据" then
+				dialog("服务器当前没号码可用,即将退出运行",10)
+				lua_exit()
+			else
+				goto get_phone
+			end
+		else
+			toast("获取手机号码失败，重新获取",1)
+			mSleep(1000)
+			goto get_phone
+		end
 	else
 		::get_phone::
 		local sz = require("sz")        --登陆
@@ -1732,7 +1743,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 	or vpn_stauts == "6" or vpn_stauts == "7" or vpn_stauts == "8" or vpn_stauts == "9" 
 	or vpn_stauts == "12" or vpn_stauts == "13" or vpn_stauts == "14" or vpn_stauts == "15" 
 	or vpn_stauts == "16" or vpn_stauts == "17" or vpn_stauts == "18" or vpn_stauts == "19" 
-	or vpn_stauts == "20" or vpn_stauts == "21" then
+	or vpn_stauts == "20" or vpn_stauts == "21" or vpn_stauts == "22" then
 		country_id = kn_country
 	elseif vpn_stauts == "4" or vpn_stauts == "10" then
 		country_id = country_code
@@ -1754,7 +1765,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 	end
 
 	if vpn_stauts == "1" or vpn_stauts == "3" or vpn_stauts == "4" or vpn_stauts == "6" or vpn_stauts == "10" 
-	or vpn_stauts == "11" or vpn_stauts == "17" or vpn_stauts == "18" or vpn_stauts == "21" then
+	or vpn_stauts == "11" or vpn_stauts == "17" or vpn_stauts == "18" or vpn_stauts == "21" or vpn_stauts == "22" then
 		phone = telphone
 	elseif vpn_stauts == "5" or vpn_stauts == "8" or vpn_stauts == "12" or vpn_stauts == "15" then
 		phone = string.sub(telphone, #country_id + 1,#telphone)
@@ -4360,6 +4371,90 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					mSleep(5000)
 					goto get_code
 				end
+			elseif vpn_stauts == "22" then
+				res_time = 0
+				again_time = 0
+				toast(code_url,1)
+				mSleep(1000)
+				::get_mess::
+				self:sendSMSKQ()
+
+				local sz = require("sz")        --登陆
+				local http = require("szocket.http")
+				local res, code = http.request(code_url)
+				if code == 200 then
+					tmp = json.decode(res)
+					if tmp.ResultCode == "0" or tmp.ResultCode == 0 then
+					    mess_yzm = string.match(tmp.Message, '%d+%d+%d+%d+%d+%d+')
+    					if #mess_yzm ~= 6 then
+    						toast("验证码不是6位数",1)
+    						goto get_mess
+    					else
+    						toast(mess_yzm,1)
+    					end
+    					yzm_bool = true
+    				else
+						mSleep(500)
+						toast(res..":"..res_time,1)
+						mSleep(5200)
+						res_time = res_time + 1
+						if res_time > 17 then
+							if country_id == "886" then
+								mSleep(500)
+								setVPNEnable(true)
+								mSleep(math.random(2000, 3000))
+								randomsTap(372,  749, 3)
+								mSleep(math.random(1000, 1500))
+								randomsTap(368, 1039,5)
+								mSleep(math.random(5000, 6000))
+								if content_type ~= "3" then
+									setVPNEnable(false)
+								end
+							else
+								mSleep(500)
+								setVPNEnable(true)
+								mSleep(math.random(2000, 3000))
+								randomsTap(372,  749, 3)
+								mSleep(math.random(1000, 1500))
+								randomsTap(368, 1039,5)
+								mSleep(math.random(5000, 6000))
+								if content_type ~= "3" then
+									setVPNEnable(false)
+								end
+							end
+							toast("重新获取验证码"..again_time,1)
+							res_time = 0
+							again_time = again_time + 1
+							caozuo_more = true
+							goto caozuo_more
+						end
+
+						if again_time > 2 then
+							goto over
+						else
+							goto get_mess
+						end
+					end
+				end
+
+				if yzm_bool then
+					::push::
+					local sz = require("sz")        --登陆
+					local http = require("szocket.http")
+					local res, code = http.request("http://39.99.192.160/update_data?id="..result_id)
+					if code == 200 then
+						tmp = json.decode(res)
+						if tmp.message == "更新成功" then
+							toast("号码状态标记成功",1)
+						else
+							goto push
+						end
+					else
+						toast("标记失败，重新标记",1)
+						mSleep(3000)
+						goto push
+					end
+				end
 			else
 				::get_mess::
 				self:sendSMSKQ()
@@ -5185,7 +5280,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			write_data(file_path,user.."----"..password.."----"..six_data.."----"..sj)
 			mSleep(500)
 
-			if vpn_stauts == "6" then
+			if vpn_stauts == "6" or vpn_stauts == "22" then
 				mSleep(200)
 				api = code_url
 			else
@@ -5538,7 +5633,7 @@ function model:main()
 			},
 			{
 				["type"] = "RadioGroup",                    
-				["list"] = "柠檬,卡农注册,奥迪,52,俄罗斯1,东帝汶,服务器取号,俄罗斯2,各国API,老友,SMS,越南,各国API2,奶茶,柠檬2,老司机,水煮鱼,松鼠,自用,火猫,k76sk,测试平台",
+				["list"] = "柠檬,卡农注册,奥迪,52,俄罗斯1,东帝汶,服务器取号,俄罗斯2,各国API,老友,SMS,越南,各国API2,奶茶,柠檬2,老司机,水煮鱼,松鼠,自用,火猫,k76sk,测试平台,蒙古",
 				["select"] = "0",  
 				["countperline"] = "4",
 			},
