@@ -58,6 +58,11 @@ function model:getAccount()
     status_resp, header_resp,body_resp = ts.httpGet("http://47.104.246.33/phone1.php?cmd=getphone", header_send, body_send)
 	if status_resp == 200 then
 		if #string.gsub(body_resp,"%s+","") > 0 then
+			if strSplit(body_resp,"====")[2] == "已经标记" then
+				toast("获取到的数据已经标记过，重新获取数据",1)
+				mSleep(3000)
+				goto get_account
+			end
 		    toast(body_resp,1)
 			return body_resp
 		else
@@ -270,6 +275,7 @@ function model:loginAccount()
         end
 	end
 	
+	::login_again::
 	while (true) do
 		mSleep(200)
 	    x,y = findMultiColorInRegionFuzzy(0x000000, "-5|0|0x000000,5|0|0x000000,11|0|0x000000,23|-1|0x000000,47|-1|0x000000,47|-7|0x000000,47|-14|0x000000,9|99|0x000000,49|95|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
@@ -308,6 +314,17 @@ function model:loginAccount()
 			self.subName = "出现滑块"
 			break
 	    end
+
+	    --安全验证
+	    mSleep(100)
+	    x,y = findMultiColorInRegionFuzzy(0xffffff, "105|4|0xffffff,-119|-3|0x07c160,59|-28|0x07c160,58|38|0x07c160,140|4|0x07c160,23|-803|0x10aeff,48|-806|0xffffff,83|-811|0x10aeff", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+            mSleep(500)
+			toast("安全验证",1)
+			mSleep(500)
+			self.subName = "新设备"
+			break
+        end
         
 		--匹配手机通讯录
 		mSleep(200)
@@ -321,6 +338,18 @@ function model:loginAccount()
 			self.subName = "匹配手机通讯录"
 			break
 		end
+		
+		--连接失败，请检查你的网络设置
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy( 0x576b95, "45|0|0x576b95,-209|-176|0x000000,-215|-158|0x000000,-141|-172|0x000000,-141|-164|0x000000,-132|-165|0x000000,-121|-169|0x000000,132|-174|0x000000,212|-155|0x000000", 90, 0, 0, 749, 1333)
+		if x ~= -1 then
+            mSleep(200)
+			tap(x, y)
+			mSleep(500)
+			toast("连接失败，请检查你的网络设置")
+			mSleep(500)
+			goto login_again
+        end
         
         --帐号或密码错误，请重新填写。
         mSleep(50)
@@ -431,7 +460,7 @@ function model:loginAccount()
 	header_send = {}
     body_send = {}
     ts.setHttpsTimeOut(60)
-    status_resp, header_resp,body_resp = ts.httpGet("http://47.104.246.33/phone1.php?cmd=poststatus&phone=" .. self.account .. "&status=" .. self.subName, header_send, body_send)
+    status_resp, header_resp,body_resp = ts.httpGet("http://47.104.246.33/phone1.php?cmd=poststatus&phone=" .. self.account .. "&status=" .. self.subName .. "====已经标记", header_send, body_send)
 	if status_resp == 200 then
 		if reTxtUtf8(body_resp) == "反馈成功" then
 			toast("号码状态标记成功",1)

@@ -1676,3 +1676,76 @@ end
 -- 	else
 -- 	    dialog("text",0)
 -- 	end
+
+require "TSLib"
+local ts                = require("ts")
+local json 				= ts.json
+
+local API = "Hk8Ve2Duh6QCR5XUxLpRxPyv"
+local Secret  = "fD0az8pW8lNhGptCZC4TPfMWX5CyVtnh"
+
+local tab = {
+    language_type = "ENG",
+	detect_direction = "true",
+	detect_language = "false",
+	ocrType = 2
+}
+
+local tp = getDeviceType()
+if m <= "1.2.7" then
+	dialog("请使用 v1.2.8 及其以上版本 TSLib",0)
+	lua_exit()
+end
+
+if  tp >= 0  and tp <= 2 then
+	if a <= "1.3.9" then
+		dialog("请使用 iOS v1.4.0 及其以上版本 ts.so",0)
+		lua_exit()
+	end
+elseif  tp >= 3 and tp <= 4 then
+	if a <= "1.1.0" then
+		dialog("请使用安卓 v1.1.1 及其以上版本 ts.so",0)
+		lua_exit()
+	end
+end
+
+::getBaiDuToken::
+local code,access_token = getAccessToken(API, Secret)
+if code then
+	local content_name = userPath() .. "/res/baiduAI_content_name1.jpg"
+	::snap::
+	--内容
+	mSleep(500)
+	snapshot(content_name, 229, 778, 472, 852) 
+	mSleep(100)
+
+	local code, body = baiduAI(access_token, content_name, tab)
+	dialog(body,0)
+	
+	if code then
+		local tmp = json.decode(body)
+		if #tmp.words_result > 0 then
+			content_num = string.lower(tmp.words_result[1].words)
+		else
+			toast("识别内容失败，重新截图识别" .. tostring(body), 1)
+			mSleep(3000)
+			goto snap        
+		end
+	else
+		toast("识别内容失败\n" .. tostring(body),1)
+		mSleep(3000)
+		goto snap
+	end 
+
+	if #content_num > 0 then
+		toast("识别内容：\r\n"..content_num,1)
+		mSleep(1000)
+	else
+		toast("识别内容失败,重新截图识别" .. tostring(body),1)
+		mSleep(3000)
+		goto snap 
+	end
+else
+	toast("获取token失败",1)
+	goto getBaiDuToken
+end

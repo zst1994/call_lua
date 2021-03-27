@@ -558,7 +558,11 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_type,vpn_stau
 			mSleep(math.random(500, 700))
 		end
 	end
-
+    
+    if connectVpnGetPhone == "1" then
+        self:vpn()
+    end
+    
 	if vpn_stauts == "1" then
 		::get_token::
 		local sz = require("sz")        --登陆
@@ -926,7 +930,11 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_type,vpn_stau
 			goto get_phone
 		end
 	end
-
+    
+    if connectVpnGetPhone == "1" then
+        setVPNEnable(false)
+    end
+    
 	if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "3" or vpn_stauts == "5" 
 	or vpn_stauts == "6" or vpn_stauts == "7" or vpn_stauts == "8" or vpn_stauts == "9" 
 	or vpn_stauts == "10" or vpn_stauts == "11" or vpn_stauts == "12" or vpn_stauts == "13"
@@ -4228,12 +4236,25 @@ function model:main()
 				["select"] = "0",  
 				["countperline"] = "4",
 			},
+			{
+				["type"] = "Label",
+				["text"] = "是否连接vpn获取手机号码",
+				["size"] = 20,
+				["align"] = "center",
+				["color"] = "0,0,255",
+			},
+			{
+				["type"] = "RadioGroup",                    
+				["list"] = "不连接,连接",
+				["select"] = "0",  
+				["countperline"] = "4",
+			},
 		}
 	}
 
 	local MyJsonString = json.encode(MyTable)
 
-	ret, move_type, login_times, content_type, vpn_stauts, kn_country, kn_id, countryId, country_len, login_type, fz_terrace, nickName, password, operator, addBlack, diff_user, ran_pass, airplaneStatus, tableKey, tmBack, tmFail, EU_countries, changeNickName = showUI(MyJsonString)
+	ret, move_type, login_times, content_type, vpn_stauts, kn_country, kn_id, countryId, country_len, login_type, fz_terrace, nickName, password, operator, addBlack, diff_user, ran_pass, airplaneStatus, tableKey, tmBack, tmFail, EU_countries, changeNickName, connectVpnGetPhone = showUI(MyJsonString)
 	if ret == 0 then
 		dialog("取消运行脚本", 3)
 		luaExit()
