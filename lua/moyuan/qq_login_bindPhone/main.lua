@@ -457,6 +457,16 @@ function model:mm()
 			goto reName
 		end
 		
+		--帐号在其他设备上登陆
+		x,y = findMultiColorInRegionFuzzy(0x007aff, "12|0|0x007aff,48|0|0x007aff,41|-15|0x007aff,152|-254|0x000000,162|-246|0x000000,162|-229|0x000000,194|-255|0x000000,196|-240|0x000000,91|-191|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+            toast("密码错误", 1)
+			mSleep(1000)
+			self.subName = "密码错误"
+			self.subNameBool = false
+			goto reName
+        end
+		
 		--密码错误
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0x007aff, "8|0|0x007aff,18|-8|0x007aff,42|7|0x007aff,57|7|0x007aff,281|-9|0x007aff,356|10|0x007aff,116|-96|0x000000,153|-104|0x000000,327|-95|0x000000", 90, 0, 0, 749, 1333)
@@ -1256,6 +1266,15 @@ function model:mm()
 				toast("好的",1)
 				mSleep(500)
 				break
+			end
+			
+			--帐号部分功能被禁用
+			if getColor(552,698) == 0x616161  and getColor(499,646) == 0xffffff then
+                toast("帐号部分功能被禁用", 1)
+    			mSleep(1000)
+    			self.subName = "异常"
+    			self.subNameBool = false
+    			goto reName
 			end
 
 			self:timeOutRestart(t1)
