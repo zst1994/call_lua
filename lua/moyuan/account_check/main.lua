@@ -11,13 +11,13 @@ model.content_num       = "0"
 model.accountFilePath   = userPath() .. "/res/accountData.txt"
 model.errorFilePath     = userPath() .. "/res/errorAccount.txt"
 model.successFilePath   = userPath() .. "/res/successAccount.txt"
-model.API               = "Hk8Ve2Duh6QCR5XUxLpRxPyv"
-model.Secret            = "fD0az8pW8lNhGptCZC4TPfMWX5CyVtnh"
+model.API               = "CkjuQGtZUNumzQvjgTQ082Ih"
+model.Secret            = "XsYel9kpUUhG3OwFHfu9h2cKbXlhPpzj"
 model.tab_CHN_ENG       = {
 	language_type = "CHN_ENG",
 	detect_direction = "true",
 	detect_language = "true",
-	ocrType = 3
+	ocrType = 1
 }
 
 function model:click(click_x,click_y)
