@@ -1702,6 +1702,15 @@ function model:mm()
 			mSleep(500)
 		end
 		
+		--绑定手机成功退出手机绑定
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0xffffff, "213|-7|0xffffff,-118|-4|0x3bb3fa,106|34|0x3bb3fa,147|-48|0x3bb3fa,288|-2|0x3bb3fa,-2|-212|0x323333,145|-211|0x323333,191|-210|0x323333,106|-248|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+            mSleep(500)
+			tap(66, 90)
+			mSleep(500)
+        end
+		
 		--退出当前帐号
         mSleep(200)
         x,y = findMultiColorInRegionFuzzy(0x323333, "0|5|0x323333,0|9|0x323333,0|25|0x323333,28|6|0x323333,40|18|0x323333,61|4|0x323333,58|24|0x323333,165|11|0x323333,162|17|0x323333", 90, 0, 0, 750, 1334, { orient = 2 })
