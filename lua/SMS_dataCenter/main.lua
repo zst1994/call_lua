@@ -1168,9 +1168,6 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 					goto get_mess
 				end
 			elseif api_change == "5" then
-				setVPNEnable(true)
-				mSleep(3000)
-
 				::get_mess::
 				local sz = require("sz")        --登陆
 				local szhttp = require("szocket.http")
@@ -1180,8 +1177,6 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 					if tmp.code == 200 then
 						yzm_mess = tmp.data
 						toast(yzm_mess,1)
-						setVPNEnable(false)
-						mSleep(1000)
 					elseif tmp.code == 908 then
 						toast("暂未查询到验证码，请稍后再试"..get_time,1)
 						mSleep(2000)
@@ -2928,9 +2923,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			goto get_phone
 		end
 	elseif api_change == "5" then
-		setVPNEnable(true)
-		mSleep(3000)
-
 		::get_phone::
 		local sz = require("sz")        --登陆
 		local szhttp = require("szocket.http")
@@ -2940,8 +2932,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			if tmp.code == 200 then
 				telphone = tmp.data
 				toast(telphone,1)
-				setVPNEnable(false)
-				mSleep(500)
 			elseif tmp.code == 906 then
 				toast(tmp.msg,1)
 				mSleep(5000)
