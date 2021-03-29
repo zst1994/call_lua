@@ -1174,7 +1174,7 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 				::get_mess::
 				local sz = require("sz")        --登陆
 				local szhttp = require("szocket.http")
-				local res, code = szhttp.request("http://www2.smspva.net/out/ext_api/getMsg?name="..username.."&pwd="..user_pass.."&pn="..telphone.."&pid="..work_id.."&&serial=2")
+				local res, code = szhttp.request("http://opapi.sms-5g.com/out/ext_api/getMsg?name="..username.."&pwd="..user_pass.."&pn="..telphone.."&pid="..work_id.."&&serial=2")
 				if code == 200 then
 					tmp = json.decode(res)
 					if tmp.code == 200 then
@@ -1193,7 +1193,7 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 								status = 2
 								local sz = require("sz")        --登陆
 								local szhttp = require("szocket.http")
-								local res, code = szhttp.request("http://www2.smspva.net/out/ext_api/passMobile?name="..username.."&pwd="..user_pass.."&pn="..telphone.."&pid="..work_id.."&serial=2")
+								local res, code = szhttp.request("http://opapi.sms-5g.com/out/ext_api/passMobile?name="..username.."&pwd="..user_pass.."&pn="..telphone.."&pid="..work_id.."&serial=2")
 								mSleep(500)
 								if code == 200 then
 									tmp = json.decode(res)
@@ -2934,7 +2934,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		::get_phone::
 		local sz = require("sz")        --登陆
 		local szhttp = require("szocket.http")
-		local res, code = szhttp.request("http://www2.smspva.net/out/ext_api/getMobile?name="..username.."&pwd="..user_pass.."&cuy="..SMS_country.."&pid="..work_id.."&num=1&noblack=0&serial=2&secret_key="..getPhone_key)
+		local res, code = szhttp.request("http://opapi.sms-5g.com/out/ext_api/getMobile?name="..username.."&pwd="..user_pass.."&cuy="..SMS_country.."&pid="..work_id.."&num=1&noblack=0&serial=2&secret_key="..getPhone_key)
 		if code == 200 then
 			tmp = json.decode(res)
 			if tmp.code == 200 then
