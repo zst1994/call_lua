@@ -1928,15 +1928,22 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		if x ~= -1 and y ~= -1 then
 			mSleep(math.random(200, 500))
 			randomsTap(x+400,y,8)
-			mSleep(math.random(500, 700))
+			mSleep(1000)
 			if login_type == "0" then
 				if ran_pass == "1" then
 					password = self:randomStr("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM", math.random(1, 3))..self:randomStr("QWERTYUIOPASDFG1234567890HJKLZXCVBNM1234567890qwertyuiopasdfgh1234567890jklzxcvbnm", math.random(4, 6))..self:randomStr("1234567890", math.random(3, 4))
 				end
 			end
+			writePasteboard(password)
+            mSleep(500)
+			keyDown("RightGUI")
+			keyDown("v")
+			keyUp("v")
+			keyUp("RightGUI")
 			mSleep(500)
-			inputStr(password)
-			mSleep(math.random(200, 500))
+-- 			mSleep(500)
+-- 			inputStr(password)
+			mSleep(500)
 			break
 		end
 	end
@@ -5315,7 +5322,14 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 			write_data(file_path,user.."----"..password.."----"..six_data.."----"..sj)
 			mSleep(500)
-
+            
+            --蒙古号码上传到指定页面，其他的正常
+            if vpn_stauts == "22" then
+                is_meng_gu = "1"
+            else
+                is_meng_gu = "0"
+            end
+            
 			if vpn_stauts == "6" or vpn_stauts == "22" then
 				mSleep(200)
 				api = code_url
@@ -5327,7 +5341,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			::send::
 			local sz = require("sz")       
 			local http = require("szocket.http")
-			local res, code = http.request("http://39.99.192.160/import_data?phone="..user.."&password="..password.."&token="..six_data.."&is_normal="..is_normal.."&operator="..operator.."&link="..urlEncoder(api).."&time="..sj)
+			local res, code = http.request("http://39.99.192.160/import_data?phone="..user.."&password="..password.."&token="..six_data.."&is_normal="..is_normal.."&operator="..operator.."&link="..urlEncoder(api).."&time="..sj.."&is_meng_gu="..is_meng_gu)
 			if code == 200 then
 				tmp = json.decode(res)
 				if tmp.code == 200 then
