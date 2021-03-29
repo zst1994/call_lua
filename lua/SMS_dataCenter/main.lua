@@ -2926,7 +2926,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		::get_phone::
 		local sz = require("sz")        --登陆
 		local szhttp = require("szocket.http")
-		local res, code = szhttp.request("http://opapi.sms-5g.com/out/ext_api/getMobile?name="..username.."&pwd="..user_pass.."&cuy="..SMS_country.."&pid="..work_id.."&num=1&noblack=0&serial=2&secret_key="..getPhone_key)
+		local res, code = szhttp.request("http://opapi.sms-5g.com/out/ext_api/getMobile?name="..username.."&pwd="..user_pass.."&cuy="..SMS_country.."&pid="..work_id.."&num=1&noblack=1&serial=2&secret_key="..getPhone_key)
 		if code == 200 then
 			tmp = json.decode(res)
 			if tmp.code == 200 then
