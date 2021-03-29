@@ -2752,7 +2752,8 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			goto hk_again
 		end
 	end
-
+	
+	menguNum = 0
 	::kq::
 	--跳马失败释放号码
 	if tiaoma_next then
@@ -3095,7 +3096,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				end
 				self:sendSMSKQ()
 			end
-
+			
 			::get_new_mess::
 			if vpn_stauts == "1" then
 				::get_mess::
@@ -4541,6 +4542,16 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				mSleep(math.random(1000, 1700))
 				randomsTap(390,  472,9)
 				mSleep(math.random(1000, 1500))
+				if menguNum > 0 then
+					for var= 1, 10 do
+						mSleep(100)
+						keyDown("DeleteOrBackspace")
+						mSleep(100)
+						keyUp("DeleteOrBackspace")
+						mSleep(100)
+					end
+				end
+				
 				for i = 1, #(mess_yzm) do
 					mSleep(math.random(500, 700))
 					num = string.sub(mess_yzm,i,i)
@@ -4686,70 +4697,95 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x576b95,"-28|-1|0x576b95,-6|-15|0x576b95,-135|-165|0,-70|-164|0,-14|-155|0", 90, 0, 0, 749, 1333)
 			if x ~= -1 and y ~= -1 then
-				mSleep(500)
-				randomsTap(x,  y, 3)
-				mSleep(1000)
-				closeApp(self.wc_bid, 0)
-				mSleep(3000)
-				setVPNEnable(false)
-				mSleep(500)
-				if content_type == "2" then
-					self:changeIP(content_user,content_country)
-				else
-					if content_type ~= "1" then
-						self:change_IP(content_user,content_country)
+				if vpn_stauts == "22" and menguNum < 4 then
+					mSleep(500)
+					randomsTap(x,  y, 3)
+					mSleep(1000)
+					for var= 1, 12 do
+						toast("等待重新获取验证码".. 60 - var * 5,1)
+						mSleep(5000)
 					end
-				end
-				mSleep(1000)
-				runApp(self.wc_bid)
-				mSleep(2000)
+					setVPNEnable(true)
+					mSleep(math.random(2000, 3000))
+					randomsTap(372,  749, 3)
+					mSleep(math.random(1000, 1500))
+					randomsTap(368, 1039,5)
+					mSleep(math.random(5000, 6000))
+					if content_type ~= "3" then
+						setVPNEnable(false)
+					end
+					toast("蒙古验证码不正确，重新获取",1)
+					mSleep(2000)
+					res_time = 0
+					again_time = 0
+					menguNum = menguNum + 1
+					goto kq
+				else
+					mSleep(500)
+					randomsTap(x,  y, 3)
+					mSleep(1000)
+					closeApp(self.wc_bid, 0)
+					mSleep(3000)
+					setVPNEnable(false)
+					mSleep(500)
+					if content_type == "2" then
+						self:changeIP(content_user,content_country)
+					else
+						if content_type ~= "1" then
+							self:change_IP(content_user,content_country)
+						end
+					end
+					mSleep(1000)
+					runApp(self.wc_bid)
+					mSleep(2000)
 
-				while true do
-					mSleep(200)
-					if getColor(561,1265) == 0x576b95 then
-						mSleep(math.random(500, 700))
-						randomsTap(536,1266,3)
-						mSleep(math.random(500, 700))
-						if airplaneStatus == "1" then
+					while true do
+						mSleep(200)
+						if getColor(561,1265) == 0x576b95 then
+							mSleep(math.random(500, 700))
+							randomsTap(536,1266,3)
+							mSleep(math.random(500, 700))
+							if airplaneStatus == "1" then
+								mSleep(math.random(200, 500))
+								setAirplaneMode(true)
+								mSleep(3000)
+								setAirplaneMode(false)
+							end
+						end
+
+						mSleep(200)
+						if getColor(393,1170) == 0 then
+							mSleep(math.random(500, 700))
+							randomsTap(393,1170,3)
+							mSleep(math.random(500, 700))
+							break
+						end
+
+						--取消
+						mSleep(200)
+						if getColor(79,88) == 0x2bb00 then
+							mSleep(math.random(500, 700))
+							randomsTap(79,88,3)
+							mSleep(math.random(500, 700))
+						end
+
+						mSleep(200)
+						x,y = findMultiColorInRegionFuzzy( 0x07c160, "171|-1|0x07c160,57|-5|0xffffff,-163|-3|0xf2f2f2,-411|1|0xf2f2f2,-266|-6|0x06ae56", 90, 0, 0, 749, 1333)
+						if x ~= -1 and y ~= -1 then
 							mSleep(math.random(200, 500))
-							setAirplaneMode(true)
-							mSleep(3000)
-							setAirplaneMode(false)
+							randomsTap(549, 1240,10)
+							mSleep(math.random(200, 500))
+							toast("注册",1)
+							break
 						end
 					end
 
-					mSleep(200)
-					if getColor(393,1170) == 0 then
-						mSleep(math.random(500, 700))
-						randomsTap(393,1170,3)
-						mSleep(math.random(500, 700))
-						break
-					end
+					self:sendServerStatus(telphone,mess_yzm)
 
-					--取消
-					mSleep(200)
-					if getColor(79,88) == 0x2bb00 then
-						mSleep(math.random(500, 700))
-						randomsTap(79,88,3)
-						mSleep(math.random(500, 700))
-					end
-
-					mSleep(200)
-					x,y = findMultiColorInRegionFuzzy( 0x07c160, "171|-1|0x07c160,57|-5|0xffffff,-163|-3|0xf2f2f2,-411|1|0xf2f2f2,-266|-6|0x06ae56", 90, 0, 0, 749, 1333)
-					if x ~= -1 and y ~= -1 then
-						mSleep(math.random(200, 500))
-						randomsTap(549, 1240,10)
-						mSleep(math.random(200, 500))
-						toast("注册",1)
-						break
-					end
+					toast("验证码不正确",1)
+					mSleep(1000)
+					goto reset
 				end
-
-				self:sendServerStatus(telphone,mess_yzm)
-
-				toast("验证码不正确",1)
-				mSleep(1000)
-				goto reset
 			end
 
 			--环境异常
