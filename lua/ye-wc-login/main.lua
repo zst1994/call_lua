@@ -3224,6 +3224,8 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				end
 
 				::get_mess::
+				self:sendSMSKQ()
+				
 				second_time = os.time()
 				diff_time = os.difftime(second_time,first_time)
 				if diff_time > 600 then
@@ -3232,8 +3234,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					toast(diff_time,1)
 					mSleep(1000)
 				end
-
-				self:sendSMSKQ()
 
 				if get_time > all_time then
 					if country_id == "886" then
@@ -3338,6 +3338,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
 				local res, code = http.request(getPhoneCode_url)
+				toast(code .. "====" .. res,1)
 				if code == 200 then
 					data = strSplit(res, "|")
 					if data[1] == "1" then

@@ -1199,6 +1199,12 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 								yzm_mess = ""
 								lua_restart()
 							else
+								mSleep(500)
+								if fz_type ~= "3" then
+									self:change_vpn()
+								else
+									setVPNEnable(true)
+								end
 								mSleep(math.random(2000, 3000))
 								randomTap(372,  749, 3)
 								mSleep(math.random(1000, 1500))
@@ -1213,7 +1219,13 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 										mSleep(3000)
 									end
 								end
-
+								
+								if fz_type ~= "3" then
+									setVPNEnable(true)
+								else
+									setVPNEnable(false)
+								end
+								
 								get_time = 1
 								toast("重新获取验证码",1)
 								mSleep(2000)
@@ -4441,6 +4453,20 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 						if code == 200 then
 							tmp = json.decode(res)
 							if tmp.Status == 200 then
+								toast("跳马失败加黑手机号码",1)
+								mSleep(1000)
+							else
+								goto addblack
+							end
+						end
+					elseif api_change == "5" then
+						::addblack::
+						local sz = require("sz")        --登陆
+						local szhttp = require("szocket.http")
+						local res, code = szhttp.request("http://opapi.sms-5g.com//out/ext_api/addBlack?name="..username.."&pwd="..user_pass.."&pn="..telphone.."&pid="..work_id)
+						if code == 200 then
+							tmp = json.decode(res)
+							if tmp.code == 200 or tmp.code == "200" then
 								toast("跳马失败加黑手机号码",1)
 								mSleep(1000)
 							else
