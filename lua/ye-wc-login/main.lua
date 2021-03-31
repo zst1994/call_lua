@@ -1235,6 +1235,8 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				dialog("服务器当前没号码可用,即将退出运行",10)
 				lua_exit()
 			else
+			    toast(tmp.message,1)
+			    mSleep(3000)
 				goto get_phone
 			end
 		else
@@ -1705,6 +1707,8 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				dialog("服务器当前没号码可用,即将退出运行",10)
 				lua_exit()
 			else
+			    toast(tmp.message,1)
+			    mSleep(3000)
 				goto get_phone
 			end
 		else
