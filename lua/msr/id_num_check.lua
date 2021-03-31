@@ -65,7 +65,7 @@ function model:checkIdCard()
         
         --证件与姓名不匹配
         mSleep(500)
-        x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "6|1|0x1a1a1a,18|0|0x1a1a1a,46|0|0x1a1a1a,261|-2|0x576b95,440|-8|0x576b95,406|-5|0x576b95,403|-13|0x576b95,340|4|0x576b95", 90, 0, 0, 750, 1334, { orient = 2 })
+        x,y = findMultiColorInRegionFuzzy( 0x1a1a1a, "314|-4|0x576b95,386|-11|0x576b95,386|-13|0x576b95,89|-189|0x1a1a1a,131|-213|0x1a1a1a,130|-182|0x1a1a1a,178|-214|0x1a1a1a,179|-182|0x1a1a1a,192|-164|0x1a1a1a", 90, 0, 0, 749, 1333)
         if x ~= -1 then
             mSleep(500)
             tap(x,y)
@@ -89,6 +89,33 @@ function model:checkIdCard()
 			data = self.id_card_num.."----成功"
             break
         end
+		
+		--名下绑定超过n个微信号
+		mSleep(500)
+		x,y = findMultiColorInRegionFuzzy( 0x1a1a1a, "245|-12|0x576b95,351|-13|0x576b95,423|-10|0x576b95,52|-307|0x1a1a1a,61|-296|0x1a1a1a,79|-306|0x1a1a1a,104|-291|0x1a1a1a,143|-309|0x1a1a1a,145|-279|0x1a1a1a", 90, 0, 0, 749, 1333)
+		if x ~= -1 then
+			mSleep(500)
+			tap(x,y)
+			mSleep(1000)
+			while (true) do
+                mSleep(500)
+                x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "4|7|0x1a1a1a,13|7|0x1a1a1a,21|7|0x1a1a1a,53|7|0x1a1a1a,74|-5|0x1a1a1a,91|-4|0x1a1a1a,83|3|0x1a1a1a,84|9|0x1a1a1a,86|18|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
+                if x ~= -1 then
+                    mSleep(500)
+                    tap(x + 500,y + 10)
+                    mSleep(1000)
+                    for var=1,20 do
+                        mSleep(100)
+                        keyDown("DeleteOrBackspace")
+                        keyUp("DeleteOrBackspace")  
+                    end
+                    break
+                end
+            end
+            category = "error-data"
+			data = self.id_card_num.."----失败"
+            break
+		end
         
         mSleep(500)
         x,y = findMultiColorInRegionFuzzy(0x576b95, "16|0|0x576b95,44|-3|0x576b95,54|-2|0x576b95,12|-211|0x1a1a1a,33|-210|0x1a1a1a,27|-201|0x1a1a1a,94|-198|0x1a1a1a,102|-201|0x1a1a1a,120|-194|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })

@@ -1642,7 +1642,7 @@ end
 -- 			toast("该微信帐号因使用了微信外挂、非官方客户端或模拟器，将永久限制登录，请尽快卸载对应的非法软件。若帐号内有资金，可轻触“确定”按相关指引进行操作。",1)
 -- 			mSleep(500)
 --         end
-    
+
 --     --帐号或密码错误，请出现填写
 --         x,y = findMultiColorInRegionFuzzy(0x576b95, "11|-1|0x576b95,40|0|0x576b95,-110|-155|0x000000,-100|-155|0x000000,-89|-156|0x000000,-72|-162|0x000000,-61|-158|0x000000,-27|-158|0x000000,8|-177|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
 --         if x ~= -1 then
@@ -1652,8 +1652,8 @@ end
 -- 			toast("帐号或密码错误，请出现填写")
 -- 			mSleep(500)
 --         end
-        
-        
+
+
 --         function getIp()
 --             ::ip_addresss::
 --     		local sz = require("sz");
@@ -1669,7 +1669,7 @@ end
 --     			return false
 --     		end
 --         end
-	
+
 -- 	aa = getIp()
 -- 	if aa then
 -- 	    dialog(aa,0)
@@ -1677,75 +1677,21 @@ end
 -- 	    dialog("text",0)
 -- 	end
 
-require "TSLib"
-local ts                = require("ts")
-local json 				= ts.json
-
-local API = "Hk8Ve2Duh6QCR5XUxLpRxPyv"
-local Secret  = "fD0az8pW8lNhGptCZC4TPfMWX5CyVtnh"
-
-local tab = {
-    language_type = "ENG",
-	detect_direction = "true",
-	detect_language = "false",
-	ocrType = 2
-}
-
-local tp = getDeviceType()
-if m <= "1.2.7" then
-	dialog("请使用 v1.2.8 及其以上版本 TSLib",0)
-	lua_exit()
-end
-
-if  tp >= 0  and tp <= 2 then
-	if a <= "1.3.9" then
-		dialog("请使用 iOS v1.4.0 及其以上版本 ts.so",0)
-		lua_exit()
-	end
-elseif  tp >= 3 and tp <= 4 then
-	if a <= "1.1.0" then
-		dialog("请使用安卓 v1.1.1 及其以上版本 ts.so",0)
-		lua_exit()
-	end
-end
-
-::getBaiDuToken::
-local code,access_token = getAccessToken(API, Secret)
-if code then
-	local content_name = userPath() .. "/res/baiduAI_content_name1.jpg"
-	::snap::
-	--内容
+--证件与姓名不匹配
+mSleep(500)
+x,y = findMultiColorInRegionFuzzy( 0x1a1a1a, "314|-4|0x576b95,386|-11|0x576b95,386|-13|0x576b95,89|-189|0x1a1a1a,131|-213|0x1a1a1a,130|-182|0x1a1a1a,178|-214|0x1a1a1a,179|-182|0x1a1a1a,192|-164|0x1a1a1a", 90, 0, 0, 749, 1333)
+if x ~= -1 then
 	mSleep(500)
-	snapshot(content_name, 229, 778, 472, 852) 
-	mSleep(100)
+	tap(x,y)
+	mSleep(1000)
+	toast("111",1)
+end
 
-	local code, body = baiduAI(access_token, content_name, tab)
-	dialog(body,0)
-	
-	if code then
-		local tmp = json.decode(body)
-		if #tmp.words_result > 0 then
-			content_num = string.lower(tmp.words_result[1].words)
-		else
-			toast("识别内容失败，重新截图识别" .. tostring(body), 1)
-			mSleep(3000)
-			goto snap        
-		end
-	else
-		toast("识别内容失败\n" .. tostring(body),1)
-		mSleep(3000)
-		goto snap
-	end 
-
-	if #content_num > 0 then
-		toast("识别内容：\r\n"..content_num,1)
-		mSleep(1000)
-	else
-		toast("识别内容失败,重新截图识别" .. tostring(body),1)
-		mSleep(3000)
-		goto snap 
-	end
-else
-	toast("获取token失败",1)
-	goto getBaiDuToken
+mSleep(500)
+x,y = findMultiColorInRegionFuzzy( 0x1a1a1a, "245|-12|0x576b95,351|-13|0x576b95,423|-10|0x576b95,52|-307|0x1a1a1a,61|-296|0x1a1a1a,79|-306|0x1a1a1a,104|-291|0x1a1a1a,143|-309|0x1a1a1a,145|-279|0x1a1a1a", 90, 0, 0, 749, 1333)
+if x ~= -1 then
+	mSleep(500)
+	tap(x,y)
+	mSleep(1000)
+	toast("22222",1)
 end
