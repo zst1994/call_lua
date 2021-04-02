@@ -9,6 +9,7 @@ model.wc_bid 			= ""
 model.wc_name			= ""
 model.wc_file			= ""
 model.awz_bid 			= ""
+model.axj_bid			= ""
 model.awz_newUrl        = ""
 model.awz_getparam      = ""
 
@@ -149,7 +150,7 @@ function model:change_IP(content_user,content_country)--换IP
 end
 
 function model:vpn()
-	mSleep(math.random(500, 700))
+	mSleep(200)
 	setVPNEnable(false)
 	setVPNEnable(false)
 	setVPNEnable(false)
@@ -184,7 +185,7 @@ function model:vpn()
 		setVPNEnable(false)
 		mSleep(math.random(200, 500))
 		x,y = findMultiColorInRegionFuzzy( 0x007aff, "3|15|0x007aff,19|10|0x007aff,-50|-128|0x000000,-34|-147|0x000000,3|-127|0x000000,37|-132|0x000000,59|-135|0x000000", 90, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(math.random(200, 500))
 			randomsTap(x,y,10)
 			mSleep(math.random(200, 500))
@@ -192,7 +193,7 @@ function model:vpn()
 
 		--好
 		x,y = findMultiColorInRegionFuzzy( 0x007aff, "1|20|0x007aff,11|0|0x007aff,18|17|0x007aff,14|27|0x007aff", 90, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(math.random(200, 500))
 			randomsTap(x,y,10)
 			mSleep(math.random(200, 500))
@@ -204,20 +205,22 @@ function model:vpn()
 end
 
 function model:clear_App()
+	clear_bid = self.awz_bid
 	::run_again::
-	closeApp(self.awz_bid)
+	closeApp(clear_bid)
 	mSleep(math.random(200, 500))
-	runApp(self.awz_bid)
+	runApp(clear_bid)
 	mSleep(math.random(500, 1500))
 
 	while true do
-		mSleep(500)
-		flag = isFrontApp(self.awz_bid)
+		mSleep(200)
+		flag = isFrontApp(clear_bid)
 		if flag == 1 then
 			if getColor(147,456) == 0x6f7179 then
 				break
 			end
 		else
+			clear_bid = self.axj_bid
 			goto run_again
 		end
 	end
@@ -300,6 +303,12 @@ function model:getConfig()
 		self.awz_bid = string.gsub(tab[4],"%s+","")
 		self.awz_newUrl = string.gsub(tab[5],"%s+","")
 -- 		self.awz_getparam = string.gsub(tab[6],"%s+","")
+
+		if tab[7] then
+			self.axj_bid = string.gsub(tab[7],"%s+","")
+		else
+			self.axj_bid = self.awz_bid
+		end
 		toast("获取配置信息成功",1)
 		mSleep(1000)
 	else
@@ -319,13 +328,11 @@ function model:moves()
 	snapshot("test_3.jpg", 33, 503, 711, 892)
 	mSleep(500)
 	ts.img.binaryzationImg(userPath().."/res/test_3.jpg",mns)
-	mSleep(500)
 	if self:file_exists(userPath().."/res/tmp.jpg") then
 		toast("正在计算",1)
-		mSleep(math.random(500, 1000))
+		mSleep(200)
 		keepScreen(false)
 		point = ts.imgFindColor(userPath().."/res/tmp.jpg", 0, mnm, 300, 4, 749, 1333);   
-		mSleep(math.random(500, 1000))
 		if type(point) == "table"  and #point ~=0  then
 			mSleep(500)
 			x_len = point[1].x
@@ -368,7 +375,6 @@ function model:ewm(phone,country_id,ewm_url,fz_terrace,load_ewm_bool,base_six_fo
 		toast(body_resp,1)
 		mSleep(1000)
 		if status_resp == 200 then
-			mSleep(500)
 			local tmp = json.decode(body_resp)
 			if tmp.message == "success" then
 				taskId = tmp.data.taskId
@@ -416,9 +422,7 @@ function model:ewm(phone,country_id,ewm_url,fz_terrace,load_ewm_bool,base_six_fo
 		body_send = string.format("key=%s&url=%s&tel=%s&area=%s","2c588238-2a69-47eb-b082-2a20a1dd5ee8", ewm_url, phone, country_id)
 		ts.setHttpsTimeOut(80)--安卓不支持设置超时时间 
 		status_resp, header_resp, body_resp  = ts.httpPost("http://www.tvnxl.com/xd/tj", header_send, body_send, true)
-		mSleep(1000)
 		if status_resp == 200 then
-			mSleep(500)
 			local tmp = json.decode(body_resp)
 			if tmp.success then
 				oId = tmp.data.oId
@@ -442,10 +446,10 @@ function model:ewm(phone,country_id,ewm_url,fz_terrace,load_ewm_bool,base_six_fo
 	time = os.time() + 365
 	--查询订单状态
 	while (true) do
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy(0x7c160,"279|8|0x7c160,133|-829|0x7c160,160|-785|0x7c160,128|-659|0x191919,216|-659|0x191919", 90, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
-			mSleep(math.random(500, 700))
+		if x ~= -1 and y ~= -1 then
+			mSleep(200)
 			self:vpn()
 			mSleep(math.random(3500, 5700))
 			randomsTap(373, 1099,10)
@@ -460,9 +464,9 @@ function model:ewm(phone,country_id,ewm_url,fz_terrace,load_ewm_bool,base_six_fo
 			bioaji_bool = true
 		end
 
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 100, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			setVPNEnable(false)
 			mSleep(4000)
 			break
@@ -605,16 +609,16 @@ function model:idCard(countryCode)
 --				mSleep(500)
 --				while true do
 --					--设置
---					mSleep(1000)
+--					mSleep(200)
 --					x, y = findMultiColorInRegionFuzzy(0x1485ee,"0|13|0x1485ee,58|2|0x191919,63|13|0x191919,77|6|0x191919,97|11|0x191919,116|13|0x191919,106|20|0x444444", 90, 0, 0, 749, 1333)
---					if x~=-1 and y~=-1 then
+--					if x ~= -1 and y ~= -1 then
 --						mSleep(1000)
 --						randomTap(x + 300,y,2)
 --						mSleep(1000)
 --					end
 
 --					--帮助与反馈
---					mSleep(1000)
+--					mSleep(200)
 --					if getColor(153,661) == 0x272727 and getColor(49,675) == 0x191919 then
 --						mSleep(2500)
 --						randomTap(153,661,2)
@@ -624,7 +628,7 @@ function model:idCard(countryCode)
 --				end
 
 --				while true do
---					mSleep(1000)
+--					mSleep(200)
 --					if getColor(602,88) == 0 and getColor(276,344) == 0x191919 then
 --						mSleep(3000)
 --						randomTap(4276,344,2)
@@ -632,15 +636,15 @@ function model:idCard(countryCode)
 --					end
 
 --					--实名问题
---					mSleep(1000)
+--					mSleep(200)
 --					x, y = findMultiColorInRegionFuzzy(0x191919,"21|0|0x191919,11|10|0x191919,34|12|0x191919,41|-3|0x191919,57|7|0x191919,78|7|0x191919,92|7|0x191919,102|0|0x191919,-40|37|0xf6b460", 90, 0, 0, 749, 1333)
---					if x~=-1 and y~=-1 then
+--					if x ~= -1 and y ~= -1 then
 --						mSleep(3000)
 --						randomTap(x + 10,y + 10,2)
 --						mSleep(3000)
 --					end
 
---					mSleep(1000)
+--					mSleep(200)
 --					if getColor(71,250) == 0x29ae68 and getColor(106,242) == 0xf6b460 then
 --						mSleep(3000)
 --						randomTap(456,227,2)
@@ -659,13 +663,13 @@ function model:idCard(countryCode)
 --		end
 --	else
 --		while true do
---			mSleep(500)
+--			mSleep(200)
 --			if getColor(654,1279) == 0x7c160 then
 --				mSleep(500)
 --				randomTap(92,1269,2)
 --				mSleep(1000)
 --				while true do
---					mSleep(500)
+--					mSleep(200)
 --					if getColor(693,89) == 0x181818 and getColor(685,75) == 0xededed then
 --						mSleep(500)
 --						randomTap(693,89,2)
@@ -675,7 +679,7 @@ function model:idCard(countryCode)
 --				end
 
 --				while true do
---					mSleep(500)
+--					mSleep(200)
 --					if getColor(700,417) == 0x4c4c4c and getColor(483,535) == 0xffffff then
 --						mSleep(500)
 --						randomTap(575,530,2)
@@ -696,9 +700,9 @@ function model:idCard(countryCode)
 
 --	while (true) do
 --		--二维码收款
---		mSleep(2000)
+--		mSleep(200)
 --		x, y = findMultiColorInRegionFuzzy(0x509863,"-225|-9|0xffffff,-206|-13|0xffffff,-187|3|0xffffff,-173|-4|0xffffff,-399|-6|0x509863,96|-67|0x439057", 100, 0, 0, 749, 1333)
---		if x~=-1 and y~=-1 then
+--		if x ~= -1 and y ~= -1 then
 --			mSleep(3000)
 --			randomTap(x + 100, y, 2)
 --			mSleep(1000)
@@ -706,7 +710,7 @@ function model:idCard(countryCode)
 --			mSleep(1000)
 --		end
 
---		mSleep(500)
+--		mSleep(200)
 --		if getColor(118, 1125) == 0xededed and getColor(116,  938) == 0x000000 then
 --			mSleep(3000)
 --			randomTap(116,  938,2)
@@ -716,15 +720,15 @@ function model:idCard(countryCode)
 --	end
 
 --	while (true) do
---		mSleep(500)
+--		mSleep(200)
 --		x,y = findMultiColorInRegionFuzzy( 0x1aad19, "31|-1|0x1aad19,-405|-1198|0x000000,-344|-1199|0x000000,-301|-1198|0x000000", 90, 0, 0, 749, 1333)
---		if x~=-1 and y~=-1 then
+--		if x ~= -1 and y ~= -1 then
 --			mSleep(500)
 --			randomTap(x,y,2)
 --			mSleep(1000)
 --		end
 
---		mSleep(500)
+--		mSleep(200)
 --		if getColor(259,  707) == 0x9ce6bf then
 --			mSleep(500)
 --			randomTap(324,  231,2)
@@ -748,7 +752,7 @@ function model:idCard(countryCode)
 --			end
 
 --			while (true) do
---				mSleep(500)
+--				mSleep(200)
 --				if getColor(200,  604) == 0x576b95 or getColor(200,  621) == 0x576b95 then
 --					mSleep(1000)
 --					randomTap(289,  511,2)
@@ -756,7 +760,7 @@ function model:idCard(countryCode)
 --					break
 --				end
 
---				mSleep(500)
+--				mSleep(200)
 --				if getColor(36, 83) == 0x181818 then
 --					mSleep(500)
 --					randomTap(46, 83,2)
@@ -765,7 +769,7 @@ function model:idCard(countryCode)
 --			end
 --			--地区选择
 --			while (true) do
---				mSleep(500)
+--				mSleep(200)
 --				if getColor(380,   79) == 0x181818 and getColor(361,  178) == 0xffffff then
 --					mSleep(500)
 --					randomTap(156,  802,2)
@@ -777,7 +781,7 @@ function model:idCard(countryCode)
 --			end
 
 --			while (true) do
---				mSleep(500)
+--				mSleep(200)
 --				if getColor(200,  604) == 0x576b95 or getColor(200,  621) == 0x576b95 then
 --					mSleep(500)
 --					randomTap(354,  720,2)
@@ -787,7 +791,7 @@ function model:idCard(countryCode)
 --					break
 --				end
 
---				mSleep(500)
+--				mSleep(200)
 --				if getColor(36, 83) == 0x181818 then
 --					mSleep(500)
 --					randomTap(46, 83,2)
@@ -799,9 +803,8 @@ function model:idCard(countryCode)
 --	end
 
 --	while (true) do
---		mSleep(500)
+--		mSleep(200)
 --		if getColor(616, 1280) == 0x464646 then
---			mSleep(500)
 --			for var= 1, 3 do
 --				mSleep(500)
 --				randomTap(125,  950 + (var - 1)* 110,2)
@@ -821,9 +824,8 @@ function model:idCard(countryCode)
 --	end
 
 --	while (true) do
---		mSleep(500)
+--		mSleep(200)
 --		if getColor(616, 1280) == 0x464646 and getColor(259,  695) == 0x9ce6bf then
---			mSleep(500)
 --			for var= 1, 3 do
 --				mSleep(500)
 --				randomTap(125,  950 + (var - 1)* 110,2)
@@ -845,16 +847,16 @@ function model:idCard(countryCode)
 --	end
 
 --	while (true) do
---		mSleep(500)
+--		mSleep(200)
 --		if getColor(390,  777) == 0x576b95 and getColor(421,  612) == 0x000000 then
 --			mSleep(500)
 --			randomTap(390,  777,2)
 --			mSleep(1000)
 --		end
 
---		mSleep(500)
+--		mSleep(200)
 --		if getColor(90,1267) == 0x7c160 or getColor(654,1279) == 0x7c160 then
---			toast("wwxx",1)
+--			toast("wc",1)
 --			break
 --		else
 --			mSleep(500)
@@ -865,9 +867,9 @@ function model:idCard(countryCode)
 end
 
 function model:sendSMSKQ()
-	mSleep(math.random(500, 700))
+	mSleep(200)
 	x, y = findMultiColorInRegionFuzzy(0x576b95,"17|-2|0x576b95,45|1|0x576b95,44|-16|0x576b95,-223|-274|0,-194|-237|0,247|-186|0,-26|-134|0,43|-144|0", 90, 0, 0, 749, 1333)
-	if x~=-1 and y~=-1 then
+	if x ~= -1 and y ~= -1 then
 		mSleep(math.random(200, 500))
 		randomsTap(x, y, 4)
 		mSleep(math.random(200, 500))
@@ -881,7 +883,6 @@ function model:sendServerStatus(telphone,status)
 	local sz = require("sz")       
 	local http = require("szocket.http")
 	local res, code = http.request("http://39.99.192.160//import_abnormal?phone="..telphone.."&code="..status)
-	nLog(res)
 	if code == 200 then
 		tmp = json.decode(res)
 		if tmp.code == 200 then
@@ -933,9 +934,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 	runApp(self.wc_bid)
 	mSleep(math.random(1000, 1500))
 	while (true) do
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0x07c160, "171|-1|0x07c160,57|-5|0xffffff,-163|-3|0xf2f2f2,-411|1|0xf2f2f2,-266|-6|0x06ae56", 90, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			if airplaneStatus == "1" then
 				mSleep(math.random(200, 500))
 				setAirplaneMode(true)
@@ -953,7 +954,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 	::reset::
 	if tm_bool then
 		while true do
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			if getColor(561,1265) == 0x576b95 then
 				mSleep(math.random(500, 700))
 				randomsTap(536,1266,3)
@@ -966,6 +967,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				end
 			end
 
+			mSleep(200)
 			if getColor(393,1170) == 0 then
 				mSleep(math.random(500, 700))
 				randomsTap(393,1170,3)
@@ -974,7 +976,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			end
 
 			--取消
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			if getColor(79,88) == 0x2bb00 then
 				mSleep(math.random(500, 700))
 				randomsTap(79,88,3)
@@ -985,47 +987,48 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 	while (true) do
 		--11系统
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x9ce6bf,"161|-2|0xd7f5e5,387|-10|0x9ce6bf,163|30|0x9ce6bf,156|-31|0x9ce6bf",90,0,831,749,1053)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(math.random(200, 500))
 			toast("注册页面",1)
 			break
 		end
 
 		--点击模态框10
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0x1a1a1a,"11|2|0x1a1a1a,44|1|0x1a1a1a,79|-1|0x1a1a1a,114|-1|0x1a1a1a,153|3|0x1a1a1a,187|3|0x1a1a1a", 90, 228, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(math.random(200, 500))
 			randomsTap(x,y,10)
 			mSleep(math.random(200, 500))
 		end
 
 		--点击模态框11
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0,"10|7|0,22|7|0,45|4|0,80|3|0,117|3|0,153|8|0,178|8|0", 90, 228, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(math.random(500, 700))
 			randomsTap(367,1042,10)
 			mSleep(math.random(500, 700))
 		end
 
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		if getColor(561,1265) == 0x576b95 then
 			mSleep(math.random(500, 700))
 			randomsTap(536,1266,3)
 			mSleep(math.random(500, 700))
 		end
 
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0x07c160, "171|-1|0x07c160,57|-5|0xffffff,-163|-3|0xf2f2f2,-411|1|0xf2f2f2,-266|-6|0x06ae56", 90, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(math.random(200, 500))
 			randomsTap(549, 1240,10)
 			mSleep(math.random(200, 500))
 		end
 
+		mSleep(200)
 		if getColor(393,1170) == 0 then
 			mSleep(math.random(500, 700))
 			randomsTap(393,1170,3)
@@ -1038,8 +1041,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		local sz = require("sz")        --登陆
 		local http = require("szocket.http")
 		local res, code = http.request("http://47.56.103.47/api.php?action=Login&user=huqianjin1&pwd=huqianjin")
-
-		mSleep(500)
 		if code == 200 then
 			data = strSplit(res, ",")
 			if data[1] == "ok" then
@@ -1058,8 +1059,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		local sz = require("sz")        --登陆
 		local http = require("szocket.http")
 		local res, code = http.request("http://47.56.103.47/api.php?action=GetNumber&token="..token.."&pid="..kn_id)
-
-		mSleep(500)
 		if code == 200 then
 			data = strSplit(res, ",")
 			if data[1] == "ok" then
@@ -1077,20 +1076,17 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			mSleep(1000)
 			goto get_phone
 		end
-	elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16"  then
+	elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16" or vpn_stauts == "19" then
 		::get_phone::
-		mSleep(500)
 		local sz = require("sz")        --登陆
 		local http = require("szocket.http")
 		local res, code = http.request(ksUrl.."/yhapi.ashx?act=getPhone&token="..phone_token.."&iid="..kn_id)
-		mSleep(500)
 		if code == 200 then
 			data = strSplit(res, "|")
 			if data[1] == "1" then
-				mSleep(200)
 				if vpn_stauts == "13" then
 					telphone = data[4]
-				elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16"  then
+				elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" or vpn_stauts == "19" then
 					telphone = data[5]
 					pid = data[2]
 				end
@@ -1107,11 +1103,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		end
 	elseif vpn_stauts == "3" then
 		::get_phone::
-		mSleep(500)
 		local sz = require("sz")        --登陆
 		local http = require("szocket.http")
 		local res, code = http.request("http://52yzm.top/handler/api.php?apikey=001a21dda85bbe700fbb33f17a5eb49d&action=getnumber&country="..countryId.."&service=67")
-		mSleep(500)
 		if code == 200 then
 			if  reTxtUtf8(res) == "error" then
 				toast("网站挂了",1)
@@ -1119,10 +1113,8 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			else
 				data = strSplit(res, ":")
 				if reTxtUtf8(data[1]) == "OK" then
-					mSleep(200)
 					telphone = data[2]
 					pid = data[3]
-					nLog(telphone)
 					toast(telphone,1)
 				elseif reTxtUtf8(data[1]) == "BAD" then
 					toast("获取手机号码失败，错误代码："..res,1)
@@ -1137,15 +1129,12 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		end
 	elseif vpn_stauts == "4" then
 		::get_phone::
-		mSleep(500)
 		local sz = require("sz")        --登陆
 		local http = require("szocket.http")
 		local res, code = http.request("https://smsregs.ru/api/v1/get_number?token=zn278868698:6DBB856EFAFE4EE77AAC&country="..countryId.."&service="..self.wc_name)
-		mSleep(500)
 		if code == 200 then
 			tmp = json.decode(res)
 			if tmp.phone_number then
-				mSleep(200)
 				telphone = tmp.phone_number
 				country_code = tmp.country_code
 				requestId = tmp.request_id
@@ -1164,15 +1153,12 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 	elseif vpn_stauts == "5" then
 		if ddwGet == "1" then
 			::get_phoneList::
-			mSleep(500)
 			local sz = require("sz")        --登陆
 			local http = require("szocket.http")
 			local res, code = http.request("http://106.54.140.11/chayue.php?&id=huqianjin")
-			mSleep(500)
 			if code == 200 then
 				data = strSplit(res, "：")
 				if tonumber(data[2]) > 0 then
-					mSleep(200)
 					telphone = data[2]
 					toast(telphone,1)
 				else
@@ -1188,16 +1174,13 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			end
 
 			::get_phone::
-			mSleep(500)
 			local sz = require("sz")        --登陆
 			local http = require("szocket.http")
 			local res, code = http.request("http://106.54.140.11/getnumber.php?&id=huqianjin")
-			mSleep(500)
 			if code == 200 then
 				if res ~= "NO" then
 					data = strSplit(res, "----")
 					if #data == 2 then
-						mSleep(200)
 						telphone = data[1]
 						ddwToken = data[2]
 						ddwData = res:atrim()
@@ -1239,26 +1222,21 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		end
 	elseif vpn_stauts == "6" then
 		::get_phone::
-		mSleep(500)
 		local sz = require("sz")        --登陆
 		local http = require("szocket.http")
 		local res, code = http.request("http://39.99.192.160/get_data")
-
-		mSleep(500)
 		if code == 200 then
 			tmp = json.decode(res)
 			if tmp.data.status then
-				mSleep(500)
 				telphone = tmp.data.account
-				mSleep(200)
 				code_url = tmp.data.link
-				mSleep(200)
 				result_id = tmp.data.id
-				mSleep(200)
 			elseif tmp.message == "没有可用数据" then
 				dialog("服务器当前没号码可用,即将退出运行",10)
 				lua_exit()
 			else
+			    toast(tmp.message,1)
+			    mSleep(3000)
 				goto get_phone
 			end
 		else
@@ -1268,15 +1246,12 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		end
 	elseif vpn_stauts == "7" then
 		::get_phone::
-		mSleep(500)
 		local sz = require("sz")        --登陆
 		local http = require("szocket.http")
 		local res, code = http.request("http://api.smsregs.ru/control/get-number?token=huqianjin675196542@qq.com&application_id=2&country_id="..countryId)
-		mSleep(500)
 		if code == 200 then
 			tmp = json.decode(res)
 			if tmp.application_id == 2 then
-				mSleep(200)
 				telphone = tmp.number
 				requestId = tmp.request_id
 				toast(telphone,1)
@@ -1296,11 +1271,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		end
 	elseif vpn_stauts == "8" then
 		::get_phone::
-		mSleep(500)
 		local sz = require("sz")        --登陆
 		local http = require("szocket.http")
 		local res, code = http.request("http://161.117.87.24/api.php?act=quhao&diqu="..countryId.."&key=99837")
-		mSleep(500)
 		if code == 200 then
 			if tonumber(res) then
 				mSleep(200)
@@ -1321,7 +1294,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		local sz = require("sz")        --登陆
 		local http = require("szocket.http")
 		local res, code = http.request("http://simsms.org/priemnik.php?metod=get_number&country="..countryId.."&service=opt67&apikey=pRv27lOtdWjwW8xlLZm54NAgZLQwZr")
-
 		if code == 200 then
 			tmp = json.decode(res)
 			if tmp.response == "1" then
@@ -1340,80 +1312,83 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			goto get_phone
 		end
 	elseif vpn_stauts == "11" then
-		::get_balance::
-		local ts = require("ts")
+		::get_token::
 		header_send = {}
 		body_send = {}
 		ts.setHttpsTimeOut(60) 
-		code,header_resp, body_resp = ts.httpsGet("https://chothuesimcode.com/api?act=account&apik=6b133584", header_send,body_send)
+		code,header_resp, body_resp = ts.httpsGet("http://vinasim.xyz/operate.php?myfun=gettoken&username=huqianjin&userpwd=huqianjin", header_send,body_send)
 		if code == 200 then
-			tmp = json.decode(body_resp)
-			if tmp.ResponseCode == 0 then
-				if tmp.Result.Balance > 4.5 then
-					toast("当前金额为:"..tmp.Result.Balance,1)
-				else
-					dialog("平台余额不足",0)
-					lua_exit()
-				end
+			tmp = strSplit(body_resp,"|")
+			if tmp[1] == 0 or tmp[1] == "0" then
+				token = tmp[2]
+				toast(token,1)
+				mSleep(1000)
 			else
-				toast("获取金额失败:"..body_resp,1)
+				toast("获取token失败:"..body_resp,1)
 				mSleep(5000)
-				goto get_balance
+				goto get_token
 			end
 		else
-			toast("获取金额失败:"..body_resp,1)
+			toast("请求token接口失败:"..body_resp,1)
 			mSleep(5000)
-			goto get_balance
+			goto get_token
 		end
 
-		::get_app::
-		local ts = require("ts")
+		::get_money::
 		header_send = {}
 		body_send = {}
 		ts.setHttpsTimeOut(60) 
-		code,header_resp, body_resp = ts.httpsGet("https://chothuesimcode.com/api?act=app&apik=6b133584", header_send,body_send)
+		code,header_resp, body_resp = ts.httpsGet("http://vinasim.xyz/operate.php?myfun=getmoney&token=" .. token, header_send,body_send)
 		if code == 200 then
-			tmp = json.decode(body_resp)
-			if tmp.ResponseCode == 0 then
-				for k,v in ipairs(tmp.Result) do
-					if v.Name == self.wc_name then
-						id = v.Id
-						toast("项目id:"..id,1)
-						mSleep(1000)
-						break
-					end
+			tmp = strSplit(body_resp,"|")
+			if tmp[1] == 0 or tmp[1] == "0" then
+				if tonumber(tmp[2]) <= 10 then
+					toast("用户余额低于10",1)
+					mSleep(3000)
+					goto get_money
+				else
+					toast("用户余额:"..tmp[2],1)
+					mSleep(1000)
 				end
 			else
-				toast("获取项目id失败:"..body_resp,1)
+				toast("获取用户余额失败:"..body_resp,1)
 				mSleep(5000)
-				goto get_app
+				goto get_money
 			end
 		else
-			toast("获取项目id失败:"..body_resp,1)
+			toast("请求用户余额接口失败:"..body_resp,1)
 			mSleep(5000)
-			goto get_app
+			goto get_money
 		end
 
 		::get_phone::
-		local ts = require("ts")
 		header_send = {}
 		body_send = {}
 		ts.setHttpsTimeOut(60) 
-		code,header_resp, body_resp = ts.httpsGet("https://chothuesimcode.com/api?act=number&apik=6b133584&appId="..id, header_send,body_send)
+		code,header_resp, body_resp = ts.httpsGet("http://vinasim.xyz/operate.php?myfun=getphone&mytoken=" .. token .. "&pid=1001", header_send,body_send)
 		if code == 200 then
-			tmp = json.decode(body_resp)
-			if tmp.ResponseCode == 0 then
-				telphone = tmp.Result.Number
-				telphoneID = tmp.Result.Id
-				toast(telphone.."\r\n"..telphoneID,1)
-				mSleep(1000)
+			tmp = strSplit(body_resp,"|")
+			if tmp[1] == 0 or tmp[1] == "0" then
+				telphone = tmp[2]
+			elseif tmp[1] == 0 or tmp[1] == "1" then
+				toast("余额不足",1)
+				mSleep(5000)
+				goto get_phone
+			elseif tmp[1] == 0 or tmp[1] == "2" then
+				toast("无可用号码",1)
+				mSleep(5000)
+				goto get_phone
+			elseif tmp[1] == 0 or tmp[1] == "3" then
+				toast("token错误",1)
+				mSleep(5000)
+				goto get_phone
 			else
 				toast("获取号码失败:"..body_resp,1)
 				mSleep(5000)
 				goto get_phone
 			end
 		else
-			toast("获取号码失败:"..body_resp,1)
+			toast("请求获取号码接口失败:"..body_resp,1)
 			mSleep(5000)
 			goto get_phone
 		end
@@ -1444,51 +1419,56 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			mSleep(5000)
 			goto get_phone
 		end
-	elseif vpn_stauts == "14" then
+	elseif vpn_stauts == "14" or vpn_stauts == "20" then
 		::get_phone::
 		header_send = {
 			["Content-Type"] = "application/json"
 		}
 		body_send = {
-			["appKey"] = "x727KdG1",
-			["secretKey"] = "cc128a0c117a4493b2827de05c150909",
+			["appKey"] = appKey,
+			["secretKey"] = secretKey,
 			["infos"] = {
 				{
-					["productId"] = 3,
+					["productId"] = productId,
 					["abbr"] = countryId,
 					["number"] = 1
 				}
 			},
 		}
 		ts.setHttpsTimeOut(60)
-		code,header_resp, body_resp = ts.httpPost("http://gvU6e7.g7e6.com:20083/api/phone", header_send,body_send)
+		code,header_resp, body_resp = ts.httpPost(ksUrl .. "/api/phone", header_send,body_send)
 		if code == 200 then
-			mSleep(500)
 			local tmp = json.decode(body_resp)
-			if tmp.status == 0 then
-				taskId = tmp.phones[1].phoneNodes[1].taskId
-				telphone = tmp.phones[1].phoneNodes[1].phone
-				toast(telphone.."\r\n"..taskId,1)
-			elseif tmp.status == 20000 then
+			if tmp.status == 0 or tmp.status == "0" then
+				if #tmp.phones > 0 then
+					taskId = tmp.phones[1].phoneNodes[1].taskId
+					telphone = tmp.phones[1].phoneNodes[1].phone
+					toast(telphone.."\r\n"..taskId,1)
+				else
+					toast("暂无手机号",1)
+					mSleep(5000)
+					goto get_phone
+				end
+			elseif tmp.status == 20000 or tmp.status == "20000" then
 				toast("暂无手机号",1)
 				mSleep(5000)
 				goto get_phone
-			elseif tmp.status == 20001 then
+			elseif tmp.status == 20001 or tmp.status == "20001" then
 				toast("参数为空",1)
 				mSleep(5000)
 				goto get_phone
-			elseif tmp.status == 20002 then
+			elseif tmp.status == 20002 or tmp.status == "20002" then
 				toast("任务已完成",1)
 				mSleep(5000)
-			elseif tmp.status == 20003 then
+			elseif tmp.status == 20003 or tmp.status == "20003" then
 				toast("任务已关闭",1)
 				mSleep(5000)
 				goto get_phone
-			elseif tmp.status == 20004 then
+			elseif tmp.status == 20004 or tmp.status == "20004" then
 				toast("下发上限，等待成功反馈同步后继续下发",1)
 				mSleep(5000)
 				goto get_phone
-			elseif tmp.status == 20006 then
+			elseif tmp.status == 20006 or tmp.status == "20006" then
 				toast("appKey或者secretKey不正确",1)
 				mSleep(5000)
 				goto get_phone
@@ -1510,7 +1490,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		local http = require("szocket.http")
 		local res, code = http.request("http://api.nwohsz.com:2086/registerApi/getUserInfo?uid=1608085312&sign="..lsj_key:md5())
 		if code == 200 then
-			mSleep(500)
 			local tmp = json.decode(res)
 			if tmp.code == 0 then
 				gold = tmp.data.score[1].gold
@@ -1538,7 +1517,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		local http = require("szocket.http")
 		local res, code = http.request("http://api.nwohsz.com:2086/registerApi/getMobile?uid=1608085312&size=1&pid=11&cuy="..string.upper(countryId).."&include=1&sign="..lsj_key:md5())
 		if code == 200 then
-			mSleep(500)
 			local tmp = json.decode(res)
 			if tmp.code == 0 then
 				orderId = tmp.orderId
@@ -1622,7 +1600,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		::get_token::
 		local sz = require("sz")        --登陆
 		local http = require("szocket.http")
-		local res, code = http.request("http://149.28.132.39/api/do.php?action=loginIn&name=api-73-slU1q6j&password=huqianjin")
+		local res, code = http.request("http://jm.52yaoji.com/api/do.php?action=loginIn&name=api-73-slU1q6j&password=huqianjin")
 		if code == 200 then
 			data = strSplit(urlDecoder(res), "|")
 			if data[1] == "1" then
@@ -1642,7 +1620,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		::get_balane::
 		local sz = require("sz")        --登陆
 		local http = require("szocket.http")
-		local res, code = http.request("http://149.28.132.39/api/do.php?action=getSummary&token="..server_token)
+		local res, code = http.request("http://jm.52yaoji.com/api/do.php?action=getSummary&token="..server_token)
 		if code == 200 then
 			data = strSplit(urlDecoder(res), "|")
 			if data[1] == "1" then
@@ -1666,7 +1644,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		::get_phone::
 		local sz = require("sz")        --登陆
 		local http = require("szocket.http")
-		local res, code = http.request("http://149.28.132.39/api/do.php?action=getPhone&sid="..kn_id.."&token="..server_token)
+		local res, code = http.request("http://jm.52yaoji.com/api/do.php?action=getPhone&sid="..kn_id.."&token="..server_token)
 		if code == 200 then
 			data = strSplit(urlDecoder(res), "|")
 			if data[1] == "1" then
@@ -1682,13 +1660,67 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			mSleep(1000)
 			goto get_phone
 		end
+	elseif vpn_stauts == "21" then
+		if string.gsub(countryId,"%s+","") == "my" then
+			later_phone = self:randomStr("1234567890", 8)
+			telphone = "11" .. later_phone
+			kn_country = "60"
+		elseif string.gsub(countryId,"%s+","") == "vn" then
+			later_phone = self:randomStr("1234567890", 8)
+			telphone = "8" .. later_phone
+			kn_country = "84"
+		elseif string.gsub(countryId,"%s+","") == "id" then
+			later_phone = self:randomStr("1234567890", 9)
+			telphone = "81" .. later_phone
+			kn_country = "62"
+		elseif string.gsub(countryId,"%s+","") == "za" then
+			later_phone = self:randomStr("1234567890", 8)
+			telphone = "6" .. later_phone
+			kn_country = "27"
+		elseif string.gsub(countryId,"%s+","") == "us" then
+		    ::get_test::
+			later_phone = self:randomStr("1234567890", 10)
+			if string.sub(later_phone, 1, 1) == "0" or string.sub(later_phone, 1, 1) == "1" then
+			    goto get_test
+			else
+			    telphone = later_phone
+			end
+			kn_country = "1"
+		elseif string.gsub(countryId,"%s+","") == "mn" then
+			later_phone = self:randomStr("1234567890", 7)
+			telphone = "9" .. later_phone
+			kn_country = "976"
+		end
+	elseif vpn_stauts == "22" then
+		::get_phone::
+		local sz = require("sz")        --登陆
+		local http = require("szocket.http")
+		local res, code = http.request("http://39.99.192.160/get_data")
+		if code == 200 then
+			tmp = json.decode(res)
+			if tmp.data.status then
+				telphone = tmp.data.account
+				code_url = tmp.data.link
+				result_id = tmp.data.id
+				kn_country = "976"
+			elseif tmp.message == "没有可用数据" then
+				dialog("服务器当前没号码可用,即将退出运行",10)
+				lua_exit()
+			else
+			    toast(tmp.message,1)
+			    mSleep(3000)
+				goto get_phone
+			end
+		else
+			toast("获取手机号码失败，重新获取",1)
+			mSleep(1000)
+			goto get_phone
+		end
 	else
 		::get_phone::
 		local sz = require("sz")        --登陆
 		local http = require("szocket.http")
 		local res, code = http.request("http://opapi.sms-5g.com/out/ext_api/getMobileCode?name=huqianjin&pwd=huqianjin2123&pid=180&cuy="..countryId.."&num=1&noblack=0&serial=2&secret_key=0aeccdd584986df89b302804")
-
-		mSleep(500)
 		if code == 200 then
 			tmp = json.decode(res)
 			if tmp.code == 200 then
@@ -1715,10 +1747,16 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		end
 	end
 
-	if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "3" or vpn_stauts == "5" or vpn_stauts == "6" or vpn_stauts == "7" or vpn_stauts == "8" or vpn_stauts == "9" or vpn_stauts == "11" or vpn_stauts == "12" or vpn_stauts == "13" or vpn_stauts == "14" or vpn_stauts == "15" or vpn_stauts == "16" or vpn_stauts == "17" or vpn_stauts == "18" then
+	if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "3" or vpn_stauts == "5" 
+	or vpn_stauts == "6" or vpn_stauts == "7" or vpn_stauts == "8" or vpn_stauts == "9" 
+	or vpn_stauts == "12" or vpn_stauts == "13" or vpn_stauts == "14" or vpn_stauts == "15" 
+	or vpn_stauts == "16" or vpn_stauts == "17" or vpn_stauts == "18" or vpn_stauts == "19" 
+	or vpn_stauts == "20" or vpn_stauts == "21" or vpn_stauts == "22" then
 		country_id = kn_country
 	elseif vpn_stauts == "4" or vpn_stauts == "10" then
 		country_id = country_code
+	elseif vpn_stauts == "11" then
+		country_id = "84"
 	else
 		if country_len == "0" then
 			lens = 1
@@ -1734,12 +1772,14 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		mSleep(math.random(200, 300))
 	end
 
-	if vpn_stauts == "1" or vpn_stauts == "3" or vpn_stauts == "4" or vpn_stauts == "6" or vpn_stauts == "10" or vpn_stauts == "11" or vpn_stauts == "17" or vpn_stauts == "18" then
+	if vpn_stauts == "1" or vpn_stauts == "3" or vpn_stauts == "4" or vpn_stauts == "6" or vpn_stauts == "10" 
+	or vpn_stauts == "11" or vpn_stauts == "17" or vpn_stauts == "18" or vpn_stauts == "21" or vpn_stauts == "22" then
 		phone = telphone
 	elseif vpn_stauts == "5" or vpn_stauts == "8" or vpn_stauts == "12" or vpn_stauts == "15" then
 		phone = string.sub(telphone, #country_id + 1,#telphone)
-	elseif vpn_stauts == "2" or vpn_stauts == "7" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "14" or vpn_stauts == "16" then
-		if vpn_stauts == "14" then
+	elseif vpn_stauts == "2" or vpn_stauts == "7" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "14" 
+	or vpn_stauts == "16" or vpn_stauts == "19" or vpn_stauts == "20" then
+		if vpn_stauts == "14" or vpn_stauts == "20" then
 			telphone = string.match(telphone,"%d+")
 		end
 
@@ -1757,9 +1797,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		--昵称
 		while (true) do
 			--707版本
-			mSleep(math.random(200, 500))
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0,"21|17|0,36|21|0,41|4|0,-15|12|0", 90, 0, 0, 749, 701)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				mSleep(math.random(200, 500))
 				randomsTap(348, 518, 8)
 				mSleep(math.random(200, 500))
@@ -1772,12 +1812,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				--	end
 
 				--检测是否有删除按钮
-				mSleep(500)
 				while (true) do
-					mSleep(500)
+					mSleep(200)
 					x,y = findMultiColorInRegionFuzzy( 0xcccccc, "11|-9|0xcccccc,20|0|0xcccccc,11|10|0xcccccc,10|-1|0xffffff,5|-5|0xffffff,15|4|0xffffff,15|-5|0xffffff,7|4|0xffffff", 90, 630, 89, 749, 1333)
 					toast(y, 1)
-					if x~=-1 and y~=-1 then
+					if x ~= -1 and y ~= -1 then
 						break
 					else
 						mSleep(500)
@@ -1794,9 +1833,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 	--国家／地区
 	while (true) do
 		--707版本
-		mSleep(math.random(200, 500))
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0,"27|26|0,3|25|0,17|-2|0,14|6|0,35|2|0,63|1|0", 90, 0, 0, 749, 701)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(math.random(200, 500))
 			randomsTap(x+110,y+90, 6)
 			mSleep(math.random(200, 500))
@@ -1851,9 +1890,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 	--密码
 	while (true) do
-		mSleep(math.random(500, 1000))
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0,"28|1|0,15|-2|0,14|20|0,3|22|0,26|20|0,38|18|0,54|-3|0,53|18|0", 90, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(math.random(200, 500))
 			randomsTap(x+400,y-70,8)
 			mSleep(math.random(200, 500))
@@ -1892,20 +1931,27 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 	--密码
 	while (true) do
-		mSleep(math.random(200, 500))
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0,"28|1|0,15|-2|0,14|20|0,3|22|0,26|20|0,38|18|0,54|-3|0,53|18|0", 90, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(math.random(200, 500))
 			randomsTap(x+400,y,8)
-			mSleep(math.random(500, 700))
+			mSleep(1000)
 			if login_type == "0" then
 				if ran_pass == "1" then
 					password = self:randomStr("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM", math.random(1, 3))..self:randomStr("QWERTYUIOPASDFG1234567890HJKLZXCVBNM1234567890qwertyuiopasdfgh1234567890jklzxcvbnm", math.random(4, 6))..self:randomStr("1234567890", math.random(3, 4))
 				end
 			end
+			writePasteboard(password)
+            mSleep(500)
+			keyDown("RightGUI")
+			keyDown("v")
+			keyUp("v")
+			keyUp("RightGUI")
 			mSleep(500)
-			inputStr(password)
-			mSleep(math.random(200, 500))
+-- 			mSleep(500)
+-- 			inputStr(password)
+			mSleep(500)
 			break
 		end
 	end
@@ -1926,18 +1972,18 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 	::wait_ys::
 	--协议后下一步
 	while (true) do
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0xffffff, "-63|12|0x07c160,128|13|0x07c160,54|13|0xffffff,295|-2|0x07c160,-262|6|0x07c160", 90, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(math.random(200, 500))
 			randomsTap(x,y,10)
 			mSleep(math.random(200, 500))
 			break
 		end
 
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x9ce6bf,"540|-7|0x9ce6bf,270|30|0x9ce6bf,270|-89|0x576b95",90,0,0,749,1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(math.random(200, 500))
 			randomsTap(x+100,y,10)
 			mSleep(math.random(200, 500))
@@ -1948,9 +1994,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 	--欧盟隐秘政策多一个下一步
 	if EU_countries == "0" then
 		while (true) do
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x7c160,"309|7|0x7c160,304|54|0x7c160,-12|57|0x7c160,-49|31|0xededed,382|32|0xededed,156|25|0xffffff", 90, 0, 0, 749, 1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				mSleep(math.random(200, 500))
 				randomsTap(x,y,10)
 				mSleep(math.random(200, 500))
@@ -1966,9 +2012,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 	time = 0
 	while (true) do
 		if EU_countries == "0" then
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x7c160,"309|7|0x7c160,304|54|0x7c160,-12|57|0x7c160,-49|31|0xededed,382|32|0xededed,156|25|0xffffff", 90, 0, 0, 749, 1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				mSleep(math.random(200, 500))
 				randomsTap(x,y,10)
 				mSleep(math.random(200, 500))
@@ -1976,9 +2022,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				mSleep(1000)
 			end
 
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0xc2c2c2,"13|19|0xc2c2c2,52|12|0xc2c2c2,83|0|0xc2c2c2,84|16|0xc2c2c2,-111|-5|0xf2f2f2,219|43|0xf2f2f2,274|18|0xededed,-172|9|0xededed", 100, 0, 924, 749, 1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				mSleep(math.random(500, 1000))
 				randomsTap(x - 240, y-95,1)
 				mSleep(math.random(3000, 5000))
@@ -1989,17 +2035,17 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				mSleep(math.random(2000, 3000))
 			end
 		else
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x,y = findMultiColorInRegionFuzzy( 0xcdcdcd, "48|13|0xcdcdcd,80|4|0xcdcdcd,-87|11|0xfafafa,186|13|0xfafafa,50|34|0xfafafa,265|13|0xffffff", 100, 0, 966, 749, 1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				mSleep(math.random(200, 500))
 				randomsTap(x-240, y-98,2)
 				mSleep(math.random(200, 500))
 				break
 			else
-				mSleep(math.random(500, 700))
+				mSleep(200)
 				x,y = findMultiColorInRegionFuzzy( 0xc2c2c2, "-148|-7|0xf2f2f2,140|2|0xf2f2f2,245|2|0xededed,-175|6|0xf2f2f2", 100, 0, 1145, 749, 1333)
-				if x~=-1 and y~=-1 then
+				if x ~= -1 and y ~= -1 then
 					mSleep(math.random(500, 1000))
 					randomsTap(x, y-112,1)
 					mSleep(math.random(3000, 5000))
@@ -2039,7 +2085,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 	--隐秘政策：下一步
 	while (true) do
 		if EU_countries == "0" then
-			mSleep(math.random(200, 500))
+			mSleep(200)
 			if getColor(300, 1107) == 0x07c160 then
 				mSleep(math.random(300, 600))
 				randomsTap(370, 1107,10)
@@ -2047,7 +2093,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				toast("欧盟隐秘政策同意：下一步",1)
 			end
 		else
-			mSleep(math.random(200, 500))
+			mSleep(200)
 			if getColor(300, 1201) == 0x07c160 then
 				mSleep(math.random(300, 600))
 				randomsTap(370, 1204,10)
@@ -2056,16 +2102,16 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			end
 		end
 
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0xcdcdcd, "48|13|0xcdcdcd,80|4|0xcdcdcd,-87|11|0xfafafa,186|13|0xfafafa,50|34|0xfafafa,265|13|0xffffff", 100, 0, 966, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			toast("再次勾选隐秘政策",1)
 			mSleep(1000)
 			goto ymzc
 		else
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x,y = findMultiColorInRegionFuzzy( 0xc2c2c2, "-148|-7|0xf2f2f2,140|2|0xf2f2f2,245|2|0xededed,-175|6|0xf2f2f2", 100, 0, 1145, 749, 1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				toast("再次勾选隐秘政策",1)
 				mSleep(1000)
 				goto ymzc
@@ -2073,31 +2119,31 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		end
 
 		--欧盟
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0xc2c2c2,"13|19|0xc2c2c2,52|12|0xc2c2c2,83|0|0xc2c2c2,84|16|0xc2c2c2,-111|-5|0xf2f2f2,219|43|0xf2f2f2,274|18|0xededed,-172|9|0xededed", 100, 0, 924, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			toast("欧盟再次勾选隐秘政策",1)
 			mSleep(1000)
 			goto ymzc
 		end
 
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		if getColor(118,  948) == 0x007aff then
 			mSleep(math.random(500, 1000))
 			randomsTap(690, 1032,10)
 			mSleep(math.random(3000, 6000))
 		end
 
-		mSleep(math.random(200, 500))
+		mSleep(200)
 		if getColor(353,  287) == 0x10aeff and getColor(304, 1105) == 0x07c160 then
 			toast("准备安全验证",1)
 			mSleep(2000)
 			break
 		end
 
-		mSleep(500)
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x576b95,"-28|0|0x576b95,-41|-242|0,1|-228|0,35|-239|0,79|-83|0xf9f7fa", 90, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(500)
 			randomsTap(x,y,5)
 			mSleep(1000)
@@ -2113,9 +2159,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			goto reset
 		end
 
-		mSleep(500)
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x576b95,"17|-1|0x576b95,46|-2|0x576b95,46|-17|0x576b95,-223|-162|0,-87|-157|0,-52|-162|0,24|-174|0,168|-162|0,227|-153|0", 90, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(500)
 			randomsTap(x,y,5)
 			mSleep(1000)
@@ -2132,9 +2178,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 	--安全验证
 	while (true) do
-		mSleep(math.random(700, 900))
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x10aeff,"55|8|0x10aeff,-79|817|0x7c160,116|822|0x7c160", 100, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(math.random(1000, 1500))
 			randomsTap(372, 1105,6)
 			mSleep(math.random(1000, 1500))
@@ -2142,7 +2188,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			break
 		end
 
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		if getColor(300, 1201) == 0x07c160 then
 			mSleep(math.random(1000, 1700))
 			randomsTap(370, 1204,10)
@@ -2150,7 +2196,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			toast("下一步",1)
 		end
 
-		mSleep(math.random(200, 500))
+		mSleep(200)
 		if getColor(300, 1107) == 0x07c160 then
 			mSleep(math.random(300, 600))
 			randomsTap(370, 1107,10)
@@ -2163,7 +2209,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		if login_type == "0" then
 			if EU_countries == "1" then
 				while (true) do
-					mSleep(math.random(500, 700))
+					mSleep(200)
 					if getColor(118,  948) == 0x007aff then
 						mSleep(math.random(500, 700))
 						randomsTap(56, 81, 8)
@@ -2171,9 +2217,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 						break
 					end
 
-					mSleep(math.random(700, 900))
+					mSleep(200)
 					x, y = findMultiColorInRegionFuzzy(0x10aeff,"55|8|0x10aeff,-79|817|0x7c160,116|822|0x7c160", 100, 0, 0, 749, 1333)
-					if x~=-1 and y~=-1 then
+					if x ~= -1 and y ~= -1 then
 						mSleep(math.random(1000, 1500))
 						randomsTap(372, 1105,6)
 						mSleep(math.random(1000, 1500))
@@ -2191,7 +2237,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				--滑块
 				::get_pic::
 				while (true) do
-					mSleep(math.random(500, 700))
+					mSleep(200)
 					if getColor(118,  948) == 0x007aff then
 						x_lens = self:moves()
 						if tonumber(x_lens) > 0 then
@@ -2207,18 +2253,18 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 						break
 					end
 
-					mSleep(math.random(700, 900))
+					mSleep(200)
 					x, y = findMultiColorInRegionFuzzy(0x10aeff,"55|8|0x10aeff,-79|817|0x7c160,116|822|0x7c160", 100, 0, 0, 749, 1333)
-					if x~=-1 and y~=-1 then
+					if x ~= -1 and y ~= -1 then
 						mSleep(math.random(1000, 1500))
 						randomsTap(372, 1105,10)
 						mSleep(math.random(1000, 1500))
 						toast("安全验证",1)
 					end
-					
-					mSleep(math.random(500, 700))
+
+					mSleep(200)
 					x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 100, 0, 0, 749, 1333)
-					if x~=-1 and y~=-1 then
+					if x ~= -1 and y ~= -1 then
 						toast("跳过滑块，短信界面",1)
 						mSleep(1000)
 						break
@@ -2229,7 +2275,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			if login_type == "1" then
 				--二维码识别
 				while (true) do
-					mSleep(math.random(500, 700))
+					mSleep(200)
 					if getColor(132,  766) == 0x000000 then
 						mSleep(math.random(500, 700))
 						snapshot("1.png", 123,  701, 442, 1093); --以 test 命名进行截图
@@ -2269,7 +2315,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 						end
 					end
 
-					mSleep(math.random(500, 700))
+					mSleep(200)
 					if getColor(118,  948) == 0x007aff then
 						mSleep(math.random(500, 1000))
 						randomsTap(603, 1032,10)
@@ -2327,7 +2373,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			--滑块
 			::get_pic::
 			while (true) do
-				mSleep(math.random(500, 700))
+				mSleep(200)
 				if getColor(118,  948) == 0x007aff then
 					x_lens = self:moves()
 					if tonumber(x_lens) > 0 then
@@ -2343,18 +2389,18 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					break
 				end
 
-				mSleep(math.random(700, 900))
+				mSleep(200)
 				x, y = findMultiColorInRegionFuzzy(0x10aeff,"55|8|0x10aeff,-79|817|0x7c160,116|822|0x7c160", 100, 0, 0, 749, 1333)
-				if x~=-1 and y~=-1 then
+				if x ~= -1 and y ~= -1 then
 					mSleep(math.random(1000, 1500))
 					randomsTap(372, 1105,10)
 					mSleep(math.random(1000, 1500))
 					toast("安全验证",1)
 				end
-				
-				mSleep(math.random(500, 700))
+
+				mSleep(200)
 				x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 100, 0, 0, 749, 1333)
-				if x~=-1 and y~=-1 then
+				if x ~= -1 and y ~= -1 then
 					toast("跳过滑块，短信界面",1)
 					mSleep(1000)
 					break
@@ -2367,7 +2413,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		toast("手机号辅助",1)
 		mSleep(1000)
 		while (true) do
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			if getColor(132,  766) == 0x000000 then
 				toast("手机号辅助开始发布任务",1)
 				mSleep(1000)
@@ -2379,9 +2425,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					body_send = string.format("phone=%s&areaCode=%s",phone,country_id)
 					ts.setHttpsTimeOut(60)--安卓不支持设置超时时间 
 					status_resp, header_resp, body_resp  = ts.httpPost("http://sj.golddak.com/api/surround/v1/phone", header_send, body_send, true)
-					mSleep(1000)
 					if status_resp == 200 then
-						mSleep(500)
 						local tmp = json.decode(body_resp)
 						if tmp.message == "success" then
 							toast("手机号辅助发布成功,20秒后开始查询",1)
@@ -2402,7 +2446,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					local sz = require("sz")        --登陆
 					local http = require("szocket.http")
 					local res, code = http.request("http://sj.golddak.com/api/surround/v1/status/"..phone.."?token=9F66EC5294A71EDB24C0946295472932ABE11F69175013F576E7EA746D11F974")
-					mSleep(500)
 					if code == 200 then
 						tmp = json.decode(res)
 						if tmp.message == "success" then
@@ -2439,10 +2482,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					body_send = string.format("key=%s&tel=%s&area=%s","ABB46ACDA4F901C244A9A88F8D40578C",phone,country_id)
 					ts.setHttpsTimeOut(60)--安卓不支持设置超时时间 
 					status_resp, header_resp, body_resp  = ts.httpPost("http://card-api.mali126.com/api/order/telsubmit", header_send, body_send, true)
-					mSleep(1000)
-					nLog(body_resp)
 					if status_resp == 200 then
-						mSleep(500)
 						local tmp = json.decode(body_resp)
 						if tmp.success then
 							orderId = tmp.obj.orderId
@@ -2461,7 +2501,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					local sz = require("sz")        --登陆
 					local http = require("szocket.http")
 					local res, code = http.request("http://card-api.mali126.com/api/order/telquery?key=ABB46ACDA4F901C244A9A88F8D40578C&orderId="..orderId)
-					mSleep(500)
 					if code == 200 then
 						tmp = json.decode(res)
 						if tmp.success then
@@ -2495,9 +2534,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				end
 			end
 
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x,y = findMultiColorInRegionFuzzy(0x7c160,"279|8|0x7c160,133|-829|0x7c160,160|-785|0x7c160,128|-659|0x191919,216|-659|0x191919", 90, 0, 0, 749, 1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				mSleep(math.random(500, 700))
 				randomsTap(373, 1099,10)
 				mSleep(math.random(500, 700))
@@ -2505,9 +2544,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				mSleep(1000)
 			end
 
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 100, 0, 0, 749, 1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				toast("辅助成功，短信界面",1)
 				mSleep(1000)
 				break
@@ -2519,33 +2558,39 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 	get_ms_code = false
 	tiaoma_next = false
 	while true do
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 90, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
-			if content_type == "0" or login_type == "2" or content_type == "2" then
+		if x ~= -1 and y ~= -1 then
+			if vpn_stauts == "21" then
+				dialog("测试平台跳码成功", 0)
 				mSleep(500)
-				setVPNEnable(false)
-			end
-			mSleep(math.random(1500, 2700))
-			randomsTap(412, 489,5)
-			mSleep(math.random(500, 700))
-			toast("接收短信中",1)
-			mess_bool = true
-			get_ms_code = true
-			mSleep(200)
-			if login_diff_bool then
-				for i = 5, 0 , -1 do
+				goto over
+			else
+				if content_type == "0" or login_type == "2" or content_type == "2" then
 					mSleep(500)
-					toast("倒计时："..((i + 1) * 5).."秒",1)
-					mSleep(3500)
+					setVPNEnable(false)
 				end
+				mSleep(math.random(1500, 2700))
+				randomsTap(412, 489,5)
+				mSleep(math.random(500, 700))
+				toast("接收短信中",1)
+				mess_bool = true
+				get_ms_code = true
+				mSleep(200)
+				if login_diff_bool then
+					for i = 5, 0 , -1 do
+						mSleep(500)
+						toast("倒计时："..((i + 1) * 5).."秒",1)
+						mSleep(3500)
+					end
+				end
+				break
 			end
-			break
 		end
 
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0,"136|3|0,-73|686|0x7c160,330|683|0x7c160,170|683|0xffffff,116|826|0x6ae56,205|815|0x6ae56",100, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			if vpn_stauts == "2" or vpn_stauts == "9"  then
 				local m = TSVersions()
 				local a = ts.version()
@@ -2604,11 +2649,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				end
 
 				::send_message::
-				mSleep(500)
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
 				local res, code = http.request(ksUrl.."/yhapi.ashx?act=sendCode&token="..phone_token.."&pid="..pid.."&receiver="..phone_name.."&smscontent="..content_num)
-				mSleep(500)
 				if code == 200 then
 					data = strSplit(res, "|")
 					if data[1] == "1" then
@@ -2646,7 +2689,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			break
 		end
 
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		if getColor(132,  766) == 0x000000 and getColor(159,  784) == 0x000000 then
 			if tmFailBack_bool then
 				if tmFailBack == "1" then
@@ -2669,19 +2712,19 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			end
 		end
 
-		mSleep(math.random(500,700))
+		mSleep(200)
 		if getColor(390,822) == 0x576b95 and getColor(363,822) == 0x576b95 then
 			mSleep(500)
 			randomsTap(390,822,5)
 			mSleep(500)
-			toast("拒收wwxx登录",1)
+			toast("拒收wc登录",1)
 			tiaoma_next = true
 			goto kq
 		end
 
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x576b95,"-38|1|0x576b95,-314|-9|0x181819,-356|-3|0x181819,-157|-155|0,24|-174|0",90, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			toast("操作频繁",1)
 			mSleep(500)
 			setVPNEnable(false)
@@ -2706,9 +2749,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			end
 		end
 
-		mSleep(math.random(700, 900))
+		mSleep(200)
 		x, y = findMultiColorInRegionFuzzy(0x10aeff,"55|8|0x10aeff,-79|817|0x7c160,116|822|0x7c160", 100, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
+		if x ~= -1 and y ~= -1 then
 			mSleep(math.random(1000, 1500))
 			randomsTap(372, 1105,6)
 			mSleep(math.random(1000, 1500))
@@ -2716,7 +2759,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		end
 
 		--滑块失败重新刷新
-		mSleep(math.random(500, 700))
+		mSleep(200)
 		if getColor(118,  948) == 0x007aff then
 			mSleep(math.random(500, 1000))
 			randomsTap(603, 1032,10)
@@ -2724,7 +2767,8 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			goto hk_again
 		end
 	end
-
+	
+	menguNum = 0
 	::kq::
 	--跳马失败释放号码
 	if tiaoma_next then
@@ -2735,7 +2779,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			local sz = require("sz")        --登陆
 			local http = require("szocket.http")
 			local res, code = http.request("http://opapi.sms-5g.com/out/ext_api/passMobile?name=huqianjin&pwd=huqianjin2123&pn="..telphone.."&pid=180&serial=2")
-			mSleep(500)
 			if code == 200 then
 				tmp = json.decode(res)
 				if tmp.code == 200 then
@@ -2748,7 +2791,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
 				local res, code = http.request("http://47.56.103.47/api.php?action=CancelNumber&token="..token.."&pid="..kn_id.."&number="..telphone)
-				mSleep(500)
 				if code == 200 then
 					data = strSplit(res, ",")
 					if data[1] == "ok" then
@@ -2766,7 +2808,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
 				local res, code = http.request("http://47.56.103.47/api.php?action=AddBlackNumber&token="..token.."&pid="..kn_id.."&number="..telphone)
-				mSleep(500)
 				if code == 200 then
 					data = strSplit(res, ",")
 					if data[1] == "ok" then
@@ -2786,20 +2827,18 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					end
 				end
 			end
-		elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16" then		--奥迪
+		elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16" or vpn_stauts == "19" then		--奥迪
 			if addBlack == "0" then
 				if vpn_stauts == "13" then
 					setRel_url = ksUrl.."/yhapi.ashx?act=setRel&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone
-				elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" then
+				elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" or vpn_stauts == "19" then
 					setRel_url = ksUrl.."/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
 				end
 
 				::open_phone::
-				mSleep(500)
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
 				local res, code = http.request(setRel_url)
-				mSleep(500)
 				if code == 200 then
 					data = strSplit(res, "|")
 					if data[1] == "1" then
@@ -2833,7 +2872,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 				if vpn_stauts == "13" then
 					black_url = ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
-				elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" then
+				elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" or vpn_stauts == "19" then
 					black_url = ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&pid="..pid.."&reason="..urlEncoder("获取失败")
 				end
 
@@ -2841,7 +2880,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
 				local res, code = http.request(black_url)
-				mSleep(500)
 				if code == 200 then
 					data = strSplit(res, "|")
 					if data[1] == "1" then
@@ -2873,7 +2911,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			local sz = require("sz")        --登陆
 			local http = require("szocket.http")
 			local res, code = http.request("http://api.smsregs.ru/control/set-status?token=huqianjin675196542@qq.com&request_id="..requestId.."&status=reject")
-			mSleep(500)
 			if code == 200 then
 				tmp = json.decode(res)
 				if tmp.success then
@@ -2886,21 +2923,22 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			end
 		elseif vpn_stauts == "11" then
 			::black::
-			local ts = require("ts")
 			header_send = {}
 			body_send = {}
 			ts.setHttpsTimeOut(60) 
-			code,header_resp, body_resp = ts.httpsGet("https://chothuesimcode.com/api?act=expired&apik=6b133584&id="..telphoneID, header_send,body_send)
+			code,header_resp, body_resp = ts.httpsGet("http://vinasim.xyz/operate.php?myfun=addblack&mobile=" .. telphone .. "&token=" .. token .. "&pid=1001", header_send,body_send)
 			if code == 200 then
-				tmp = json.decode(body_resp)
-				if tmp.ResponseCode == 0 then
-					toast("已成功取消", 1)
+				if body_resp == "ok" or strSplit(body_resp,"|")[1] == 0 or strSplit(body_resp,"|")[1] == "0" then
+					toast("拉黑成功",1)
+					mSleep(500)
 				else
-					toast("取消失败",1)
+					toast("拉黑失败:"..tostring(body_resp),1)
+					mSleep(5000)
 					goto black
 				end
 			else
-				toast("取消失败",1)
+				toast("请求拉黑接口失败:"..tostring(body_resp),1)
+				mSleep(5000)
 				goto black
 			end
 		elseif vpn_stauts == "15" then
@@ -2927,11 +2965,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		elseif vpn_stauts == "17" then
 			if addBlack == "0" then
 				::open_phone::
-				mSleep(500)
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
 				local res, code = http.request("http://117.149.243.6:86/api/shouduanxin_shifang/xmid=02121-SMNAIV&sjhm="..phone.."&token="..server_token)
-				mSleep(500)
 				if code == 200 then
 					data = strSplit(urlDecoder(res), "|")
 					if data[1] == "成功" then
@@ -2951,7 +2987,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
 				local res, code = http.request("http://117.149.243.6:86/api/shouduanxin_lahei/xmid=02121-SMNAIV&sjhm="..phone.."&token="..server_token)
-				mSleep(500)
 				if code == 200 then
 					data = strSplit(urlDecoder(res), "|")
 					if data[1] == "成功" then
@@ -2970,17 +3005,15 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		elseif vpn_stauts == "18" then
 			if addBlack == "0" then
 				::open_phone::
-				mSleep(500)
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
-				local res, code = http.request("http://149.28.132.39/api/do.php?action=cancelRecv&sid="..kn_id.."&phone="..phone.."&token="..server_token)
-				mSleep(500)
+				local res, code = http.request("http://jm.52yaoji.com/api/do.php?action=cancelRecv&sid="..kn_id.."&phone="..phone.."&token="..server_token)
 				if code == 200 then
 					data = strSplit(urlDecoder(res), "|")
 					if data[1] == "1" then
 						toast("释放号码成功",1)
 					elseif data[2] == "手机号不存在" then
-					    toast(data[2],1)
+						toast(data[2],1)
 					else
 						toast("释放号码失败，重新释放："..tostring(res),1)
 						mSleep(5000)
@@ -2995,14 +3028,13 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				::addblack::
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
-				local res, code = http.request("http://149.28.132.39/api/do.php?action=addBlacklist&sid="..kn_id.."&phone="..phone.."&token="..server_token)
-				mSleep(500)
+				local res, code = http.request("http://jm.52yaoji.com/api/do.php?action=addBlacklist&sid="..kn_id.."&phone="..phone.."&token="..server_token)
 				if code == 200 then
 					data = strSplit(urlDecoder(res), "|")
 					if data[1] == "1" then
 						toast("拉黑手机号码",1)
 					elseif data[2] == "手机号不存在" then
-					    toast(data[2],1)
+						toast(data[2],1)
 					else
 						toast("拉黑失败"..tostring(res),1)
 						mSleep(2000)
@@ -3048,7 +3080,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 			::caozuo_more::
 			if caozuo_more then
-				mSleep(500)
+				mSleep(200)
 				if  getColor(522,770) == 0x576b95 then
 					mSleep(500)
 					randomsTap(213,770,5)
@@ -3079,18 +3111,15 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				end
 				self:sendSMSKQ()
 			end
-
+			
 			::get_new_mess::
 			if vpn_stauts == "1" then
 				::get_mess::
 				self:sendSMSKQ()
 
-				mSleep(500)
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
 				local res, code = http.request("http://47.56.103.47/api.php?action=GetCode&token="..token.."&pid="..kn_id.."&number="..telphone)
-
-				mSleep(500)
 				if code == 200 then
 					data = strSplit(res, ",")
 					if data[1] == "ok" then
@@ -3137,7 +3166,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 									local sz = require("sz")        --登陆
 									local http = require("szocket.http")
 									local res, code = http.request("http://47.56.103.47/api.php?action=CancelNumber&token="..token.."&pid="..kn_id.."&number="..telphone)
-									mSleep(500)
 									if code == 200 then
 										data = strSplit(res, ",")
 										if data[1] == "ok" then
@@ -3154,7 +3182,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 									local sz = require("sz")        --登陆
 									local http = require("szocket.http")
 									local res, code = http.request("http://47.56.103.47/api.php?action=AddBlackNumber&token="..token.."&pid="..kn_id.."&number="..telphone)
-									mSleep(500)
 									if code == 200 then
 										data = strSplit(res, ",")
 										if data[1] == "ok" then
@@ -3176,7 +3203,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 								local sz = require("sz")        --登陆
 								local http = require("szocket.http")
 								local res, code = http.request("http://47.56.103.47/api.php?action=AddBlackNumber&token="..token.."&pid="..kn_id.."&number="..telphone)
-								mSleep(500)
 								if code == 200 then
 									data = strSplit(res, ",")
 									if data[1] == "ok" then
@@ -3198,7 +3224,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					mSleep(3000)
 					goto get_mess
 				end
-			elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16" then
+			elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16" or vpn_stauts == "19" then
 				if country_id == "60" then
 					all_time = 15
 				else
@@ -3206,16 +3232,16 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				end
 
 				::get_mess::
+				self:sendSMSKQ()
+				
 				second_time = os.time()
 				diff_time = os.difftime(second_time,first_time)
-				if diff_time > 600000 then
-					goto over
+				if diff_time > 600 then
+					restart_time = 3
 				else
 					toast(diff_time,1)
 					mSleep(1000)
 				end
-
-				self:sendSMSKQ()
 
 				if get_time > all_time then
 					if country_id == "886" then
@@ -3252,7 +3278,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					if addBlack == "0" then
 						if vpn_stauts == "13" then
 							setRel_url = ksUrl.."/yhapi.ashx?act=setRel&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone
-						elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" then
+						elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" or vpn_stauts == "19" then
 							setRel_url = ksUrl.."/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
 						end
 
@@ -3260,7 +3286,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 						local sz = require("sz")        --登陆
 						local http = require("szocket.http")
 						local res, code = http.request(setRel_url)
-						mSleep(500)
 						if code == 200 then
 							data = strSplit(res, "|")
 							if data[1] == "1" then
@@ -3282,7 +3307,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					else
 						if vpn_stauts == "13" then
 							black_url = ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
-						elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" then
+						elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" or vpn_stauts == "19" then
 							black_url = ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&pid="..pid.."&reason="..urlEncoder("获取失败")
 						end
 
@@ -3290,7 +3315,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 						local sz = require("sz")        --登陆
 						local http = require("szocket.http")
 						local res, code = http.request(black_url)
-						mSleep(500)
 						if code == 200 then
 							data = strSplit(res, "|")
 							if data[1] == "1" then
@@ -3315,15 +3339,14 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 				if vpn_stauts == "13" then
 					getPhoneCode_url = ksUrl.."/yhapi.ashx?act=getPhoneCode&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone
-				elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" then
+				elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" or vpn_stauts == "19" then
 					getPhoneCode_url = ksUrl.."/yhapi.ashx?act=getPhoneCode&token="..phone_token.."&pid="..pid
 				end
 
-				mSleep(500)
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
 				local res, code = http.request(getPhoneCode_url)
-				mSleep(500)
+				toast(code .. "====" .. res,1)
 				if code == 200 then
 					data = strSplit(res, "|")
 					if data[1] == "1" then
@@ -3358,7 +3381,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					local sz = require("sz")        --登陆
 					local http = require("szocket.http")
 					local res, code = http.request("http://52yzm.top/handler/api.php?apikey=001a21dda85bbe700fbb33f17a5eb49d&action=ban&service=67&id="..pid)
-					mSleep(500)
 					if code == 200 then
 						data = strSplit(res, ":")
 						if reTxtUtf8(data[1]) == "OK" then
@@ -3370,11 +3392,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					goto over
 				end
 
-				mSleep(500)
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
 				local res, code = http.request("http://52yzm.top/handler/api.php?apikey=001a21dda85bbe700fbb33f17a5eb49d&action=getsms&country="..countryId.."&service=67&id="..pid)
-				mSleep(500)
 				if code == 200 then
 					data = strSplit(res, ":")
 					if reTxtUtf8(data[1]) == "OK" then
@@ -3412,7 +3432,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					local sz = require("sz")        --登陆
 					local http = require("szocket.http")
 					local res, code = http.request("https://smsregs.ru/api/v1/set_status?token=12345&request_id="..requestId.."&status=BAN")
-					mSleep(500)
 					if code == 200 then
 						tmp = json.decode(res)
 						if tmp.success then
@@ -3424,11 +3443,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					goto over
 				end
 
-				mSleep(500)
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
 				local res, code = http.request("https://smsregs.ru/api/v1/get_sms?token=zn278868698:6DBB856EFAFE4EE77AAC&request_id="..requestId)
-				mSleep(500)
 				if code == 200 then
 					tmp = json.decode(res)
 					if tmp.sms and #tmp.sms > 0 then
@@ -3510,22 +3527,19 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					goto over
 				end
 
-				mSleep(500)
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
 				local res, code = http.request("http://106.54.140.11/mangguo.php?&MobileNumber="..telphone.."&token="..ddwToken:atrim())
-				mSleep(500)
-				toast(res,1)
 				if code == 200 then
 					data = strSplit(res, "|")
 					if reTxtUtf8(data[1]) == "OK" then
 						mess_yzm = string.match(data[2], '%d+%d+%d+%d+%d+%d+')
 						if ddwGet == "0" then
---							datatable = readFile(userPath().."/res/savePhone.txt")
---							table.remove(datatable, savePhone)
---							writeFile(userPath().."/res/test.txt",datatable,"w",1)
---							toast("获取验证码成功，删除文件里面这个号码",1)
---							mSleep(1000)
+							--							datatable = readFile(userPath().."/res/savePhone.txt")
+							--							table.remove(datatable, savePhone)
+							--							writeFile(userPath().."/res/test.txt",datatable,"w",1)
+							--							toast("获取验证码成功，删除文件里面这个号码",1)
+							--							mSleep(1000)
 							::update_platform::
 							local sz = require("sz")       
 							local http = require("szocket.http")
@@ -3573,11 +3587,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				::get_mess::
 				self:sendSMSKQ()
 
-				mSleep(500)
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
 				local res, code = http.request(code_url)
-				mSleep(500)
 				if code == 500 then
 					tmp = json.decode(res)
 					if tmp.message == "error" then
@@ -3635,11 +3647,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 				if yzm_bool then
 					::push::
-					mSleep(500)
 					local sz = require("sz")        --登陆
 					local http = require("szocket.http")
 					local res, code = http.request("http://39.99.192.160/update_data?id="..result_id)
-					mSleep(500)
 					if code == 200 then
 						tmp = json.decode(res)
 						if tmp.message == "更新成功" then
@@ -3661,7 +3671,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					local sz = require("sz")        --登陆
 					local http = require("szocket.http")
 					local res, code = http.request("http://api.smsregs.ru/control/set-status?token=huqianjin675196542@qq.com&request_id="..requestId.."&status=reject")
-					mSleep(500)
 					if code == 200 then
 						tmp = json.decode(res)
 						if tmp.success then
@@ -3675,11 +3684,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					goto over
 				end
 
-				mSleep(500)
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
 				local res, code = http.request("http://api.smsregs.ru/control/get-sms?token=huqianjin675196542@qq.com&request_id="..requestId)
-				mSleep(500)
 				if code == 200 then
 					tmp = json.decode(res)
 					if tmp.sms_code and #tmp.sms_code > 0 then
@@ -3705,11 +3712,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				::get_mess::
 				self:sendSMSKQ()
 
-				mSleep(500)
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
 				local res, code = http.request("http://161.117.87.24/api.php?act=quYanzhengma&haoma="..telphone.."&key=99837")
-				mSleep(500)
 				if code == 200 then
 					if tonumber(res) then
 						mess_yzm = res
@@ -3763,7 +3768,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				::get_mess::
 				self:sendSMSKQ()
 
-				mSleep(500)
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
 				local res, code = http.request("http://simsms.org/priemnik.php?metod=get_sms&country="..countryId.."&service=opt67&apikey=pRv27lOtdWjwW8xlLZm54NAgZLQwZr&id="..pay_id)
@@ -3843,91 +3847,99 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				end
 			elseif vpn_stauts == "11" then
 				::get_mess::
+				mSleep(3000)
 				self:sendSMSKQ()
+
+				if get_time > 15 then
+					if country_id ~= "886" then
+						if content_type == "1" then
+							mSleep(math.random(2000, 3000))
+							randomsTap(372,  749, 3)
+							mSleep(math.random(1000, 1500))
+							randomsTap(368, 1039,5)
+							mSleep(math.random(5000, 6000))
+						else
+							mSleep(500)
+							setVPNEnable(true)
+							mSleep(math.random(2000, 3000))
+							randomsTap(372,  749, 3)
+							mSleep(math.random(1000, 1500))
+							randomsTap(368, 1039,5)
+							mSleep(math.random(5000, 6000))
+							if content_type ~= "3" then
+								setVPNEnable(false)
+							end
+						end
+					end
+					get_time = 1
+					restart_time = restart_time + 1
+					caozuo_more = true
+					toast("重新获取验证码"..restart_time,1)
+					goto caozuo_more
+				end
+
+				if restart_time > 1 then
+					::black::
+					header_send = {}
+					body_send = {}
+					ts.setHttpsTimeOut(60) 
+					code,header_resp, body_resp = ts.httpsGet("http://vinasim.xyz/operate.php?myfun=addblack&mobile=" .. telphone .. "&token=" .. token .. "&pid=1001", header_send,body_send)
+					if code == 200 then
+						if body_resp == "ok" or strSplit(body_resp,"|")[1] == 0 or strSplit(body_resp,"|")[1] == "0" then
+							toast("拉黑成功",1)
+							mSleep(500)
+						else
+							toast("拉黑失败:"..tostring(body_resp),1)
+							mSleep(5000)
+							goto black
+						end
+					else
+						toast("请求拉黑接口失败:"..tostring(body_resp),1)
+						mSleep(5000)
+						goto black
+					end
+					goto over
+				end
 
 				header_send = {}
 				body_send = {}
 				ts.setHttpsTimeOut(60) 
-				code,header_resp, body_resp = ts.httpsGet("https://chothuesimcode.com/api?act=code&apik=6b133584&id="..telphoneID, header_send,body_send)
+				code,header_resp, body_resp = ts.httpsGet("http://vinasim.xyz/operate.php?myfun=getcodes&mytoken=" .. token .. "&mobile=" .. telphone .. "&pid=1001", header_send,body_send)
 				if code == 200 then
-					tmp = json.decode(body_resp)
-					if tmp.ResponseCode == 0 then
-						mess_yzm = tmp.Result.Code
-						toast(tmp.Result.SMS,1)
+					tmp = strSplit(body_resp,"|")
+					if tmp[1] == 0 or tmp[1] == "0" then
+						mess_yzm = tmp[2]
+						toast(mess_yzm,1)
 						mSleep(1000)
-					elseif tmp.ResponseCode == 1 then
-						toast("暂未查询到验证码，请稍后再试"..get_time,1)
+					elseif tmp[1] == 1 or tmp[1] == "1" then
+						toast("尚未收到验证码:"..get_time,1)
 						mSleep(2000)
 						get_time = get_time + 1
-						if get_time > 15 then
-							if country_id == "886" then
-								mSleep(500)
-								setVPNEnable(true)
-								mSleep(math.random(2000, 3000))
-								randomsTap(372,  749, 3)
-								mSleep(math.random(1000, 1500))
-								randomsTap(368, 1039,5)
-								mSleep(math.random(5000, 6000))
-								if content_type ~= "3" then
-									setVPNEnable(false)
-								end
-							else
-								if content_type == "1" then
-									mSleep(math.random(2000, 3000))
-									randomsTap(372,  749, 3)
-									mSleep(math.random(1000, 1500))
-									randomsTap(368, 1039,5)
-									mSleep(math.random(5000, 6000))
-								else
-									mSleep(500)
-									setVPNEnable(true)
-									mSleep(math.random(2000, 3000))
-									randomsTap(372,  749, 3)
-									mSleep(math.random(1000, 1500))
-									randomsTap(368, 1039,5)
-									mSleep(math.random(5000, 6000))
-									if content_type ~= "3" then
-										setVPNEnable(false)
-									end
-								end
-							end
-							get_time = 1
-							restart_time = restart_time + 1
-							caozuo_more = true
-							toast("重新获取验证码"..restart_time,1)
-							goto caozuo_more
-						end
-
-						if restart_time > 1 then
-							::black::
-							local ts = require("ts")
-							header_send = {}
-							body_send = {}
-							ts.setHttpsTimeOut(60) 
-							code,header_resp, body_resp = ts.httpsGet("https://chothuesimcode.com/api?act=expired&apik=6b133584&id="..telphoneID, header_send,body_send)
-
-							if code == 200 then
-								tmp = json.decode(body_resp)
-								if tmp.ResponseCode == 0 then
-									toast("已成功取消", 1)
-								else
-									toast("取消失败",1)
-									goto black
-								end
-							else
-								toast("取消失败",1)
-								goto black
-							end
-							goto over
-						end
 						goto get_mess
+					elseif tmp[1] == 3 or tmp[1] == "3" then
+						toast("余额不足:"..get_time,1)
+						mSleep(2000)
+						goto get_mess
+					elseif tmp[1] == 2 or tmp[1] == "2" then
+						toast("号码不存在或非本帐号获取",1)
+						mSleep(2000)
+						goto over
+					elseif tmp[1] == 4 or tmp[1] == "4" then
+						toast("无此号码(可能已换卡):",1)
+						mSleep(2000)
+						goto over
+					elseif tmp[1] == 5 or tmp[1] == "5" then
+						toast("错误的TOKEN:"..get_time,1)
+						mSleep(2000)
+						goto over
 					else
 						toast("获取验证码失败，重新获取:"..body_resp,1)
 						mSleep(3000)
+						get_time = get_time + 1
 						goto get_mess
 					end
 				else
-					toast("获取验证码失败，重新获取",1)
+					toast("请求验证码接口失败，重新请求",1)
 					mSleep(3000)
 					goto get_mess
 				end
@@ -3995,7 +4007,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					mSleep(5000)
 					goto get_mess
 				end
-			elseif vpn_stauts == "14" then
+			elseif vpn_stauts == "14" or vpn_stauts == "20" then
 				::get_mess::
 				self:sendSMSKQ()
 
@@ -4004,8 +4016,8 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					["Content-Type"] = "application/json"
 				}
 				body_send = {
-					["appKey"] = "x727KdG1",
-					["secretKey"] = "cc128a0c117a4493b2827de05c150909",
+					["appKey"] = appKey,
+					["secretKey"] = secretKey,
 					["taskIds"] = {
 						{
 							["taskId"] = taskId,
@@ -4013,13 +4025,12 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					},
 				}
 				ts.setHttpsTimeOut(60)
-				code,header_resp, body_resp = ts.httpPost("http://gvU6e7.g7e6.com:20083/api/code", header_send,body_send)
+				code,header_resp, body_resp = ts.httpPost(ksUrl .. "/api/code", header_send,body_send)
 				toast(body_resp,1)
 				mSleep(500)
 				if code == 200 then
-					mSleep(500)
 					local tmp = json.decode(body_resp)
-					if tmp.status == 0 and #tmp.codes > 0 then
+					if tmp.status == 0 and #tmp.codes > 0 or tmp.status == "0" and #tmp.codes > 0 then
 						code = tmp.codes[1].code
 						mess_yzm = string.match(code,"%d%d%d%d%d%d")
 					else
@@ -4138,7 +4149,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 							local http = require("szocket.http")
 							local res, code = http.request("http://api.nwohsz.com:2086/registerApi/addBlack?uid=1608085312&pid=11&number="..telphone.."&sign="..lsj_key:md5())
 							if code == 200 then
-								mSleep(500)
 								local tmp = json.decode(res)
 								if tmp.code == 0 then
 									toast("拉黑成功",1)
@@ -4222,11 +4232,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 						if restart_time > 1 then
 							if addBlack == "0" then
 								::open_phone::
-								mSleep(500)
 								local sz = require("sz")        --登陆
 								local http = require("szocket.http")
 								local res, code = http.request("http://117.149.243.6:86/api/shouduanxin_shifang/xmid=02121-SMNAIV&sjhm="..phone.."&token="..server_token)
-								mSleep(500)
 								if code == 200 then
 									data = strSplit(urlDecoder(res), "|")
 									if data[1] == "成功" or tostring(string.match(data[1],"已释放但已来码")) ~= "nil" then
@@ -4246,7 +4254,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 								local sz = require("sz")        --登陆
 								local http = require("szocket.http")
 								local res, code = http.request("http://117.149.243.6:86/api/shouduanxin_lahei/xmid=02121-SMNAIV&sjhm="..phone.."&token="..server_token)
-								mSleep(500)
 								if code == 200 then
 									data = strSplit(urlDecoder(res), "|")
 									if data[1] == "成功" or tostring(string.match(data[1],"已拉黑此手机号但已来码")) ~= "nil" then
@@ -4278,7 +4285,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				::get_code::
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
-				local res, code = http.request("http://149.28.132.39/api/do.php?action=getMessage&sid="..kn_id.."&phone="..telphone.."&token="..server_token)
+				local res, code = http.request("http://jm.52yaoji.com/api/do.php?action=getMessage&sid="..kn_id.."&phone="..telphone.."&token="..server_token)
 				toast(res,1)
 				mSleep(500)
 				if code == 200 then
@@ -4331,17 +4338,15 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 						if restart_time > 1 then
 							if addBlack == "0" then
 								::open_phone::
-								mSleep(500)
 								local sz = require("sz")        --登陆
 								local http = require("szocket.http")
-								local res, code = http.request("http://149.28.132.39/api/do.php?action=cancelRecv&sid="..kn_id.."&phone="..phone.."&token="..server_token)
-								mSleep(500)
+								local res, code = http.request("http://jm.52yaoji.com/api/do.php?action=cancelRecv&sid="..kn_id.."&phone="..phone.."&token="..server_token)
 								if code == 200 then
 									data = strSplit(urlDecoder(res), "|")
 									if data[1] == "1" then
 										toast("释放号码成功",1)
 									elseif data[2] == "手机号不存在" then
-					                    toast(data[2],1)
+										toast(data[2],1)
 									else
 										toast("释放号码失败，重新释放："..tostring(res),1)
 										mSleep(5000)
@@ -4356,14 +4361,13 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 								::addblack::
 								local sz = require("sz")        --登陆
 								local http = require("szocket.http")
-								local res, code = http.request("http://149.28.132.39/api/do.php?action=addBlacklist&sid="..kn_id.."&phone="..phone.."&token="..server_token)
-								mSleep(500)
+								local res, code = http.request("http://jm.52yaoji.com/api/do.php?action=addBlacklist&sid="..kn_id.."&phone="..phone.."&token="..server_token)
 								if code == 200 then
 									data = strSplit(urlDecoder(res), "|")
 									if data[1] == "1" then
 										toast("拉黑手机号码",1)
 									elseif data[2] == "手机号不存在" then
-					                    toast(data[2],1)
+										toast(data[2],1)
 									else
 										toast("拉黑失败"..tostring(res),1)
 										mSleep(2000)
@@ -4384,6 +4388,90 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					mSleep(5000)
 					goto get_code
 				end
+			elseif vpn_stauts == "22" then
+				res_time = 0
+				again_time = 0
+				toast(code_url,1)
+				mSleep(1000)
+				::get_mess::
+				self:sendSMSKQ()
+
+				local sz = require("sz")        --登陆
+				local http = require("szocket.http")
+				local res, code = http.request(code_url)
+				if code == 200 then
+					tmp = json.decode(res)
+					if tmp.ResultCode == "0" or tmp.ResultCode == 0 then
+					    mess_yzm = string.match(tmp.Message, '%d+%d+%d+%d+%d+%d+')
+    					if #mess_yzm ~= 6 then
+    						toast("验证码不是6位数",1)
+    						goto get_mess
+    					else
+    						toast(mess_yzm,1)
+    					end
+    					yzm_bool = true
+    				else
+						mSleep(500)
+						toast(res..":"..res_time,1)
+						mSleep(5200)
+						res_time = res_time + 1
+						if res_time > 17 then
+							if country_id == "886" then
+								mSleep(500)
+								setVPNEnable(true)
+								mSleep(math.random(2000, 3000))
+								randomsTap(372,  749, 3)
+								mSleep(math.random(1000, 1500))
+								randomsTap(368, 1039,5)
+								mSleep(math.random(5000, 6000))
+								if content_type ~= "3" then
+									setVPNEnable(false)
+								end
+							else
+								mSleep(500)
+								setVPNEnable(true)
+								mSleep(math.random(2000, 3000))
+								randomsTap(372,  749, 3)
+								mSleep(math.random(1000, 1500))
+								randomsTap(368, 1039,5)
+								mSleep(math.random(5000, 6000))
+								if content_type ~= "3" then
+									setVPNEnable(false)
+								end
+							end
+							toast("重新获取验证码"..again_time,1)
+							res_time = 0
+							again_time = again_time + 1
+							caozuo_more = true
+							goto caozuo_more
+						end
+
+						if again_time > 2 then
+							goto over
+						else
+							goto get_mess
+						end
+					end
+				end
+
+				if yzm_bool then
+					::push::
+					local sz = require("sz")        --登陆
+					local http = require("szocket.http")
+					local res, code = http.request("http://39.99.192.160/update_data?id="..result_id)
+					if code == 200 then
+						tmp = json.decode(res)
+						if tmp.message == "更新成功" then
+							toast("号码状态标记成功",1)
+						else
+							goto push
+						end
+					else
+						toast("标记失败，重新标记",1)
+						mSleep(3000)
+						goto push
+					end
+				end
 			else
 				::get_mess::
 				self:sendSMSKQ()
@@ -4392,8 +4480,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
 				local res, code = http.request("http://opapi.sms-5g.com/out/ext_api/getMsg?name=huqianjin&pwd=huqianjin2123&pn="..telphone.."&pid=180&serial=2")
-
-				mSleep(500)
 				if code == 200 then
 					tmp = json.decode(res)
 					if tmp.code == 200 then
@@ -4446,7 +4532,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 							local sz = require("sz")        --登陆
 							local http = require("szocket.http")
 							local res, code = http.request("http://opapi.sms-5g.com/out/ext_api/passMobile?name=huqianjin&pwd=huqianjin2123&pn="..telphone.."&pid=180&serial=2")
-							mSleep(500)
 							if code == 200 then
 								tmp = json.decode(res)
 								if tmp.code == 200 then
@@ -4473,6 +4558,16 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				mSleep(math.random(1000, 1700))
 				randomsTap(390,  472,9)
 				mSleep(math.random(1000, 1500))
+				if menguNum > 0 then
+					for var= 1, 10 do
+						mSleep(100)
+						keyDown("DeleteOrBackspace")
+						mSleep(100)
+						keyUp("DeleteOrBackspace")
+						mSleep(100)
+					end
+				end
+				
 				for i = 1, #(mess_yzm) do
 					mSleep(math.random(500, 700))
 					num = string.sub(mess_yzm,i,i)
@@ -4519,9 +4614,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		error_wc = false
 		while true do
 			if EU_countries == "0" then
-				mSleep(500)
+				mSleep(200)
 				x, y = findMultiColorInRegionFuzzy(0x343434,"49|-24|0x343434,2|547|0x9de7bf,326|537|0x9de7bf", 90, 0, 0, 749, 1333)
-				if x~=-1 and y~=-1 then
+				if x ~= -1 and y ~= -1 then
 					mSleep(math.random(500, 700))
 					randomsTap(355,590,8)
 					mSleep(math.random(500, 700))
@@ -4533,12 +4628,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					--	end
 
 					--检测是否有删除按钮
-					mSleep(500)
 					while (true) do
-						mSleep(500)
+						mSleep(200)
 						x,y = findMultiColorInRegionFuzzy( 0xcccccc, "11|-9|0xcccccc,20|0|0xcccccc,11|10|0xcccccc,10|-1|0xffffff,5|-5|0xffffff,15|4|0xffffff,15|-5|0xffffff,7|4|0xffffff", 90, 630, 89, 749, 1333)
 						toast(y, 1)
-						if x~=-1 and y~=-1 then
+						if x ~= -1 and y ~= -1 then
 							break
 						else
 							mSleep(500)
@@ -4553,16 +4647,16 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					mSleep(math.random(500, 700))
 					while true do
 						--填写生日
-						mSleep(math.random(500, 700))
+						mSleep(200)
 						x, y = findMultiColorInRegionFuzzy(0,"49|-16|0,-5|344|0x9ed99d,365|339|0x9ed99d", 100, 0, 0, 749, 800)
-						if x~=-1 and y~=-1 then
+						if x ~= -1 and y ~= -1 then
 							mSleep(math.random(1000, 1700))
 							randomsTap(384,447,8)
 							mSleep(math.random(500, 700))
 							toast("点击生日",1)
 						end
 
-						mSleep(math.random(500, 700))
+						mSleep(200)
 						if getColor(701,813) == 0x1aad19 then
 							mSleep(math.random(1000, 1700))
 							randomsTap(685,813,3)
@@ -4570,7 +4664,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 							toast("确定",1)
 						end
 
-						mSleep(math.random(500, 700))
+						mSleep(200)
 						if getColor(276,660) == 0x1aad19 then
 							mSleep(math.random(1000, 1700))
 							randomsTap(378,659,8)
@@ -4584,110 +4678,136 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			end
 
 			--不是我的，继续注册
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x6ae56,"36|1|0x6ae56,136|5|0x6ae56,181|-7|0x6ae56,294|-7|0x6ae56,371|0|0xf2f2f2,-98|-3|0xf2f2f2", 90, 0, 0, 749,  1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				mSleep(math.random(500, 700))
 				toast("不是我的，继续注册",1)
 				break
 			end
 
 
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x576b95,"28|-1|0x576b95,-84|141|0x36030,164|141|0x36030,-208|-180|0,-121|-230|0", 90, 0, 0, 749,  1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				mSleep(math.random(500, 700))
-				toast("手机号近期注册过wwxx",1)
+				toast("手机号近期注册过wc",1)
 				break
 			end
 
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			if getColor(362,797) == 0x576b95 and getColor(391,800) == 0x576b95 then
 				toast("通讯录前账号状态异常",1)
 				error_wc = true
 				break
 			end
 
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x1565fc,"6|13|0x1565fc,17|-5|0x1565fc,19|6|0x1565fc,17|20|0x1565fc", 90, 0, 0, 749,  1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				mSleep(math.random(500, 700))
 				toast("通讯录",1)
 				break
 			end
 
-			mSleep(500)
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x576b95,"-28|-1|0x576b95,-6|-15|0x576b95,-135|-165|0,-70|-164|0,-14|-155|0", 90, 0, 0, 749, 1333)
-			if x~=-1 and y~=-1 then
-				mSleep(500)
-				randomsTap(x,  y, 3)
-				mSleep(1000)
-				closeApp(self.wc_bid, 0)
-				mSleep(3000)
-				setVPNEnable(false)
-				mSleep(500)
-				if content_type == "2" then
-					self:changeIP(content_user,content_country)
-				else
-					if content_type ~= "1" then
-						self:change_IP(content_user,content_country)
+			if x ~= -1 and y ~= -1 then
+				if vpn_stauts == "22" and menguNum < 4 then
+					mSleep(500)
+					randomsTap(x,  y, 3)
+					mSleep(1000)
+					for var= 1, 12 do
+						toast("等待重新获取验证码".. 60 - var * 5,1)
+						mSleep(5000)
 					end
-				end
-				mSleep(1000)
-				runApp(self.wc_bid)
-				mSleep(2000)
+					setVPNEnable(true)
+					mSleep(math.random(2000, 3000))
+					randomsTap(372,  749, 3)
+					mSleep(math.random(1000, 1500))
+					randomsTap(368, 1039,5)
+					mSleep(math.random(5000, 6000))
+					if content_type ~= "3" then
+						setVPNEnable(false)
+					end
+					toast("蒙古验证码不正确，重新获取",1)
+					mSleep(2000)
+					res_time = 0
+					again_time = 0
+					menguNum = menguNum + 1
+					goto kq
+				else
+					mSleep(500)
+					randomsTap(x,  y, 3)
+					mSleep(1000)
+					closeApp(self.wc_bid, 0)
+					mSleep(3000)
+					setVPNEnable(false)
+					mSleep(500)
+					if content_type == "2" then
+						self:changeIP(content_user,content_country)
+					else
+						if content_type ~= "1" then
+							self:change_IP(content_user,content_country)
+						end
+					end
+					mSleep(1000)
+					runApp(self.wc_bid)
+					mSleep(2000)
 
-				while true do
-					mSleep(math.random(500, 700))
-					if getColor(561,1265) == 0x576b95 then
-						mSleep(math.random(500, 700))
-						randomsTap(536,1266,3)
-						mSleep(math.random(500, 700))
-						if airplaneStatus == "1" then
+					while true do
+						mSleep(200)
+						if getColor(561,1265) == 0x576b95 then
+							mSleep(math.random(500, 700))
+							randomsTap(536,1266,3)
+							mSleep(math.random(500, 700))
+							if airplaneStatus == "1" then
+								mSleep(math.random(200, 500))
+								setAirplaneMode(true)
+								mSleep(3000)
+								setAirplaneMode(false)
+							end
+						end
+
+						mSleep(200)
+						if getColor(393,1170) == 0 then
+							mSleep(math.random(500, 700))
+							randomsTap(393,1170,3)
+							mSleep(math.random(500, 700))
+							break
+						end
+
+						--取消
+						mSleep(200)
+						if getColor(79,88) == 0x2bb00 then
+							mSleep(math.random(500, 700))
+							randomsTap(79,88,3)
+							mSleep(math.random(500, 700))
+						end
+
+						mSleep(200)
+						x,y = findMultiColorInRegionFuzzy( 0x07c160, "171|-1|0x07c160,57|-5|0xffffff,-163|-3|0xf2f2f2,-411|1|0xf2f2f2,-266|-6|0x06ae56", 90, 0, 0, 749, 1333)
+						if x ~= -1 and y ~= -1 then
 							mSleep(math.random(200, 500))
-							setAirplaneMode(true)
-							mSleep(3000)
-							setAirplaneMode(false)
+							randomsTap(549, 1240,10)
+							mSleep(math.random(200, 500))
+							toast("注册",1)
+							break
 						end
 					end
 
-					if getColor(393,1170) == 0 then
-						mSleep(math.random(500, 700))
-						randomsTap(393,1170,3)
-						mSleep(math.random(500, 700))
-						break
-					end
+					self:sendServerStatus(telphone,mess_yzm)
 
-					--取消
-					mSleep(math.random(500, 700))
-					if getColor(79,88) == 0x2bb00 then
-						mSleep(math.random(500, 700))
-						randomsTap(79,88,3)
-						mSleep(math.random(500, 700))
-					end
-
-					mSleep(math.random(500, 700))
-					x,y = findMultiColorInRegionFuzzy( 0x07c160, "171|-1|0x07c160,57|-5|0xffffff,-163|-3|0xf2f2f2,-411|1|0xf2f2f2,-266|-6|0x06ae56", 90, 0, 0, 749, 1333)
-					if x~=-1 and y~=-1 then
-						mSleep(math.random(200, 500))
-						randomsTap(549, 1240,10)
-						mSleep(math.random(200, 500))
-						toast("注册",1)
-						break
-					end
+					toast("验证码不正确",1)
+					mSleep(1000)
+					goto reset
 				end
-
-				self:sendServerStatus(telphone,mess_yzm)
-
-				toast("验证码不正确",1)
-				mSleep(1000)
-				goto reset
 			end
 
 			--环境异常
-			mSleep(500)
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x576b95,"-44|3|0x576b95,-252|-185|0,-207|-203|0,-186|-191|0,-151|-193|0,-66|-177|0,53|-181|0,-47|-141|0,-14|-59|0xe0dee1", 100, 0, 0, 749, 1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				self:sendServerStatus(telphone,"环境异常")
 
 				mSleep(500)
@@ -4709,7 +4829,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				mSleep(2000)
 
 				while true do
-					mSleep(math.random(500, 700))
+					mSleep(200)
 					if getColor(561,1265) == 0x576b95 then
 						mSleep(math.random(500, 700))
 						randomsTap(536,1266,3)
@@ -4722,6 +4842,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 						end
 					end
 
+					mSleep(200)
 					if getColor(393,1170) == 0 then
 						mSleep(math.random(500, 700))
 						randomsTap(393,1170,3)
@@ -4730,16 +4851,16 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					end
 
 					--取消
-					mSleep(math.random(500, 700))
+					mSleep(200)
 					if getColor(79,88) == 0x2bb00 then
 						mSleep(math.random(500, 700))
 						randomsTap(79,88,3)
 						mSleep(math.random(500, 700))
 					end
 
-					mSleep(math.random(500, 700))
+					mSleep(200)
 					x,y = findMultiColorInRegionFuzzy( 0x07c160, "171|-1|0x07c160,57|-5|0xffffff,-163|-3|0xf2f2f2,-411|1|0xf2f2f2,-266|-6|0x06ae56", 90, 0, 0, 749, 1333)
-					if x~=-1 and y~=-1 then
+					if x ~= -1 and y ~= -1 then
 						mSleep(math.random(200, 500))
 						randomsTap(549, 1240,10)
 						mSleep(math.random(200, 500))
@@ -4756,9 +4877,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		mSleep(10000)
 		while true do
 			if EU_countries == "0" then
-				mSleep(500)
+				mSleep(200)
 				x, y = findMultiColorInRegionFuzzy(0x343434,"49|-24|0x343434,2|547|0x9de7bf,326|537|0x9de7bf", 90, 0, 0, 749, 1333)
-				if x~=-1 and y~=-1 then
+				if x ~= -1 and y ~= -1 then
 					mSleep(math.random(500, 700))
 					randomsTap(355,590,8)
 					mSleep(math.random(500, 700))
@@ -4770,12 +4891,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					--	end
 
 					--检测是否有删除按钮
-					mSleep(500)
 					while (true) do
-						mSleep(500)
+						mSleep(200)
 						x,y = findMultiColorInRegionFuzzy( 0xcccccc, "11|-9|0xcccccc,20|0|0xcccccc,11|10|0xcccccc,10|-1|0xffffff,5|-5|0xffffff,15|4|0xffffff,15|-5|0xffffff,7|4|0xffffff", 90, 630, 89, 749, 1333)
 						toast(y, 1)
-						if x~=-1 and y~=-1 then
+						if x ~= -1 and y ~= -1 then
 							break
 						else
 							mSleep(500)
@@ -4790,16 +4910,16 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					mSleep(math.random(500, 700))
 					while true do
 						--填写生日
-						mSleep(math.random(500, 700))
+						mSleep(200)
 						x, y = findMultiColorInRegionFuzzy(0,"49|-16|0,-5|344|0x9ed99d,365|339|0x9ed99d", 100, 0, 0, 749, 800)
-						if x~=-1 and y~=-1 then
+						if x ~= -1 and y ~= -1 then
 							mSleep(math.random(1000, 1700))
 							randomsTap(384,447,8)
 							mSleep(math.random(500, 700))
 							toast("点击生日",1)
 						end
 
-						mSleep(math.random(500, 700))
+						mSleep(200)
 						if getColor(701,813) == 0x1aad19 then
 							mSleep(math.random(1000, 1700))
 							randomsTap(685,813,3)
@@ -4807,7 +4927,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 							toast("确定",1)
 						end
 
-						mSleep(math.random(500, 700))
+						mSleep(200)
 						if getColor(276,660) == 0x1aad19 then
 							mSleep(math.random(1000, 1700))
 							randomsTap(378,659,8)
@@ -4821,36 +4941,36 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			end
 
 			--不是我的，继续注册
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x6ae56,"36|1|0x6ae56,136|5|0x6ae56,181|-7|0x6ae56,294|-7|0x6ae56,371|0|0xf2f2f2,-98|-3|0xf2f2f2", 90, 0, 0, 749,  1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				mSleep(math.random(500, 700))
 				randomsTap(x,y,8)
 				mSleep(math.random(500, 700))
 				toast("不是我的，继续注册",1)
 			end
 
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x576b95,"28|-1|0x576b95,-84|141|0x36030,164|141|0x36030,-208|-180|0,-121|-230|0", 90, 0, 0, 749,  1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				mSleep(math.random(500, 700))
 				randomsTap(x,y,8)
 				mSleep(math.random(500, 700))
-				toast("手机号近期注册过wwxx",1)
+				toast("手机号近期注册过wc",1)
 				self:sendServerStatus(telphone,"最近注册")
 				goto over
 			end
 
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			if getColor(362,797) == 0x576b95 and getColor(391,800) == 0x576b95 then
 				toast("通讯录前账号状态异常",1)
 				error_wc = true
 				break
 			end
 
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x1565fc,"6|13|0x1565fc,17|-5|0x1565fc,19|6|0x1565fc,17|20|0x1565fc", 90, 0, 0, 749,  1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				mSleep(math.random(500, 700))
 				--				randomsTap(x-250,y,8)
 				--				mSleep(math.random(500, 700))
@@ -4859,9 +4979,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			end
 
 			--环境异常
-			mSleep(500)
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x576b95,"-44|3|0x576b95,-252|-185|0,-207|-203|0,-186|-191|0,-151|-193|0,-66|-177|0,53|-181|0,-47|-141|0,-14|-59|0xe0dee1", 100, 0, 0, 749, 1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				self:sendServerStatus(telphone,"环境异常")
 
 				mSleep(500)
@@ -4885,7 +5005,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				mSleep(2000)
 
 				while true do
-					mSleep(math.random(500, 700))
+					mSleep(200)
 					if getColor(561,1265) == 0x576b95 then
 						mSleep(math.random(500, 700))
 						randomsTap(536,1266,3)
@@ -4898,6 +5018,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 						end
 					end
 
+					mSleep(200)
 					if getColor(393,1170) == 0 then
 						mSleep(math.random(500, 700))
 						randomsTap(393,1170,3)
@@ -4906,16 +5027,16 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					end
 
 					--取消
-					mSleep(math.random(500, 700))
+					mSleep(200)
 					if getColor(79,88) == 0x2bb00 then
 						mSleep(math.random(500, 700))
 						randomsTap(79,88,3)
 						mSleep(math.random(500, 700))
 					end
 
-					mSleep(math.random(500, 700))
+					mSleep(200)
 					x,y = findMultiColorInRegionFuzzy( 0x07c160, "171|-1|0x07c160,57|-5|0xffffff,-163|-3|0xf2f2f2,-411|1|0xf2f2f2,-266|-6|0x06ae56", 90, 0, 0, 749, 1333)
-					if x~=-1 and y~=-1 then
+					if x ~= -1 and y ~= -1 then
 						mSleep(math.random(200, 500))
 						randomsTap(549, 1240,10)
 						mSleep(math.random(200, 500))
@@ -4930,9 +5051,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		mSleep(10000)
 
 		while true do
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x1565fc,"6|13|0x1565fc,17|-5|0x1565fc,19|6|0x1565fc,17|20|0x1565fc", 90, 0, 0, 749,  1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				mSleep(math.random(500, 700))
 				--				randomsTap(x-250,y,8)
 				--				mSleep(math.random(500, 700))
@@ -4941,27 +5062,27 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				break
 			end
 
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x7c160,"483|-9|0x7c160,155|2|0xffffff,159|95|0x576b95,225|92|0x576b95,246|99|0x576b95", 90, 0, 1013, 749,  1333)
-			if x~=-1 and y~=-1 then    
+			if x ~= -1 and y ~= -1 then    
 				mSleep(math.random(500, 700))
 				randomsTap(375,1274,6)
 				mSleep(math.random(500, 700))
 				toast("加朋友",1)
 			end
 
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0x7c160,"191|19|0,565|19|0,104|13|0xfafafa,616|24|0xfafafa", 90, 0, 1013, 749,  1333)
-			if x~=-1 and y~=-1 then
+			if x ~= -1 and y ~= -1 then
 				mSleep(math.random(500, 700))
 				randomsTap(653,1278,6)
 				mSleep(math.random(500, 700))
-				toast("wwxx界面",1)
+				toast("wc界面",1)
 				data_six_two = true
 				break
 			end
 
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			if getColor(362,797) == 0x576b95 and getColor(391,800) == 0x576b95 then
 				toast("通讯录后账号状态异常",1)
 				error_wc = true
@@ -4975,7 +5096,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		--				if getColor(653,1277) == 0x7c160 then
 		--					mSleep(math.random(1000, 1700))
 		--					randomsTap(359,430,6)
-		--					mSleep(math.random(500, 700))
+		--					mSleep(200)
 		--					toast("修改昵称",1)
 		--					break
 		--				else
@@ -4990,14 +5111,14 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		--					mSleep(math.random(1000, 1700))
 		--					randomsTap(513,833,6)
 		--					mSleep(math.random(500, 700))
-		--					toast("通过siri打开wwxx",1)
+		--					toast("通过siri打开wc",1)
 		--				end
 		--			end
 
 		--			while true do
-		--				mSleep(math.random(500, 700))
+		--				mSleep(200)
 		--				x, y = findMultiColorInRegionFuzzy(0x181818,"36|-14|0x181818,60|5|0x181818,102|-2|0x181818,267|-1|0xf2f2f2", 90, 0, 0, 749,  1333)
-		--				if x~=-1 and y~=-1 then
+		--				if x ~= -1 and y ~= -1 then
 		--					mSleep(math.random(500, 700))
 		--					randomsTap(653,350,6)
 		--					mSleep(math.random(500, 700))
@@ -5100,7 +5221,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		--						mSleep(500)
 		--						x,y = findMultiColorInRegionFuzzy( 0xcccccc, "11|-9|0xcccccc,20|0|0xcccccc,11|10|0xcccccc,10|-1|0xffffff,5|-5|0xffffff,15|4|0xffffff,15|-5|0xffffff,7|4|0xffffff", 90, 630, 89, 749, 1333)
 		--						toast(y, 1)
-		--						if x~=-1 and y~=-1 then
+		--						if x ~= -1 and y ~= -1 then
 		--							break
 		--						else
 		--							mSleep(500)
@@ -5165,6 +5286,21 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				for var = 1,#Wildcard do 
 					local file = io.open("/var/mobile/Containers/Data/Application/"..Wildcard[var]..self.wc_file,"rb") 
 					if file then 
+						local ts = require("ts")
+						local plist = ts.plist
+						local plfilename = "/var/mobile/Containers/Data/Application/"..Wildcard[var].."/Library/LocalInfo.lst" --设置plist路径
+						local tmp2 = plist.read(plfilename)                --读取 PLIST 文件内容并返回一个 TABLE
+						for k, v in pairs(tmp2) do
+							if k == "$objects" then
+								for i = 3 ,5 do
+									if tonumber(v[i]) then
+										wc = v[i]
+										wcid = v[i-1]
+										break
+									end	
+								end	
+							end	
+						end
 						local str = file:read("*a") 
 						file:close() 
 						require"sz" 
@@ -5174,6 +5310,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				end 
 			end 
 			six_data = getData()
+			six_data = six_data .. "----" .. wcid
 			mSleep(500)
 			toast(six_data);
 			mSleep(500)
@@ -5194,8 +5331,15 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 			write_data(file_path,user.."----"..password.."----"..six_data.."----"..sj)
 			mSleep(500)
-
-			if vpn_stauts == "6" then
+            
+            --蒙古号码上传到指定页面，其他的正常
+            if vpn_stauts == "22" then
+                is_meng_gu = "1"
+            else
+                is_meng_gu = "0"
+            end
+            
+			if vpn_stauts == "6" or vpn_stauts == "22" then
 				mSleep(200)
 				api = code_url
 			else
@@ -5206,7 +5350,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			::send::
 			local sz = require("sz")       
 			local http = require("szocket.http")
-			local res, code = http.request("http://39.99.192.160/import_data?phone="..user.."&password="..password.."&token="..six_data.."&is_normal="..is_normal.."&operator="..operator.."&link="..urlEncoder(api).."&time="..sj)
+			local res, code = http.request("http://39.99.192.160/import_data?phone="..user.."&password="..password.."&token="..six_data.."&is_normal="..is_normal.."&operator="..operator.."&link="..urlEncoder(api).."&time="..sj.."&is_meng_gu="..is_meng_gu)
 			if code == 200 then
 				tmp = json.decode(res)
 				if tmp.code == 200 then
@@ -5256,11 +5400,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 						self:idCard(country_id)
 
 						while true do
-							mSleep(500)
+							mSleep(200)
 							if getColor(654,1279) == 0x7c160 then
 								mSleep(500)
 								x,y = findMultiColorInRegionFuzzy( 0x191919, "5|13|0x191919,38|-7|0x191919,21|4|0x191919,57|8|0x191919,39|10|0x191919,54|18|0x444444,-77|5|0x1485ee", 90, 0, 680, 749, 1333)
-								if x~=-1 and y~=-1 then
+								if x ~= -1 and y ~= -1 then
 									mSleep(500)
 									randomTap(x,y,2)
 									mSleep(1000)
@@ -5273,7 +5417,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 								mSleep(500)
 							end
 
-							mSleep(math.random(500, 700))
+							mSleep(200)
 							if getColor(492, 1266) == 0x576b95 and getColor(561, 1262) == 0x576b95 then
 								mSleep(500)
 								randomsTap(362,797,4)
@@ -5284,7 +5428,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 								break
 							end
 
-							mSleep(math.random(500, 700))
+							mSleep(200)
 							if getColor(346, 803) == 0x576b95 and getColor(390, 796) == 0x576b95 then
 								mSleep(500)
 								randomsTap(362,797,4)
@@ -5295,7 +5439,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 								break
 							end
 
-							mSleep(math.random(500, 700))
+							mSleep(200)
 							if getColor(362,797) == 0x576b95 and getColor(391,800) == 0x576b95 then
 								mSleep(500)
 								randomsTap(362,797,4)
@@ -5309,14 +5453,14 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 						if not fh_bool then
 							while true do
-								mSleep(500)
+								mSleep(200)
 								if getColor(356,1167) == 0x191919 then
 									mSleep(500)
 									tap(356,1167)
 									mSleep(1000)
 								end
 
-								mSleep(500)
+								mSleep(200)
 								if getColor(356,1172) == 0xe64340 then
 									mSleep(500)
 									tap(356,1172)
@@ -5344,7 +5488,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 						mSleep(2000)
 
 						while true do
-							mSleep(math.random(500, 700))
+							mSleep(200)
 							if getColor(561,1265) == 0x576b95 then
 								mSleep(math.random(500, 700))
 								randomsTap(536,1266,3)
@@ -5357,6 +5501,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 								end
 							end
 
+							mSleep(200)
 							if getColor(393,1170) == 0 then
 								mSleep(math.random(500, 700))
 								randomsTap(393,1170,3)
@@ -5365,7 +5510,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 							end
 
 							--取消
-							mSleep(math.random(500, 700))
+							mSleep(200)
 							if getColor(79,88) == 0x2bb00 then
 								mSleep(math.random(500, 700))
 								randomsTap(79,88,3)
@@ -5418,7 +5563,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		mSleep(2000)
 
 		while true do
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			if getColor(561,1265) == 0x576b95 then
 				mSleep(math.random(500, 700))
 				randomsTap(536,1266,3)
@@ -5431,6 +5576,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				end
 			end
 
+			mSleep(200)
 			if getColor(393,1170) == 0 then
 				mSleep(math.random(500, 700))
 				randomsTap(393,1170,3)
@@ -5439,7 +5585,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			end
 
 			--取消
-			mSleep(math.random(500, 700))
+			mSleep(200)
 			if getColor(79,88) == 0x2bb00 then
 				mSleep(math.random(500, 700))
 				randomsTap(79,88,3)
@@ -5472,7 +5618,6 @@ function model:main()
 
 	self:getConfig()
 
-	
 	local bool = isFileExist(userPath().."/res/info/wc_version.txt")
 	if bool then
 		txt = readFileString(userPath().."/res/info/wc_version.txt")--读取文件内容，返回全部内容的 string
@@ -5512,14 +5657,30 @@ function model:main()
 			ksUrl = "http://web.lyf5.com"
 			ApiName = "huqianjin42"
 		elseif vpn_stauts == "13" then
-			ksUrl = "http://web.jiaotai56.com"
+			ksUrl = "http://web.jiemite.com"
 			ApiName = "huqianjin89"
 		elseif vpn_stauts == "16" then
 			ksUrl = "http://api.hegrace-safex.cn"
 			ApiName = "api_huqianjin_m8k"
+		elseif vpn_stauts == "19" then
+			ksUrl = "http://api.ma37.com"
+			ApiName = "api_huqianjin_m1p"
 		end
 
-		if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16" then
+		if vpn_stauts == "14" then
+			appKey = "x727KdG1"
+			secretKey = "cc128a0c117a4493b2827de05c150909"
+			productId = 3
+			ksUrl = "http://gvU6e7.g7e6.com:20083"
+		elseif vpn_stauts == "20" then
+			appKey = "oIYEBCM8"
+			secretKey = "b4343a772db14dd1bee548421e937576"
+			productId = "4"
+			ksUrl = "http://k76sk.com:20083"
+		end
+
+
+		if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16" or vpn_stauts == "19" then
 			mSleep(500)
 			if kn_country == "" or kn_country == "默认值" then
 				dialog("国家区号不能为空，请重新运行脚本设置国家区号", 3)
@@ -5545,7 +5706,7 @@ function model:main()
 			end
 		end
 
-		if vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16" then
+		if vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16" or vpn_stauts == "19" then
 			::get_token::
 			local sz = require("sz");
 			local http = require("szocket.http")
@@ -5571,3 +5732,4 @@ function model:main()
 end
 
 model:main()
+
