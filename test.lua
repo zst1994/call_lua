@@ -1677,13 +1677,3 @@ end
 -- 	    dialog("text",0)
 -- 	end
 
---vpn连接: 好
-		mSleep(200)
-		x,y = findMultiColorInRegionFuzzy( 0x007aff, "6|15|0x007aff,16|-5|0x007aff,20|15|0x007aff,-56|-177|0x000000,-48|-159|0x000000,-41|-179|0x000000,40|-167|0x000000,60|-171|0x000000", 90, 0, 0, 749, 1333)
-		if x ~= -1 then
-			mSleep(500)
-			tap(x,y)
-			mSleep(500)
-			toast("vpn连接1", 1)
-			mSleep(500)
-		end
