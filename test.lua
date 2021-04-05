@@ -1677,3 +1677,6 @@ end
 -- 	    dialog("text",0)
 -- 	end
 
+a = "1111----2222----33333----44444"
+dialog(strSplit(a,"----")[3],0)
+dialog(strSplit(a,"----")[4],0)

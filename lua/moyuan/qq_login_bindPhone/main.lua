@@ -1834,7 +1834,16 @@ function model:mm()
 	self.mm_accountId = self:getMMId(appDataPath(self.mm_bid) .. "/Documents")
 	--重命名当前记录名
 	local old_name = AMG.Get_Name()
-	local new_name = self.mm_accountId .. "----" .. self.subName
+	if self.subName == "密码错误" then
+	    data = strSplit(old_name,"----")
+	    newAccount = data[3]
+	    newPass = data[4]
+		new_name = self.mm_accountId .. "----" .. self.subName .. "----" .. newAccount .. "----" .. newPass
+	else
+	    new_name = self.mm_accountId .. "----" .. self.subName
+	end
+
+	
 	if AMG.Rename(old_name, new_name) == true then
 	    if self.subNameBool then
     		writeFileString(userPath().."/res/绑定手机号记录.txt", self.mm_accountId .. "----" .. self.phone .. "----" .. self.code_token,"a",1)
