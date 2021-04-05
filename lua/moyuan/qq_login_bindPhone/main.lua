@@ -57,7 +57,9 @@ local AMG = {
 				mSleep(200)
 				x,y = findMultiColorInRegionFuzzy(0x000000, "44|-1|0x000000,79|0|0x000000,-25|154|0x007aff,0|155|0x007aff,17|155|0x007aff,56|161|0x007aff,-22|253|0x007aff,35|251|0x097fff,81|243|0x007aff", 90, 0, 0, 750, 1334, { orient = 2 })
 				if x ~= -1 then
-					model:vpn()
+				    if model.subName ~= "密码错误" then
+				        model:vpn()
+					end
 					mSleep(500)
 					tap(x,y)
 					mSleep(500)
@@ -430,6 +432,12 @@ function model:mm()
 				mSleep(2000)
 				inputAgain = false
 			end
+		else
+		    if getColor(243,  796) == 0xd8d8d8 or getColor(246,  807) == 0x18d9f1 then
+		        mSleep(500)
+				tap(57,133)
+				mSleep(2000)
+		    end
 		end
 
 		--网络好像有问题
@@ -1849,11 +1857,13 @@ function model:index()
 		setVPNEnable(false)
 		mSleep(1000)
 		
-		if networkMode == "0" then
-		    setWifiEnable(true) 
-		elseif networkMode == "1" then
-		    setWifiEnable(false) 
-		end
+		if self.subName ~= "密码错误" then
+    		if networkMode == "0" then
+    		    setWifiEnable(true) 
+    		elseif networkMode == "1" then
+    		    setWifiEnable(false) 
+    		end
+    	end
 		mSleep(2000)
 
 		--下一条并检查是否最后一条

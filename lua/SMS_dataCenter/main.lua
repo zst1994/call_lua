@@ -1,7 +1,8 @@
 --wechat version 7.0.7
 require "TSLib"
 require "tsnet"
-
+local sz                = require("sz")       
+local http              = require("szocket.http")
 local image 			= require("tsimg")  
 local ts 				= require('ts')
 local json 				= ts.json
@@ -5681,16 +5682,17 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 
 			::send::
 			local sz = require("sz")       
-			local szhttp = require("szocket.http")
-			local res, code = szhttp.request(send_api.."?time="..time.."&info="..all_data)
-
+			local http = require("szocket.http")
+			local res, code = http.request(send_api.."?time="..time.."&info="..all_data)
 			if code == 200 then
 				if tostring(res) == "success" then
 					mSleep(500)
 					toast("数据上传:"..tostring(res),1)
 					mSleep(1000)
 					writeFileString(userPath().."/res/phone_data.txt","","w",0)
-					closeApp("*",1)
+					if sendFriend == "1" then
+					    closeApp("*",1)
+					end
 				else
 					toast("数据上传失败:"..tostring(res),1)
 					mSleep(1000)
@@ -5708,7 +5710,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		if login_times == "0" or login_times == "1" then
 			data_six_two = false
 
-			if updateNickName == "0" then
+			if updateNickName == "0" or sendFriend == "0" then
 				while true do
 					mSleep(200)
 					x, y = findMultiColorInRegionFuzzy(0x1565fc,"1|14|0x1565fc,12|-4|0x1565fc,16|6|0x1565fc,12|21|0x1565fc,-174|-247|0", 90, 0, 0, 749, 1333)
@@ -5730,16 +5732,22 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					mSleep(200)
 					x, y = findMultiColorInRegionFuzzy(0x7c160,"191|19|0,565|19|0,104|13|0xfafafa,616|24|0xfafafa", 90, 0, 1013, 749,  1333)
 					if x~=-1 and y~=-1 then
-						mSleep(math.random(500, 700))
-						randomTap(653,1278,6)
-						mSleep(math.random(500, 700))
+					    if updateNickName == "0" then
+    						mSleep(math.random(500, 700))
+    						randomTap(653,1278,6)
+    						mSleep(math.random(500, 700))
+    					elseif sendFriend == "0" then
+    					    mSleep(math.random(500, 700))
+    					    randomTap(467,1273,6)
+    					    mSleep(math.random(500, 700))
+    					end
 						toast("微信界面",1)
 						data_six_two = true
 						break
 					end
 				end
 
-				if data_six_two then
+				if data_six_two and updateNickName == "0" then
 					while true do
 						mSleep(200)
 						if getColor(653,1277) == 0x7c160 then
@@ -5896,9 +5904,124 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 							break
 						end
 					end
+				elseif data_six_two and sendFriend == "0" then
+				    while (true) do
+				        mSleep(200)
+    					x, y = findMultiColorInRegionFuzzy(0x7c160,"191|19|0,565|19|0,104|13|0xfafafa,616|24|0xfafafa", 90, 0, 1013, 749,  1333)
+    					if x~=-1 and y~=-1 then
+    					    if updateNickName == "0" then
+        						mSleep(math.random(500, 700))
+        						randomTap(653,1278,6)
+        						mSleep(math.random(500, 700))
+        					elseif sendFriend == "0" then
+        					    mSleep(math.random(500, 700))
+        					    randomTap(467,1273,6)
+        					    mSleep(math.random(500, 700))
+        					end
+    					end
+					
+				        mSleep(200)
+				        x,y = findMultiColorInRegionFuzzy(0x6467f0, "2|17|0x10aeff,-14|17|0x91d300,-16|4|0xfa9d3b,101|1|0x000000,147|12|0x000000,647|11|0xb2b2b2", 90, 0, 0, 750, 1334, { orient = 2 })
+                        if x ~= -1 then
+                            mSleep(math.random(500, 700))
+                            randomTap(x + 300,y + 20, 6)
+                            mSleep(math.random(500, 700))
+                            toast("朋友圈",1)
+                            mSleep(1000)
+                        end
+                        
+                        mSleep(200)
+                        if getColor(595,199) ~= 0xffffff and getColor(692,73) == 0xffffff then
+                            mSleep(math.random(500, 700))
+                            touchDown(692, 73)
+                            mSleep(4000)
+                            touchUp(692, 73)
+                            mSleep(math.random(500, 700))
+                            break
+                        end
+				    end
+				    
+				    while (true) do
+				        mSleep(200)
+				        x,y = findMultiColorInRegionFuzzy(0x1d8a25, "-171|0|0x1d8a25,-94|-24|0x2d9535,-87|22|0x11821a,-33|4|0xffffff,-133|-7|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+                        if x ~= -1 then
+                            mSleep(math.random(500, 700))
+                            randomTap(375,1237, 6)
+                            mSleep(math.random(500, 700))
+                            toast("我知道了",1)
+                            mSleep(1000)
+                        end
+                        
+                        mSleep(200)
+                        if getColor(618,82) == 0x9ce6bf then
+                            State={
+								["随机常量"] = 0,
+								["名字"]="安彤含祖赩涤彰爵舞深群适渺辞莞延稷桦赐帅适亭濮存城稷澄添悟绢绢澹迪婕箫识悟舞添剑深禄延涤" ..
+								"濮存罡禄瑛瑛嗣嫚朵寅添渟黎臻舞绢城骥彰渺禾教祖剑黎莞咸浓芦澹帅臻渟添禾亭添亭霖深策臻稷辞" ..
+								"悟悟澄涉城鸥黎悟乔恒黎鲲涉莞霖甲深婕乔程澹男岳深涉益澹悟箫乔多职适芦瑛澄婕朵适祖霖瑛坤嫚" ..
+								"涉男珂箫芦黎珹绢芦程识嗣珂瑰枝允黎庸嗣赐罡纵添禄霖男延甲彰咸稷箫岳悟职祖恒珂庸琅男莞庸浓" ..
+								"多罡延瑛濮存爵添剑益骥澄延迪寅婕程霖识瑰识程群教朵悟舞岳浓箫城适程禾嫚罡咸职铃爵渺添辞嫚" ..
+								"浓寅鲲嗣瑛鸥多教瑛迪坤铃珹群黎益澄程莞深坤澹禄职澹赩澄藉群箫骥定彰寅臻渟枝允珹深群黎甲鲲" ..
+								"亭黎藏浓涤渟莞寅辞嗣坤迪嫚添策庸策藉瑰彰箫益莞渺乔彰延舞祖婕澹渺鸥纵嗣瑛藏濮存婕职程芦群" ..
+								"禾嫚程辞祖黎职浓桦藏渟禾彰帅辞铃铃黎允绢濮存剑辞禾瑰添延添悟赐祖咸莞男绢策婕藉禾浓珹涤祖" ..
+								"汉骥舞瑛多稷赐莞渟黎舞桦黎群藏渺黎坤桦咸迪澈舞允稷咸剑定亭澄濮存鲲臻全鸥多赐程添瑛亭帅悟" ..
+								"甲男帅涤适纵渟鲲亭悟琅亭添允舞禾庸咸瑛教鲲允箫芦允瑛咸鸥帅悟延珂黎珹箫爵剑霖剑霖禄鸥悟涉" ..
+								"彰群悟辞帅渺莞澄桦瑛适臻益霖珹亭澹辞坤程嗣铃箫策澈枝赐莞爵渟禄群枝添芦群浓赐职益城澄赩琅" ..
+								"延群乔珹鲲祖群悟黎定庸澄芦延霖罡鲲咸渺纵亭禄鸥赩涤剑澹藏纵濮存澄芦剑延瑰稷黎益赩澄允悟澈" ..
+								"甲嗣绢朵益甲悟涤婕群咸臻箫鲲寅鸥桦益珂舞允庸芦藉寅渺咸赐澄程剑瑰霖瑰铃帅男铃悟识瑰仕仕城" ..
+								"允莞全朵涤铃剑渺稷剑珂铃箫全仕益纵芦桦珂濮存城朵朵咸程剑澄定澈爵寅庸定莞瑛教彰黎箫仕黎桦" ..
+								"赩深赩爵迪悟珹涤琅添箫桦帅瑛黎黎策识寅嫚涉迪策汉舞定彰允男祖教澄群瑛濮存男禾教莞禾鸥澈濮" ..
+								"存岳城嫚深舞教岳澄亭禾坤朵亭职莞稷寅瑰城庸亭舞禾瑛恒坤浓彰莞澄澈鸥臻稷教琅辞益剑藉黎添瑛" ..
+								"延舞坤仕岳多婕骥迪帅黎悟全澄识益甲桦纵适罡彰澄禾婕程黎城涤浓枝箫咸渟岳渟澹臻珹识珹澄箫辞" ..
+								"浓鲲识悟允悟禾识群祖迪渟鲲群庸莞珹悟澹瑰悟鸥汉群甲莞庸职琅莞桦鲲朵深乔辞允彰渺朵瑰亭瑰朵" ..
+								"定深男识群职霖益男舞城允舞爵赩枝罡罡群澹芦藉爵悟渟澹禾多庸箫坤乔芦甲濮存多渟藉珹赐汉纵亭" ..
+								"禾城枝剑露以玉春飞慧娜悠亦元晔曜霜宁桃彦仪雨琴青筠逸曼代菀孤昆秋蕊语莺丝红羲盛静南淑震晴" ..
+								"彭祯山霞凝柔隽松翠高骊雅念皓双洛紫瑞英思歆蓉娟波芸荷笑云若宏夏妍嘉彩如鹏寄芝柳凌莹蝶舒恬" ..
+								"虹清爽月巧乾勋翰芳罗刚鸿运枫阳葳杰怀悦凡哲瑶凯然尚丹奇弘顺依雪菡君畅白振馨寻涵问洁辉忆傲" ..
+								"伟经润志华兰芹修晨木宛俊博韶天锐溪燕家沈放明光千永溶昊梅巍真尔馥莲怜惜佳广香宇槐珺芷帆秀" ..
+								"理柏书沛琪仙之竹向卉欣旻晓冬幻和雁淳浩歌荣懿文幼岚昕牧绿轩工旭颜醉玑卓觅叶夜灵胜晗恨流佁" ..
+								"乐火音采睿翎萱民画梦寒泽怡丽心石邵玮佑旺壮名一学谷韵宜冰赫新蕾美晖项琳平树又炳骏气海毅敬" ..
+								"曦婉爰伯珊影鲸容晶婷林子昌梧芙澍诗星冉初映善越原茂国腾孟水烟半峯莉绮德慈敏才戈梓景智盼霁" ..
+								"琇苗熙姝从谊风发钰玛忍婀菲昶可荌小倩妙涛姗方图迎惠晤宣康娅玟奕锦濯穆禧伶丰良祺珍曲喆扬拔" ..
+								"驰绣烁叡长雯颖辰慕承远彬斯薇成聪爱朋萦田致世实愫进瀚朝强铭煦朗精艺熹建忻晏冷佩东古坚滨菱" ..
+								"囡银咏正儿瑜宝蔓端蓓芬碧人开珠昂琬洋璠桐舟姣琛亮煊信今年庄淼沙黛烨楠桂斐胤骄兴尘河晋卿易" ..
+								"愉蕴雄访湛蓝媛骞娴儒妮旋友娇泰基礼芮羽妞意翔岑苑暖玥尧璇阔燎偲靖行瑾资漪晟冠同齐复吉豆唱" ..
+								"韫素盈密富其翮熠绍澎淡韦诚滢知鹍苒抒艳义婧闳琦壤杨芃洲阵璟茵驹涆来捷嫒圣吟恺璞西旎俨颂灿" ..
+								"情玄利痴蕙力潍听磊宸笛中好任轶玲螺郁畴会暄峻略琼琰默池温炫季雰司杉觉维饮湉许宵茉贤昱蕤珑" ..
+								"锋纬渊超萍嫔大霏楚通邈飙霓谧令厚本邃合宾沉昭峰业豪达彗纳飒壁施欢姮甫湘漾闲恩莎祥启煜鸣品" ..
+								"希融野化钊仲蔚生攸能衍菁迈望起微鹤荫靓娥泓金琨筱赞典勇斌媚寿喜飇濡宕茜魁立裕弼翼央莘绚焱" ..
+								"奥萝米衣森荃航璧为跃蒙庆琲倚穹武甜璐俏茹悌格穰皛璎龙材湃农福旷童亘苇范寰瓃忠虎颐蓄霈言禹" ..
+								"章花健炎籁暮升葛贞侠专懋澜量纶布皎源耀鸾慨曾优栋妃游乃用路余珉藻耘军芊日赡勃卫载时三闵姿" ..
+								"麦瑗泉郎怿惬萌照夫鑫樱琭钧掣芫侬丁育浦磬献苓翱雍婵阑女北未陶干自作伦珧溥桀州荏举杏茗洽焕" ..
+								"吹甘硕赋漠颀妤诺展俐朔菊秉苍津空洮济尹周江荡简莱榆贝萧艾仁漫锟谨魄蔼豫纯翊堂嫣誉邦果暎珏" ..
+								"临勤墨薄颉棠羡浚兆环铄"
+							}
+							State["随机常量"] = tonumber(self:Rnd_Word("0123456789",5))
+                            writePasteboard(self:Rnd_Word(State["名字"],1,3))
+                            mSleep(math.random(500, 700))
+                            randomTap(316,205, 6)
+                            mSleep(math.random(500, 700))
+                            keyDown("RightGUI") 
+                            keyDown("v")
+                            keyUp("v")
+                            keyUp("RightGUI")
+                            mSleep(math.random(500, 700))
+                            randomTap(618,82, 3)
+                            mSleep(math.random(1500, 1700))
+                            break
+                        end
+				    end
+				    
+				    while (true) do
+				        mSleep(200)
+                        if getColor(595,199) ~= 0xffffff and getColor(692,73) == 0xffffff then
+                            mSleep(math.random(500, 700))
+                            break
+                        end
+				    end
 				end
 
-				if needPay == "0" then
+				if needPay == "0" and updateNickName == "0" then
 					if data_six_two then
 						mSleep(math.random(1000, 1500))
 						randomTap(42,82,3)

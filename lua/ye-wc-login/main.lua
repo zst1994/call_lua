@@ -27,6 +27,25 @@ function model:randomStr(str, num)
 	return ret
 end
 
+function model:mingyan()
+    ::my::
+	local res, code = http.request("http://api.eei8.cn/say/api.php?charset=utf-8&encode=json")
+	if code == 200 then
+	    tmp = json.decode(res)
+	    if tmp.text then
+	        return tmp.text
+	    else
+	        toast("重新获取名言数据",1)
+    		mSleep(1000)
+    		goto my
+	    end
+	else
+		toast("重新获取名言数据",1)
+		mSleep(1000)
+		goto my
+	end
+end
+
 --[[随机内容(UTF-8中文字符占3个字符)]]
 function model:Rnd_Word(strs,i,Length)
 	local ret=""
@@ -4097,9 +4116,8 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				toast(res,1)
 				mSleep(500)
 				if code == 200 then
-					local tmp = json.decode(res)
-					if tmp.data and #tmp.data > 0 then
-						mess_yzm = tmp.data[1].code
+					if type(string.find(res, "%d+%d+%d+%d+%d+%d+")) == "number" then
+						mess_yzm = string.match(res,"%d+")
 					else
 						toast("暂未查询到验证码，请稍后再试"..get_time,1)
 						mSleep(2000)
@@ -4143,7 +4161,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 							goto caozuo_more
 						end
 
-						if restart_time > 1 then
+						if restart_time > 2 then
 							::addblack::
 							local sz = require("sz")        --登陆
 							local http = require("szocket.http")

@@ -432,5 +432,16 @@
                     "prompt": "请输入模拟跳码的前几位号码",
                     "text": "默认值",
                     "kbtype": "ascii"
+                },{
+                    "type": "Label",
+                    "text": "是否发朋友圈",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "sendFriend",
+                    "type": "RadioGroup",
+                    "list": "发朋友圈,不发朋友圈",
+                    "select": "0"
                 }]
     }

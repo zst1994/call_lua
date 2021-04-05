@@ -1677,21 +1677,13 @@ end
 -- 	    dialog("text",0)
 -- 	end
 
---证件与姓名不匹配
-mSleep(500)
-x,y = findMultiColorInRegionFuzzy( 0x1a1a1a, "314|-4|0x576b95,386|-11|0x576b95,386|-13|0x576b95,89|-189|0x1a1a1a,131|-213|0x1a1a1a,130|-182|0x1a1a1a,178|-214|0x1a1a1a,179|-182|0x1a1a1a,192|-164|0x1a1a1a", 90, 0, 0, 749, 1333)
-if x ~= -1 then
-	mSleep(500)
-	tap(x,y)
-	mSleep(1000)
-	toast("111",1)
-end
-
-mSleep(500)
-x,y = findMultiColorInRegionFuzzy( 0x1a1a1a, "245|-12|0x576b95,351|-13|0x576b95,423|-10|0x576b95,52|-307|0x1a1a1a,61|-296|0x1a1a1a,79|-306|0x1a1a1a,104|-291|0x1a1a1a,143|-309|0x1a1a1a,145|-279|0x1a1a1a", 90, 0, 0, 749, 1333)
-if x ~= -1 then
-	mSleep(500)
-	tap(x,y)
-	mSleep(1000)
-	toast("22222",1)
-end
+--vpn连接: 好
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy( 0x007aff, "6|15|0x007aff,16|-5|0x007aff,20|15|0x007aff,-56|-177|0x000000,-48|-159|0x000000,-41|-179|0x000000,40|-167|0x000000,60|-171|0x000000", 90, 0, 0, 749, 1333)
+		if x ~= -1 then
+			mSleep(500)
+			tap(x,y)
+			mSleep(500)
+			toast("vpn连接1", 1)
+			mSleep(500)
+		end
