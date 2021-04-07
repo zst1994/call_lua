@@ -1677,6 +1677,14 @@ end
 -- 	    dialog("text",0)
 -- 	end
 
-a = "1111----2222----33333----44444"
-dialog(strSplit(a,"----")[3],0)
-dialog(strSplit(a,"----")[4],0)
+--首页
+		mSleep(200)
+		if getColor(206, 109) == 0x323333 and getColor(370, 99) == 0x323333 or
+		getColor(411, 176) == 0x323333 and getColor(419, 135) == 0x323333 or
+		getColor(45, 109) == 0x323333 and getColor(222, 95) == 0x323333 or
+		getColor(206, 156) == 0x323333 and getColor(336, 157) == 0x323333 or
+		getColor(206,  153) == 0x313232 and getColor(371,  131) == 0x313232 then
+			mSleep(500)
+			toast("首页1", 1)
+			mSleep(500)
+		end

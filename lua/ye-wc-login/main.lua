@@ -28,17 +28,17 @@ function model:randomStr(str, num)
 end
 
 function model:mingyan()
-    ::my::
+	::my::
 	local res, code = http.request("http://api.eei8.cn/say/api.php?charset=utf-8&encode=json")
 	if code == 200 then
-	    tmp = json.decode(res)
-	    if tmp.text then
-	        return tmp.text
-	    else
-	        toast("重新获取名言数据",1)
-    		mSleep(1000)
-    		goto my
-	    end
+		tmp = json.decode(res)
+		if tmp.text then
+			return tmp.text
+		else
+			toast("重新获取名言数据",1)
+			mSleep(1000)
+			goto my
+		end
 	else
 		toast("重新获取名言数据",1)
 		mSleep(1000)
@@ -1254,8 +1254,8 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				dialog("服务器当前没号码可用,即将退出运行",10)
 				lua_exit()
 			else
-			    toast(tmp.message,1)
-			    mSleep(3000)
+				toast(tmp.message,1)
+				mSleep(3000)
 				goto get_phone
 			end
 		else
@@ -1697,12 +1697,12 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			telphone = "6" .. later_phone
 			kn_country = "27"
 		elseif string.gsub(countryId,"%s+","") == "us" then
-		    ::get_test::
+			::get_test::
 			later_phone = self:randomStr("1234567890", 10)
 			if string.sub(later_phone, 1, 1) == "0" or string.sub(later_phone, 1, 1) == "1" then
-			    goto get_test
+				goto get_test
 			else
-			    telphone = later_phone
+				telphone = later_phone
 			end
 			kn_country = "1"
 		elseif string.gsub(countryId,"%s+","") == "mn" then
@@ -1726,8 +1726,8 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				dialog("服务器当前没号码可用,即将退出运行",10)
 				lua_exit()
 			else
-			    toast(tmp.message,1)
-			    mSleep(3000)
+				toast(tmp.message,1)
+				mSleep(3000)
 				goto get_phone
 			end
 		else
@@ -1962,7 +1962,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				end
 			end
 			writePasteboard(password)
-            mSleep(500)
+			mSleep(500)
 			keyDown("RightGUI")
 			keyDown("v")
 			keyUp("v")
@@ -2786,7 +2786,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			goto hk_again
 		end
 	end
-	
+
 	menguNum = 0
 	::kq::
 	--跳马失败释放号码
@@ -3130,7 +3130,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				end
 				self:sendSMSKQ()
 			end
-			
+
 			::get_new_mess::
 			if vpn_stauts == "1" then
 				::get_mess::
@@ -3252,7 +3252,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 				::get_mess::
 				self:sendSMSKQ()
-				
+
 				second_time = os.time()
 				diff_time = os.difftime(second_time,first_time)
 				if diff_time > 600 then
@@ -4420,15 +4420,15 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				if code == 200 then
 					tmp = json.decode(res)
 					if tmp.ResultCode == "0" or tmp.ResultCode == 0 then
-					    mess_yzm = string.match(tmp.Message, '%d+%d+%d+%d+%d+%d+')
-    					if #mess_yzm ~= 6 then
-    						toast("验证码不是6位数",1)
-    						goto get_mess
-    					else
-    						toast(mess_yzm,1)
-    					end
-    					yzm_bool = true
-    				else
+						mess_yzm = string.match(tmp.Message, '%d+%d+%d+%d+%d+%d+')
+						if #mess_yzm ~= 6 then
+							toast("验证码不是6位数",1)
+							goto get_mess
+						else
+							toast(mess_yzm,1)
+						end
+						yzm_bool = true
+					else
 						mSleep(500)
 						toast(res..":"..res_time,1)
 						mSleep(5200)
@@ -4585,7 +4585,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 						mSleep(100)
 					end
 				end
-				
+
 				for i = 1, #(mess_yzm) do
 					mSleep(math.random(500, 700))
 					num = string.sub(mess_yzm,i,i)
@@ -5313,7 +5313,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 								for i = 3 ,5 do
 									if tonumber(v[i]) then
 										wc = v[i]
-										wcid = v[i-1]
+--										wcid = v[i-1]
 										break
 									end	
 								end	
@@ -5328,7 +5328,8 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				end 
 			end 
 			six_data = getData()
-			six_data = six_data .. "----" .. wcid
+--			six_data = six_data .. "----" .. wcid
+			six_data = six_data
 			mSleep(500)
 			toast(six_data);
 			mSleep(500)
@@ -5349,14 +5350,14 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 			write_data(file_path,user.."----"..password.."----"..six_data.."----"..sj)
 			mSleep(500)
-            
-            --蒙古号码上传到指定页面，其他的正常
-            if vpn_stauts == "22" then
-                is_meng_gu = "1"
-            else
-                is_meng_gu = "0"
-            end
-            
+
+			--蒙古号码上传到指定页面，其他的正常
+			if vpn_stauts == "22" then
+				is_meng_gu = "1"
+			else
+				is_meng_gu = "0"
+			end
+
 			if vpn_stauts == "6" or vpn_stauts == "22" then
 				mSleep(200)
 				api = code_url
