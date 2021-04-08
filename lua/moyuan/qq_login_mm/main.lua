@@ -914,8 +914,8 @@ function model:clear_input()
 	mSleep(500)
 	tap(620,  357)
 	mSleep(1000)
-	for var=1,20 do
-		mSleep(100)
+	for var=1,25 do
+		mSleep(50)
 		keyDown("DeleteOrBackspace")
 		keyUp("DeleteOrBackspace")  
 	end
@@ -1330,8 +1330,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
     		mSleep(1000)
     	end
     elseif loginAccountWay == "1" then
+        back_again = 0
+	
         t1 = ts.ms()
-        
         while (true) do
             mSleep(200)
             x,y = findMultiColorInRegionFuzzy(0x18d9f1, "8|-90|0xd8d8d8,561|-96|0xd8d8d8,258|-97|0xffffff,328|-87|0xffffff,150|10|0x18d9f1", 90, 0, 0, 750, 1334, { orient = 2 })
@@ -1364,13 +1365,32 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
     		mSleep(1000)
         end
         
+        ::get_phone_agagin::
+        if back_again > 0 then
+            while (true) do
+                mSleep(200)
+                x,y = findMultiColorInRegionFuzzy(0x18d9f1, "32|-1|0x18d9f1,65|10|0x18d9f1,97|0|0x18d9f1,124|-1|0x18d9f1,150|0|0x18d9f1", 90, 0, 0, 750, 1334, { orient = 2 })
+                if x ~= -1 then
+                    mSleep(500)
+        			randomTap(584,401, 4)
+        			mSleep(1500)
+        			for var=1,25 do
+                		mSleep(50)
+                		keyDown("DeleteOrBackspace")
+                		keyUp("DeleteOrBackspace")  
+        			end
+            	    break
+                end
+            end
+        end
+        
         t1 = ts.ms()
         while (true) do
             mSleep(200)
             x,y = findMultiColorInRegionFuzzy(0x18d9f1, "8|-90|0xd8d8d8,561|-96|0xd8d8d8,258|-97|0xffffff,328|-87|0xffffff,150|10|0x18d9f1", 90, 0, 0, 750, 1334, { orient = 2 })
             if x ~= -1 then
                 mSleep(500)
-    			randomTap(x + 340, y - 270, 4)
+    			randomTap(x + 350, y - 270, 4)
     			mSleep(1500)
     			inputStr(self.phone)
 			    mSleep(500)
@@ -1383,7 +1403,19 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
             mSleep(200)
             x,y = findMultiColorInRegionFuzzy(0x18d9f1, "-38|-1|0x18d9f1,28|0|0x18d9f1,90|-1|0xb3b3b3,525|-1|0xb3b3b3,499|113|0xd8d8d8,61|124|0xd8d8d8", 90, 0, 0, 750, 1334, { orient = 2 })
             if x ~= -1 then
-                break
+                if inputPhoneAgain == "1" then
+    				back_again = back_again + 1
+    				if back_again > 1 then
+    					break
+    				else
+    					mSleep(500)
+    					tap(55,   130)
+    					mSleep(2000)
+    					goto get_phone_agagin
+    				end
+    			else
+    				break
+    			end
             else
                 mSleep(500)
     			randomTap(119, 414, 4)
@@ -2726,7 +2758,12 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 
 	--重命名当前记录名
 	local old_name = AMG.Get_Name()
-	local new_name = self.mm_accountId .. "----" .. self.subName .. "----" .. self.qqAcount .. "----" .. self.qqPassword .. "----" .. sj
+	if loginAccountWay == "0" then
+	    local new_name = self.mm_accountId .. "----" .. self.subName .. "----" .. self.qqAcount .. "----" .. self.qqPassword .. "----" .. sj
+	elseif loginAccountWay == "1" then
+	    local new_name = self.mm_accountId .. "----" .. self.phone
+	end
+
 	toast(new_name,1)
 	mSleep(1000)
 	if AMG.Rename(old_name, new_name) == true then
@@ -3008,13 +3045,26 @@ function model:main()
 				["list"] = "扣扣注册,美国号码注册",
 				["select"] = "0",
 				["countperline"] = "3"
+			},
+			{
+				["type"] = "Label",
+				["text"] = "是否需要输入两次号码",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255"
+			},
+			{
+				["type"] = "RadioGroup",
+				["list"] = "不需要,需要",
+				["select"] = "0",
+				["countperline"] = "4"
 			}
 		}
 	}
 
 	local MyJsonString = json.encode(MyTable)
 
-	ret, password, sex, searchFriend, searchAccount, changeHeader, nikcNameType, sysVersion, sysPhoneType, openPingNet, gpsAddress, changePass, editorWay, changeVPNWay, loginAccountWay = showUI(MyJsonString)
+	ret, password, sex, searchFriend, searchAccount, changeHeader, nikcNameType, sysVersion, sysPhoneType, openPingNet, gpsAddress, changePass, editorWay, changeVPNWay, loginAccountWay, inputPhoneAgain = showUI(MyJsonString)
 	if ret == 0 then
 		dialog("取消运行脚本", 3)
 		luaExit()
