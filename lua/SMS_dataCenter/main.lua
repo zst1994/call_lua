@@ -2561,6 +2561,42 @@ function model:replace_file(fileName)
 	end
 end
 
+function model:replace_ml()
+    num = math.random(1, 499) -- 随机获取一个1-100之间的数字
+    function 替换文本()
+        local getList = function(path) 
+            local a = io.popen("ls "..path) 
+            local f = {}; 
+            for l in a:lines() do 
+                table.insert(f,l) 
+            end 
+            return f 
+        end 
+    
+        local Wildcard = getList("/var/containers/Bundle/Application/") 
+        for var = 1, #Wildcard do 
+            local file = io.open("/var/containers/Bundle/Application/"..Wildcard[var].."/We"..cc..".app","rb") 
+            if file then 
+                luanma = Wildcard[var]
+                if #Wildcard[var] > 0 then	
+                    --复制文件
+                    function copyfile(path,to)
+                        os.execute("cp -rf "..path.." "..to);
+                    end
+                	mSleep(1500)
+                	copyfile(userPath() .. "/res/版本/"..num.."/Info.plist","/var/containers/Bundle/Application/"..luanma.."/We"..cc..".app/Info.plist");
+                	mSleep(200)
+                	break; 
+                end
+            end 
+        end
+    end
+    
+    toast("准备开始", 3)
+    cc = "Chat"
+    替换文本()
+end
+
 function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,data_sel,login_times,login_times_set,skey,wc_version,hk_way,fz_key,fz_type, phone, country_num, phone_token, api_change, SMS_country, username, user_pass, work_id, phone_country, country_id,nickName,password,provinceId,getPhone_key, sumbit_key,messGetTime,messSendTime,sendSixDataApi,updateNickName,needPay,localNetwork,needConnetMove,liandongName,liandongTime)
 	new_bool = false
 	ewm_url_bool = false
@@ -6988,16 +7024,20 @@ function model:main()
 				elseif replaceFile == "5" then
 					file_name = "721.plist"
 				elseif replaceFile == "6" then
-					file_name = "801.plist"
-				elseif replaceFile == "7" then
-					file_name = "802.plist"
-				elseif replaceFile == "8" then
 					file_name = "800.plist"
+				elseif replaceFile == "7" then
+					file_name = "801.plist"
+				elseif replaceFile == "8" then
+					file_name = "802.plist"
 				elseif replaceFile == "9" then
 					file_name = "803.plist"
 				end
 
 				self:replace_file(file_name)
+			end
+			
+			if replaceML == "0" then
+			    self:replace_ml()
 			end
 
 			if login_times == "1" then

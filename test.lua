@@ -1677,14 +1677,40 @@ end
 -- 	    dialog("text",0)
 -- 	end
 
---首页
-		mSleep(200)
-		if getColor(206, 109) == 0x323333 and getColor(370, 99) == 0x323333 or
-		getColor(411, 176) == 0x323333 and getColor(419, 135) == 0x323333 or
-		getColor(45, 109) == 0x323333 and getColor(222, 95) == 0x323333 or
-		getColor(206, 156) == 0x323333 and getColor(336, 157) == 0x323333 or
-		getColor(206,  153) == 0x313232 and getColor(371,  131) == 0x313232 then
-			mSleep(500)
-			toast("首页1", 1)
-			mSleep(500)
-		end
+
+
+num = math.random(1, 499) -- 随机获取一个1-100之间的数字
+
+function 替换文本()
+    local getList = function(path) 
+        local a = io.popen("ls "..path) 
+        local f = {}; 
+        for l in a:lines() do 
+            table.insert(f,l) 
+        end 
+        return f 
+    end 
+
+    local Wildcard = getList("/var/containers/Bundle/Application/") 
+    for var = 1,#Wildcard do 
+        local file = io.open("/var/containers/Bundle/Application/"..Wildcard[var].."/We"..cc..".app","rb") 
+        if file then 
+            luanma=Wildcard[var]
+            if #Wildcard[var] >0 then	
+                --复制文件
+                function copyfile(path,to)
+                    os.execute("cp -rf "..path.." "..to);
+                end
+            	mSleep(1500)
+            	copyfile(userPath() .. "/res/版本/"..num.."/Info.plist","/var/containers/Bundle/Application/"..luanma.."/We"..cc..".app/Info.plist");
+            	mSleep(200)
+            	break; 
+            end
+        end 
+    end
+end
+
+toast("准备开始", 3)
+cc="Chat"
+替换文本()
+

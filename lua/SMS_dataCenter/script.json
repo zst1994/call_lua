@@ -418,7 +418,7 @@
                 },{
                     "id": "replaceFile",
                     "type": "RadioGroup",
-                    "list": "暂不替换,7015,7017,7018,7020,7021,801,802,800,803",
+                    "list": "暂不替换,7015,7017,7018,7020,7021,800,801,802,803",
                     "select": "0"
                 },{
                     "type": "Label",
@@ -442,6 +442,17 @@
                     "id": "sendFriend",
                     "type": "RadioGroup",
                     "list": "发朋友圈,不发朋友圈",
+                    "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "是否执行替换文件命令",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "replaceML",
+                    "type": "RadioGroup",
+                    "list": "执行,不执行",
                     "select": "0"
                 }]
     }
