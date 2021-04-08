@@ -1330,6 +1330,8 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
     		mSleep(1000)
     	end
     elseif loginAccountWay == "1" then
+        t1 = ts.ms()
+        
         while (true) do
             mSleep(200)
             x,y = findMultiColorInRegionFuzzy(0x18d9f1, "8|-90|0xd8d8d8,561|-96|0xd8d8d8,258|-97|0xffffff,328|-87|0xffffff,150|10|0x18d9f1", 90, 0, 0, 750, 1334, { orient = 2 })
@@ -1356,9 +1358,13 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
     			tap(x + 100, y + 10)
     			mSleep(1000)
     			break
-    		end
+            end
+		
+		    self:timeOutRestart(t1)
+    		mSleep(1000)
         end
         
+        t1 = ts.ms()
         while (true) do
             mSleep(200)
             x,y = findMultiColorInRegionFuzzy(0x18d9f1, "8|-90|0xd8d8d8,561|-96|0xd8d8d8,258|-97|0xffffff,328|-87|0xffffff,150|10|0x18d9f1", 90, 0, 0, 750, 1334, { orient = 2 })
@@ -1383,6 +1389,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
     			randomTap(119, 414, 4)
     			mSleep(1500)
             end
+            
+            self:timeOutRestart(t1)
+    		mSleep(1000)
         end
         
         getMessStatus = self:get_mess()
