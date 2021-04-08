@@ -352,16 +352,221 @@ function model:getMMId(path)
 	end
 end
 
+function model:clear_input()
+	mSleep(500)
+	tap(600,  357)
+	mSleep(1000)
+	for var=1,25 do
+		mSleep(50)
+		keyDown("DeleteOrBackspace")
+		keyUp("DeleteOrBackspace")  
+	end
+	mSleep(500)
+end
+
+--检测指定文件是否存在
+function model:file_exists(file_name)
+	local f = io.open(file_name, "r")
+	return f ~= nil and f:close()
+end
+
+function model:moves()
+	mns = 80
+	mnm = "0|9|0,0|19|0,0|60|0,0|84|0,84|84|0,84|-1|0,61|-1|0,23|-1|0,23|84|0"
+
+	toast("滑动", 1)
+	mSleep(math.random(500, 700))
+	keepScreen(true)
+	mSleep(1000)
+	snapshot("test_3.jpg", 33, 503, 712, 892)
+	mSleep(500)
+	ts.img.binaryzationImg(userPath() .. "/res/test_3.jpg", mns)
+	mSleep(500)
+	if self:file_exists(userPath() .. "/res/tmp.jpg") then
+		toast("正在计算", 1)
+		mSleep(math.random(500, 1000))
+		keepScreen(false)
+		point = ts.imgFindColor(userPath() .. "/res/tmp.jpg", 0, mnm, 300, 4, 749, 1333)
+		mSleep(math.random(500, 1000))
+		if type(point) == "table" and #point ~= 0 then
+			mSleep(500)
+			x_len = point[1].x
+			toast(x_len, 1)
+			return x_len
+		else
+			x_len = 0
+			return x_len
+		end
+	else
+		dialog("文件不存在", 1)
+		mSleep(math.random(1000, 1500))
+	end
+end
+
 function model:mm()
     reRunApp = 0
+    huakuai = false
+    hk_whiteBool = true
     
     ::reRunAppAgagin::
 	runApp(self.mm_bid)
 	mSleep(1000)
 	t1 = ts.ms()
+	
+	if restoreBackup == "1" then
+	    local old_name = AMG.Get_Name()
+	    data = strSplit(old_name,"----")
+	    if #data > 2 then
+    	    self.qqAcount = data[3]
+    	    self.qqPassword = data[4]
+    	else
+    	    dialog("数据没有账号密码，进行下一个",5)
+    	    mSleep(500)
+    	    goto over
+	    end
+	    
+	    while (true) do
+	        --注册登录
+    		mSleep(200)
+    		x,y = findMultiColorInRegionFuzzy( 0xffffff, "105|1|0xffffff,211|3|0x18d9f1,95|-37|0x18d9f1,-48|-4|0x18d9f1,83|39|0x18d9f1", 90, 0, 0, 749, 1333)
+    		if x ~= -1 and y ~= -1 then
+    			mSleep(500)
+    			randomTap(x,y,4)
+    			mSleep(500)
+    			toast("注册登录1",1)
+    			mSleep(500)
+    		end
+    
+    		--注册登录
+    		mSleep(200)
+    		x,y = findMultiColorInRegionFuzzy( 0xffffff, "32|2|0xffffff,90|3|0xfdffff,-99|-2|0x18d9f1,43|-41|0x18d9f1,41|37|0x18d9f1,176|-3|0x18d9f1", 90, 0, 0, 749, 1333)
+    		if x ~= -1 and y ~= -1 then
+    			mSleep(500)
+    			randomTap(x,y,4)
+    			mSleep(500)
+    			toast("注册登录2",1)
+    			mSleep(500)
+    		end
+		
+	        --qq图标
+    		mSleep(200)
+    		x, y = findMultiColorInRegionFuzzy(0x36b6ff,"3|-27|0x36b6ff,38|12|0x36b6ff,2|54|0x36b6ff,-40|16|0x36b6ff",100,0,1040,749,1333)
+    		if x ~= -1 and y ~= -1 then
+    			mSleep(math.random(500, 700))
+    			randomTap(x, y, 4)
+    			mSleep(math.random(3500, 5000))
+    		end
+    		
+    		mSleep(200)
+    		if getColor(239, 629) == 0x12b7f5 then
+    			if getColor(677,357) == 0xbbbbbb then
+    				self:clear_input()
+    			end
+    
+    			mSleep(2000)
+    			writePasteboard(self.qqAcount)
+    			while (true) do
+    				mSleep(200)
+    				if getColor(676,  357) == 0xbbbbbb or getColor(599,354) == 0xffffff then
+    					mSleep(500)
+    					tap(447, 477)
+    					mSleep(500)
+    					break
+    				else
+    					mSleep(500)
+    					tap(395, 357)
+    					mSleep(2000)
+    					keyDown("RightGUI")
+    					keyDown("v")
+    					keyUp("v")
+    					keyUp("RightGUI")
+    					mSleep(1000)
+    				end
+    			end
+    
+    			writePasteboard(self.qqPassword)
+    			while (true) do
+    				mSleep(200)
+    				if getColor(677,  469) == 0xbbbbbb or getColor(163,471) == 0x000000 then
+    					mSleep(500)
+    					tap(239, 629)
+    					mSleep(500)
+    					break
+    				else
+    					mSleep(500)
+    					tap(447, 477)
+    					mSleep(500)
+    					keyDown("RightGUI")
+    					keyDown("v")
+    					keyUp("v")
+    					keyUp("RightGUI")
+    					mSleep(1000)
+    				end
+    			end
+    			key = "ReturnOrEnter"
+                keyDown(key)
+                mSleep(50)
+                keyUp(key)
+                mSleep(5000)
+    		end
+    		
+    		--滑块白色为加载出图片
+    		mSleep(200)
+    		if getColor(83,413) == 0xefefef and getColor(691,1038) == 0xefefef then
+    			if hk_whiteBool then
+    				t3 = ts.ms()
+    				hk_whiteBool = false
+    			end
+    
+    			if os.difftime(ts.ms(), t3) > 5 then
+    				mSleep(500)
+    				setVPNEnable(false)
+    				mSleep(2000)
+    				self:vpn()
+    				hk_whiteBool = true
+    				toast("滑块未加载成功",1)
+    				mSleep(1000)
+    			end
+    		end
+    		
+    		mSleep(200)
+		    if getColor(116, 949) == 0x007aff then
+				if huakuai then
+    				x_lens = self:moves()
+    				if tonumber(x_lens) > 0 then
+    					mSleep(math.random(500, 700))
+    					moveTowards(116, 949, 10, x_len - 65)
+    					mSleep(1000)
+    					randomTap(370, 1024, 4)
+    					mSleep(2000)
+    					break
+    				else
+    					mSleep(math.random(500, 1000))
+    					randomTap(603, 1032, 10)
+    					mSleep(math.random(3000, 6000))
+    				end
+    			else
+    				mSleep(math.random(500, 1000))
+    				randomTap(603, 1032, 10)
+    				mSleep(math.random(3000, 6000))
+    				huakuai = true
+    			end
+			end
+    
+    		flag = isFrontApp(self.mm_bid)
+    		if flag == 0 then
+    			runApp(self.mm_bid)
+    			mSleep(3000)
+    		end
+    
+    		self:timeOutRestart(t1)
+    		mSleep(1000)
+	    end
+	end
 
 	inputAgain = false
 	::input_again::
+	t1 = ts.ms()
 	while true do
 		--首页
 		mSleep(200)
@@ -1838,9 +2043,13 @@ function model:mm()
 	local old_name = AMG.Get_Name()
 	if self.subName == "密码错误" then
 	    data = strSplit(old_name,"----")
-	    newAccount = data[3]
-	    newPass = data[4]
-		new_name = self.mm_accountId .. "----" .. self.subName .. "----" .. newAccount .. "----" .. newPass
+	    if #data > 2 then
+    	    newAccount = data[3]
+    	    newPass = data[4]
+    		new_name = self.mm_accountId .. "----" .. self.subName .. "----" .. newAccount .. "----" .. newPass
+    	else
+    	    new_name = self.mm_accountId .. "----" .. self.subName .. "----无账号密码"
+	    end
 	else
 	    new_name = self.mm_accountId .. "----" .. self.subName
 	end
@@ -2041,13 +2250,26 @@ function model:main()
 				["list"] = "wifi,4G",
 				["select"] = "0",
 				["countperline"] = "4"
+			},
+			{
+				["type"] = "Label",
+				["text"] = "恢复备份记录类型",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255"
+			},
+			{
+				["type"] = "RadioGroup",
+				["list"] = "正常,密码错误",
+				["select"] = "0",
+				["countperline"] = "4"
 			}
 		}
 	}
 
 	local MyJsonString = json.encode(MyTable)
 
-	ret, old_pass, password, searchFriend, searchAccount, changeHeader, inputPhoneAgain, networkMode = showUI(MyJsonString)
+	ret, old_pass, password, searchFriend, searchAccount, changeHeader, inputPhoneAgain, networkMode, restoreBackup = showUI(MyJsonString)
 	if ret == 0 then
 		dialog("取消运行脚本", 3)
 		luaExit()
