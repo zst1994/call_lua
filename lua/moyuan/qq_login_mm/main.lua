@@ -1334,6 +1334,16 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 	
         t1 = ts.ms()
         while (true) do
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy( 0x18d9f1, "-128|-6|0x18d9f1,-109|0|0x18d9f1,-91|-4|0x18d9f1,-63|-3|0x18d9f1,-29|8|0x18d9f1,28|-2|0x18d9f1,51|-3|0x18d9f1,80|-4|0x18d9f1,67|-96|0xd8d8d8", 90, 0, 0, 749, 1333)
+			if x ~= -1 then
+                mSleep(500)
+    			randomTap(x, y, 4)
+    			mSleep(500)
+    			toast("手机号验证码登录",1)
+			    mSleep(500)
+            end
+			
             mSleep(200)
             x,y = findMultiColorInRegionFuzzy(0x18d9f1, "8|-90|0xd8d8d8,561|-96|0xd8d8d8,258|-97|0xffffff,328|-87|0xffffff,150|10|0x18d9f1", 90, 0, 0, 750, 1334, { orient = 2 })
             if x ~= -1 then
@@ -1394,12 +1404,16 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
     			mSleep(1500)
     			inputStr(self.phone)
 			    mSleep(500)
-			    key = "ReturnOrEnter"
-    			keyDown(key)
-    			keyUp(key)
-    			mSleep(2000)
             end
-            
+			
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy( 0x18d9f1, "419|11|0x18d9f1,89|-12|0xffffff,161|11|0xffffff,191|-2|0xffffff,137|-40|0x18d9f1,150|35|0x18d9f1", 90, 0, 0, 749, 1333)
+            if x ~= -1 then
+                mSleep(500)
+    			randomTap(x, y, 4)
+    			mSleep(1500)
+            end
+			
             mSleep(200)
             x,y = findMultiColorInRegionFuzzy(0x18d9f1, "-38|-1|0x18d9f1,28|0|0x18d9f1,90|-1|0xb3b3b3,525|-1|0xb3b3b3,499|113|0xd8d8d8,61|124|0xd8d8d8", 90, 0, 0, 750, 1334, { orient = 2 })
             if x ~= -1 then
@@ -2759,9 +2773,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 	--重命名当前记录名
 	local old_name = AMG.Get_Name()
 	if loginAccountWay == "0" then
-	    local new_name = self.mm_accountId .. "----" .. self.subName .. "----" .. self.qqAcount .. "----" .. self.qqPassword .. "----" .. sj
+	    new_name = self.mm_accountId .. "----" .. self.subName .. "----" .. self.qqAcount .. "----" .. self.qqPassword .. "----" .. sj
 	elseif loginAccountWay == "1" then
-	    local new_name = self.mm_accountId .. "----" .. self.phone
+	    new_name = self.mm_accountId .. "----" .. self.phone
 	end
 
 	toast(new_name,1)
