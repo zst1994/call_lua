@@ -1009,6 +1009,16 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
     		end
         elseif loginAccountWay == "1" then
             mSleep(200)
+			x,y = findMultiColorInRegionFuzzy( 0x18d9f1, "-128|-6|0x18d9f1,-109|0|0x18d9f1,-91|-4|0x18d9f1,-63|-3|0x18d9f1,-29|8|0x18d9f1,28|-2|0x18d9f1,51|-3|0x18d9f1,80|-4|0x18d9f1,67|-96|0xd8d8d8", 90, 0, 0, 749, 1333)
+			if x ~= -1 then
+                mSleep(500)
+    			randomTap(x, y, 4)
+    			mSleep(500)
+    			toast("手机号验证码登录",1)
+			    mSleep(500)
+			end
+        
+            mSleep(200)
             x,y = findMultiColorInRegionFuzzy(0x18d9f1, "8|-90|0xd8d8d8,561|-96|0xd8d8d8,258|-97|0xffffff,328|-87|0xffffff,150|10|0x18d9f1", 90, 0, 0, 750, 1334, { orient = 2 })
             if x ~= -1 then
                 mSleep(500)
@@ -1481,7 +1491,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
     		toast("获取验证码失败，保存号码到失败文件",1)
     		::saveAgain::
     		mSleep(500)
-    		bool = writeFileString(userPath().."/res/phoneError.txt",self.phone,"a",1) --将 string 内容存入文件，成功返回 true
+    		bool = writeFileString(userPath().."/res/phoneError.txt",self.phone .. "----" .. self.code_token,"a",1) --将 string 内容存入文件，成功返回 true
     		if bool then
     			toast("保存号码到失败文件成功",1)
     		else
@@ -1973,7 +1983,58 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 		self:timeOutRestart(t1)
 		mSleep(1000)
 	end
-
+    
+    if loginAccountWay == "1" then
+        while (true) do
+            mSleep(200)
+            x,y = findMultiColorInRegionFuzzy(0xf6f6f6, "0|-52|0x18d9f1,-62|9|0x18d9f1,-8|56|0x18d9f1,60|-6|0x18d9f1,60|43|0x18d9f1,-130|479|0xd8d8d8,138|474|0xd8d8d8", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x ~= -1 then
+                mSleep(math.random(500, 700))
+    			randomTap(x,   y, 4)
+    			mSleep(math.random(500, 700))
+            end 
+            
+            mSleep(200)
+            x,y = findMultiColorInRegionFuzzy(0x007aff, "6|24|0x007aff,16|10|0x007aff,25|5|0x0a7fff,31|17|0x007aff,58|9|0x007aff,69|1|0x007aff,53|0|0x278efe", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x ~= -1 then
+                mSleep(math.random(500, 700))
+    			randomTap(x,   y, 4)
+    			mSleep(math.random(500, 700))
+            end
+            
+            mSleep(200)
+            x,y = findMultiColorInRegionFuzzy(0x000000, "298|-3|0x007aff,-50|-15|0x000000,-54|-12|0x000000,255|-9|0x007aff,312|-5|0x007aff,304|-5|0x007aff,304|-11|0x007aff", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x ~= -1 then
+                mSleep(math.random(500, 700))
+    			randomTap(407,   230, 4)
+    			mSleep(math.random(500, 700))
+            end
+            
+            mSleep(200)
+            if getColor(361,98) == 0x000000 then
+                mSleep(math.random(500, 700))
+    			randomTap(128,327, 4)
+    			mSleep(math.random(500, 700))
+    			break
+            end
+        end
+        
+        while (true) do
+            mSleep(200)
+            x,y = findMultiColorInRegionFuzzy(0x18d9f1, "302|6|0x18d9f1,58|-4|0xffffff,96|-8|0xffffff,128|-4|0xffffff,-67|-827|0x323333,32|-830|0x323333,286|-821|0x323333", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x ~= -1 then
+                mSleep(math.random(500, 700))
+    			randomTap(x,   y, 4)
+    			mSleep(math.random(500, 700))
+    			break
+    		else
+    		    mSleep(math.random(500, 700))
+    			randomTap(688,   1264, 4)
+    			mSleep(math.random(500, 700))
+            end
+        end
+    end
+    
 	::sy::
 	t1 = ts.ms()
 	while true do
@@ -2658,7 +2719,8 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 	while true do
 		--更多
 		mSleep(200)
-		if getColor(665, 1310) == 0xf6aa00 then
+		if getColor(665, 1310) == 0xf6aa00 or getColor(664,1322) == 0xecae3f and getColor(686,1317) == 0xecae3f or 
+		getColor(664,1321) == 0xebad3b and getColor(670,1323) == 0xebad3b then
 			mSleep(500)
 			randomTap(693, 80, 4)
 			mSleep(500)
@@ -2804,8 +2866,9 @@ function model:index()
 		setVPNEnable(false)
 		mSleep(1000)
 
-		changeHeader = "1"
-		if changeHeader == "0" then
+-- 		changeHeader = "1"
+-- 		if changeHeader == "0" then
+        if loginAccountWay == "1" then
 			clearAllPhotos()
 			mSleep(500)
 			clearAllPhotos()

@@ -1688,13 +1688,26 @@ end
 -- 			mSleep(500)
 --         end
 
-mSleep(200)
-            x,y = findMultiColorInRegionFuzzy(0x18d9f1, "8|-90|0xd8d8d8,561|-96|0xd8d8d8,258|-97|0xffffff,328|-87|0xffffff,150|10|0x18d9f1", 90, 0, 0, 750, 1334, { orient = 2 })
-            if x ~= -1 then
-                mSleep(500)
-                dialog(x.."==="..y,0)
-    			randomTap(x + 30, y - 270, 4)
-    			mSleep(500)
-    			toast("选择区号",1)
-			    mSleep(500)
-            end
+t1 = ts.ms()
+	while true do
+		mSleep(200)
+		if getColor(665, 1310) == 0xf6aa00 or getColor(664,1322) == 0xecae3f and getColor(686,1317) == 0xecae3f then
+			mSleep(500)
+			randomTap(693, 80, 4)
+			mSleep(500)
+			toast("进入设置",1)
+			mSleep(500)
+			break
+		end
+
+		mSleep(200)
+		if getColor(664, 1253) == 0xf8aa05 or getColor(664, 1253) == 0xf6aa00 then
+			mSleep(500)
+			randomTap(696,  130, 4)
+			mSleep(500)
+			toast("进入设置",1)
+			mSleep(500)
+			break
+		end
+
+	end

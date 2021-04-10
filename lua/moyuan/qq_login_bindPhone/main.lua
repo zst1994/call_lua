@@ -426,6 +426,39 @@ function model:mm()
 	    end
 	    
 	    while (true) do
+	        --首页
+    		mSleep(200)
+    		if getColor(206, 109) == 0x323333 and getColor(370, 99) == 0x323333 or
+    		getColor(411, 176) == 0x323333 and getColor(419, 135) == 0x323333 or
+    		getColor(45, 109) == 0x323333 and getColor(222, 95) == 0x323333 or
+    		getColor(206, 156) == 0x323333 and getColor(336, 157) == 0x323333 or
+    		getColor(206,  153) == 0x313232 and getColor(371,  131) == 0x313232 then
+    			mSleep(500)
+    			toast("首页1", 1)
+    			mSleep(500)
+    			break
+    		end
+    
+    		--首页
+    		mSleep(200)
+    		x,y = findMultiColorInRegionFuzzy(0x323333, "17|15|0x323333,25|-6|0x323333,35|8|0x323333,53|6|0x323333,77|9|0x323333,73|-3|0x323333,104|1|0x323333,135|8|0x323333,200|6|0xffffff", 100, 0, 0, 421,179, { orient = 2 })
+    		if x ~= -1 then
+    			mSleep(500)
+    			toast("首页2", 1)
+    			mSleep(1000)
+    			break
+    		end
+    
+    		--首页
+    		mSleep(200)
+    		x,y = findMultiColorInRegionFuzzy(0x3ee1ec, "13|-3|0xfdfdfd,30|5|0x3ee1ec,-2|38|0x13cae2,10|38|0x13cae2,25|31|0x13cae2", 100, 0, 0, 750, 1150, { orient = 2 })
+    		if x ~= -1 then
+    			mSleep(500)
+    			toast("首页3", 1)
+    			mSleep(1000)
+    			break
+    		end
+		
 	        --注册登录
     		mSleep(200)
     		x,y = findMultiColorInRegionFuzzy( 0xffffff, "105|1|0xffffff,211|3|0x18d9f1,95|-37|0x18d9f1,-48|-4|0x18d9f1,83|39|0x18d9f1", 90, 0, 0, 749, 1333)
@@ -578,6 +611,7 @@ function model:mm()
 			mSleep(500)
 			toast("首页1", 1)
 			mSleep(500)
+			break
 		end
 
 		--首页
@@ -1551,11 +1585,12 @@ function model:mm()
 
 	t1 = ts.ms()
 	while true do
-		--更多
+        --更多
 		mSleep(200)
-		if getColor(665, 1310) == 0xf6aa00 then
+		if getColor(665, 1310) == 0xf6aa00 or getColor(664,1322) == 0xecae3f and getColor(686,1317) == 0xecae3f or 
+		getColor(664,1321) == 0xebad3b and getColor(670,1323) == 0xebad3b then
 			mSleep(500)
-			tap(693, 80)
+			randomTap(693, 80, 4)
 			mSleep(500)
 			toast("进入设置",1)
 			mSleep(500)
@@ -1879,7 +1914,7 @@ function model:mm()
 		toast("获取验证码失败，保存号码到失败文件",1)
 		::saveAgain::
 		mSleep(500)
-		bool = writeFileString(userPath().."/res/phoneError.txt",self.phone,"a",1) --将 string 内容存入文件，成功返回 true
+		bool = writeFileString(userPath().."/res/phoneError.txt",self.phone .. "----" .. self.code_token,"a",1) --将 string 内容存入文件，成功返回 true
 		if bool then
 			toast("保存号码到失败文件成功",1)
 		else

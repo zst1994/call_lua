@@ -13,6 +13,11 @@ model.mm_bid = "com.wemomo.momoappdemo1"
 model.mm_accountId = ""
 model.subName = ""
 
+model.phone_table           = {}
+model.phone                 = ""
+model.code_token            = ""
+model.mm_yzm                = ""
+
 model.fsBool = false
 
 math.randomseed(getRndNum()) -- 随机种子初始化真随机数
@@ -139,7 +144,7 @@ function model:timeOutRestart(t1)
 	t2 = ts.ms()
 
 	if os.difftime(t2, t1) > 120 then
-		lua_restart()
+		self:index()
 	else
 	    toast("距离重启脚本还有"..(120 - os.difftime(t2, t1)) .. "秒",1)
 	    mSleep(1000)
@@ -318,6 +323,89 @@ function model:deleteImage(path)
 	end
 end
 
+function model:getPhoneAndToken()
+	self.phone_table = readFile(userPath() .. "/res/phoneNum.txt")
+	if self.phone_table then
+		if #self.phone_table > 0 then
+			if #(self.phone_table[1]:atrim()) < 130 and #(self.phone_table[1]:atrim()) > 0 then
+				phone_mess = strSplit(self.phone_table[1]:atrim(), "|")
+				self.phone = phone_mess[1]
+				self.code_token = phone_mess[2]
+				toast(self.phone .. "\r\n" .. self.code_token, 1)
+				mSleep(1000)
+			else
+				dialog("号码文件为空或者格式有问题，需要一条数据一行，可能数据没有换行", 0)
+				lua_exit()
+			end
+		else
+			dialog("号码文件没号码了", 0)
+			lua_exit()
+		end
+	else
+		dialog("号码文件不存在，请检查该文件是否有误", 0)
+		lua_exit()
+	end
+end
+
+function model:get_mess()
+	get_code_num = 0
+
+	::get_yzm_restart::
+	yzm_time1 = ts.ms()
+
+	::get_yzm::
+	header_send = {}
+	body_send = {}
+	ts.setHttpsTimeOut(60)
+	status_resp, header_resp, body_resp = ts.httpGet(self.code_token, header_send, body_send)
+	if status_resp == 200 then
+	    if type(string.find(body_resp, "%d+%d+%d+%d+%d+%d+")) == "number" then
+	       -- local i, j = string.find(body_resp, "%d+%d+%d+%d+%d+%d+")
+	        self.mm_yzm = string.match(body_resp,"%d+")
+			toast(self.mm_yzm, 1)
+			mSleep(2000)
+			return true
+		else
+			yzm_time2 = ts.ms()
+			if os.difftime(yzm_time2, yzm_time1) > 65 then
+				toast("验证码获取失败，结束下一个", 1)
+				mSleep(3000)
+				return false
+			else
+				toast(tostring(body_resp), 1)
+				mSleep(3000)
+				goto get_yzm
+			end
+		end
+	else
+		yzm_time2 = ts.ms()
+		if os.difftime(yzm_time2, yzm_time1) > 65 then
+			toast("验证码获取失败，结束下一个:"..tostring(body_resp), 1)
+			mSleep(3000)
+			return false
+		else
+			toast(tostring(body_resp), 1)
+			mSleep(3000)
+			goto get_yzm
+		end
+	end
+end
+
+function model:remove_phone()
+	table.remove(self.phone_table, 1)
+
+	::save::
+	mSleep(500)
+	bool = writeFile(userPath() .. "/res/phoneNum.txt", self.phone_table, "w", 1) --将 table 内容存入文件，成功返回 true
+	if bool then
+		toast("写入成功", 1)
+	else
+		toast("写入失败", 1)
+		goto save
+	end
+	mSleep(1000)
+end
+
 function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 	runApp(self.mm_bid)
 	mSleep(1000)
@@ -350,25 +438,44 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			toast("手机号登录注册", 1)
 			mSleep(1000)
 		end
-		
-		--wc图标
-		mSleep(math.random(200, 300))
-		x,y = findMultiColorInRegionFuzzy(0x0ec600, "0|-49|0x0ec600,-50|-1|0x0ec600,-11|38|0x0ec600,38|-1|0x0ec600,104|-541|0xd8d8d8,97|-616|0xd8d8d8", 90, 0, 0, 750, 1334, { orient = 2 })
-        if x ~= -1 then
-			mSleep(math.random(500, 700))
-			randomTap(x, y, 4)
-			mSleep(math.random(3500, 5000))
-			break
-        end
-	
-	    --wc图标
-		mSleep(math.random(200, 300))
-    	x,y = findMultiColorInRegionFuzzy(0x0ec600, "-46|-6|0x0ec600,2|-51|0x0ec600,39|-4|0x0ec600,-3|32|0x0ec600,-20|2|0xffffff,15|6|0xffffff", 90, 72, 1112, 730, 1297, { orient = 2 })
-        if x ~= -1 then
-			mSleep(math.random(500, 700))
-			randomTap(x, y, 4)
-			mSleep(math.random(3500, 5000))
-			break
+        
+        if loginAccountWay == "0" then
+    		--wc图标
+    		mSleep(math.random(200, 300))
+    		x,y = findMultiColorInRegionFuzzy(0x0ec600, "0|-49|0x0ec600,-50|-1|0x0ec600,-11|38|0x0ec600,38|-1|0x0ec600,104|-541|0xd8d8d8,97|-616|0xd8d8d8", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x ~= -1 then
+    			mSleep(math.random(500, 700))
+    			randomTap(x, y, 4)
+    			mSleep(math.random(3500, 5000))
+    			break
+            end
+    	
+    	    --wc图标
+    		mSleep(math.random(200, 300))
+        	x,y = findMultiColorInRegionFuzzy(0x0ec600, "-46|-6|0x0ec600,2|-51|0x0ec600,39|-4|0x0ec600,-3|32|0x0ec600,-20|2|0xffffff,15|6|0xffffff", 90, 72, 1112, 730, 1297, { orient = 2 })
+            if x ~= -1 then
+    			mSleep(math.random(500, 700))
+    			randomTap(x, y, 4)
+    			mSleep(math.random(3500, 5000))
+    			break
+            end
+        elseif loginAccountWay == "1" then
+            mSleep(200)
+			x,y = findMultiColorInRegionFuzzy( 0x18d9f1, "-128|-6|0x18d9f1,-109|0|0x18d9f1,-91|-4|0x18d9f1,-63|-3|0x18d9f1,-29|8|0x18d9f1,28|-2|0x18d9f1,51|-3|0x18d9f1,80|-4|0x18d9f1,67|-96|0xd8d8d8", 90, 0, 0, 749, 1333)
+			if x ~= -1 then
+                mSleep(500)
+    			randomTap(x, y, 4)
+    			mSleep(500)
+    			toast("手机号验证码登录",1)
+			    mSleep(500)
+			end
+        
+            mSleep(200)
+            x,y = findMultiColorInRegionFuzzy(0x18d9f1, "8|-90|0xd8d8d8,561|-96|0xd8d8d8,258|-97|0xffffff,328|-87|0xffffff,150|10|0x18d9f1", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x ~= -1 then
+                mSleep(500)
+    			break
+            end
         end
 
 		flag = isFrontApp(self.mm_bid)
@@ -379,88 +486,275 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 
 		self:timeOutRestart(t1)
 	end
-	
-	t1 = ts.ms()
-	while true do
-		--wc图标
-	    mSleep(200)
-		x,y = findMultiColorInRegionFuzzy(0x0ec600, "0|-49|0x0ec600,-50|-1|0x0ec600,-11|38|0x0ec600,38|-1|0x0ec600,104|-541|0xd8d8d8,97|-616|0xd8d8d8", 90, 0, 0, 750, 1334, { orient = 2 })
-        if x ~= -1 then
-			mSleep(math.random(500, 700))
-			randomTap(x, y, 4)
-			mSleep(math.random(3500, 5000))
-        end
-        
-        --wc图标
-	    mSleep(200)
-    	x,y = findMultiColorInRegionFuzzy(0x0ec600, "-46|-6|0x0ec600,2|-51|0x0ec600,39|-4|0x0ec600,-3|32|0x0ec600,-20|2|0xffffff,15|6|0xffffff", 90, 72, 1112, 730, 1297, { orient = 2 })
-        if x ~= -1 then
-			mSleep(math.random(500, 700))
-			randomTap(x, y, 4)
-			mSleep(math.random(3500, 5000))
-        end
-	
-	    --授权
-	    mSleep(200)
-	    x,y = findMultiColorInRegionFuzzy(0xffffff, "-97|-26|0x48516d,-107|46|0x48516d,198|-35|0x48516d,201|42|0x48516d,286|-30|0x2f3753,278|51|0x2f3753,579|-26|0x2f3753,582|31|0x2f3753,374|-1166|0xff7fa3", 90, 0, 0, 750, 1334, { orient = 2 })
-        if x ~= -1 then
-            mSleep(500)
-            if self.fsBool then
-                toast("取消之前选择内容",1)
-                mSleep(1000)
-                while (true) do
-                    --授权
-            	    mSleep(200)
-            	    x,y = findMultiColorInRegionFuzzy(0xffffff, "-97|-26|0x48516d,-107|46|0x48516d,198|-35|0x48516d,201|42|0x48516d,286|-30|0x2f3753,278|51|0x2f3753,579|-26|0x2f3753,582|31|0x2f3753,374|-1166|0xff7fa3", 90, 0, 0, 750, 1334, { orient = 2 })
-                    if x ~= -1 then
-                        mSleep(math.random(500, 700))
-            			tap(681,84)
-            			mSleep(math.random(500, 700))
-                    end
-                    
-                    mSleep(200)
-                    x,y = findMultiColorInRegionFuzzy(0x333333, "20|4|0x333333,50|-1|0x333333,83|-1|0x333333,-24|-192|0xf2f2f3,-26|-280|0xff7fa3,81|-290|0xffffff", 100, 0, 0, 750, 1334, { orient = 2 })
-                    if x ~= -1 then
-                        mSleep(math.random(500, 700))
-    			        randomTap(x, y, 4)
-    			        mSleep(math.random(1500, 2700))
-    			        randomTap(50, 86, 4)
-    			        mSleep(math.random(500, 700))
-    			        break
-                    end
-                end
-                
-                while (true) do
-                    --授权
-            	    mSleep(200)
-            	    x,y = findMultiColorInRegionFuzzy(0xffffff, "-97|-26|0x48516d,-107|46|0x48516d,198|-35|0x48516d,201|42|0x48516d,286|-30|0x2f3753,278|51|0x2f3753,579|-26|0x2f3753,582|31|0x2f3753,374|-1166|0xff7fa3", 90, 0, 0, 750, 1334, { orient = 2 })
-                    if x ~= -1 then
-                        mSleep(math.random(500, 700))
-            			randomTap(x, y, 4)
-            			mSleep(math.random(3500, 5000))
-            			break
-                    end
-                end
-                self.fsBool = false
-            else
-                mSleep(math.random(500, 700))
+	if loginAccountWay == "0" then
+    	t1 = ts.ms()
+    	while true do
+    		--wc图标
+    	    mSleep(200)
+    		x,y = findMultiColorInRegionFuzzy(0x0ec600, "0|-49|0x0ec600,-50|-1|0x0ec600,-11|38|0x0ec600,38|-1|0x0ec600,104|-541|0xd8d8d8,97|-616|0xd8d8d8", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x ~= -1 then
+    			mSleep(math.random(500, 700))
     			randomTap(x, y, 4)
     			mSleep(math.random(3500, 5000))
             end
-            toast("授权",1)
-            mSleep(500)
-			break
+            
+            --wc图标
+    	    mSleep(200)
+        	x,y = findMultiColorInRegionFuzzy(0x0ec600, "-46|-6|0x0ec600,2|-51|0x0ec600,39|-4|0x0ec600,-3|32|0x0ec600,-20|2|0xffffff,15|6|0xffffff", 90, 72, 1112, 730, 1297, { orient = 2 })
+            if x ~= -1 then
+    			mSleep(math.random(500, 700))
+    			randomTap(x, y, 4)
+    			mSleep(math.random(3500, 5000))
+            end
+    	
+    	    --授权
+    	    mSleep(200)
+    	    x,y = findMultiColorInRegionFuzzy(0xffffff, "-97|-26|0x48516d,-107|46|0x48516d,198|-35|0x48516d,201|42|0x48516d,286|-30|0x2f3753,278|51|0x2f3753,579|-26|0x2f3753,582|31|0x2f3753,374|-1166|0xff7fa3", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x ~= -1 then
+                mSleep(500)
+                if self.fsBool then
+                    toast("取消之前选择内容",1)
+                    mSleep(1000)
+                    while (true) do
+                        --授权
+                	    mSleep(200)
+                	    x,y = findMultiColorInRegionFuzzy(0xffffff, "-97|-26|0x48516d,-107|46|0x48516d,198|-35|0x48516d,201|42|0x48516d,286|-30|0x2f3753,278|51|0x2f3753,579|-26|0x2f3753,582|31|0x2f3753,374|-1166|0xff7fa3", 90, 0, 0, 750, 1334, { orient = 2 })
+                        if x ~= -1 then
+                            mSleep(math.random(500, 700))
+                			tap(681,84)
+                			mSleep(math.random(500, 700))
+                        end
+                        
+                        mSleep(200)
+                        x,y = findMultiColorInRegionFuzzy(0x333333, "20|4|0x333333,50|-1|0x333333,83|-1|0x333333,-24|-192|0xf2f2f3,-26|-280|0xff7fa3,81|-290|0xffffff", 100, 0, 0, 750, 1334, { orient = 2 })
+                        if x ~= -1 then
+                            mSleep(math.random(500, 700))
+        			        randomTap(x, y, 4)
+        			        mSleep(math.random(1500, 2700))
+        			        randomTap(50, 86, 4)
+        			        mSleep(math.random(500, 700))
+        			        break
+                        end
+                    end
+                    
+                    while (true) do
+                        --授权
+                	    mSleep(200)
+                	    x,y = findMultiColorInRegionFuzzy(0xffffff, "-97|-26|0x48516d,-107|46|0x48516d,198|-35|0x48516d,201|42|0x48516d,286|-30|0x2f3753,278|51|0x2f3753,579|-26|0x2f3753,582|31|0x2f3753,374|-1166|0xff7fa3", 90, 0, 0, 750, 1334, { orient = 2 })
+                        if x ~= -1 then
+                            mSleep(math.random(500, 700))
+                			randomTap(x, y, 4)
+                			mSleep(math.random(3500, 5000))
+                			break
+                        end
+                    end
+                    self.fsBool = false
+                else
+                    mSleep(math.random(500, 700))
+        			randomTap(x, y, 4)
+        			mSleep(math.random(3500, 5000))
+                end
+                toast("授权",1)
+                mSleep(500)
+    			break
+            end
+    
+    		flag = isFrontApp(self.mm_bid)
+    		if flag == 0 then
+    			runApp(self.mm_bid)
+    			mSleep(3000)
+    		end
+    
+    		self:timeOutRestart(t1)
+    		mSleep(2000)
+    	end
+	elseif loginAccountWay == "1" then
+        back_again = 0
+	
+        t1 = ts.ms()
+        while (true) do
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy( 0x18d9f1, "-128|-6|0x18d9f1,-109|0|0x18d9f1,-91|-4|0x18d9f1,-63|-3|0x18d9f1,-29|8|0x18d9f1,28|-2|0x18d9f1,51|-3|0x18d9f1,80|-4|0x18d9f1,67|-96|0xd8d8d8", 90, 0, 0, 749, 1333)
+			if x ~= -1 then
+                mSleep(500)
+    			randomTap(x, y, 4)
+    			mSleep(500)
+    			toast("手机号验证码登录",1)
+			    mSleep(500)
+            end
+			
+            mSleep(200)
+            x,y = findMultiColorInRegionFuzzy(0x18d9f1, "8|-90|0xd8d8d8,561|-96|0xd8d8d8,258|-97|0xffffff,328|-87|0xffffff,150|10|0x18d9f1", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x ~= -1 then
+                mSleep(500)
+    			randomTap(x + 30, y - 270, 4)
+    			mSleep(500)
+    			toast("选择区号",1)
+			    mSleep(500)
+            end
+            
+            mSleep(200)
+            x,y = findMultiColorInRegionFuzzy(0x8e8e93, "45|-10|0x8e8e93,556|4|0xffffff,657|10|0xc9c9ce,181|-97|0x000000,260|-94|0x000000,31|50|0xc9c9ce", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x ~= -1 then
+    			mSleep(500)
+    			tap(x + 100, y)
+    			mSleep(500)
+    			inputStr("美国")
+    			mSleep(1000)
+    			key = "ReturnOrEnter"
+    			keyDown(key)
+    			keyUp(key)
+    			mSleep(1000)
+    			tap(x + 100, y + 10)
+    			mSleep(1000)
+    			break
+            end
+		
+		    self:timeOutRestart(t1)
+    		mSleep(1000)
         end
-
-		flag = isFrontApp(self.mm_bid)
-		if flag == 0 then
-			runApp(self.mm_bid)
-			mSleep(3000)
-		end
-
-		self:timeOutRestart(t1)
-		mSleep(2000)
-	end
+        
+        ::get_phone_agagin::
+        if back_again > 0 then
+            while (true) do
+                mSleep(200)
+                x,y = findMultiColorInRegionFuzzy(0x18d9f1, "32|-1|0x18d9f1,65|10|0x18d9f1,97|0|0x18d9f1,124|-1|0x18d9f1,150|0|0x18d9f1", 90, 0, 0, 750, 1334, { orient = 2 })
+                if x ~= -1 then
+                    mSleep(500)
+        			randomTap(584,401, 4)
+        			mSleep(1500)
+        			for var=1,25 do
+                		mSleep(50)
+                		keyDown("DeleteOrBackspace")
+                		keyUp("DeleteOrBackspace")  
+        			end
+            	    break
+                end
+            end
+        end
+        
+        t1 = ts.ms()
+        while (true) do
+            mSleep(200)
+            x,y = findMultiColorInRegionFuzzy(0x18d9f1, "8|-90|0xd8d8d8,561|-96|0xd8d8d8,258|-97|0xffffff,328|-87|0xffffff,150|10|0x18d9f1", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x ~= -1 then
+                mSleep(500)
+    			randomTap(x + 350, y - 270, 4)
+    			mSleep(1500)
+    			inputStr(self.phone)
+			    mSleep(500)
+            end
+			
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy( 0x18d9f1, "419|11|0x18d9f1,89|-12|0xffffff,161|11|0xffffff,191|-2|0xffffff,137|-40|0x18d9f1,150|35|0x18d9f1", 90, 0, 0, 749, 1333)
+            if x ~= -1 then
+                mSleep(500)
+    			randomTap(x, y, 4)
+    			mSleep(1500)
+            end
+			
+            mSleep(200)
+            x,y = findMultiColorInRegionFuzzy(0x18d9f1, "-38|-1|0x18d9f1,28|0|0x18d9f1,90|-1|0xb3b3b3,525|-1|0xb3b3b3,499|113|0xd8d8d8,61|124|0xd8d8d8", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x ~= -1 then
+                if inputPhoneAgain == "1" then
+    				back_again = back_again + 1
+    				if back_again > 1 then
+    					break
+    				else
+    				    mSleep(200)
+    				    if getColor(46,84) == 0x323333 then
+                            mSleep(500)
+        					tap(55,   81)
+        					mSleep(2000)
+                        else
+                            mSleep(500)
+        					tap(55,   130)
+        					mSleep(2000)
+                		end
+    					
+    					goto get_phone_agagin
+    				end
+    			else
+    				break
+    			end
+            else
+                if getColor(46,84) == 0x323333 then
+                    mSleep(500)
+        			randomTap(119, 363, 4)
+        			mSleep(1500)
+                else
+                    mSleep(500)
+        			randomTap(119, 414, 4)
+        			mSleep(1500)
+        		end
+            end
+            
+            self:timeOutRestart(t1)
+    		mSleep(1000)
+        end
+        
+        getMessStatus = self:get_mess()
+    	if getMessStatus then
+    		mSleep(200)
+    		if getColor(629, 1264) == 0 then
+    		    mSleep(200)
+                if getColor(46,84) == 0x323333 then
+                    mSleep(500)
+        			randomTap(119, 363, 4)
+        			mSleep(1500)
+                else
+                    mSleep(500)
+        			randomTap(119, 414, 4)
+        			mSleep(1500)
+                end
+    		
+    			for i = 1, #(self.mm_yzm) do
+    				mSleep(300)
+    				num = string.sub(self.mm_yzm, i, i)
+    				mSleep(100)
+    				if num == "0" then
+    					tap(373, 1281)
+    				elseif num == "1" then
+    					tap(132, 955)
+    				elseif num == "2" then
+    					tap(377, 944)
+    				elseif num == "3" then
+    					tap(634, 941)
+    				elseif num == "4" then
+    					tap(128, 1063)
+    				elseif num == "5" then
+    					tap(374, 1061)
+    				elseif num == "6" then
+    					tap(628, 1055)
+    				elseif num == "7" then
+    					tap(119, 1165)
+    				elseif num == "8" then
+    					tap(378, 1160)
+    				elseif num == "9" then
+    					tap(633, 1164)
+    				end
+    				mSleep(100)
+    			end
+    			mSleep(1000)
+    			self:remove_phone()
+    		end
+    	else
+    		toast("获取验证码失败，保存号码到失败文件",1)
+    		::saveAgain::
+    		mSleep(500)
+    		bool = writeFileString(userPath().."/res/phoneError.txt",self.phone .. "----" .. self.code_token,"a",1) --将 string 内容存入文件，成功返回 true
+    		if bool then
+    			toast("保存号码到失败文件成功",1)
+    		else
+    			toast("保存号码到失败文件失败",1)
+    			goto saveAgain
+    		end
+    		mSleep(1000)
+    		self:remove_phone()
+    		mSleep(500)
+    		goto over
+    	end
+    end
 
 	State = {
 		["随机常量"] = 0,
@@ -756,7 +1050,8 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		if getColor(206, 109) == 0x323333 and getColor(370, 99) == 0x323333 or
 		getColor(45, 109) == 0x323333 and getColor(222, 95) == 0x323333 or
 		getColor(206, 156) == 0x323333 and getColor(336, 157) == 0x323333 or
-		getColor(206,  153) == 0x313232 and getColor(371,  131) == 0x313232 then
+		getColor(206,  153) == 0x313232 and getColor(371,  131) == 0x313232 or 
+		getColor(206, 109) == 0x323333 and getColor(370, 83) == 0x323333 then
 			mSleep(500)
 			toast("首页1", 1)
 			mSleep(500)
@@ -934,6 +1229,57 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		self:timeOutRestart(t1)
 	end
 	
+	if loginAccountWay == "1" then
+        while (true) do
+            mSleep(200)
+            x,y = findMultiColorInRegionFuzzy(0xf6f6f6, "0|-52|0x18d9f1,-62|9|0x18d9f1,-8|56|0x18d9f1,60|-6|0x18d9f1,60|43|0x18d9f1,-130|479|0xd8d8d8,138|474|0xd8d8d8", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x ~= -1 then
+                mSleep(math.random(500, 700))
+    			randomTap(x,   y, 4)
+    			mSleep(math.random(500, 700))
+            end 
+            
+            mSleep(200)
+            x,y = findMultiColorInRegionFuzzy(0x007aff, "6|24|0x007aff,16|10|0x007aff,25|5|0x0a7fff,31|17|0x007aff,58|9|0x007aff,69|1|0x007aff,53|0|0x278efe", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x ~= -1 then
+                mSleep(math.random(500, 700))
+    			randomTap(x,   y, 4)
+    			mSleep(math.random(500, 700))
+            end
+            
+            mSleep(200)
+            x,y = findMultiColorInRegionFuzzy(0x000000, "298|-3|0x007aff,-50|-15|0x000000,-54|-12|0x000000,255|-9|0x007aff,312|-5|0x007aff,304|-5|0x007aff,304|-11|0x007aff", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x ~= -1 then
+                mSleep(math.random(500, 700))
+    			randomTap(407,   230, 4)
+    			mSleep(math.random(500, 700))
+            end
+            
+            mSleep(200)
+            if getColor(361,98) == 0x000000 then
+                mSleep(math.random(500, 700))
+    			randomTap(128,327, 4)
+    			mSleep(math.random(500, 700))
+    			break
+            end
+        end
+        
+        while (true) do
+            mSleep(200)
+            x,y = findMultiColorInRegionFuzzy(0x18d9f1, "302|6|0x18d9f1,58|-4|0xffffff,96|-8|0xffffff,128|-4|0xffffff,-67|-827|0x323333,32|-830|0x323333,286|-821|0x323333", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x ~= -1 then
+                mSleep(math.random(500, 700))
+    			randomTap(x,   y, 4)
+    			mSleep(math.random(500, 700))
+    			break
+    		else
+    		    mSleep(math.random(500, 700))
+    			randomTap(688,   1264, 4)
+    			mSleep(math.random(500, 700))
+            end
+        end
+    end
+	
 	::sy::
 	t1 = ts.ms()
 	while true do
@@ -942,7 +1288,8 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		if getColor(206, 109) == 0x323333 and getColor(370, 99) == 0x323333 or
 		getColor(45, 109) == 0x323333 and getColor(222, 95) == 0x323333 or
 		getColor(206, 156) == 0x323333 and getColor(336, 157) == 0x323333 or
-		getColor(206,  153) == 0x313232 and getColor(371,  131) == 0x313232 then
+		getColor(206,  153) == 0x313232 and getColor(371,  131) == 0x313232 or
+		getColor(206, 109) == 0x323333 and getColor(370, 83) == 0x323333 then
 			mSleep(500)
 			toast("首页1", 1)
 			mSleep(500)
@@ -1338,7 +1685,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		end
 	end
 
-	if changeHeader == "0" then
+	if changeHeader == "0" and loginAccountWay == "0" then
 		t1 = ts.ms()
 		while true do
 			--个人资料
@@ -1678,7 +2025,8 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 	while true do
 		--更多
 		mSleep(200)
-		if getColor(665, 1310) == 0xf6aa00 then
+		if getColor(665, 1310) == 0xf6aa00 or getColor(664,1322) == 0xecae3f and getColor(686,1317) == 0xecae3f or 
+		getColor(664,1321) == 0xebad3b and getColor(670,1323) == 0xebad3b then
 			mSleep(500)
 			randomTap(693, 80, 4)
 			mSleep(500)
@@ -1699,91 +2047,102 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 
 		self:timeOutRestart(t1)
 	end
-
--- 	t1 = ts.ms()
--- 	while true do
--- 		--设置
--- 		mSleep(200)
--- 		if getColor(342, 80) == 0 and getColor(386, 79) == 0 then
--- 			mSleep(500)
--- 			randomTap(577, 209, 4)
--- 			mSleep(500)
--- 			toast("设置",1)
--- 			mSleep(500)
--- 		end
-
--- 		--设置
--- 		mSleep(200)
--- 		if getColor(342, 127) == 0 and getColor(386, 145) == 0 then
--- 			mSleep(500)
--- 			randomTap(577, 254, 4)
--- 			mSleep(500)
--- 			toast("设置",1)
--- 			mSleep(500)
--- 		end
-
--- 		--.密码修改    2.密码修改  图标没加载出来    3.密码修改  图标加载一个
--- 		mSleep(200)
--- 		x,y = findMultiColorInRegionFuzzy( 0x323333, "12|16|0x323333,2|16|0x323333,23|16|0x323333,35|17|0x323333,40|13|0x323333,58|11|0x323333,68|11|0x323333,99|10|0x323333,128|10|0xffffff", 90, 0, 0, 749, 1333)
--- 		if x~=-1 and y~=-1 then
--- 			mSleep(500)
--- 			randomTap(x, y, 4)
--- 			mSleep(500)
--- 			toast("密码修改",1)
--- 			mSleep(500)
--- 		end
-
--- 		--重置密码
--- 		mSleep(200)
--- 		if getColor(642,   87) == 0x3bb3fa and getColor(689, 87) == 0x3bb3fa then
--- 			mSleep(500)
--- 			randomTap(396, 194, 4)
--- 			mSleep(500)
--- 			toast("重置密码",1)
--- 			mSleep(500)
--- 			while true do
--- 				mSleep(400)
--- 				if getColor(712, 193) == 0xcccccc then
--- 					break
--- 				else
--- 					mSleep(500)
--- 					inputStr(password)
--- 					mSleep(1000)
--- 				end
-
--- 				self:timeOutRestart(t1)
--- 			end
-
--- 			mSleep(500)
--- 			randomTap(396, 279, 4)
--- 			mSleep(500)
--- 			while true do
--- 				mSleep(400)
--- 				if getColor(712, 281) == 0xcccccc then
--- 					break
--- 				else
--- 					mSleep(500)
--- 					inputStr(password)
--- 					mSleep(1000)
--- 				end
-
--- 				self:timeOutRestart(t1)
--- 			end
--- 			mSleep(500)
--- 			randomTap(666, 81, 4)
--- 			mSleep(5000)
--- 			break
--- 		end
-
--- 		self:timeOutRestart(t1)
--- 	end
+    
+    if changePass == "0" then
+    	t1 = ts.ms()
+    	while true do
+    		--设置
+    		mSleep(200)
+    		if getColor(342, 80) == 0 and getColor(386, 79) == 0 then
+    			mSleep(500)
+    			randomTap(577, 209, 4)
+    			mSleep(500)
+    			toast("设置",1)
+    			mSleep(500)
+    		end
+    
+    		--设置
+    		mSleep(200)
+    		if getColor(342, 127) == 0 and getColor(386, 145) == 0 then
+    			mSleep(500)
+    			randomTap(577, 254, 4)
+    			mSleep(500)
+    			toast("设置",1)
+    			mSleep(500)
+    		end
+    
+    		--.密码修改    2.密码修改  图标没加载出来    3.密码修改  图标加载一个
+    		mSleep(200)
+    		x,y = findMultiColorInRegionFuzzy( 0x323333, "12|16|0x323333,2|16|0x323333,23|16|0x323333,35|17|0x323333,40|13|0x323333,58|11|0x323333,68|11|0x323333,99|10|0x323333,128|10|0xffffff", 90, 0, 0, 749, 1333)
+    		if x~=-1 and y~=-1 then
+    			mSleep(500)
+    			randomTap(x, y, 4)
+    			mSleep(500)
+    			toast("密码修改",1)
+    			mSleep(500)
+    		end
+    
+    		--重置密码
+    		mSleep(200)
+    		if getColor(642,   87) == 0x3bb3fa and getColor(689, 87) == 0x3bb3fa then
+    			mSleep(500)
+    			randomTap(396, 194, 4)
+    			mSleep(500)
+    			toast("重置密码",1)
+    			mSleep(500)
+    			while true do
+    				mSleep(400)
+    				if getColor(712, 193) == 0xcccccc then
+    					break
+    				else
+    					mSleep(500)
+    					inputStr(password)
+    					mSleep(1000)
+    				end
+    
+    				self:timeOutRestart(t1)
+    				mSleep(1000)
+    			end
+    
+    			mSleep(500)
+    			randomTap(396, 279, 4)
+    			mSleep(500)
+    			while true do
+    				mSleep(400)
+    				if getColor(712, 281) == 0xcccccc then
+    					break
+    				else
+    					mSleep(500)
+    					inputStr(password)
+    					mSleep(1000)
+    				end
+    
+    				self:timeOutRestart(t1)
+    				mSleep(1000)
+    			end
+    			mSleep(500)
+    			randomTap(666, 81, 4)
+    			mSleep(5000)
+    			break
+    		end
+    
+    		self:timeOutRestart(t1)
+    		mSleep(1000)
+    	end
+    end
 
 	::get_mmId::
 	self.mm_accountId = self:getMMId(appDataPath(self.mm_bid) .. "/Documents")
 
 	--重命名当前记录名
 	local old_name = AMG.Get_Name()
-	local new_name = self.mm_accountId .. "----" .. self.subName
+	
+	if loginAccountWay == "0" then
+	    new_name = self.mm_accountId .. "----" .. self.subName
+	elseif loginAccountWay == "1" then
+	    new_name = self.mm_accountId .. "----" .. self.phone
+	end
+	
 	toast(new_name,1)
 	mSleep(1000)
 	if AMG.Rename(old_name, new_name) == true then
@@ -1791,6 +2150,43 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 	end
 	
 	::over::
+end
+
+function model:index()
+    while true do
+       if loginAccountWay == "1" then
+	        self:getPhoneAndToken()
+	    end
+	
+		closeApp(self.awz_bid, 0)
+		closeApp(self.mm_bid, 0)
+		setVPNEnable(false)
+		mSleep(1000)
+        
+		if changeHeader == "0" then
+			clearAllPhotos()
+			mSleep(500)
+			clearAllPhotos()
+			mSleep(500)
+			fileName = self:downImage()
+			toast(fileName, 1)
+			mSleep(1000)
+            
+	--		saveImageToAlbum(fileName)
+			saveImageToAlbum(userPath() .. "/res/picFile/" .. fileName)
+			mSleep(500)
+	--		saveImageToAlbum(fileName)
+			saveImageToAlbum(userPath() .. "/res/picFile/" .. fileName)
+			mSleep(2000)
+            
+	--		self:deleteImage(fileName)
+			self:deleteImage(userPath() .. "/res/picFile/" .. fileName)
+		end
+
+		self:vpn(openPingNet)
+		self:newMMApp()
+		self:mm(password, sex, searchFriend, searchAccount, changeHeader)
+    end
 end
 
 function model:main()
@@ -1912,13 +2308,52 @@ function model:main()
 				["list"] = "开启,不开启",
 				["select"] = "0",
 				["countperline"] = "4"
+			},
+			{
+				["type"] = "Label",
+				["text"] = "是否修改密码",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255"
+			},
+			{
+				["type"] = "RadioGroup",
+				["list"] = "修改,不修改",
+				["select"] = "0",
+				["countperline"] = "4"
+			},
+			{
+				["type"] = "Label",
+				["text"] = "选择注册方式",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255"
+			},
+			{
+				["type"] = "RadioGroup",
+				["list"] = "wc注册,美国号码注册",
+				["select"] = "0",
+				["countperline"] = "3"
+			},
+			{
+				["type"] = "Label",
+				["text"] = "是否需要输入两次号码",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255"
+			},
+			{
+				["type"] = "RadioGroup",
+				["list"] = "不需要,需要",
+				["select"] = "0",
+				["countperline"] = "4"
 			}
 		}
 	}
 
 	local MyJsonString = json.encode(MyTable)
 
-	ret, password, sex, searchFriend, searchAccount, changeHeader, openPingNet = showUI(MyJsonString)
+	ret, password, sex, searchFriend, searchAccount, changeHeader, openPingNet, changePass, loginAccountWay, inputPhoneAgain = showUI(MyJsonString)
 	if ret == 0 then
 		dialog("取消运行脚本", 3)
 		luaExit()
@@ -1931,36 +2366,7 @@ function model:main()
 		end
 	end
 
-	while true do
-		closeApp(self.awz_bid, 0)
-		closeApp(self.mm_bid, 0)
-		setVPNEnable(false)
-		mSleep(1000)
-        
-		if changeHeader == "0" then
-			clearAllPhotos()
-			mSleep(500)
-			clearAllPhotos()
-			mSleep(500)
-			fileName = self:downImage()
-			toast(fileName, 1)
-			mSleep(1000)
-            
-	--		saveImageToAlbum(fileName)
-			saveImageToAlbum(userPath() .. "/res/picFile/" .. fileName)
-			mSleep(500)
-	--		saveImageToAlbum(fileName)
-			saveImageToAlbum(userPath() .. "/res/picFile/" .. fileName)
-			mSleep(2000)
-            
-	--		self:deleteImage(fileName)
-			self:deleteImage(userPath() .. "/res/picFile/" .. fileName)
-		end
-
-		self:vpn(openPingNet)
-		self:newMMApp()
-		self:mm(password, sex, searchFriend, searchAccount, changeHeader)
-	end
+	self:index()
 end
 
 model:main()
