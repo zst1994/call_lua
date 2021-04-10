@@ -650,9 +650,19 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
             if x ~= -1 then
                 mSleep(500)
     			randomTap(x, y, 4)
-    			mSleep(1500)
+    			mSleep(500)
+    		    toast("登陆",1)
+                mSleep(1000)
             end
-			
+            
+            mSleep(200)
+            x,y = findMultiColorInRegionFuzzy(0x18d9f1, "-38|-1|0x18d9f1,28|0|0x18d9f1,90|-1|0xb3b3b3,525|-1|0xb3b3b3,499|113|0xd8d8d8,61|124|0xd8d8d8", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x ~= -1 then
+                break
+            end
+        end
+        
+		while (true) do
             mSleep(200)
             x,y = findMultiColorInRegionFuzzy(0x18d9f1, "-38|-1|0x18d9f1,28|0|0x18d9f1,90|-1|0xb3b3b3,525|-1|0xb3b3b3,499|113|0xd8d8d8,61|124|0xd8d8d8", 90, 0, 0, 750, 1334, { orient = 2 })
             if x ~= -1 then
@@ -678,6 +688,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
     				break
     			end
             else
+                mSleep(200)
                 if getColor(46,84) == 0x323333 then
                     mSleep(500)
         			randomTap(119, 363, 4)
@@ -1539,6 +1550,8 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 	end
 
 	if searchFriend == "0" then
+	    toast("准备搜索好友",1)
+	    mSleep(1000)
 		t1 = ts.ms()
 		while true do
 		    --绑定手机
@@ -1686,6 +1699,8 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 	end
 
 	if changeHeader == "0" and loginAccountWay == "0" then
+	    toast("准备换头像",1)
+	    mSleep(1000)
 		t1 = ts.ms()
 		while true do
 			--个人资料
@@ -2022,6 +2037,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 	end
 
 	t1 = ts.ms()
+	toast("准备进入设置",1)
+	mSleep(1000)
+	
 	while true do
 		--更多
 		mSleep(200)
@@ -2044,6 +2062,17 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 			mSleep(500)
 			break
 		end
+		
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0x323333, "-1|-35|0x323333,-78|-28|0x4b4c4c,-77|0|0x4b4c4c,-97|-14|0x4b4c4c,-61|-13|0x4b4c4c,-67|-13|0x4b4c4c,-41|-16|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+            mSleep(500)
+			randomTap(x,  y - 20, 4)
+			mSleep(500)
+			toast("进入设置",1)
+			mSleep(500)
+			break
+        end
 
 		self:timeOutRestart(t1)
 	end

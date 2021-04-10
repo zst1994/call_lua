@@ -1691,7 +1691,8 @@ end
 t1 = ts.ms()
 	while true do
 		mSleep(200)
-		if getColor(665, 1310) == 0xf6aa00 or getColor(664,1322) == 0xecae3f and getColor(686,1317) == 0xecae3f then
+		if getColor(665, 1310) == 0xf6aa00 or getColor(664,1322) == 0xecae3f and getColor(686,1317) == 0xecae3f or 
+		getColor(664,1321) == 0xebad3b and getColor(670,1323) == 0xebad3b then
 			mSleep(500)
 			randomTap(693, 80, 4)
 			mSleep(500)
