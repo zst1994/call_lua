@@ -1062,7 +1062,8 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		getColor(45, 109) == 0x323333 and getColor(222, 95) == 0x323333 or
 		getColor(206, 156) == 0x323333 and getColor(336, 157) == 0x323333 or
 		getColor(206,  153) == 0x313232 and getColor(371,  131) == 0x313232 or 
-		getColor(206, 109) == 0x323333 and getColor(370, 83) == 0x323333 then
+		getColor(206, 109) == 0x323333 and getColor(370, 83) == 0x323333 or 
+		getColor(395,108) == 0x323232 and getColor(411,128) == 0x323232 then
 			mSleep(500)
 			toast("首页1", 1)
 			mSleep(500)
@@ -1269,7 +1270,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
             mSleep(200)
             if getColor(361,98) == 0x000000 then
                 mSleep(math.random(500, 700))
-    			randomTap(128,327, 4)
+    			randomTap(162,255, 4)
     			mSleep(math.random(500, 700))
     			break
             end
@@ -1300,7 +1301,8 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
 		getColor(45, 109) == 0x323333 and getColor(222, 95) == 0x323333 or
 		getColor(206, 156) == 0x323333 and getColor(336, 157) == 0x323333 or
 		getColor(206,  153) == 0x313232 and getColor(371,  131) == 0x313232 or
-		getColor(206, 109) == 0x323333 and getColor(370, 83) == 0x323333 then
+		getColor(206, 109) == 0x323333 and getColor(370, 83) == 0x323333 or 
+		getColor(395,108) == 0x323232 and getColor(411,128) == 0x323232  then
 			mSleep(500)
 			toast("首页1", 1)
 			mSleep(500)

@@ -135,6 +135,9 @@ function model:change_GNvpn()
 end
 
 function model:changeGWIP(ip_userName,ip_country)
+    setVPNEnable(false)
+    toast(ip_country,1)
+    mSleep(500)
 	while true do
 		mSleep(200)
 		list = readFile(userPath().."/res/phone_num.txt")
@@ -156,6 +159,10 @@ function model:changeGWIP(ip_userName,ip_country)
 		else
 			toast("打开网站失败等待2秒")
 			mSleep(3000)
+			setVPNEnable(false)
+			mSleep(3000)
+			setVPNEnable(true)
+			mSleep(5000)
 		end
 
 		if (status_resp==502) then--打开网站失败
@@ -317,7 +324,7 @@ function model:vpn()
 	code,header_resp, body_resp = ts.httpsGet("http://myip.ipip.net/", header_send,body_send)
 	if code == 200 then
 		return body_resp
--- 	else
+	else
 -- 		toast("请求ip位置失败："..tostring(body_resp),1)
 -- 		mSleep(1000)
 -- 		setVPNEnable(false)
@@ -325,6 +332,7 @@ function model:vpn()
 -- 		self:changeGWIP(ip_userName,ip_country)
 -- 		mSleep(1000)
 -- 		goto get_vpn
+        return "失败"
 	end
 
 --	new_data = getNetIP() --获取IP 
@@ -1874,7 +1882,7 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 				if login_times == "1" then
 					if gn and not tiaoma_bool then
 						mSleep(2000)
-						--						self:change_GNvpn()
+--						self:change_GNvpn()
 						mSleep(1000)
 						gn = false
 					end
@@ -1917,6 +1925,22 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 					mSleep(100)
 					keyUp("DeleteOrBackspace")
 				end
+				
+				if openFirstIP == "0" and fz_type == "3" then
+				    mSleep(200)
+    				if api_change == "7" or api_change == "8" or api_change == "15" then
+        		        ::change_ip::
+        		        self:changeGWIP(ip_userName,first_ip_country)
+        		        if self:vpn() == "失败" then
+        		            toast("vpn连接失败，重新连接",1)
+        		            mSleep(1000)
+        		            setVPNEnable(false)
+        		            mSleep(2000)
+        		            goto change_ip
+        		        end
+        		        mSleep(1000)
+    				end
+    		    end
 
 				for i = 1, #(yzm_mess) do
 					mSleep(math.random(500, 700))
@@ -3722,7 +3746,17 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			goto over
 		end
 	end
-
+    
+    if set_vpn then
+        if openFirstIP == "0" and fz_type == "3" then
+		    mSleep(200)
+			if api_change == "7" or api_change == "8" or api_change == "15" then
+    	       setVPNEnable(false)
+    	       mSleep(2000)
+            end
+        end
+    end
+    
 	--协议后下一步
 	while (true) do
 		mSleep(200)
@@ -3826,7 +3860,23 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 						toast(ip,1)
 						mSleep(500)
 					end
+				else
+				    if openFirstIP == "0" and fz_type == "3" then
+        			    mSleep(200)
+        				if api_change == "7" or api_change == "8" or api_change == "15" then
+            		        ::change_ip::
+            		        self:changeGWIP(ip_userName,first_ip_country)
+            		        if self:vpn() == "失败" then
+            		            toast("vpn连接失败，重新连接",1)
+            		            mSleep(1000)
+            		            setVPNEnable(false)
+            		            mSleep(2000)
+            		            goto change_ip
+            		        end
+        			    end
+    				end
 				end
+				
 				mSleep(500)
 				randomTap(x-277, y-100,1)
 				mSleep(math.random(700, 1500))
@@ -3851,7 +3901,23 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 						toast(ip,1)
 						mSleep(500)
 					end
+			    else
+			        if openFirstIP == "0" and fz_type == "3" then
+    				    mSleep(200)
+        				if api_change == "7" or api_change == "8" or api_change == "15" then
+            		        ::change_ip::
+            		        self:changeGWIP(ip_userName,first_ip_country)
+            		        if self:vpn() == "失败" then
+            		            toast("vpn连接失败，重新连接",1)
+            		            mSleep(1000)
+            		            setVPNEnable(false)
+            		            mSleep(2000)
+            		            goto change_ip
+            		        end
+        			    end
+    				end
 				end
+				
 				mSleep(500)
 				randomTap(x - 240, y-95,1)
 				mSleep(500)
@@ -4277,7 +4343,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			if hk_time > 40 then
 				lua_restart()
 			end
-
 		end
 	end
 
@@ -5438,6 +5503,33 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 
 	not_get_code = 0
 	while (true) do
+	    --连接失败，请检查你的网络设置
+	    mSleep(200)
+	    x,y = findMultiColorInRegionFuzzy(0x576b95, "36|3|0x576b95,-227|-159|0x000000,-163|-170|0x000000,-70|-161|0x000000,6|-169|0x000000,70|-158|0x000000,149|-157|0x000000,182|-161|0x000000,218|-148|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+            mSleep(math.random(500, 700))
+			randomTap(x,y,4)
+			mSleep(math.random(500, 700))
+			toast("连接失败，请检查你的网络设置",1)
+			mSleep(1000)
+			if openFirstIP == "0" and fz_type == "3" then
+			    mSleep(200)
+				if api_change == "7" or api_change == "8" or api_change == "15" then
+    			    setVPNEnable(false)
+    			    mSleep(3000)
+    		        ::change_ip::
+    		        self:changeGWIP(ip_userName,first_ip_country)
+    		        if self:vpn() == "失败" then
+    		            toast("vpn连接失败，重新连接",1)
+    		            mSleep(1000)
+    		            setVPNEnable(false)
+    		            mSleep(2000)
+    		            goto change_ip
+    		        end
+    			end
+	        end
+        end
+
 		--通讯录匹配
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0x576b95, "4|13|0x576b95,14|-4|0x576b95,14|6|0x576b95,18|18|0x576b95", 90, 0, 0, 645,  845)

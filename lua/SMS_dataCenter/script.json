@@ -454,5 +454,28 @@
                     "type": "RadioGroup",
                     "list": "执行,不执行",
                     "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "是否启用第一次切换ip国家代码",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "openFirstIP",
+                    "type": "RadioGroup",
+                    "list": "启用,不启用",
+                    "select": "0"
+                },{
+                    "type": "Label",
+                    "text": "第一次切换ip国家代码",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "first_ip_country",
+                    "type": "Edit",
+                    "prompt": "请输入第一次切换ip国家代码",
+                    "text": "默认值",
+                    "kbtype": "ascii"
                 }]
     }

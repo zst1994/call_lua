@@ -2109,8 +2109,10 @@ function model:index()
 		mSleep(500)
 		closeApp(self.mm_bid, 0)
 		mSleep(500)
-		setVPNEnable(false)
-		mSleep(1000)
+		if self.subName ~= "密码错误" then
+    		setVPNEnable(false)
+    		mSleep(1000)
+		end
 		
 		if self.subName ~= "密码错误" then
     		if networkMode == "0" then

@@ -518,7 +518,7 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 					break
 				end
 
-				self:vpn_connection()
+				self:vpn_connection("0")
 			end
 			break
 		end
@@ -620,7 +620,7 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 	end
 end
 
-function model:vpn_connection()
+function model:vpn_connection(idx)
 	--vpn连接
 	mSleep(200)
 	x,y = findMultiColorInRegionFuzzy(0x1382ff, "-4|4|0x1382ff,5|10|0x1382ff,2|19|0x1382ff,12|-1|0x1382ff,17|8|0x1382ff,10|13|0x1382ff,24|13|0x1382ff,13|26|0x1382ff,17|19|0x1382ff", 90, 0, 0, 750, 1334, { orient = 2 })
@@ -642,6 +642,9 @@ function model:vpn_connection()
 		mSleep(500)
 		toast("vpn连接0", 1)
 		mSleep(500)
+		if idx == "1" then
+		    self:index()
+		end
 	end
 
 	--网络连接失败：知道了
@@ -1341,7 +1344,8 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
     	end
     elseif loginAccountWay == "1" then
         back_again = 0
-	
+	    
+	    ::input_us::
         t1 = ts.ms()
         while (true) do
 			mSleep(200)
@@ -1365,11 +1369,11 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
             end
             
             mSleep(200)
-            x,y = findMultiColorInRegionFuzzy(0x8e8e93, "45|-10|0x8e8e93,556|4|0xffffff,657|10|0xc9c9ce,181|-97|0x000000,260|-94|0x000000,31|50|0xc9c9ce", 90, 0, 0, 750, 1334, { orient = 2 })
+            x,y = findMultiColorInRegionFuzzy(0x8e8e93, "45|-10|0x8e8e93,556|4|0xffffff,657|10|0xc9c9ce,181|-97|0x000000,260|-94|0x000000,31|50|0xc9c9ce", 100, 0, 0, 750, 1334, { orient = 2 })
             if x ~= -1 then
     			mSleep(500)
     			tap(x + 100, y)
-    			mSleep(500)
+    			mSleep(1500)
     			inputStr("美国")
     			mSleep(1000)
     			key = "ReturnOrEnter"
@@ -1407,6 +1411,12 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
         t1 = ts.ms()
         while (true) do
             mSleep(200)
+            x,y = findMultiColorInRegionFuzzy(0x8e8e93, "45|-10|0x8e8e93,556|4|0xffffff,657|10|0xc9c9ce,181|-97|0x000000,260|-94|0x000000,31|50|0xc9c9ce", 100, 0, 0, 750, 1334, { orient = 2 })
+            if x ~= -1 then
+                goto input_us
+            end
+            
+            mSleep(200)
             x,y = findMultiColorInRegionFuzzy(0x18d9f1, "8|-90|0xd8d8d8,561|-96|0xd8d8d8,258|-97|0xffffff,328|-87|0xffffff,150|10|0x18d9f1", 90, 0, 0, 750, 1334, { orient = 2 })
             if x ~= -1 then
                 mSleep(500)
@@ -1425,6 +1435,8 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
                 toast("登陆",1)
                 mSleep(1000)
             end
+            
+            self:vpn_connection("1")
             
             mSleep(200)
             x,y = findMultiColorInRegionFuzzy(0x18d9f1, "-38|-1|0x18d9f1,28|0|0x18d9f1,90|-1|0xb3b3b3,525|-1|0xb3b3b3,499|113|0xd8d8d8,61|124|0xd8d8d8", 90, 0, 0, 750, 1334, { orient = 2 })
@@ -1996,6 +2008,16 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
     
     if loginAccountWay == "1" then
         while (true) do
+            --上传本人真实照片
+            mSleep(200)
+            x,y = findMultiColorInRegionFuzzy(0xe8e8e8, "-42|-4|0xffffff,48|-10|0xffffff,6|-54|0xffffff,4|37|0xffffff,4|66|0xffffff,-4|-114|0xe8e8e8,-5|139|0xe8e8e8,-117|22|0xe8e8e8,-8|449|0xd8d8d8", 100, 0, 0, 750, 1334, { orient = 2 })
+            if x ~= -1 then
+                mSleep(math.random(500, 700))
+    			randomTap(x,   y, 4)
+    			mSleep(math.random(500, 700))
+            end 
+            
+            --上传本人真实照片：带+号
             mSleep(200)
             x,y = findMultiColorInRegionFuzzy(0xf6f6f6, "0|-52|0x18d9f1,-62|9|0x18d9f1,-8|56|0x18d9f1,60|-6|0x18d9f1,60|43|0x18d9f1,-130|479|0xd8d8d8,138|474|0xd8d8d8", 90, 0, 0, 750, 1334, { orient = 2 })
             if x ~= -1 then
@@ -2020,13 +2042,25 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
     			mSleep(math.random(500, 700))
             end
             
+            --无照片或视频
+            mSleep(200)
+            x,y = findMultiColorInRegionFuzzy(0x999999, "39|17|0x999999,30|42|0x999999,54|19|0x999999,137|6|0x999999,237|18|0x999999,314|22|0x999999,305|144|0x999999,-104|97|0x999999,384|148|0x999999", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x ~= -1 then
+                mSleep(math.random(500, 700))
+                toast("无照片或视频",1)
+                mSleep(1000)
+                self:index()
+            end
+            
             mSleep(200)
             if getColor(361,98) == 0x000000 then
                 mSleep(math.random(500, 700))
-    			randomTap(128,327, 4)
+    			randomTap(162,255, 4)
     			mSleep(math.random(500, 700))
     			break
             end
+            
+            self:vpn_connection("1")
         end
         
         while (true) do
@@ -2224,6 +2258,8 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			toast("定位服务未开启2", 1)
 			mSleep(500)
 		end
+		
+		self:vpn_connection("1")
 
 		self:timeOutRestart(t1)
 		mSleep(1000)
