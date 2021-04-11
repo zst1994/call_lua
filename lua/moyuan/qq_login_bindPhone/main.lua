@@ -20,6 +20,7 @@ model.mm_yzm          = ""
 
 model.mm_accountId    = ""
 model.subName         = ""
+model.fubiaoqian      = ""
 model.subNameBool     = true
 
 math.randomseed(getRndNum()) -- 随机种子初始化真随机数
@@ -424,7 +425,10 @@ function model:mm()
     	    mSleep(500)
     	    goto over
 	    end
-	    
+	end
+	
+	::back_restore::
+	if restoreBackup == "1" then 
 	    while (true) do
 	        --首页
     		mSleep(200)
@@ -542,6 +546,30 @@ function model:mm()
                 keyUp(key)
                 mSleep(5000)
     		end
+    		
+    		mSleep(200)
+    		if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) == 0x808080 or getColor(676,258) == 0x818181 or getColor(167,473) == 0x000000 then
+				if getColor(655,211) == 0xffffff then
+					toast("你的帐号暂时无法登录，请点击这里恢复正常使用", 1)
+					mSleep(500)
+					self.fubiaoqian = "你的帐号暂时无法登录，请点击这里恢复正常使用"
+					goto reName
+				elseif getColor(422,219) == 0xffffff and getColor(412,216) == 0xffffff then
+					toast("网络异常", 1)
+					mSleep(500)
+					self.fubiaoqian = "网络异常"
+					goto reName
+				end
+    		end
+		
+		    mSleep(200)
+		    x,y = findMultiColorInRegionFuzzy(0x000000, "22|9|0x000000,35|9|0x000000,61|12|0x000000,-189|-329|0x12b7f5,310|-328|0x12b7f5,85|-253|0x000000,119|-254|0x000000,155|-251|0x000000,245|-169|0x12b7f5", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x ~= -1 then
+                toast("你输入的帐号或密码不正确", 1)
+				mSleep(500)
+				self.fubiaoqian = "你输入的帐号或密码不正确"
+				goto reName
+            end
     		
     		--滑块白色为加载出图片
     		mSleep(200)
@@ -936,8 +964,19 @@ function model:mm()
 			mSleep(500)
 			toast("注册登录1",1)
 			mSleep(500)
-			inputAgain = true
-			goto input_again
+			if restoreBackup == "1" then
+			    goto back_restore
+			else
+    			inputAgain = true
+    			if reRunApp > 2 then
+    			    closeApp(self.mm_bid)
+    			    mSleep(2000)
+    			    goto reRunAppAgagin
+    			else
+    			    reRunApp = reRunApp + 1
+    			    goto input_again
+    			end
+    		end
 		end
 
 		--注册登录
@@ -949,15 +988,19 @@ function model:mm()
 			mSleep(500)
 			toast("注册登录2",1)
 			mSleep(500)
-			inputAgain = true
-			if reRunApp > 2 then
-			    closeApp(self.mm_bid)
-			    mSleep(2000)
-			    goto reRunAppAgagin
+			if restoreBackup == "1" then
+			    goto back_restore
 			else
-			    reRunApp = reRunApp + 1
-			    goto input_again
-			end
+    			inputAgain = true
+    			if reRunApp > 2 then
+    			    closeApp(self.mm_bid)
+    			    mSleep(2000)
+    			    goto reRunAppAgagin
+    			else
+    			    reRunApp = reRunApp + 1
+    			    goto input_again
+    			end
+    		end
 		end
 
 		--更多
@@ -2076,14 +2119,15 @@ function model:mm()
 	self.mm_accountId = self:getMMId(appDataPath(self.mm_bid) .. "/Documents")
 	--重命名当前记录名
 	local old_name = AMG.Get_Name()
-	if self.subName == "密码错误" then
+	if restoreBackup == "1" then
+	    self.subName = "密码错误"
 	    data = strSplit(old_name,"----")
 	    if #data > 2 then
     	    newAccount = data[3]
     	    newPass = data[4]
-    		new_name = self.mm_accountId .. "----" .. self.subName .. "----" .. newAccount .. "----" .. newPass
+    		new_name = self.mm_accountId .. "----" .. self.subName .. "----" .. newAccount .. "----" .. newPass .. "----" .. self.fubiaoqian
     	else
-    	    new_name = self.mm_accountId .. "----" .. self.subName .. "----无账号密码"
+    	    new_name = self.mm_accountId .. "----" .. self.subName .. "----无账号密码" .. "----" .. self.fubiaoqian
 	    end
 	else
 	    new_name = self.mm_accountId .. "----" .. self.subName

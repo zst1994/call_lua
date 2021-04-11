@@ -2002,12 +2002,51 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 
 					x,y = findMultiColorInRegionFuzzy( 0x576b95, "-28|3|0x576b95,-136|-177|0x000000,-66|-179|0x000000,54|-175|0x000000,199|-180|0x000000", 90, 0, 0, 749, 1333)
 					if x~=-1 and y~=-1 then
-						dialog("注册异常",0)
-						mSleep(1000)
-						lua_restart()
-						--						login_error = true
-						--						toast("注册异常",1)
-						--						break
+						if api_change == "7" then
+            		        ::push::
+            				mSleep(500)
+            				local sz = require("sz")        --登陆
+            				local szhttp = require("szocket.http")
+            				local res, code = szhttp.request("http://47.104.246.33/phone.php?cmd=poststatus&phone="..phone.."&status=注册异常")
+            				mSleep(500)
+            				if code == 200 then
+            					if reTxtUtf8(res) == "反馈成功" then
+            						toast("号码状态标记成功",1)
+									login_error = true
+									toast("注册异常",1)
+									break
+            					else
+            						goto push
+            					end
+            				else
+            					toast("号码标记失败，重新标记:"..tostring(res),1)
+            					mSleep(3000)
+            					goto push
+            				end
+            		    elseif api_change == "8" then
+            		        ::push::
+            				local sz = require("sz")        --登陆
+            				local szhttp = require("szocket.http")
+            				local res, code = szhttp.request("http://47.104.246.33/phone1.php?cmd=poststatus&phone="..phone.."&status=注册异常")
+            				if code == 200 then
+            					if reTxtUtf8(res) == "反馈成功" then
+            						toast("号码状态标记成功",1)
+            						login_error = true
+									toast("注册异常",1)
+									break
+            					else
+            						goto push
+            					end
+            				else
+            					toast("标记失败，重新标记:"..tostring(res),1)
+            					mSleep(3000)
+            					goto push
+            				end
+            	        else
+            		        dialog("注册异常",0)
+                    		mSleep(1000)
+                    		lua_restart()
+            		    end
 					end
 				end
 
@@ -3937,6 +3976,21 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
     						toast(ip,1)
     						mSleep(500)
     					end
+    				else
+    			        if openFirstIP == "0" and fz_type == "3" then
+        				    mSleep(200)
+            				if api_change == "7" or api_change == "8" or api_change == "15" then
+                		        ::change_ip::
+                		        self:changeGWIP(ip_userName,first_ip_country)
+                		        if self:vpn() == "失败" then
+                		            toast("vpn连接失败，重新连接",1)
+                		            mSleep(1000)
+                		            setVPNEnable(false)
+                		            mSleep(2000)
+                		            goto change_ip
+                		        end
+            			    end
+        				end
 				    end
 					mSleep(500)
 					randomTap(x, y-112,1)
@@ -4262,12 +4316,23 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 	if cheack_bool then
 		if fz_type == "3" then
 			while (true) do
+			    mSleep(200)
+        		x,y = findMultiColorInRegionFuzzy( 0xffffff, "-63|12|0x07c160,128|13|0x07c160,54|13|0xffffff,295|-2|0x07c160,-262|6|0x07c160", 90, 0, 0, 749, 1333)
+        		if x~=-1 and y~=-1 then
+        			break
+        		end
+        
+        		mSleep(200)
+        		x, y = findMultiColorInRegionFuzzy(0x9ce6bf,"540|-7|0x9ce6bf,270|30|0x9ce6bf,270|-89|0x576b95",90,0,0,749,1333)
+        		if x~=-1 and y~=-1 then
+        			break
+        		end
+			    
 				mSleep(200)
 				if getColor(118,  948) == 0x007aff then
 					mSleep(500)
 					randomTap(56, 81, 8)
 					mSleep(math.random(500, 700))
-					break
 				end
 
 				mSleep(200)
@@ -5616,15 +5681,53 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0x576b95, "-28|3|0x576b95,-136|-177|0x000000,-66|-179|0x000000,54|-175|0x000000,199|-180|0x000000", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
-			dialog("注册异常",0)
-			mSleep(1000)
-			lua_restart()
-			--			mSleep(500)
-			--			if fz_type == "3" then
-			--				goto run_app
-			--			else
-			--				goto over
-			--			end
+		    if api_change == "7" then
+		        ::push::
+				mSleep(500)
+				local sz = require("sz")        --登陆
+				local szhttp = require("szocket.http")
+				local res, code = szhttp.request("http://47.104.246.33/phone.php?cmd=poststatus&phone="..phone.."&status=注册异常")
+				mSleep(500)
+				if code == 200 then
+					if reTxtUtf8(res) == "反馈成功" then
+						toast("号码状态标记成功",1)
+					else
+						goto push
+					end
+				else
+					toast("号码标记失败，重新标记:"..tostring(res),1)
+					mSleep(3000)
+					goto push
+				end
+		    elseif api_change == "8" then
+		        ::push::
+				local sz = require("sz")        --登陆
+				local szhttp = require("szocket.http")
+				local res, code = szhttp.request("http://47.104.246.33/phone1.php?cmd=poststatus&phone="..phone.."&status=注册异常")
+				if code == 200 then
+					if reTxtUtf8(res) == "反馈成功" then
+						toast("号码状态标记成功",1)
+					else
+						goto push
+					end
+				else
+					toast("标记失败，重新标记:"..tostring(res),1)
+					mSleep(3000)
+					goto push
+				end
+	        else
+		        dialog("注册异常",0)
+        		mSleep(1000)
+        		lua_restart()
+		    end
+	        
+			goto gg
+-- 			mSleep(500)
+-- 			if fz_type == "3" then
+-- 				goto run_app
+-- 			else
+-- 				goto over
+-- 			end
 		end
 	end
 	mSleep(12000)

@@ -1688,20 +1688,14 @@ end
 -- 			mSleep(500)
 --         end
 
- mSleep(200)
-            x,y = findMultiColorInRegionFuzzy(0x8e8e93, "45|-10|0x8e8e93,556|4|0xffffff,657|10|0xc9c9ce,181|-97|0x000000,260|-94|0x000000,31|50|0xc9c9ce", 100, 0, 0, 750, 1334, { orient = 2 })
-            dialog(x..y,0)
-            if x ~= -1 then
-    			mSleep(500)
-    			tap(x + 100, y)
-    			mSleep(500)
-    			inputStr("美国")
-    			mSleep(1000)
-    			key = "ReturnOrEnter"
-    			keyDown(key)
-    			keyUp(key)
-    			mSleep(1000)
-    			tap(x + 100, y + 10)
-    			mSleep(1000)
-            end
+mSleep(200)
+    			if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) == 0x808080 or getColor(676,258) == 0x818181 or getColor(167,473) == 0x000000 then
+    				if getColor(655,211) == 0xffffff then
+    					toast("切换下一个账号1", 1)
+    					mSleep(500)
+    				elseif getColor(422,219) == 0xffffff and getColor(412,216) == 0xffffff then
+    					toast("切换下一个账号,重新新机", 1)
+    					mSleep(500)
+    				end
+    			end
 

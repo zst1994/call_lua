@@ -1268,7 +1268,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader)
             end
             
             mSleep(200)
-            if getColor(361,98) == 0x000000 then
+            if getColor(109,91) == 0x007aff then
                 mSleep(math.random(500, 700))
     			randomTap(162,255, 4)
     			mSleep(math.random(500, 700))
