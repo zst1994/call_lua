@@ -284,6 +284,8 @@ function model:renameRecord(updateResultName)
 end
 
 function model:timeOutRestart(t1)
+    self:vpn_connection("1")
+
 	t2 = ts.ms()
 
 	if os.difftime(t2, t1) > 60 then
@@ -1391,6 +1393,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
         
         ::get_phone_agagin::
         if back_again > 0 then
+            t1 = ts.ms()
             while (true) do
                 mSleep(200)
                 x,y = findMultiColorInRegionFuzzy(0x18d9f1, "32|-1|0x18d9f1,65|10|0x18d9f1,97|0|0x18d9f1,124|-1|0x18d9f1,150|0|0x18d9f1", 90, 0, 0, 750, 1334, { orient = 2 })
@@ -1405,6 +1408,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
         			end
             	    break
                 end
+                
+                self:timeOutRestart(t1)
+    		    mSleep(1000)
             end
         end
         
@@ -1436,15 +1442,17 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
                 mSleep(1000)
             end
             
-            self:vpn_connection("1")
-            
             mSleep(200)
             x,y = findMultiColorInRegionFuzzy(0x18d9f1, "-38|-1|0x18d9f1,28|0|0x18d9f1,90|-1|0xb3b3b3,525|-1|0xb3b3b3,499|113|0xd8d8d8,61|124|0xd8d8d8", 90, 0, 0, 750, 1334, { orient = 2 })
             if x ~= -1 then
                 break
             end
+            
+            self:timeOutRestart(t1)
+    		mSleep(1000)
         end
 		
+		t1 = ts.ms()
 		while (true) do
             mSleep(200)
             x,y = findMultiColorInRegionFuzzy(0x18d9f1, "-38|-1|0x18d9f1,28|0|0x18d9f1,90|-1|0xb3b3b3,525|-1|0xb3b3b3,499|113|0xd8d8d8,61|124|0xd8d8d8", 90, 0, 0, 750, 1334, { orient = 2 })

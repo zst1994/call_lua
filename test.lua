@@ -1689,13 +1689,9 @@ end
 --         end
 
 mSleep(200)
-    			if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) == 0x808080 or getColor(676,258) == 0x818181 or getColor(167,473) == 0x000000 then
-    				if getColor(655,211) == 0xffffff then
-    					toast("切换下一个账号1", 1)
-    					mSleep(500)
-    				elseif getColor(422,219) == 0xffffff and getColor(412,216) == 0xffffff then
-    					toast("切换下一个账号,重新新机", 1)
-    					mSleep(500)
-    				end
-    			end
-
+			x,y = findMultiColorInRegionFuzzy( 0x3bb3fa, "116|-1|0xffffff,39|-230|0x323333,54|-229|0x323333,56|-249|0x323333,92|-232|0x323333,123|-245|0x323333,168|-244|0x323333,218|-244|0xffffff,174|-234|0x323333", 90, 0, 0, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(500)
+				tap(x + 388,y - 650)
+				mSleep(500)
+			end

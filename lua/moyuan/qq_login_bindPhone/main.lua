@@ -249,10 +249,14 @@ function model:vpn()
 end
 
 function model:timeOutRestart(t1)
+	self:vpn_connection("1")
+
 	t2 = ts.ms()
 
 	if os.difftime(t2, t1) > 60 then
-	    self:index()
+		self:index()
+	else
+		toast("距离重启脚本还有"..(120 - os.difftime(t2, t1)) .. "秒",1)
 	end
 end
 
@@ -404,6 +408,45 @@ function model:moves()
 	end
 end
 
+function model:vpn_connection(idx)
+	--vpn连接
+	mSleep(200)
+	x,y = findMultiColorInRegionFuzzy(0x1382ff, "-4|4|0x1382ff,5|10|0x1382ff,2|19|0x1382ff,12|-1|0x1382ff,17|8|0x1382ff,10|13|0x1382ff,24|13|0x1382ff,13|26|0x1382ff,17|19|0x1382ff", 90, 0, 0, 750, 1334, { orient = 2 })
+	if x ~= -1 then
+		mSleep(500)
+		randomTap(x,y,4)
+		mSleep(500)
+		setVPNEnable(true)
+		toast("好",1)
+		mSleep(3000)
+	end
+	
+	--vpn连接: 好
+	mSleep(200)
+	x,y = findMultiColorInRegionFuzzy( 0x007aff, "6|15|0x007aff,16|-5|0x007aff,20|15|0x007aff,-56|-177|0x000000,-48|-159|0x000000,-41|-179|0x000000,40|-167|0x000000,60|-171|0x000000", 90, 0, 0, 749, 1333)
+	if x ~= -1 then
+		mSleep(500)
+		tap(x,y)
+		mSleep(500)
+		toast("vpn连接0", 1)
+		mSleep(500)
+		if idx == "1" then
+		    self:index()
+		end
+	end
+
+	--网络连接失败：知道了
+	mSleep(200)
+	x,y = findMultiColorInRegionFuzzy(0x007aff, "34|5|0x007aff,66|5|0x007aff,63|-11|0x007aff,-63|-102|0x000000,-44|-102|0x000000,3|-98|0x000000,53|-105|0x000000,49|-140|0x000000,4|-142|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+	if x ~= -1 then
+		mSleep(500)
+		randomTap(x,y,4)
+		mSleep(500)
+		toast("知道了",1)
+		mSleep(1000)
+	end
+end
+
 function model:mm()
     reRunApp = 0
     huakuai = false
@@ -412,7 +455,6 @@ function model:mm()
     ::reRunAppAgagin::
 	runApp(self.mm_bid)
 	mSleep(1000)
-	t1 = ts.ms()
 	
 	if restoreBackup == "1" then
 	    local old_name = AMG.Get_Name()
@@ -429,7 +471,7 @@ function model:mm()
 	
 	::back_restore::
 	if restoreBackup == "1" then
-		
+		t1 = ts.ms()
 	    while (true) do
 	        --首页
     		mSleep(200)
@@ -662,6 +704,30 @@ function model:mm()
 			mSleep(1000)
 			break
 		end
+		
+		mSleep(200)
+		if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) == 0x808080 or getColor(676,258) == 0x818181 or getColor(167,473) == 0x000000 then
+			if getColor(655,211) == 0xffffff then
+				toast("你的帐号暂时无法登录，请点击这里恢复正常使用", 1)
+				mSleep(500)
+				self.subName = "企鹅无法登陆"
+				goto reName
+			elseif getColor(422,219) == 0xffffff and getColor(412,216) == 0xffffff then
+				toast("网络异常", 1)
+				mSleep(500)
+				self.subName = "企鹅网络异常"
+				goto reName
+			end
+		end
+	
+	    mSleep(200)
+	    x,y = findMultiColorInRegionFuzzy(0x000000, "22|9|0x000000,35|9|0x000000,61|12|0x000000,-189|-329|0x12b7f5,310|-328|0x12b7f5,85|-253|0x000000,119|-254|0x000000,155|-251|0x000000,245|-169|0x12b7f5", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+            toast("你输入的帐号或密码不正确", 1)
+			mSleep(500)
+			self.subName = "企鹅密码错误"
+			goto reName
+        end
 
 		--登陆过期
 		mSleep(200)
@@ -1331,6 +1397,17 @@ function model:mm()
 				toast("立即展示",1)
 				mSleep(500)
 			end
+			
+			--获得新成就:好的
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy(0xffffff, "5|13|0xffffff,18|9|0xffffff,36|8|0xffffff,51|8|0xffffff,197|10|0x3bb3fa,25|-28|0x3bb3fa,-157|5|0x3bb3fa,23|47|0x3bb3fa,19|74|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x~=-1 and y~=-1 then
+				mSleep(500)
+				tap(x, y)
+				mSleep(500)
+				toast("好的",1)
+				mSleep(500)
+			end
 
 			--编辑
 			mSleep(200)
@@ -1599,6 +1676,17 @@ function model:mm()
 			if x ~= -1 then
 				mSleep(500)
 				tap(x,   y)
+				mSleep(500)
+			end
+			
+			--获得新成就:好的
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy(0xffffff, "5|13|0xffffff,18|9|0xffffff,36|8|0xffffff,51|8|0xffffff,197|10|0x3bb3fa,25|-28|0x3bb3fa,-157|5|0x3bb3fa,23|47|0x3bb3fa,19|74|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x~=-1 and y~=-1 then
+				mSleep(500)
+				tap(x, y)
+				mSleep(500)
+				toast("好的",1)
 				mSleep(500)
 			end
 
