@@ -428,7 +428,8 @@ function model:mm()
 	end
 	
 	::back_restore::
-	if restoreBackup == "1" then 
+	if restoreBackup == "1" then
+		
 	    while (true) do
 	        --首页
     		mSleep(200)
@@ -552,12 +553,12 @@ function model:mm()
 				if getColor(655,211) == 0xffffff then
 					toast("你的帐号暂时无法登录，请点击这里恢复正常使用", 1)
 					mSleep(500)
-					self.fubiaoqian = "你的帐号暂时无法登录，请点击这里恢复正常使用"
+					self.subName = "企鹅无法登陆"
 					goto reName
 				elseif getColor(422,219) == 0xffffff and getColor(412,216) == 0xffffff then
 					toast("网络异常", 1)
 					mSleep(500)
-					self.fubiaoqian = "网络异常"
+					self.subName = "企鹅网络异常"
 					goto reName
 				end
     		end
@@ -567,7 +568,7 @@ function model:mm()
             if x ~= -1 then
                 toast("你输入的帐号或密码不正确", 1)
 				mSleep(500)
-				self.fubiaoqian = "你输入的帐号或密码不正确"
+				self.subName = "企鹅密码错误"
 				goto reName
             end
     		
@@ -1950,7 +1951,7 @@ function model:mm()
 			mSleep(1000)
 			tap(370,  671)
 			mSleep(5000)
-			self.subName = "绑定号码成功----"..self.phone
+			self.subName = "绑定号码成功:" .. self.phone
 			self:remove_phone()
 		end
 	else
@@ -2119,19 +2120,18 @@ function model:mm()
 	self.mm_accountId = self:getMMId(appDataPath(self.mm_bid) .. "/Documents")
 	--重命名当前记录名
 	local old_name = AMG.Get_Name()
-	if restoreBackup == "1" then
-	    self.subName = "密码错误"
-	    data = strSplit(old_name,"----")
-	    if #data > 2 then
-    	    newAccount = data[3]
-    	    newPass = data[4]
-    		new_name = self.mm_accountId .. "----" .. self.subName .. "----" .. newAccount .. "----" .. newPass .. "----" .. self.fubiaoqian
-    	else
-    	    new_name = self.mm_accountId .. "----" .. self.subName .. "----无账号密码" .. "----" .. self.fubiaoqian
-	    end
+--	if restoreBackup == "1" then
+	data = strSplit(old_name,"----")
+	if #data > 2 then
+		newAccount = data[3]
+		newPass = data[4]
+		new_name = self.mm_accountId .. "----" .. self.subName .. "----" .. newAccount .. "----" .. newPass
 	else
-	    new_name = self.mm_accountId .. "----" .. self.subName
+		new_name = self.mm_accountId .. "----" .. self.subName .. "----无账号密码"
 	end
+--	else
+--	    new_name = self.mm_accountId .. "----" .. self.subName
+--	end
 
 	
 	if AMG.Rename(old_name, new_name) == true then

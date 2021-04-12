@@ -1999,9 +1999,12 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 						aodi_bool = true
 						goto reset_codes
 					end
-
+					
+					mSleep(200)
 					x,y = findMultiColorInRegionFuzzy( 0x576b95, "-28|3|0x576b95,-136|-177|0x000000,-66|-179|0x000000,54|-175|0x000000,199|-180|0x000000", 90, 0, 0, 749, 1333)
 					if x~=-1 and y~=-1 then
+						setVPNEnable(false)
+						mSleep(3000)
 						if api_change == "7" then
             		        ::push::
             				mSleep(500)
@@ -5681,6 +5684,8 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0x576b95, "-28|3|0x576b95,-136|-177|0x000000,-66|-179|0x000000,54|-175|0x000000,199|-180|0x000000", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
+			setVPNEnable(false)
+			mSleep(3000)
 		    if api_change == "7" then
 		        ::push::
 				mSleep(500)
