@@ -1605,8 +1605,11 @@ function model:mm()
 		end
 
 		t1 = ts.ms()
+		toast("准备保存头像",1)
+		mSleep(500)
 		while (true) do
 			--保存
+			mSleep(200)
 			if getColor(628,   85) == 0x3bb3ff  and getColor(690,   79) == 0xffffff or getColor(612,   79) == 0x3bb3ff  and getColor(676,   79) == 0xffffff then
 				mSleep(500)
 				tap(621,   61)
@@ -1639,6 +1642,7 @@ function model:mm()
 			end
 			
 			--帐号部分功能被禁用
+			mSleep(200)
 			if getColor(552,698) == 0x616161  and getColor(499,646) == 0xffffff then
                 toast("帐号部分功能被禁用", 1)
     			mSleep(1000)
@@ -1647,10 +1651,12 @@ function model:mm()
     			goto reName
 			end
 
-			self:timeOutRestart(t1)
-			mSleep(1000)
+--			self:timeOutRestart(t1)
+--			mSleep(1000)
 		end
-
+		toast("保存头像完成",1)
+		mSleep(500)
+		
 		t1 = ts.ms()
 		while true do
 			--好的
