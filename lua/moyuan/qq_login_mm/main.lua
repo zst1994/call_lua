@@ -1346,6 +1346,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
     	end
     elseif loginAccountWay == "1" then
         back_again = 0
+	    getPhoneInputAgain = 0
 	    
 	    ::input_us::
         t1 = ts.ms()
@@ -1518,20 +1519,52 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
     			self:remove_phone()
     		end
     	else
-    		toast("获取验证码失败，保存号码到失败文件",1)
-    		::saveAgain::
-    		mSleep(500)
-    		bool = writeFileString(userPath().."/res/phoneError.txt",self.phone .. "----" .. self.code_token,"a",1) --将 string 内容存入文件，成功返回 true
-    		if bool then
-    			toast("保存号码到失败文件成功",1)
-    		else
-    			toast("保存号码到失败文件失败",1)
-    			goto saveAgain
-    		end
-    		mSleep(1000)
-    		self:remove_phone()
-    		mSleep(500)
-    		goto over
+    	    getPhoneInputAgain = getPhoneInputAgain + 1
+    	    if getPhoneInputAgain > 3 then
+        		goto over
+        	else
+        	    toast("第" .. getPhoneInputAgain .. "次获取验证码失败，保存号码到失败文件",1)
+        	    mSleep(1000)
+        		::saveAgain::
+        		mSleep(500)
+        		bool = writeFileString(userPath().."/res/phoneError.txt",self.phone .. "----" .. self.code_token,"a",1) --将 string 内容存入文件，成功返回 true
+        		if bool then
+        			toast("保存号码到失败文件成功",1)
+        		else
+        			toast("保存号码到失败文件失败",1)
+        			goto saveAgain
+        		end
+        		mSleep(1000)
+        		self:remove_phone()
+        	    mSleep(500)
+        	    self:getPhoneAndToken()
+        	    mSleep(500)
+				tap(55,   130)
+				mSleep(2000)
+				
+				t1 = ts.ms()
+                while (true) do
+                    mSleep(200)
+                    x,y = findMultiColorInRegionFuzzy(0x18d9f1, "32|-1|0x18d9f1,65|10|0x18d9f1,97|0|0x18d9f1,124|-1|0x18d9f1,150|0|0x18d9f1", 90, 0, 0, 750, 1334, { orient = 2 })
+                    if x ~= -1 then
+                        mSleep(500)
+            			randomTap(584,401, 4)
+            			mSleep(1500)
+            			for var=1,25 do
+                    		mSleep(50)
+                    		keyDown("DeleteOrBackspace")
+                    		keyUp("DeleteOrBackspace")  
+            			end
+                	    break
+                    end
+                    
+                    self:timeOutRestart(t1)
+        		    mSleep(1000)
+                end
+                
+                back_again = 0
+                goto get_phone_agagin
+    	    end
     	end
     end
     
