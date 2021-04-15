@@ -505,6 +505,27 @@ function model:mm()
     			mSleep(1000)
     			break
     		end
+    		
+    		--有新版本
+    		mSleep(200)
+    		if getColor(265, 944) == 0x3bb3fa and getColor(491, 949) == 0x3bb3fa then
+    			mSleep(500)
+    			randomTap(377, 1042, 4)
+    			mSleep(500)
+    			toast("有新版本", 1)
+    			mSleep(500)
+    		end
+    		
+    		--跳过：招呼一下/分享到动态
+    		mSleep(200)
+    		if getColor(669,130) == 0xbde1f7 and getColor(702,131) == 0xbde1f7
+    		or getColor(669,130) == 0x3bb3fa and getColor(702,130) == 0x3bb3fa then
+    			mSleep(500)
+    			tap(669,130)
+    			mSleep(500)
+    			toast("跳过", 1)
+    			mSleep(500)
+    		end
 		
 	        --注册登录
     		mSleep(200)
@@ -1651,9 +1672,10 @@ function model:mm()
     			goto reName
 			end
 
---			self:timeOutRestart(t1)
---			mSleep(1000)
+			self:timeOutRestart(t1)
+			mSleep(1000)
 		end
+		
 		toast("保存头像完成",1)
 		mSleep(500)
 		

@@ -5313,7 +5313,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 								for i = 3 ,5 do
 									if tonumber(v[i]) then
 										wc = v[i]
---										wcid = v[i-1]
+										wcid = v[i-1]
 										break
 									end	
 								end	
@@ -5327,9 +5327,14 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					end 
 				end 
 			end 
+			
+			if #string.gsub(wcid,"%s+","") == 0 then
+			    wcid = '获取不到wcid'
+			end
+		    
 			six_data = getData()
---			six_data = six_data .. "----" .. wcid
-			six_data = six_data
+			six_data = six_data .. "----" .. wcid
+-- 			six_data = six_data
 			mSleep(500)
 			toast(six_data);
 			mSleep(500)

@@ -936,7 +936,10 @@ end
 
 function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikcNameType, changePass)
 	Nickname = "已经注册过的账号无昵称"
-
+    
+    mSleep(500)
+    closeApp(self.mm_bid)
+    mSleep(1000)
 	runApp(self.mm_bid)
 	mSleep(1000)
 	t1 = ts.ms()
@@ -1521,6 +1524,17 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
     	else
     	    getPhoneInputAgain = getPhoneInputAgain + 1
     	    if getPhoneInputAgain > 3 then
+    	        ::saveAgain::
+        		mSleep(500)
+        		bool = writeFileString(userPath().."/res/phoneError.txt",self.phone .. "----" .. self.code_token,"a",1) --将 string 内容存入文件，成功返回 true
+        		if bool then
+        			toast("保存号码到失败文件成功",1)
+        		else
+        			toast("保存号码到失败文件失败",1)
+        			goto saveAgain
+        		end
+        		mSleep(1000)
+        		self:remove_phone()
         		goto over
         	else
         	    toast("第" .. getPhoneInputAgain .. "次获取验证码失败，保存号码到失败文件",1)
