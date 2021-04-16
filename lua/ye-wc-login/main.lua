@@ -5328,7 +5328,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				end 
 			end 
 			
-			if #string.gsub(wcid,"%s+","") == 0 then
+			if type(wcid) == 'nil' or type(wcid) == nil then
 			    wcid = '获取不到wcid'
 			end
 		    

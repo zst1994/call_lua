@@ -1688,16 +1688,3 @@ end
 -- 			mSleep(500)
 --         end
 
-
-
---跳过：招呼一下/分享到动态
-		mSleep(200)
-		if getColor(669,130) == 0xbde1f7 and getColor(702,131) == 0xbde1f7
-		or getColor(669,130) == 0x3bb3fa and getColor(702,130) == 0x3bb3fa then
-			mSleep(500)
-			tap(669,130)
-			mSleep(500)
-			toast("跳过", 1)
-			mSleep(500)
-		end
-
