@@ -21,7 +21,7 @@ model.tab_CHN_ENG       = {
 }
 
 function model:click(click_x,click_y)
-	mSleep(500)
+	mSleep(200)
 	randomTap(click_x,click_y,5)
 	mSleep(500)
 end
@@ -71,7 +71,6 @@ function model:shibie()
 				end
 			end
 		else
-			mSleep(500)
 			toast("识别失败\n" .. tostring(body),1)
 			mSleep(1000)
 			goto snap
@@ -81,13 +80,13 @@ function model:shibie()
 			toast("识别内容：\r\n" .. self.content_num,1)
 			mSleep(1000)
 		else
-			mSleep(500)
 			toast("识别内容失败,重新截图识别" .. tostring(body),1)
 			mSleep(1000)
 			goto snap
 		end
 	else
 		toast("获取token失败",1)
+		mSleep(1000)
 		goto getBaiDuToken
 	end
 end
@@ -130,7 +129,6 @@ function model:shibieDay()
     				self.beforDay = string.lower(tmp.words_result[1].words)
     			end
     		else
-    			mSleep(500)
     			toast("识别失败\n" .. tostring(body),1)
     			mSleep(1000)
     			goto snap1
@@ -142,6 +140,7 @@ function model:shibieDay()
     		end
     	else
     		toast("获取token失败",1)
+    		mSleep(1000)
     		goto getBaiDuToken1
     	end
 	end
@@ -150,29 +149,32 @@ end
 function model:main()
 	while (true) do
 		mSleep(200)
-		tab = readFile(self.accountFilePath) 
-		if #tab > 0 then 
+		tab = readFile(self.accountFilePath)
+		if #tab > 0 then
 			searchAccount = strSplit(string.gsub(tab[1], "%s+", ""),"----")[1]
 			table.remove(tab, 1)
 			writeFile(self.accountFilePath, tab, "w", 1)
-
+            
+            writePasteboard(searchAccount)
 			while (true) do
 				--输入好友账号
 				mSleep(200)
 				if getColor(420,  284) == 0xf3f3f3 then
 					self:click(420,  284)
-					mSleep(500)
-					inputStr(searchAccount)
-					mSleep(500)
+					keyDown("RightGUI")
+					keyDown("v")
+					keyUp("v")
+					keyUp("RightGUI")
 				end
-
+                
 				--输入好友账号
 				mSleep(200)
 				if getColor(470,  334) == 0xf3f3f3 then
 					self:click(470,  334)
-					mSleep(500)
-					inputStr(searchAccount)
-					mSleep(1000)
+					keyDown("RightGUI")
+					keyDown("v")
+					keyUp("v")
+					keyUp("RightGUI")
 				end
 
 				--搜索用户
@@ -185,7 +187,7 @@ function model:main()
 
 				mSleep(200)
 				if getColor(77, 1243) ~= 0xffffff and getColor(52,  84) == 0xffffff then
-					mSleep(500)
+					mSleep(200)
 					if getColor(362,798) == 0x3bb3fa then
 					    mSleep(200)
 					    if isColor(76,1056,0x6cdaed,90) then --90 为模糊值，值越大要求的精确度越高

@@ -1688,3 +1688,20 @@ end
 -- 			mSleep(500)
 --         end
 
+::get_phone::
+		local sz = require("sz")        --登陆
+		local http = require("szocket.http")
+		local res, code = http.request("http://api.nwohsz.com:2086/registerApi/getCountrySize?projectId=11")
+		if code == 200 then
+			local tmp = json.decode(res)
+                dialog(#tmp['CountryMapSize===>：'],0)
+		for k, v in pairs(tmp['CountryMapSize===>：']) do
+		    dialog(k,0)
+		    for k, v in pairs(v) do
+		    dialog(k..v,0)
+		    break
+		end
+		    break
+		end
+	    
+		end
