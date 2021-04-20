@@ -135,9 +135,9 @@ function model:change_GNvpn()
 end
 
 function model:changeGWIP(ip_userName,ip_country)
-    setVPNEnable(false)
-    toast(ip_country,1)
-    mSleep(500)
+	setVPNEnable(false)
+	toast(ip_country,1)
+	mSleep(500)
 	while true do
 		mSleep(200)
 		list = readFile(userPath().."/res/phone_num.txt")
@@ -159,10 +159,6 @@ function model:changeGWIP(ip_userName,ip_country)
 		else
 			toast("打开网站失败等待2秒")
 			mSleep(3000)
-			setVPNEnable(false)
-			mSleep(3000)
-			setVPNEnable(true)
-			mSleep(5000)
 		end
 
 		if (status_resp==502) then--打开网站失败
@@ -332,7 +328,7 @@ function model:vpn()
 -- 		self:changeGWIP(ip_userName,ip_country)
 -- 		mSleep(1000)
 -- 		goto get_vpn
-        return "失败"
+		return "失败"
 	end
 
 --	new_data = getNetIP() --获取IP 
@@ -1228,13 +1224,13 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 										mSleep(3000)
 									end
 								end
-								
+
 								if fz_type ~= "3" then
 									setVPNEnable(true)
 								else
 									setVPNEnable(false)
 								end
-								
+
 								get_time = 1
 								toast("重新获取验证码",1)
 								mSleep(2000)
@@ -1925,22 +1921,22 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 					mSleep(100)
 					keyUp("DeleteOrBackspace")
 				end
-				
+
 				if openFirstIP == "0" and fz_type == "3" then
-				    mSleep(200)
-    				if api_change == "7" or api_change == "8" or api_change == "15" then
-        		        ::change_ip::
-        		        self:changeGWIP(ip_userName,first_ip_country)
-        		        if self:vpn() == "失败" then
-        		            toast("vpn连接失败，重新连接",1)
-        		            mSleep(1000)
-        		            setVPNEnable(false)
-        		            mSleep(2000)
-        		            goto change_ip
-        		        end
-        		        mSleep(1000)
-    				end
-    		    end
+					mSleep(200)
+					if api_change == "7" or api_change == "8" or api_change == "15" then
+						::change_ip::
+						self:changeGWIP(ip_userName,first_ip_country)
+						if self:vpn() == "失败" then
+							toast("vpn连接失败，重新连接",1)
+							mSleep(1000)
+							setVPNEnable(false)
+							mSleep(2000)
+							goto change_ip
+						end
+						mSleep(1000)
+					end
+				end
 
 				for i = 1, #(yzm_mess) do
 					mSleep(math.random(500, 700))
@@ -1999,57 +1995,57 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 						aodi_bool = true
 						goto reset_codes
 					end
-					
+
 					mSleep(200)
 					x,y = findMultiColorInRegionFuzzy( 0x576b95, "-28|3|0x576b95,-136|-177|0x000000,-66|-179|0x000000,54|-175|0x000000,199|-180|0x000000", 90, 0, 0, 749, 1333)
 					if x~=-1 and y~=-1 then
 						setVPNEnable(false)
 						mSleep(3000)
 						if api_change == "7" then
-            		        ::push::
-            				mSleep(500)
-            				local sz = require("sz")        --登陆
-            				local szhttp = require("szocket.http")
-            				local res, code = szhttp.request("http://47.104.246.33/phone.php?cmd=poststatus&phone="..phone.."&status=注册异常")
-            				mSleep(500)
-            				if code == 200 then
-            					if reTxtUtf8(res) == "反馈成功" then
-            						toast("号码状态标记成功",1)
+							::push::
+							mSleep(500)
+							local sz = require("sz")        --登陆
+							local szhttp = require("szocket.http")
+							local res, code = szhttp.request("http://47.104.246.33/phone.php?cmd=poststatus&phone="..phone.."&status=注册异常")
+							mSleep(500)
+							if code == 200 then
+								if reTxtUtf8(res) == "反馈成功" then
+									toast("号码状态标记成功",1)
 									login_error = true
 									toast("注册异常",1)
 									break
-            					else
-            						goto push
-            					end
-            				else
-            					toast("号码标记失败，重新标记:"..tostring(res),1)
-            					mSleep(3000)
-            					goto push
-            				end
-            		    elseif api_change == "8" then
-            		        ::push::
-            				local sz = require("sz")        --登陆
-            				local szhttp = require("szocket.http")
-            				local res, code = szhttp.request("http://47.104.246.33/phone1.php?cmd=poststatus&phone="..phone.."&status=注册异常")
-            				if code == 200 then
-            					if reTxtUtf8(res) == "反馈成功" then
-            						toast("号码状态标记成功",1)
-            						login_error = true
+								else
+									goto push
+								end
+							else
+								toast("号码标记失败，重新标记:"..tostring(res),1)
+								mSleep(3000)
+								goto push
+							end
+						elseif api_change == "8" then
+							::push::
+							local sz = require("sz")        --登陆
+							local szhttp = require("szocket.http")
+							local res, code = szhttp.request("http://47.104.246.33/phone1.php?cmd=poststatus&phone="..phone.."&status=注册异常")
+							if code == 200 then
+								if reTxtUtf8(res) == "反馈成功" then
+									toast("号码状态标记成功",1)
+									login_error = true
 									toast("注册异常",1)
 									break
-            					else
-            						goto push
-            					end
-            				else
-            					toast("标记失败，重新标记:"..tostring(res),1)
-            					mSleep(3000)
-            					goto push
-            				end
-            	        else
-            		        dialog("注册异常",0)
-                    		mSleep(1000)
-                    		lua_restart()
-            		    end
+								else
+									goto push
+								end
+							else
+								toast("标记失败，重新标记:"..tostring(res),1)
+								mSleep(3000)
+								goto push
+							end
+						else
+							dialog("注册异常",0)
+							mSleep(1000)
+							lua_restart()
+						end
 					end
 				end
 
@@ -2404,10 +2400,21 @@ function model:idCard()
 
 			--零钱
 			while true do
-				mSleep(500)
+				mSleep(200)
 				x, y = findMultiColorInRegionFuzzy(0x10aeff,"1|-8|0x10aeff,-3|379|0x7c160,15|370|0x7c160,-16|372|0x7c160,292|-199|0x181818,337|-193|0x181818", 100, 0, 0, 749, 1333)
 				if x~=-1 and y~=-1 then
+					mSleep(500)
+					randomTap(404, 186, 2)
 					mSleep(1000)
+					toast("零钱",1)
+					mSleep(1000)
+					break
+				end
+
+				mSleep(200)
+				x,y = findMultiColorInRegionFuzzy( 0x000000, "-69|113|0x1485ee,-69|135|0x1485ee,-87|484|0x07c160,-58|482|0x07c160,-75|105|0x1485ee,26|11|0x000000,38|-5|0x000000", 90, 0, 0, 749, 1333)
+				if x~=-1 and y~=-1 then
+					mSleep(500)
 					randomTap(404, 186, 2)
 					mSleep(1000)
 					toast("零钱",1)
@@ -2424,7 +2431,7 @@ function model:idCard()
 	end
 
 	while (true) do
-		mSleep(500)
+		mSleep(200)
 		if getColor(118, 1125) == 0xededed and getColor(116,  938) == 0x000000 then
 			mSleep(3000)
 			randomTap(116,  938,2)
@@ -2433,7 +2440,7 @@ function model:idCard()
 			mSleep(1000)
 		end
 
-		mSleep(500)
+		mSleep(200)
 		if getColor(650,1287) == 0x1aad19 and getColor(683,1288) == 0x1aad19 then
 			mSleep(3000)
 			randomTap(683,1288,2)
@@ -2445,7 +2452,7 @@ function model:idCard()
 	end
 
 	while (true) do
-		mSleep(500)
+		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0x1aad19, "31|-1|0x1aad19,-405|-1198|0x000000,-344|-1199|0x000000,-301|-1198|0x000000", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(500)
@@ -2453,7 +2460,7 @@ function model:idCard()
 			mSleep(1000)
 		end
 
-		mSleep(500)
+		mSleep(200)
 		if getColor(259,  707) == 0x9ce6bf then
 			mSleep(500)
 			randomTap(324,  231,2)
@@ -2467,7 +2474,7 @@ function model:idCard()
 			randomTap(316,  415,2)
 			mSleep(1000)
 			while (true) do
-				mSleep(500)
+				mSleep(200)
 				if getColor(87, 1041) == 0x191919 and getColor(223, 1043) == 0xffffff then
 					mSleep(500)
 					randomTap(223, 1043,2)
@@ -2477,7 +2484,7 @@ function model:idCard()
 			end
 
 			while (true) do
-				mSleep(500)
+				mSleep(200)
 				if getColor(200,  604) == 0x576b95 or getColor(200,  621) == 0x576b95 then
 					mSleep(1000)
 					randomTap(289,  511,2)
@@ -2485,7 +2492,7 @@ function model:idCard()
 					break
 				end
 
-				mSleep(500)
+				mSleep(200)
 				if getColor(36, 83) == 0x181818 then
 					mSleep(500)
 					randomTap(46, 83,2)
@@ -2495,7 +2502,7 @@ function model:idCard()
 
 			--地区选择
 			while (true) do
-				mSleep(500)
+				mSleep(200)
 				if getColor(380,   79) == 0x181818 and getColor(361,  178) == 0xffffff then
 					mSleep(500)
 					randomTap(156,  802,2)
@@ -2507,7 +2514,7 @@ function model:idCard()
 			end
 
 			while (true) do
-				mSleep(500)
+				mSleep(200)
 				if getColor(200,  604) == 0x576b95 or getColor(200,  621) == 0x576b95 then
 					mSleep(500)
 					randomTap(354,  720,2)
@@ -2517,7 +2524,7 @@ function model:idCard()
 					break
 				end
 
-				mSleep(500)
+				mSleep(200)
 				if getColor(36, 83) == 0x181818 then
 					mSleep(500)
 					randomTap(46, 83,2)
@@ -2529,7 +2536,7 @@ function model:idCard()
 	end
 
 	while (true) do
-		mSleep(500)
+		mSleep(200)
 		if getColor(616, 1280) == 0x464646 then
 			for var= 1, 6 do
 				mSleep(200)
@@ -2544,14 +2551,14 @@ function model:idCard()
 	end
 
 	while (true) do
-		mSleep(500)
+		mSleep(200)
 		if getColor(616, 1280) == 0x464646 and getColor(259,  695) == 0x9ce6bf then
 			for var= 1, 6 do
 				mSleep(200)
 				randomTap(125,  950 ,2)
 			end
 
-			mSleep(500)
+			mSleep(200)
 			randomTap(259,  695,4)
 			mSleep(1000)
 			toast("再次设置密码",1)
@@ -2561,7 +2568,7 @@ function model:idCard()
 	end
 
 	while (true) do
-		mSleep(500)
+		mSleep(200)
 		if getColor(390,  777) == 0x576b95 and getColor(421,  612) == 0x000000 then
 			mSleep(500)
 			randomTap(390,  777,2)
@@ -2628,39 +2635,39 @@ function model:replace_file(fileName)
 end
 
 function model:replace_ml()
-    num = math.random(1, 499) -- 随机获取一个1-100之间的数字
-    function 替换文本()
-        local getList = function(path) 
-            local a = io.popen("ls "..path) 
-            local f = {}; 
-            for l in a:lines() do 
-                table.insert(f,l) 
-            end 
-            return f 
-        end 
-    
-        local Wildcard = getList("/var/containers/Bundle/Application/") 
-        for var = 1, #Wildcard do 
-            local file = io.open("/var/containers/Bundle/Application/"..Wildcard[var].."/We"..cc..".app","rb") 
-            if file then 
-                luanma = Wildcard[var]
-                if #Wildcard[var] > 0 then	
-                    --复制文件
-                    function copyfile(path,to)
-                        os.execute("cp -rf "..path.." "..to);
-                    end
-                	mSleep(1500)
-                	copyfile(userPath() .. "/res/版本/"..num.."/Info.plist","/var/containers/Bundle/Application/"..luanma.."/We"..cc..".app/Info.plist");
-                	mSleep(200)
-                	break; 
-                end
-            end 
-        end
-    end
-    
-    toast("准备开始", 3)
-    cc = "Chat"
-    替换文本()
+	num = math.random(1, 499) -- 随机获取一个1-100之间的数字
+	function 替换文本()
+	local getList = function(path) 
+		local a = io.popen("ls "..path) 
+		local f = {}; 
+		for l in a:lines() do 
+			table.insert(f,l) 
+		end 
+		return f 
+	end 
+
+	local Wildcard = getList("/var/containers/Bundle/Application/") 
+	for var = 1, #Wildcard do 
+		local file = io.open("/var/containers/Bundle/Application/"..Wildcard[var].."/We"..cc..".app","rb") 
+		if file then 
+			luanma = Wildcard[var]
+			if #Wildcard[var] > 0 then	
+				--复制文件
+				function copyfile(path,to)
+					os.execute("cp -rf "..path.." "..to);
+				end
+				mSleep(1500)
+				copyfile(userPath() .. "/res/版本/"..num.."/Info.plist","/var/containers/Bundle/Application/"..luanma.."/We"..cc..".app/Info.plist");
+				mSleep(200)
+				break; 
+			end
+		end 
+	end
+end
+
+toast("准备开始", 3)
+cc = "Chat"
+替换文本()
 end
 
 function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,data_sel,login_times,login_times_set,skey,wc_version,hk_way,fz_key,fz_type, phone, country_num, phone_token, api_change, SMS_country, username, user_pass, work_id, phone_country, country_id,nickName,password,provinceId,getPhone_key, sumbit_key,messGetTime,messSendTime,sendSixDataApi,updateNickName,needPay,localNetwork,needConnetMove,liandongName,liandongTime)
@@ -3561,8 +3568,8 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 	elseif password == "2" then
 		password = "llmm"..string.sub(phone,#phone-3,#phone)
 	end
-    
-    writePasteboard(password)
+
+	writePasteboard(password)
 	--密码
 	while (true) do
 		mSleep(200)
@@ -3571,10 +3578,10 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			mSleep(500)
 			randomTap(x+400,y,8)
 			mSleep(math.random(1000, 1700))
-            keyDown("RightGUI") 
-            keyDown("v")
-            keyUp("v")
-            keyUp("RightGUI")
+			keyDown("RightGUI") 
+			keyDown("v")
+			keyUp("v")
+			keyUp("RightGUI")
 			mSleep(math.random(500, 700))
 			break
 		end
@@ -3586,9 +3593,9 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			randomTap(x+400,y,8)
 			mSleep(math.random(1000, 1700))
 			keyDown("RightGUI") 
-            keyDown("v")
-            keyUp("v")
-            keyUp("RightGUI")
+			keyDown("v")
+			keyUp("v")
+			keyUp("RightGUI")
 			mSleep(math.random(500, 700))
 			break
 		end
@@ -3788,17 +3795,17 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			goto over
 		end
 	end
-    
-    if set_vpn then
-        if openFirstIP == "0" and fz_type == "3" then
-		    mSleep(200)
+
+	if set_vpn then
+		if openFirstIP == "0" and fz_type == "3" then
+			mSleep(200)
 			if api_change == "7" or api_change == "8" or api_change == "15" then
-    	       setVPNEnable(false)
-    	       mSleep(2000)
-            end
-        end
-    end
-    
+				setVPNEnable(false)
+				mSleep(2000)
+			end
+		end
+	end
+
 	--协议后下一步
 	while (true) do
 		mSleep(200)
@@ -3903,22 +3910,22 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 						mSleep(500)
 					end
 				else
-				    if openFirstIP == "0" and fz_type == "3" then
-        			    mSleep(200)
-        				if api_change == "7" or api_change == "8" or api_change == "15" then
-            		        ::change_ip::
-            		        self:changeGWIP(ip_userName,first_ip_country)
-            		        if self:vpn() == "失败" then
-            		            toast("vpn连接失败，重新连接",1)
-            		            mSleep(1000)
-            		            setVPNEnable(false)
-            		            mSleep(2000)
-            		            goto change_ip
-            		        end
-        			    end
-    				end
+					if openFirstIP == "0" and fz_type == "3" then
+						mSleep(200)
+						if api_change == "7" or api_change == "8" or api_change == "15" then
+							::change_ip::
+							self:changeGWIP(ip_userName,first_ip_country)
+							if self:vpn() == "失败" then
+								toast("vpn连接失败，重新连接",1)
+								mSleep(1000)
+								setVPNEnable(false)
+								mSleep(2000)
+								goto change_ip
+							end
+						end
+					end
 				end
-				
+
 				mSleep(500)
 				randomTap(x-277, y-100,1)
 				mSleep(math.random(700, 1500))
@@ -3943,23 +3950,23 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 						toast(ip,1)
 						mSleep(500)
 					end
-			    else
-			        if openFirstIP == "0" and fz_type == "3" then
-    				    mSleep(200)
-        				if api_change == "7" or api_change == "8" or api_change == "15" then
-            		        ::change_ip::
-            		        self:changeGWIP(ip_userName,first_ip_country)
-            		        if self:vpn() == "失败" then
-            		            toast("vpn连接失败，重新连接",1)
-            		            mSleep(1000)
-            		            setVPNEnable(false)
-            		            mSleep(2000)
-            		            goto change_ip
-            		        end
-        			    end
-    				end
+				else
+					if openFirstIP == "0" and fz_type == "3" then
+						mSleep(200)
+						if api_change == "7" or api_change == "8" or api_change == "15" then
+							::change_ip::
+							self:changeGWIP(ip_userName,first_ip_country)
+							if self:vpn() == "失败" then
+								toast("vpn连接失败，重新连接",1)
+								mSleep(1000)
+								setVPNEnable(false)
+								mSleep(2000)
+								goto change_ip
+							end
+						end
+					end
 				end
-				
+
 				mSleep(500)
 				randomTap(x - 240, y-95,1)
 				mSleep(500)
@@ -3968,33 +3975,33 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				mSleep(200)
 				x,y = findMultiColorInRegionFuzzy( 0xc2c2c2, "-148|-7|0xf2f2f2,140|2|0xf2f2f2,245|2|0xededed,-175|6|0xf2f2f2", 100, 0, 920, 749, 1333)
 				if x~=-1 and y~=-1 then
-				    if not cheack_bool then
-    					flag = getVPNStatus()
-    					if not flag.active then
-    						self:changeGWIP(ip_userName,ip_country)
-    					end
-    
-    					if set_vpn then
-    						ip = self:vpn()
-    						toast(ip,1)
-    						mSleep(500)
-    					end
-    				else
-    			        if openFirstIP == "0" and fz_type == "3" then
-        				    mSleep(200)
-            				if api_change == "7" or api_change == "8" or api_change == "15" then
-                		        ::change_ip::
-                		        self:changeGWIP(ip_userName,first_ip_country)
-                		        if self:vpn() == "失败" then
-                		            toast("vpn连接失败，重新连接",1)
-                		            mSleep(1000)
-                		            setVPNEnable(false)
-                		            mSleep(2000)
-                		            goto change_ip
-                		        end
-            			    end
-        				end
-				    end
+					if not cheack_bool then
+						flag = getVPNStatus()
+						if not flag.active then
+							self:changeGWIP(ip_userName,ip_country)
+						end
+
+						if set_vpn then
+							ip = self:vpn()
+							toast(ip,1)
+							mSleep(500)
+						end
+					else
+						if openFirstIP == "0" and fz_type == "3" then
+							mSleep(200)
+							if api_change == "7" or api_change == "8" or api_change == "15" then
+								::change_ip::
+								self:changeGWIP(ip_userName,first_ip_country)
+								if self:vpn() == "失败" then
+									toast("vpn连接失败，重新连接",1)
+									mSleep(1000)
+									setVPNEnable(false)
+									mSleep(2000)
+									goto change_ip
+								end
+							end
+						end
+					end
 					mSleep(500)
 					randomTap(x, y-112,1)
 					mSleep(500)
@@ -4319,18 +4326,18 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 	if cheack_bool then
 		if fz_type == "3" then
 			while (true) do
-			    mSleep(200)
-        		x,y = findMultiColorInRegionFuzzy( 0xffffff, "-63|12|0x07c160,128|13|0x07c160,54|13|0xffffff,295|-2|0x07c160,-262|6|0x07c160", 90, 0, 0, 749, 1333)
-        		if x~=-1 and y~=-1 then
-        			break
-        		end
-        
-        		mSleep(200)
-        		x, y = findMultiColorInRegionFuzzy(0x9ce6bf,"540|-7|0x9ce6bf,270|30|0x9ce6bf,270|-89|0x576b95",90,0,0,749,1333)
-        		if x~=-1 and y~=-1 then
-        			break
-        		end
-			    
+				mSleep(200)
+				x,y = findMultiColorInRegionFuzzy( 0xffffff, "-63|12|0x07c160,128|13|0x07c160,54|13|0xffffff,295|-2|0x07c160,-262|6|0x07c160", 90, 0, 0, 749, 1333)
+				if x~=-1 and y~=-1 then
+					break
+				end
+
+				mSleep(200)
+				x, y = findMultiColorInRegionFuzzy(0x9ce6bf,"540|-7|0x9ce6bf,270|30|0x9ce6bf,270|-89|0x576b95",90,0,0,749,1333)
+				if x~=-1 and y~=-1 then
+					break
+				end
+
 				mSleep(200)
 				if getColor(118,  948) == 0x007aff then
 					mSleep(500)
@@ -4704,7 +4711,13 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					break
 				end
 			end
-
+			
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy( 0xffffff, "36|3|0xffffff,184|0|0x07c160,9|-28|0x07c160,23|32|0x07c160,-153|5|0x07c160,-10|-802|0xfa5151,17|-821|0xffffff,53|-812|0xfa5151", 90, 0, 0, 749, 1333)
+			if x ~= -1 and y ~= -1 then
+				goto gg
+			end
+			
 			if hk_way == "0" then
 				mSleep(200)
 				if getColor(118,  948) == 0x007aff then
@@ -5571,32 +5584,32 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 
 	not_get_code = 0
 	while (true) do
-	    --连接失败，请检查你的网络设置
-	    mSleep(200)
-	    x,y = findMultiColorInRegionFuzzy(0x576b95, "36|3|0x576b95,-227|-159|0x000000,-163|-170|0x000000,-70|-161|0x000000,6|-169|0x000000,70|-158|0x000000,149|-157|0x000000,182|-161|0x000000,218|-148|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
-        if x ~= -1 then
-            mSleep(math.random(500, 700))
+		--连接失败，请检查你的网络设置
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0x576b95, "36|3|0x576b95,-227|-159|0x000000,-163|-170|0x000000,-70|-161|0x000000,6|-169|0x000000,70|-158|0x000000,149|-157|0x000000,182|-161|0x000000,218|-148|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+		if x ~= -1 then
+			mSleep(math.random(500, 700))
 			randomTap(x,y,4)
 			mSleep(math.random(500, 700))
 			toast("连接失败，请检查你的网络设置",1)
 			mSleep(1000)
 			if openFirstIP == "0" and fz_type == "3" then
-			    mSleep(200)
+				mSleep(200)
 				if api_change == "7" or api_change == "8" or api_change == "15" then
-    			    setVPNEnable(false)
-    			    mSleep(3000)
-    		        ::change_ip::
-    		        self:changeGWIP(ip_userName,first_ip_country)
-    		        if self:vpn() == "失败" then
-    		            toast("vpn连接失败，重新连接",1)
-    		            mSleep(1000)
-    		            setVPNEnable(false)
-    		            mSleep(2000)
-    		            goto change_ip
-    		        end
-    			end
-	        end
-        end
+					setVPNEnable(false)
+					mSleep(3000)
+					::change_ip::
+					self:changeGWIP(ip_userName,first_ip_country)
+					if self:vpn() == "失败" then
+						toast("vpn连接失败，重新连接",1)
+						mSleep(1000)
+						setVPNEnable(false)
+						mSleep(2000)
+						goto change_ip
+					end
+				end
+			end
+		end
 
 		--通讯录匹配
 		mSleep(200)
@@ -5686,8 +5699,8 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		if x~=-1 and y~=-1 then
 			setVPNEnable(false)
 			mSleep(3000)
-		    if api_change == "7" then
-		        ::push::
+			if api_change == "7" then
+				::push::
 				mSleep(500)
 				local sz = require("sz")        --登陆
 				local szhttp = require("szocket.http")
@@ -5704,8 +5717,8 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					mSleep(3000)
 					goto push
 				end
-		    elseif api_change == "8" then
-		        ::push::
+			elseif api_change == "8" then
+				::push::
 				local sz = require("sz")        --登陆
 				local szhttp = require("szocket.http")
 				local res, code = szhttp.request("http://47.104.246.33/phone1.php?cmd=poststatus&phone="..phone.."&status=注册异常")
@@ -5720,12 +5733,12 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					mSleep(3000)
 					goto push
 				end
-	        else
-		        dialog("注册异常",0)
-        		mSleep(1000)
-        		lua_restart()
-		    end
-	        
+			else
+				dialog("注册异常",0)
+				mSleep(1000)
+				lua_restart()
+			end
+
 			goto gg
 -- 			mSleep(500)
 -- 			if fz_type == "3" then
@@ -5926,9 +5939,6 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					toast("数据上传:"..tostring(res),1)
 					mSleep(1000)
 					writeFileString(userPath().."/res/phone_data.txt","","w",0)
-					if sendFriend == "1" then
-					    closeApp("*",1)
-					end
 				else
 					toast("数据上传失败:"..tostring(res),1)
 					mSleep(1000)
@@ -5968,15 +5978,15 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					mSleep(200)
 					x, y = findMultiColorInRegionFuzzy(0x7c160,"191|19|0,565|19|0,104|13|0xfafafa,616|24|0xfafafa", 90, 0, 1013, 749,  1333)
 					if x~=-1 and y~=-1 then
-					    if updateNickName == "0" then
-    						mSleep(math.random(500, 700))
-    						randomTap(653,1278,6)
-    						mSleep(math.random(500, 700))
-    					elseif sendFriend == "0" then
-    					    mSleep(math.random(500, 700))
-    					    randomTap(467,1273,6)
-    					    mSleep(math.random(500, 700))
-    					end
+						if updateNickName == "0" then
+							mSleep(math.random(500, 700))
+							randomTap(653,1278,6)
+							mSleep(math.random(500, 700))
+						elseif sendFriend == "0" then
+							mSleep(math.random(500, 700))
+							randomTap(467,1273,6)
+							mSleep(math.random(500, 700))
+						end
 						toast("微信界面",1)
 						data_six_two = true
 						break
@@ -6141,56 +6151,56 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 						end
 					end
 				elseif data_six_two and sendFriend == "0" then
-				    while (true) do
-				        mSleep(200)
-    					x, y = findMultiColorInRegionFuzzy(0x7c160,"191|19|0,565|19|0,104|13|0xfafafa,616|24|0xfafafa", 90, 0, 1013, 749,  1333)
-    					if x~=-1 and y~=-1 then
-    					    if updateNickName == "0" then
-        						mSleep(math.random(500, 700))
-        						randomTap(653,1278,6)
-        						mSleep(math.random(500, 700))
-        					elseif sendFriend == "0" then
-        					    mSleep(math.random(500, 700))
-        					    randomTap(467,1273,6)
-        					    mSleep(math.random(500, 700))
-        					end
-    					end
-					
-				        mSleep(200)
-				        x,y = findMultiColorInRegionFuzzy(0x6467f0, "2|17|0x10aeff,-14|17|0x91d300,-16|4|0xfa9d3b,101|1|0x000000,147|12|0x000000,647|11|0xb2b2b2", 90, 0, 0, 750, 1334, { orient = 2 })
-                        if x ~= -1 then
-                            mSleep(math.random(500, 700))
-                            randomTap(x + 300,y + 20, 6)
-                            mSleep(math.random(500, 700))
-                            toast("朋友圈",1)
-                            mSleep(1000)
-                        end
-                        
-                        mSleep(200)
-                        if getColor(595,199) ~= 0xffffff and getColor(692,73) == 0xffffff then
-                            mSleep(math.random(500, 700))
-                            touchDown(692, 73)
-                            mSleep(4000)
-                            touchUp(692, 73)
-                            mSleep(math.random(500, 700))
-                            break
-                        end
-				    end
-				    
-				    while (true) do
-				        mSleep(200)
-				        x,y = findMultiColorInRegionFuzzy(0x1d8a25, "-171|0|0x1d8a25,-94|-24|0x2d9535,-87|22|0x11821a,-33|4|0xffffff,-133|-7|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
-                        if x ~= -1 then
-                            mSleep(math.random(500, 700))
-                            randomTap(375,1237, 6)
-                            mSleep(math.random(500, 700))
-                            toast("我知道了",1)
-                            mSleep(1000)
-                        end
-                        
-                        mSleep(200)
-                        if getColor(618,82) == 0x9ce6bf then
-                            State={
+					while (true) do
+						mSleep(200)
+						x, y = findMultiColorInRegionFuzzy(0x7c160,"191|19|0,565|19|0,104|13|0xfafafa,616|24|0xfafafa", 90, 0, 1013, 749,  1333)
+						if x~=-1 and y~=-1 then
+							if updateNickName == "0" then
+								mSleep(math.random(500, 700))
+								randomTap(653,1278,6)
+								mSleep(math.random(500, 700))
+							elseif sendFriend == "0" then
+								mSleep(math.random(500, 700))
+								randomTap(467,1273,6)
+								mSleep(math.random(500, 700))
+							end
+						end
+
+						mSleep(200)
+						x,y = findMultiColorInRegionFuzzy(0x6467f0, "2|17|0x10aeff,-14|17|0x91d300,-16|4|0xfa9d3b,101|1|0x000000,147|12|0x000000,647|11|0xb2b2b2", 90, 0, 0, 750, 1334, { orient = 2 })
+						if x ~= -1 then
+							mSleep(math.random(500, 700))
+							randomTap(x + 300,y + 20, 6)
+							mSleep(math.random(500, 700))
+							toast("朋友圈",1)
+							mSleep(1000)
+						end
+
+						mSleep(200)
+						if getColor(595,199) ~= 0xffffff and getColor(692,73) == 0xffffff then
+							mSleep(math.random(500, 700))
+							touchDown(692, 73)
+							mSleep(4000)
+							touchUp(692, 73)
+							mSleep(math.random(500, 700))
+							break
+						end
+					end
+
+					while (true) do
+						mSleep(200)
+						x,y = findMultiColorInRegionFuzzy(0x1d8a25, "-171|0|0x1d8a25,-94|-24|0x2d9535,-87|22|0x11821a,-33|4|0xffffff,-133|-7|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+						if x ~= -1 then
+							mSleep(math.random(500, 700))
+							randomTap(375,1237, 6)
+							mSleep(math.random(500, 700))
+							toast("我知道了",1)
+							mSleep(1000)
+						end
+
+						mSleep(200)
+						if getColor(618,82) == 0x9ce6bf then
+							State={
 								["随机常量"] = 0,
 								["名字"]="安彤含祖赩涤彰爵舞深群适渺辞莞延稷桦赐帅适亭濮存城稷澄添悟绢绢澹迪婕箫识悟舞添剑深禄延涤" ..
 								"濮存罡禄瑛瑛嗣嫚朵寅添渟黎臻舞绢城骥彰渺禾教祖剑黎莞咸浓芦澹帅臻渟添禾亭添亭霖深策臻稷辞" ..
@@ -6233,28 +6243,28 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 								"临勤墨薄颉棠羡浚兆环铄"
 							}
 							State["随机常量"] = tonumber(self:Rnd_Word("0123456789",5))
-                            writePasteboard(self:Rnd_Word(State["名字"],1,3))
-                            mSleep(math.random(500, 700))
-                            randomTap(316,205, 6)
-                            mSleep(math.random(500, 700))
-                            keyDown("RightGUI") 
-                            keyDown("v")
-                            keyUp("v")
-                            keyUp("RightGUI")
-                            mSleep(math.random(500, 700))
-                            randomTap(618,82, 3)
-                            mSleep(math.random(1500, 1700))
-                            break
-                        end
-				    end
-				    
-				    while (true) do
-				        mSleep(200)
-                        if getColor(595,199) ~= 0xffffff and getColor(692,73) == 0xffffff then
-                            mSleep(math.random(500, 700))
-                            break
-                        end
-				    end
+							writePasteboard(self:Rnd_Word(State["名字"],1,3))
+							mSleep(math.random(500, 700))
+							randomTap(316,205, 6)
+							mSleep(math.random(500, 700))
+							keyDown("RightGUI") 
+							keyDown("v")
+							keyUp("v")
+							keyUp("RightGUI")
+							mSleep(math.random(500, 700))
+							randomTap(618,82, 3)
+							mSleep(math.random(1500, 1700))
+							break
+						end
+					end
+
+					while (true) do
+						mSleep(200)
+						if getColor(595,199) ~= 0xffffff and getColor(692,73) == 0xffffff then
+							mSleep(math.random(500, 700))
+							break
+						end
+					end
 				end
 
 				if needPay == "0" and updateNickName == "0" then
@@ -6460,6 +6470,11 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				writeFileString(userPath().."/res/data_sel.txt","0","w",0) --将 string 内容存入文件，成功返回 true
 				-- dialog(login_times_set.."个注册完成",300)
 				mSleep(1000)
+				
+				if sendFriend == "1" then
+					closeApp("*",1)
+				end
+				
 				luaExit()
 				-- goto over
 			else
@@ -6467,6 +6482,10 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				mSleep(150)
 				writeFileString(userPath().."/res/data_sel.txt",tostring(account_len),"w",0) --将 string 内容存入文件，成功返回 true
 				mSleep(500)
+				
+				if sendFriend == "1" then
+					closeApp("*",1)
+				end
 				-- if not get_wechatError_six then
 				-- 	while true do
 				-- 		mSleep(math.random(500, 700))
@@ -7009,6 +7028,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 	end
 	::gg::
 	setVPNEnable(false)
+
 	closeApp(self.wc_bid)
 end
 
@@ -7235,9 +7255,9 @@ function model:main()
 
 				self:replace_file(file_name)
 			end
-			
+
 			if replaceML == "0" then
-			    self:replace_ml()
+				self:replace_ml()
 			end
 
 			if login_times == "1" then
