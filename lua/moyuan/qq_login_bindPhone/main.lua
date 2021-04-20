@@ -1641,7 +1641,7 @@ function model:mm()
 
 			--保存
 			mSleep(200)
-			x,y = findMultiColorInRegionFuzzy(0x3bb3fa, "134|-39|0x3bb3fa,135|49|0x3bb3fa,303|-2|0x3bb3fa,112|9|0xffffff,124|8|0xffffff,141|13|0xffffff,159|10|0xffffff,44|-911|0xaaaaaa,91|-927|0xf9f9f9", 90, 0, 0, 750, 1334, { orient = 2 })
+			x,y = findMultiColorInRegionFuzzy(0x3bb3fa, "-13|-11|0xffffff,15|-12|0xffffff,307|-5|0x3bb3fa,-3|34|0x3bb3fa,-323|-7|0x3bb3fa,-2|-31|0x3bb3fa,-58|-1139|0x000000,55|-1131|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
 			if x ~= -1 then
 				mSleep(500)
 				tap(x,   y)

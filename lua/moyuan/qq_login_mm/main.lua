@@ -2949,7 +2949,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 	if loginAccountWay == "0" then
 	    new_name = self.mm_accountId .. "----" .. self.subName .. "----" .. self.qqAcount .. "----" .. self.qqPassword .. "----" .. sj
 	elseif loginAccountWay == "1" then
-	    new_name = self.mm_accountId .. "----" .. self.phone
+	    new_name = self.mm_accountId .. "----" .. self.subName .. "----" .. self.phone .. "----" .. sj
 	end
 
 	toast(new_name,1)

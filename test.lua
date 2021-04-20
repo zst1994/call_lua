@@ -1688,20 +1688,45 @@ end
 -- 			mSleep(500)
 --         end
 
-::get_phone::
-		local sz = require("sz")        --登陆
-		local http = require("szocket.http")
-		local res, code = http.request("http://api.nwohsz.com:2086/registerApi/getCountrySize?projectId=11")
-		if code == 200 then
-			local tmp = json.decode(res)
-                dialog(#tmp['CountryMapSize===>：'],0)
-		for k, v in pairs(tmp['CountryMapSize===>：']) do
-		    dialog(k,0)
-		    for k, v in pairs(v) do
-		    dialog(k..v,0)
-		    break
-		end
-		    break
-		end
-	    
+while (true) do
+			--保存
+			mSleep(200)
+			if getColor(628,   85) == 0x3bb3ff  and getColor(690,   79) == 0xffffff or getColor(612,   79) == 0x3bb3ff  and getColor(676,   79) == 0xffffff then
+				mSleep(500)
+				tap(621,   61)
+				mSleep(500)
+				toast("保存1",1)
+				mSleep(500)
+			end
+
+			--保存
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy(0x3bb3fa, "134|-39|0x3bb3fa,135|49|0x3bb3fa,303|-2|0x3bb3fa,112|9|0xffffff,124|8|0xffffff,141|13|0xffffff,159|10|0xffffff,44|-911|0xaaaaaa,91|-927|0xf9f9f9", 90, 0, 0, 750, 1334, { orient = 2 })
+			if x ~= -1 then
+				mSleep(500)
+				tap(x,   y)
+				mSleep(500)
+				toast("保存2",1)
+				mSleep(500)
+			end
+
+			--好的
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy( 0x3bb3fa, "116|-1|0xffffff,39|-230|0x323333,54|-229|0x323333,56|-249|0x323333,92|-232|0x323333,123|-245|0x323333,168|-244|0x323333,218|-244|0xffffff,174|-234|0x323333", 90, 0, 0, 749, 1333)
+			if x~=-1 and y~=-1 then
+				mSleep(500)
+				tap(x + 388,y - 650)
+				mSleep(500)
+				toast("好的",1)
+				mSleep(500)
+				break
+			end
+			
+			--帐号部分功能被禁用
+			mSleep(200)
+			if getColor(552,698) == 0x616161  and getColor(499,646) == 0xffffff then
+                toast("帐号部分功能被禁用", 1)
+    			mSleep(1000)
+			end
+
 		end
