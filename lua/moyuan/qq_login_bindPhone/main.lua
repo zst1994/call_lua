@@ -474,7 +474,7 @@ function model:mm()
 		t1 = ts.ms()
 	    while (true) do
 	        --首页
-    		mSleep(200)
+    		mSleep(500)
     		if getColor(206, 109) == 0x323333 and getColor(370, 99) == 0x323333 or
     		getColor(411, 176) == 0x323333 and getColor(419, 135) == 0x323333 or
     		getColor(45, 109) == 0x323333 and getColor(222, 95) == 0x323333 or
