@@ -198,11 +198,67 @@ function model:vpn()
 	end
 end
 
+function model:timeOutRestart(t1)
+	t2 = ts.ms()
+
+	if os.difftime(t2, t1) > 60 then
+		self:index()
+	else
+		toast("距离重启脚本还有"..(120 - os.difftime(t2, t1)) .. "秒",1)
+		mSleep(1000)
+	end
+end
+
 function model:mm()
 	runApp(self.mm_bid)
 	mSleep(1000)
-
+    
+    ::inputPass::
+    t1 = ts.ms()
 	while (true) do
+	    --首页
+		mSleep(500)
+		if getColor(206, 109) == 0x323333 and getColor(370, 99) == 0x323333 or
+		getColor(411, 176) == 0x323333 and getColor(419, 135) == 0x323333 or
+		getColor(45, 109) == 0x323333 and getColor(222, 95) == 0x323333 or
+		getColor(206, 156) == 0x323333 and getColor(336, 157) == 0x323333 or
+		getColor(206,  153) == 0x313232 and getColor(371,  131) == 0x313232 then
+			mSleep(500)
+			toast("首页1", 1)
+			mSleep(500)
+			break
+		end
+
+		--首页
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0x323333, "17|15|0x323333,25|-6|0x323333,35|8|0x323333,53|6|0x323333,77|9|0x323333,73|-3|0x323333,104|1|0x323333,135|8|0x323333,200|6|0xffffff", 100, 0, 0, 421,179, { orient = 2 })
+		if x ~= -1 then
+			mSleep(500)
+			toast("首页2", 1)
+			mSleep(500)
+			break
+		end
+
+		--首页
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0x3ee1ec, "13|-3|0xfdfdfd,30|5|0x3ee1ec,-2|38|0x13cae2,10|38|0x13cae2,25|31|0x13cae2", 100, 0, 0, 750, 1150, { orient = 2 })
+		if x ~= -1 then
+			mSleep(500)
+			toast("首页3", 1)
+			mSleep(500)
+			break
+		end
+		
+		--跳过
+		x,y = findMultiColorInRegionFuzzy(0x323333, "-3|1|0x3b3b3a,-3|-10|0x323333,10|-8|0x323333,14|-8|0x323333,28|3|0x353535,40|10|0x323333,43|0|0x323333,36|-9|0x323333", 100, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+        	mSleep(500)
+			randomTap(x,y,4)
+			mSleep(500)
+			toast("跳过",1)
+			mSleep(500)
+		end
+		
 		--注册登录
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0xffffff, "105|1|0xffffff,211|3|0x18d9f1,95|-37|0x18d9f1,-48|-4|0x18d9f1,83|39|0x18d9f1", 90, 0, 0, 749, 1333)
@@ -270,9 +326,30 @@ function model:mm()
 --			mSleep(500)
 --			break
 --		end
+        self:timeOutRestart(t1)
 	end
-
+    
+    t1 = ts.ms()
 	while (true) do
+	    --注册登录
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy( 0xffffff, "105|1|0xffffff,211|3|0x18d9f1,95|-37|0x18d9f1,-48|-4|0x18d9f1,83|39|0x18d9f1", 90, 0, 0, 749, 1333)
+		if x ~= -1 and y ~= -1 then
+			mSleep(500)
+			randomTap(x,y,4)
+			mSleep(500)
+			goto inputPass
+		end
+
+		--注册登录
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy( 0xffffff, "32|2|0xffffff,90|3|0xfdffff,-99|-2|0x18d9f1,43|-41|0x18d9f1,41|37|0x18d9f1,176|-3|0x18d9f1", 90, 0, 0, 749, 1333)
+		if x ~= -1 and y ~= -1 then
+			mSleep(500)
+			randomTap(x,y,4)
+			mSleep(500)
+			goto inputPass
+		end
 		--绑定手机
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0x323333, "-199|53|0x323333,-210|53|0x323333,-251|53|0x323333,-294|56|0x323333,-329|56|0x323333,-338|56|0x323333,-423|574|0x4ebbfb,-119|572|0x4ebbfb,-74|391|0xebebeb", 100, 0, 0, 749, 1333)
@@ -316,6 +393,8 @@ function model:mm()
 			mSleep(1000)
 			break
 		end
+		
+		self:timeOutRestart(t1)
 	end
 
 	for var= 1, 3 do
