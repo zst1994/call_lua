@@ -1687,13 +1687,5 @@ end
 -- 			toast("选择区号",1)
 -- 			mSleep(500)
 --         end
---跳过
-		mSleep(200)
-		x, y = findMultiColorInRegionFuzzy(0x323333,"4|10|0x323333,13|4|0x323333,17|4|0x323333,32|7|0x323333,47|7|0x323333,42|-1|0x323333,59|5|0xffffff,-20|3|0xffffff,25|27|0xffffff",90,0,0,750,1334,{orient = 2})
-		if x ~= -1 then
-			mSleep(500)
-			randomTap(x + 20, y + 10, 4)
-			mSleep(500)
-			toast("跳过", 1)
-			mSleep(500)
-		end
+
+

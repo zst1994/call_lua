@@ -4117,7 +4117,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				mSleep(500)
 				if code == 200 then
 					if type(string.find(res, "%d+%d+%d+%d+%d+%d+")) == "number" then
-						mess_yzm = string.match(res,"%d+")
+						mess_yzm = string.match(res,"%d+%d+%d+%d+%d+%d+")
 					else
 						toast("暂未查询到验证码，请稍后再试"..get_time,1)
 						mSleep(2000)
