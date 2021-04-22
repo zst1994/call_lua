@@ -209,6 +209,20 @@ function model:timeOutRestart(t1)
 	end
 end
 
+function model:getMMId(path)
+	local a = io.popen("ls " .. path)
+	local f = {}
+	for l in a:lines() do
+		b = string.find(l, "u.(%d%d%d%d%d%d%d%d%d)_main.sqlite")
+		if type(b) ~= "nil" then
+			c = string.match(l, "%d%d%d%d%d%d%d%d%d")
+			toast("陌陌id:" .. c, 1)
+			mSleep(1000)
+			return c
+		end
+	end
+end
+
 function model:sameMain()
 	--首页
 	mSleep(200)
@@ -251,7 +265,7 @@ function model:sameMain()
 		mSleep(500)
 		return false
 	end
-	
+
 	mSleep(200)
 	x,y = findMultiColorInRegionFuzzy( 0x323333, "-3|1|0x3c3c3c,-3|-10|0x323333,10|-9|0x323333,14|-8|0x323333,28|0|0x353636,41|9|0x323333,43|-3|0x323333,36|-10|0x323333", 90, 0, 0, 749, 233)
 	if x ~= -1 then
@@ -356,27 +370,26 @@ function model:mm()
 	t1 = ts.ms()
 	while (true) do
 		if self:sameMain() then
+			--注册登录
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy( 0xffffff, "105|1|0xffffff,211|3|0x18d9f1,95|-37|0x18d9f1,-48|-4|0x18d9f1,83|39|0x18d9f1", 90, 0, 0, 749, 1333)
+			if x ~= -1 and y ~= -1 then
+				mSleep(200)
+				randomTap(x,y,4)
+				mSleep(500)
+				goto inputPass
+			end
+
+			--注册登录
+			mSleep(200)
+			x,y = findMultiColorInRegionFuzzy( 0xffffff, "32|2|0xffffff,90|3|0xfdffff,-99|-2|0x18d9f1,43|-41|0x18d9f1,41|37|0x18d9f1,176|-3|0x18d9f1", 90, 0, 0, 749, 1333)
+			if x ~= -1 and y ~= -1 then
+				mSleep(200)
+				randomTap(x,y,4)
+				mSleep(500)
+				goto inputPass
+			end
 			break
-		end
-
-		--注册登录
-		mSleep(200)
-		x,y = findMultiColorInRegionFuzzy( 0xffffff, "105|1|0xffffff,211|3|0x18d9f1,95|-37|0x18d9f1,-48|-4|0x18d9f1,83|39|0x18d9f1", 90, 0, 0, 749, 1333)
-		if x ~= -1 and y ~= -1 then
-			mSleep(200)
-			randomTap(x,y,4)
-			mSleep(500)
-			goto inputPass
-		end
-
-		--注册登录
-		mSleep(200)
-		x,y = findMultiColorInRegionFuzzy( 0xffffff, "32|2|0xffffff,90|3|0xfdffff,-99|-2|0x18d9f1,43|-41|0x18d9f1,41|37|0x18d9f1,176|-3|0x18d9f1", 90, 0, 0, 749, 1333)
-		if x ~= -1 and y ~= -1 then
-			mSleep(200)
-			randomTap(x,y,4)
-			mSleep(500)
-			goto inputPass
 		end
 
 		self:timeOutRestart(t1)
@@ -390,10 +403,12 @@ function model:mm()
 			mSleep(3500)
 		end
 
+		self.mm_accountId = self:getMMId(appDataPath(self.mm_bid) .. "/Documents")
+
 		--重命名当前记录名
 		local old_name = AMG.Get_Name()
 
-		new_name = old_name .. "----刷新成功"
+		new_name = self.mm_accountId .. "----刷新成功"
 
 		toast(new_name,1)
 		if AMG.Rename(old_name, new_name) == true then

@@ -1689,3 +1689,24 @@ end
 --         end
 
 
+--注册登录
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy( 0xffffff, "105|1|0xffffff,211|3|0x18d9f1,95|-37|0x18d9f1,-48|-4|0x18d9f1,83|39|0x18d9f1", 100, 0, 0, 749, 1333)
+		if x ~= -1 and y ~= -1 then
+			mSleep(200)
+			randomTap(x,y,4)
+			mSleep(500)
+			toast("注册登录1",1)
+			mSleep(500)
+		end
+
+		--注册登录
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy( 0xffffff, "32|2|0xffffff,90|3|0xfdffff,-99|-2|0x18d9f1,43|-41|0x18d9f1,41|37|0x18d9f1,176|-3|0x18d9f1", 100, 0, 0, 749, 1333)
+		if x ~= -1 and y ~= -1 then
+			mSleep(200)
+			randomTap(x,y,4)
+			mSleep(500)
+			toast("注册登录2",1)
+			mSleep(500)
+		end
