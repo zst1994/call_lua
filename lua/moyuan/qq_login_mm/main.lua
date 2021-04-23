@@ -1724,6 +1724,17 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 
 	t1 = ts.ms()
 	while true do
+		--不是我的，注册新号
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy( 0x323333, "35|-2|0x323333,64|-14|0x323333,91|-7|0x323333,164|-13|0x323333,254|-10|0x323333,365|-8|0xffffff,-115|-156|0xc9c9c9,349|-149|0xc9c9c9,150|-141|0xfafafa", 90, 0, 0, 749, 1333)
+		if x ~= -1 then
+			mSleep(200)
+			tap(x, y)
+			mSleep(500)
+			toast("不是我的，注册新号", 1)
+			mSleep(500)
+		end
+		
 		mSleep(200)
 		if getColor(116, 949) == 0x007aff then
 			mSleep(math.random(500, 1000))
