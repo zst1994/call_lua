@@ -1262,7 +1262,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 
 			--填写资料
 			mSleep(200)
-			x, y = findMultiColorInRegionFuzzy(0x323333,"16|-1|0x323333,8|7|0x323333,10|19|0x323333,24|26|0x323333,30|13|0x323333,25|-7|0x323333,54|-3|0x323333,83|8|0x323333,66|-8|0x323333",90,0,0,750,1334,{orient = 2})
+			x, y = findMultiColorInRegionFuzzy(0x323333,"16|-1|0x323333,8|7|0x323333,10|19|0x323333,24|26|0x323333,30|13|0x323333,25|-7|0x323333,54|-3|0x323333,83|8|0x323333,66|-8|0x323333",100,0,0,750,1334,{orient = 2})
 			if x ~= -1 then
 				mSleep(500)
 				toast("不需要过滑块", 1)

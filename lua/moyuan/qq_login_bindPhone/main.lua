@@ -228,7 +228,78 @@ function model:vpn()
 				    toast("wifi链接成功")
 				end
 				mSleep(1000)
+				self:Check_AMG()
 				break
+			else
+			    --vpn连接：需要输入帐号密码重新连接vpn
+			    mSleep(200)
+			    x,y = findMultiColorInRegionFuzzy(0x007aff, "9|-1|0x007aff,51|2|0x077dff,288|-7|0x007aff,307|6|0x007aff,95|-239|0x000000,103|-217|0x000000,111|-239|0x000000,119|-224|0x000000,231|-232|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+                if x ~= -1 then
+        			mSleep(500)
+        			randomTap(x,y,4)
+        			mSleep(500)
+        			toast("取消",1)
+        			mSleep(500)
+        			openURL("prefs:root=General&path=VPN")
+                
+        		    while (true) do
+        		        mSleep(200)
+        			    x,y = findMultiColorInRegionFuzzy(0x007aff, "9|-1|0x007aff,51|2|0x077dff,288|-7|0x007aff,307|6|0x007aff,95|-239|0x000000,103|-217|0x000000,111|-239|0x000000,119|-224|0x000000,231|-232|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+                        if x ~= -1 then
+                			mSleep(500)
+                			randomTap(x,y,4)
+                			mSleep(500)
+                			toast("取消",1)
+                        end
+    			
+        		        mSleep(200)
+        		        x,y = findMultiColorInRegionFuzzy(0x007aff, "-1|-12|0x007aff,-661|5|0x007aff,-650|169|0x007aff,-564|160|0x007aff,-543|164|0x007aff,-489|161|0x007aff,-473|171|0x007aff,-455|169|0x007aff,-330|-360|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+                        if x ~= -1 then
+                            mSleep(500)
+                			randomTap(x,y,4)
+                			mSleep(500)
+                        end
+                        
+                        mSleep(200)
+                        if getColor(691,89) == 0x007aff then
+                            mSleep(500)
+                			randomTap(691,89,4)
+                			mSleep(500)
+                        end
+                        
+                        mSleep(200)
+                        x,y = findMultiColorInRegionFuzzy(0x000000, "27|0|0x000000,14|18|0x000000,3|18|0x000000,20|21|0x000000,53|15|0x000000,53|9|0x000000,42|11|0x000000,60|97|0x000000,14|108|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+                        if x ~= -1 then
+                            mSleep(500)
+                			randomTap(x + 340, y + 10, 4)
+                			mSleep(500)
+                			writePasteboard(vpnPass)
+                			mSleep(200)
+        					keyDown("RightGUI")
+        					keyDown("v")
+        					keyUp("v")
+        					keyUp("RightGUI")
+        					mSleep(200)
+        					key = "ReturnOrEnter"
+                            keyDown(key)
+                            keyUp(key)
+                            mSleep(200)
+                            writePasteboard(vpnSecretKey)
+                			mSleep(200)
+        					keyDown("RightGUI")
+        					keyDown("v")
+        					keyUp("v")
+        					keyUp("RightGUI")
+        					mSleep(200)
+        					key = "ReturnOrEnter"
+                            keyDown(key)
+                            keyUp(key)
+                            break
+                        end
+        		    end
+        		    setVPNEnable(false)
+        		    goto get_vpn
+    		    end
 			end
 		end
 
@@ -2460,13 +2531,37 @@ function model:main()
 				["list"] = "正常,密码错误",
 				["select"] = "0",
 				["countperline"] = "4"
-			}
+			},
+			{
+				["type"] = "Label",
+				["text"] = "设置vpn连接密码",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255"
+			},
+			{
+				["type"] = "Edit",
+				["prompt"] = "输入vpn连接密码",
+				["text"] = "默认值"
+			},
+			{
+				["type"] = "Label",
+				["text"] = "设置vpn连接密钥",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255"
+			},
+			{
+				["type"] = "Edit",
+				["prompt"] = "输入vpn连接密钥",
+				["text"] = "默认值"
+			},
 		}
 	}
 
 	local MyJsonString = json.encode(MyTable)
 
-	ret, old_pass, password, searchFriend, searchAccount, changeHeader, inputPhoneAgain, networkMode, restoreBackup = showUI(MyJsonString)
+	ret, old_pass, password, searchFriend, searchAccount, changeHeader, inputPhoneAgain, networkMode, restoreBackup, vpnPass, vpnSecretKey = showUI(MyJsonString)
 	if ret == 0 then
 		dialog("取消运行脚本", 3)
 		luaExit()
