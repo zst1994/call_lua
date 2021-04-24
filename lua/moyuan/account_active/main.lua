@@ -363,6 +363,12 @@ function model:mm()
 			mSleep(500)
 			break
 		end
+		
+		flag = isFrontApp(self.mm_bid)
+		if flag == 0 then
+			runApp(self.mm_bid)
+			mSleep(3000)
+		end
 
 		self:timeOutRestart(t1)
 	end
@@ -397,6 +403,16 @@ function model:mm()
 
 	if refresh == "0" then
 		for var= 1, 3 do
+			mSleep(200)
+			randomTap(74, 1227,4,"",1,20)
+			randomTap(74, 1227,4,"",1,20)
+			mSleep(3500)
+		end
+		
+		randomTap(333,147,4)
+		mSleep(1000)
+		
+		for var= 1, 1 do
 			mSleep(200)
 			randomTap(74, 1227,4,"",1,20)
 			randomTap(74, 1227,4,"",1,20)
