@@ -410,7 +410,7 @@ function model:mm()
 		end
 		
 		randomTap(333,147,4)
-		mSleep(1000)
+		mSleep(3500)
 		
 		for var= 1, 1 do
 			mSleep(200)
