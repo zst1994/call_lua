@@ -229,6 +229,13 @@ function model:vpn()
 				end
 				mSleep(1000)
 				self:Check_AMG()
+				while (true) do
+				    mSleep(200)
+    				x,y = findMultiColorInRegionFuzzy(0x000000, "44|-1|0x000000,79|0|0x000000,-25|154|0x007aff,0|155|0x007aff,17|155|0x007aff,56|161|0x007aff,-22|253|0x007aff,35|251|0x097fff,81|243|0x007aff", 90, 0, 0, 750, 1334, { orient = 2 })
+    				if x ~= -1 then
+    				    break
+    				end
+				end
 				break
 			else
 			    --vpn连接：需要输入帐号密码重新连接vpn
