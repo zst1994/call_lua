@@ -1691,25 +1691,37 @@ end
 
 -- openURL("prefs:root=General&path=VPN");
 
+--writePasteboard('111111')
+--                			mSleep(200)
+--        					keyDown("RightGUI")
+--        					keyDown("v")
+--        					keyUp("v")
+--        					keyUp("RightGUI")
+--        					mSleep(200)
+--        					key = "ReturnOrEnter"
+--                            keyDown(key)
+--                            keyUp(key)
+--                            mSleep(200)
+--							key = "ReturnOrEnter"
+--                            keyDown(key)
+--                            keyUp(key)
+--							mSleep(200)
+--                            writePasteboard('111111')
+--                			mSleep(200)
+--        					keyDown("RightGUI")
+--        					keyDown("v")
+--        					keyUp("v")
+--        					keyUp("RightGUI")
+--        					mSleep(200)
+--        					key = "ReturnOrEnter"
+--                            keyDown(key)
+--                            keyUp(key)
 
-writePasteboard('123456')
-                			mSleep(200)
-        					keyDown("RightGUI")
-        					keyDown("v")
-        					keyUp("v")
-        					keyUp("RightGUI")
-        					mSleep(200)
-        					key = "ReturnOrEnter"
-                            keyDown(key)
-                            keyUp(key)
-                            mSleep(200)
-                            writePasteboard('123456')
-                			mSleep(200)
-        					keyDown("RightGUI")
-        					keyDown("v")
-        					keyUp("v")
-        					keyUp("RightGUI")
-        					mSleep(200)
-        					key = "ReturnOrEnter"
-                            keyDown(key)
-                            keyUp(key)
+
+				mSleep(200)
+				x,y = findMultiColorInRegionFuzzy( 0x353535, "134|0|0x353535,281|0|0x353535,52|63|0x353535,140|62|0x353535,-217|455|0x9ce6bf,312|443|0x9ce6bf,3|453|0xd7f5e5,56|455|0xd7f5e5", 90, 0, 0, 749, 1333)
+				if x~=-1 and y~=-1 then
+					mSleep(500)
+					toast("111",1)
+					mSleep(500)
+				end
