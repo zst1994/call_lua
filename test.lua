@@ -1717,11 +1717,27 @@ end
 --                            keyDown(key)
 --                            keyUp(key)
 
-
-				mSleep(200)
-				x,y = findMultiColorInRegionFuzzy( 0x353535, "134|0|0x353535,281|0|0x353535,52|63|0x353535,140|62|0x353535,-217|455|0x9ce6bf,312|443|0x9ce6bf,3|453|0xd7f5e5,56|455|0xd7f5e5", 90, 0, 0, 749, 1333)
-				if x~=-1 and y~=-1 then
-					mSleep(500)
-					toast("111",1)
-					mSleep(500)
-				end
+	--国家／地区
+	while (true) do
+		--10
+		mSleep(200)
+		x, y = findMultiColorInRegionFuzzy(0x1a1a1a,"22|0|0x1a1a1a,27|27|0x1a1a1a,0|24|0x1a1a1a,14|12|0x1a1a1a,36|5|0x1a1a1a,64|4|0x1a1a1a", 90, 0, 0, 749, 431)
+		if x~=-1 and y~=-1 then
+			mSleep(500)
+			toast("11",1)
+			randomTap(x + 120, y + 90, 6)
+			mSleep(math.random(500, 700))
+			break
+		end
+		
+		--11
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy( 0x000000, "3|-10|0x090909,5|-23|0x000000,26|-9|0x000000,53|-9|0x000000,61|-9|0x000000,61|-24|0x000000,90|-6|0x000000,102|-6|0x000000,226|324|0x9ce6bf", 90, 0, 0, 749, 1333)
+		if x~=-1 and y~=-1 then
+			mSleep(500)
+			dialog(x.."22"..y,0)
+			randomTap(x + 120, y + 90, 6)
+			mSleep(math.random(500, 700))
+			break
+		end
+	end
