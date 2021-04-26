@@ -3677,7 +3677,23 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_type,vpn_stau
 				local Wildcard = getList("/var/mobile/Containers/Data/Application") 
 				for var = 1,#Wildcard do 
 					local file = io.open("/var/mobile/Containers/Data/Application/"..Wildcard[var].."/Library/WechatPrivate/wx.dat","rb") 
-					if file then 
+					if file then
+						local ts = require("ts")
+						local plist = ts.plist
+						local plfilename = "/var/mobile/Containers/Data/Application/"..Wildcard[var].."/Library/LocalInfo.lst" --设置plist路径
+						local tmp2 = plist.read(plfilename)                --读取 PLIST 文件内容并返回一个 TABLE
+						for k, v in pairs(tmp2) do
+							if k == "$objects" then
+								for i = 3 ,5 do
+									if tonumber(v[i]) then
+										wc = v[i]
+										wcid = v[i-1]
+										break
+									end	
+								end	
+							end	
+						end
+						
 						local str = file:read("*a") 
 						file:close() 
 						require"sz" 
@@ -3686,7 +3702,13 @@ function model:wechat(ksUrl,move_type,operator,login_times,content_type,vpn_stau
 					end 
 				end 
 			end 
+			
+			if type(wcid) == 'nil' or type(wcid) == nil then
+			    wcid = '获取不到wcid'
+			end
+			
 			six_data = getData()
+			six_data = six_data .. "----" .. wcid
 			mSleep(500)
 			toast(six_data);
 			mSleep(500)
