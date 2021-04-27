@@ -1734,7 +1734,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			toast("不是我的，注册新号", 1)
 			mSleep(500)
 		end
-		
+
 		mSleep(200)
 		if getColor(116, 949) == 0x007aff then
 			mSleep(math.random(500, 1000))
@@ -2977,6 +2977,16 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 		new_name = self.mm_accountId .. "----" .. self.subName .. "----" .. self.qqAcount .. "----" .. self.qqPassword .. "----" .. sj
 	elseif loginAccountWay == "1" then
 		new_name = self.mm_accountId .. "----" .. self.subName .. "----" .. self.phone .. "----" .. sj
+		
+		::saveAgain::
+		mSleep(500)
+		bool = writeFileString(userPath().."/res/USA-phone.txt",self.mm_accountId .. "----" .. self.phone .. "----" .. self.code_token,"a",1) --将 string 内容存入文件，成功返回 true
+		if bool then
+			toast("保存号码到失败文件成功",1)
+		else
+			toast("保存号码到失败文件失败",1)
+			goto saveAgain
+		end
 	end
 
 	toast(new_name,1)

@@ -204,7 +204,7 @@ function model:timeOutRestart(t1)
 	if os.difftime(t2, t1) > 60 then
 		self:index()
 	else
-		toast("距离重启脚本还有"..(120 - os.difftime(t2, t1)) .. "秒",1)
+		toast("距离重启脚本还有"..(60 - os.difftime(t2, t1)) .. "秒",1)
 		mSleep(1000)
 	end
 end
@@ -515,6 +515,7 @@ function model:mm()
 
 	if changePhone == "0" then
 		back_again = 0
+		bindCount = 0
 		getPhoneAgain = true
 
 		t1 = ts.ms()
@@ -699,6 +700,7 @@ function model:mm()
 					mSleep(100)
 				end
 
+				t1 = ts.ms()
 				while (true) do
 					mSleep(50)
 					x,y = findMultiColorInRegionFuzzy( 0xffffff, "217|-4|0xffffff,413|-2|0x3bb3fa,-208|-4|0x3bb3fa,109|-44|0x3bb3fa,119|37|0x3bb3fa,-44|-493|0xff682c,213|-631|0xff682c,-45|-569|0xf3d339,70|-680|0xfc7ef3", 100, 0, 0, 749, 1333)
@@ -710,8 +712,19 @@ function model:mm()
 					else
 						mSleep(200)
 						tap(370,  671)
-						mSleep(1000)
+						mSleep(500)
 					end
+
+					mSleep(50)
+					if getColor(390,  630) == 0x606060 and getColor(490,  705) == 0x445660 and getColor(472,  660) == 0xf5f6f5 then
+						mSleep(200)
+						toast("验证码错误",1)
+						mSleep(500)
+						break
+					end
+
+					self:timeOutRestart(t1)
+					mSleep(1000)
 				end
 
 				self:remove_phone()
@@ -734,6 +747,11 @@ function model:mm()
 			mSleep(500)
 			tap(60,   84)
 			mSleep(2000)
+		end
+
+		bindCount = bindCount + 1
+
+		if bindCount < tonumber(bindPhoneCount) then
 			back_again = 0
 			getPhoneAgain = true
 			goto get_phone_agagin
@@ -866,12 +884,24 @@ function model:main()
 				["select"] = "0",
 				["countperline"] = "4"
 			},
+			{
+				["type"] = "Label",
+				["text"] = "输入绑定手机号码次数",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255"
+			},
+			{
+				["type"] = "Edit",
+				["prompt"] = "输入绑定手机号码次数",
+				["text"] = "默认值"
+			},
 		}
 	}
 
 	local MyJsonString = json.encode(MyTable)
 
-	ret, connect_vpn, old_pass, refresh, changePhone = showUI(MyJsonString)
+	ret, connect_vpn, old_pass, refresh, changePhone, bindPhoneCount = showUI(MyJsonString)
 	if ret == 0 then
 		dialog("取消运行脚本", 3)
 		luaExit()
