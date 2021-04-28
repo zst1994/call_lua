@@ -335,6 +335,17 @@ function model:sameMain()
 		mSleep(1000)
 		return true
 	end
+	
+	--消息页面
+	mSleep(50)
+	x,y = findMultiColorInRegionFuzzy(0x323333, "12|-1|0x323333,13|5|0x323333,15|13|0x323333,12|28|0x323333,4|21|0x323333,25|11|0x323333,556|118|0xf3f3f3,611|13|0x404040,611|29|0x404040", 100, 3, 69, 743, 299, { orient = 2 })
+    if x ~= -1 then
+        mSleep(200)
+		randomTap(74, 1232, 4)
+		mSleep(500)
+		toast("消息", 1)
+		mSleep(1000)
+	end
 
 	--跳过
 	mSleep(50)
@@ -493,8 +504,8 @@ function model:mm()
 	if refresh == "0" then
 		for var= 1, 3 do
 			mSleep(200)
-			randomTap(74, 1227,4,"",1,20)
-			randomTap(74, 1227,4,"",1,20)
+			randomTap(74, 1227, 4, "", 1, 20)
+			randomTap(74, 1227, 4, "", 1, 20)
 			mSleep(3500)
 		end
 
