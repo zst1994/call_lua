@@ -533,7 +533,7 @@ function model:mm()
 		while (true) do
 			--更多
 			mSleep(50)
-			x,y = findMultiColorInRegionFuzzy( 0x323333, "0|36|0x323333,-5|17|0x323333,6|17|0x323333,0|17|0xffffff,-566|498|0x18d9f1,-76|501|0x21deac,-253|496|0xffc20e", 100, 0, 0, 749, 1333)
+			x,y = findMultiColorInRegionFuzzy( 0x323333, "0|36|0x323333,-5|17|0x323333,6|17|0x323333,0|17|0xffffff,-76|501|0x21deac,-253|496|0xffc20e", 100, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
 				mSleep(200)
 				randomTap(x, y + 20, 4)

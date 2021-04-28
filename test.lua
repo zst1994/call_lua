@@ -1717,9 +1717,9 @@ end
 --                            keyDown(key)
 --                            keyUp(key)
 mSleep(50)
-			x,y = findMultiColorInRegionFuzzy(0x323333, "51|-16|0x323333,88|-14|0x323333,148|-18|0x323333,194|-22|0x323333,64|112|0xc7c7cc,164|106|0xc7c7cc,232|107|0xc7c7cc,77|432|0xebebeb,433|427|0xebebeb", 90, 0, 0, 750, 1334, { orient = 2 })
+			x,y = findMultiColorInRegionFuzzy( 0x323333, "0|36|0x323333,-5|17|0x323333,6|17|0x323333,0|17|0xffffff,-76|501|0x21deac,-253|496|0xffc20e", 100, 0, 0, 749, 1333)
 			if x~=-1 and y~=-1 then
-				mSleep(500)
-				tap(x + 270, y + 100)
-				mSleep(1500)
+				mSleep(200)
+				randomTap(x, y + 20, 4)
+				mSleep(1000)
 			end
