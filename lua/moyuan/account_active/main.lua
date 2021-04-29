@@ -463,6 +463,18 @@ function model:mm()
 			mSleep(500)
 			break
 		end
+		
+		--账号功能受限
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy( 0x0f80ff, "29|0|0x0f80ff,-211|-124|0x000000,-201|-124|0x000000,-195|-122|0x000000,-187|-118|0x000000,-162|-118|0x000000,-162|-112|0x000000,-58|-116|0x000000,-17|-124|0x000000", 90, 0, 0, 749, 1333)
+		if x ~= -1 and y ~= -1 then
+			mSleep(200)
+			randomTap(x,y,4)
+			mSleep(500)
+			toast("账号功能受限",1)
+			mSleep(500)
+			goto over
+		end
 
 		flag = isFrontApp(self.mm_bid)
 		if flag == 0 then
@@ -496,6 +508,18 @@ function model:mm()
 				goto inputPass
 			end
 			break
+		end
+		
+		--账号功能受限
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy( 0x0f80ff, "29|0|0x0f80ff,-211|-124|0x000000,-201|-124|0x000000,-195|-122|0x000000,-187|-118|0x000000,-162|-118|0x000000,-162|-112|0x000000,-58|-116|0x000000,-17|-124|0x000000", 90, 0, 0, 749, 1333)
+		if x ~= -1 and y ~= -1 then
+			mSleep(200)
+			randomTap(x,y,4)
+			mSleep(500)
+			toast("账号功能受限",1)
+			mSleep(500)
+			goto over
 		end
 
 		self:timeOutRestart(t1)
@@ -779,6 +803,8 @@ function model:mm()
 	if AMG.Rename(old_name, new_name) == true then
 		toast("重命名当前记录 " .. old_name .. " 为 " .. new_name, 3)
 	end
+	
+	::over::
 end
 
 function model:index()
