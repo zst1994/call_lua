@@ -1716,142 +1716,28 @@ end
 --        					key = "ReturnOrEnter"
 --                            keyDown(key)
 --                            keyUp(key)
-function sameMain()
-	--首页
-	mSleep(50)
-	if getColor(206, 109) == 0x323333 and getColor(370, 99) == 0x323333 or
-	getColor(411, 176) == 0x323333 and getColor(419, 135) == 0x323333 or
-	getColor(45, 109) == 0x323333 and getColor(222, 95) == 0x323333 or
-	getColor(206, 156) == 0x323333 and getColor(336, 157) == 0x323333 or
-	getColor(206,  153) == 0x313232 and getColor(371,  131) == 0x313232 then
-		toast("首页1", 1)
-		mSleep(1000)
-		return true
-	end
-
-	--首页
-	mSleep(50)
-	x,y = findMultiColorInRegionFuzzy(0x323333, "17|15|0x323333,25|-6|0x323333,35|8|0x323333,53|6|0x323333,77|9|0x323333,73|-3|0x323333,104|1|0x323333,135|8|0x323333,200|6|0xffffff", 100, 0, 0, 421,179, { orient = 2 })
-	if x ~= -1 then
-		toast("首页2", 1)
-		mSleep(1000)
-		return true
-	end
-
-	--首页
-	mSleep(50)
-	x,y = findMultiColorInRegionFuzzy(0x3ee1ec, "13|-3|0xfdfdfd,30|5|0x3ee1ec,-2|38|0x13cae2,10|38|0x13cae2,25|31|0x13cae2", 100, 0, 0, 750, 1150, { orient = 2 })
-	if x ~= -1 then
-		toast("首页3", 1)
-		mSleep(1000)
-		return true
-	end
-	
-	--消息页面
-	mSleep(50)
-	x,y = findMultiColorInRegionFuzzy(0x323333, "12|-1|0x323333,13|5|0x323333,15|13|0x323333,12|28|0x323333,4|21|0x323333,25|11|0x323333,556|118|0xf3f3f3,611|13|0x404040,611|29|0x404040", 100, 3, 69, 743, 299, { orient = 2 })
-    if x ~= -1 then
-        mSleep(200)
-		randomTap(74, 1232, 4)
-		mSleep(500)
-		toast("消息", 1)
-		mSleep(1000)
-	end
-
-	--跳过
-	mSleep(50)
-	x,y = findMultiColorInRegionFuzzy(0x323333, "-3|1|0x3b3b3a,-3|-10|0x323333,10|-8|0x323333,14|-8|0x323333,28|3|0x353535,40|10|0x323333,43|0|0x323333,36|-9|0x323333", 100, 0, 0, 750, 234, { orient = 2 })
-	if x ~= -1 then
-		mSleep(200)
-		randomTap(x,y,4)
-		mSleep(500)
-		toast("跳过1",1)
-		mSleep(500)
-		return false
-	end
-
-	mSleep(50)
-	x,y = findMultiColorInRegionFuzzy( 0x323333, "-3|1|0x3c3c3c,-3|-10|0x323333,10|-9|0x323333,14|-8|0x323333,28|0|0x353636,41|9|0x323333,43|-3|0x323333,36|-10|0x323333", 90, 0, 0, 749, 233)
-	if x ~= -1 then
-		mSleep(200)
-		randomTap(x,y,4)
-		mSleep(500)
-		toast("跳过2",1)
-		mSleep(500)
-		return false
-	end
-
-	--绑定手机
-	mSleep(50)
-	x,y = findMultiColorInRegionFuzzy( 0x323333, "-199|53|0x323333,-210|53|0x323333,-251|53|0x323333,-294|56|0x323333,-329|56|0x323333,-338|56|0x323333,-423|574|0x4ebbfb,-119|572|0x4ebbfb,-74|391|0xebebeb", 100, 0, 0, 749, 1333)
-	if x ~= -1 and y ~= -1 then
-		mSleep(200)
-		randomTap(x,y,4)
-		mSleep(500)
-		toast("绑定手机",1)
-		mSleep(500)
-		return false
-	end
-
-	--打个卡
-	mSleep(50)
-	x,y = findMultiColorInRegionFuzzy( 0xffffff, "5|14|0xffffff,19|11|0xffffff,40|11|0xffffff,59|6|0xffffff,340|2|0x3bb3fa,-226|9|0x3bb3fa,51|-33|0x3bb3fa,52|45|0x3bb3fa,362|-639|0x979797", 90, 0, 0, 749, 1333)
-	if x ~= -1 and y ~= -1 then
-		mSleep(200)
-		randomTap(697, 551, 4)
-		mSleep(500)
-		toast("打个卡",1)
-		mSleep(500)
-		return false
-	end
-end
-
---注册登录
-		mSleep(50)
-		x,y = findMultiColorInRegionFuzzy( 0xffffff, "105|1|0xffffff,211|3|0x18d9f1,95|-37|0x18d9f1,-48|-4|0x18d9f1,83|39|0x18d9f1", 100, 0, 0, 749, 1333)
-		if x ~= -1 and y ~= -1 then
-			mSleep(200)
-			randomTap(x,y,4)
-			mSleep(500)
-			toast("注册登录1",1)
-			mSleep(500)
-		end
-
-		--注册登录
-		mSleep(50)
-		x,y = findMultiColorInRegionFuzzy( 0xffffff, "32|2|0xffffff,90|3|0xfdffff,-99|-2|0x18d9f1,43|-41|0x18d9f1,41|37|0x18d9f1,176|-3|0x18d9f1", 100, 0, 0, 749, 1333)
-		if x ~= -1 and y ~= -1 then
-			mSleep(200)
-			randomTap(x,y,4)
-			mSleep(500)
-			toast("注册登录2",1)
-			mSleep(500)
-		end
-
-		--帐号密码登录
-		mSleep(50)
-		x,y = findMultiColorInRegionFuzzy( 0x18d9f1, "-33|5|0x18d9f1,-60|-1|0x18d9f1,-89|-1|0x18d9f1,-98|-1|0x18d9f1,24|-1|0x18d9f1,50|-2|0x18d9f1,-18|-101|0xd8d8d8,454|-106|0xd8d8d8", 90, 0, 0, 749, 1333)
-		if x ~= -1 and y ~= -1 then
-			mSleep(200)
-			randomTap(x,y,4)
-			mSleep(500)
-			toast("帐号密码登录",1)
-			mSleep(500)
-		end
-
-		mSleep(50)
-		x,y = findMultiColorInRegionFuzzy( 0x18d9f1, "34|4|0x18d9f1,57|3|0x18d9f1,-124|-501|0x323333,-96|-506|0x323333,-64|-507|0x323333,-17|-506|0x323333,33|-506|0x323333,47|-106|0xd8d8d8,350|-95|0xd8d8d8", 90, 0, 0, 749, 1333)
-		if x ~= -1 and y ~= -1 then
-			mSleep(200)
-			randomTap(x + 110,y - 280,4)
-			mSleep(500)
-			writePasteboard(old_pass)
-			mSleep(500)
-			keyDown("RightGUI")
-			keyDown("v")
-			keyUp("v")
-			keyUp("RightGUI")
-			mSleep(500)
-			randomTap(288,  805,4)
-			mSleep(500)
-		end
+mSleep(100)
+        x,y = findMultiColorInRegionFuzzy(0x576b95, "16|0|0x576b95,44|-3|0x576b95,54|-2|0x576b95,12|-211|0x1a1a1a,33|-210|0x1a1a1a,27|-201|0x1a1a1a,94|-198|0x1a1a1a,102|-201|0x1a1a1a,120|-194|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+            mSleep(500)
+            tap(x,y)
+            mSleep(1000)
+--             while (true) do
+--                 mSleep(500)
+--                 x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "4|7|0x1a1a1a,13|7|0x1a1a1a,21|7|0x1a1a1a,53|7|0x1a1a1a,74|-5|0x1a1a1a,91|-4|0x1a1a1a,83|3|0x1a1a1a,84|9|0x1a1a1a,86|18|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
+--                 if x ~= -1 then
+--                     mSleep(500)
+--                     tap(x + 500,y + 10)
+--                     mSleep(1000)
+--                     for var=1,20 do
+--                         mSleep(100)
+--                         keyDown("DeleteOrBackspace")
+--                         keyUp("DeleteOrBackspace")  
+--                     end
+--                     break
+--                 end
+--             end
+--             category = "error-data"
+-- 			data = self.id_card_num.."----证件有误"
+--             break
+        end

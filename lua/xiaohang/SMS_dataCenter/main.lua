@@ -3855,11 +3855,12 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					::connet::
 					connetBool = self:connetMoveHttp(liandongName)
 					if not connetBool then
-						if api_change == "2" or api_change == "10" or api_change == "12" then
+					    if api_change == "10" or api_change == "12" then
+				-- 		if api_change == "2" or api_change == "10" or api_change == "12" then
 							if api_change == "10" then
 								url = "http://web.jiemite.com"
-							elseif api_change == "2" then
-								url = "http://api.ma37.com"
+				-- 			elseif api_change == "2" then
+				-- 				url = "http://api.ma37.com"
 							elseif api_change == "12" then
 								url = "http://27.124.4.13"
 							end

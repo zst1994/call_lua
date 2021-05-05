@@ -363,18 +363,26 @@ function model:getPhoneAndToken()
 end
 
 function model:remove_phone()
+    phoneLen = #self.phone_table
+    
+    ::deleteTab::
 	table.remove(self.phone_table, 1)
-
-	::save::
-	mSleep(500)
-	bool = writeFile(userPath() .. "/res/phoneNum.txt", self.phone_table, "w", 1) --将 table 内容存入文件，成功返回 true
-	if bool then
-		toast("写入成功", 1)
-	else
-		toast("写入失败", 1)
-		goto save
+	if #self.phone_table < phoneLen then
+	    toast('号码删除成功',1)
+    	::save::
+    	mSleep(500)
+    	bool = writeFile(userPath() .. "/res/phoneNum.txt", self.phone_table, "w", 1) --将 table 内容存入文件，成功返回 true
+    	if bool then
+    		toast("写入成功", 1)
+    	else
+    		toast("写入失败", 1)
+    		goto save
+    	end
+    	mSleep(1000)
+    else
+        toast('号码删除失败',1)
+        goto deleteTab
 	end
-	mSleep(1000)
 end
 
 function model:get_mess()
