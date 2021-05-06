@@ -1,6 +1,7 @@
+--输入Q账号和密码
 require "TSLib"--使用本函数库必须在脚本开头引用并将文件放到设备 lua 目录下
 
-tab = readFile(userPath().."/res/qq.txt") 
+tab = readFile(userPath().."/res/q_acount.txt") 
 if tab then
 	data = strSplit(string.gsub(tab[1],"%s+",""),"----")
 	account = data[1]
@@ -20,7 +21,7 @@ if tab then
 		randomTap(239,  629, 4)
 		mSleep(500)
 		table.remove(tab, 1)
-		writeFile(userPath().."/res/qq.txt",tab,"w",1)
+		writeFile(userPath().."/res/q_acount.txt",tab,"w",1)
 	end
 else
 	dialog("文件不存在")
