@@ -1,5 +1,5 @@
 --输入Q账号和密码
-require "TSLib"--使用本函数库必须在脚本开头引用并将文件放到设备 lua 目录下
+require "TSLib"
 
 tab = readFile(userPath().."/res/q_acount.txt") 
 if tab then
@@ -26,3 +26,6 @@ if tab then
 else
 	dialog("文件不存在")
 end
+
+
+

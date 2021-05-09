@@ -3089,12 +3089,17 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			goto reset
 		end
 	end
-
+    
+    getLSJCodeBool = false
 	if mess_bool then
+	    ::getLSJCode::
 		if get_ms_code then
-			get_time = 1
-			restart_time = 0
-			caozuo_more = false
+		    if not getLSJCodeBool then
+    			get_time = 1
+    			restart_time = 0
+		    end
+		    
+		    caozuo_more = false
 			first_time = os.time()
 
 			::caozuo_more::
@@ -4119,71 +4124,73 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					if type(string.find(res, "%d+%d+%d+%d+%d+%d+")) == "number" then
 						mess_yzm = string.match(res,"%d+%d+%d+%d+%d+%d+")
 					else
-						toast("暂未查询到验证码，请稍后再试"..get_time,1)
-						mSleep(2000)
-						get_time = get_time + 1
-						if get_time > 15 then
-							if country_id == "886" then
-								mSleep(500)
-								setVPNEnable(true)
-								mSleep(math.random(2000, 3000))
-								randomsTap(372,  749, 3)
-								mSleep(math.random(1000, 1500))
-								randomsTap(368, 1039,5)
-								mSleep(math.random(5000, 6000))
-								if content_type ~= "3" then
-									setVPNEnable(false)
-								end
-							else
-								if content_type == "1" then
-									mSleep(math.random(2000, 3000))
-									randomsTap(372,  749, 3)
-									mSleep(math.random(1000, 1500))
-									randomsTap(368, 1039,5)
-									mSleep(math.random(5000, 6000))
-								else
-									mSleep(500)
-									setVPNEnable(true)
-									mSleep(math.random(2000, 3000))
-									randomsTap(372,  749, 3)
-									mSleep(math.random(1000, 1500))
-									randomsTap(368, 1039,5)
-									mSleep(math.random(5000, 6000))
-									if content_type ~= "3" then
-										setVPNEnable(false)
-									end
-								end
-							end
-							get_time = 1
-							restart_time = restart_time + 1
-							caozuo_more = true
-							toast("重新获取验证码"..restart_time,1)
-							goto caozuo_more
+					    if not getLSJCodeBool then
+    						toast("暂未查询到验证码，请稍后再试"..get_time,1)
+    						mSleep(2000)
+    						get_time = get_time + 1
+    						if get_time > 15 then
+    							if country_id == "886" then
+    								mSleep(500)
+    								setVPNEnable(true)
+    								mSleep(math.random(2000, 3000))
+    								randomsTap(372,  749, 3)
+    								mSleep(math.random(1000, 1500))
+    								randomsTap(368, 1039,5)
+    								mSleep(math.random(5000, 6000))
+    								if content_type ~= "3" then
+    									setVPNEnable(false)
+    								end
+    							else
+    								if content_type == "1" then
+    									mSleep(math.random(2000, 3000))
+    									randomsTap(372,  749, 3)
+    									mSleep(math.random(1000, 1500))
+    									randomsTap(368, 1039,5)
+    									mSleep(math.random(5000, 6000))
+    								else
+    									mSleep(500)
+    									setVPNEnable(true)
+    									mSleep(math.random(2000, 3000))
+    									randomsTap(372,  749, 3)
+    									mSleep(math.random(1000, 1500))
+    									randomsTap(368, 1039,5)
+    									mSleep(math.random(5000, 6000))
+    									if content_type ~= "3" then
+    										setVPNEnable(false)
+    									end
+    								end
+    							end
+    							get_time = 1
+    							restart_time = restart_time + 1
+    							caozuo_more = true
+    							toast("重新获取验证码"..restart_time,1)
+    							goto caozuo_more
+    						end
+    
+    						if restart_time > 2 then
+    							::addblack::
+    							local sz = require("sz")        --登陆
+    							local http = require("szocket.http")
+    							local res, code = http.request("http://api.nwohsz.com:2086/registerApi/addBlack?uid=1608085312&pid=11&number="..telphone.."&sign="..lsj_key:md5())
+    							if code == 200 then
+    								local tmp = json.decode(res)
+    								if tmp.code == 0 then
+    									toast("拉黑成功",1)
+    									mSleep(500)
+    								else
+    									toast("拉黑失败:"..tostring(res),1)
+    									mSleep(5000)
+    									goto addblack
+    								end
+    							else
+    								toast("拉黑失败:"..tostring(res),1)
+    								mSleep(5000)
+    								goto addblack
+    							end
+    							goto over
+    						end
+    						goto get_mess
 						end
-
-						if restart_time > 2 then
-							::addblack::
-							local sz = require("sz")        --登陆
-							local http = require("szocket.http")
-							local res, code = http.request("http://api.nwohsz.com:2086/registerApi/addBlack?uid=1608085312&pid=11&number="..telphone.."&sign="..lsj_key:md5())
-							if code == 200 then
-								local tmp = json.decode(res)
-								if tmp.code == 0 then
-									toast("拉黑成功",1)
-									mSleep(500)
-								else
-									toast("拉黑失败:"..tostring(res),1)
-									mSleep(5000)
-									goto addblack
-								end
-							else
-								toast("拉黑失败:"..tostring(res),1)
-								mSleep(5000)
-								goto addblack
-							end
-							goto over
-						end
-						goto get_mess
 					end
 				else
 					toast("获取验证码失败:"..tostring(res),1)
@@ -4570,7 +4577,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					goto get_mess
 				end
 			end
-
+            
 			if tonumber(mess_yzm) ~= tonumber(old_mess_yzm) then
 				toast(mess_yzm,1)
 				mSleep(math.random(1000, 1700))
@@ -4754,6 +4761,13 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					again_time = 0
 					menguNum = menguNum + 1
 					goto kq
+				elseif vpn_stauts == "15" and menguNum < 3 then
+				    mSleep(500)
+					randomsTap(x,  y, 3)
+					mSleep(1000)
+					getLSJCodeBool = true
+					menguNum = menguNum + 1
+					goto getLSJCode
 				else
 					mSleep(500)
 					randomsTap(x,  y, 3)
