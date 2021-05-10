@@ -2,6 +2,7 @@
 require "TSLib"
 local ts 					= require('ts')
 local json 					= ts.json
+local plist                 = ts.plist
 
 local model 				= {}
 
@@ -10,11 +11,29 @@ model.next_url 				= ''
 model.getcurrent_url 		= ''
 model.setcurrent_url 		= ''
 model.setcurrent_file 		= ''
+model.content               = ''
+
+
+model.plfilename            = userPath().."/res/person.plist" --设置 plist 路径
 model.mm_bid                = "com.wemomo.momoappdemo1"
+
+model.API                   = "CkjuQGtZUNumzQvjgTQ082Ih"
+model.Secret                = "XsYel9kpUUhG3OwFHfu9h2cKbXlhPpzj"
+model.tab_CHN_ENG           = {
+	language_type           = "CHN_ENG",
+	detect_direction        = "true",
+	detect_language         = "true",
+	ocrType                 = 1
+}
 
 math.randomseed(getRndNum())
 
 function model:getConfig()
+    bool = isFileExist(self.plfilename)
+    if not bool then
+        io.open(self.plfilename, "a+")
+    end
+    
 	::read_file::
 	tab = readFile(userPath().."/res/config.txt") 
 	if tab then 
@@ -33,6 +52,8 @@ end
 
 function model:run_app(bid)
 	::run_again::
+	closeApp(bid)
+	mSleep(500)
 	runApp(bid)
 	mSleep(3000)
 
@@ -87,6 +108,80 @@ function model:set_awz_sysversion()
 	self:set_awz_request(self.setcurrent_url)
 end
 
+function model:timeOutRestart(t1)
+	t2 = ts.ms()
+
+	if os.difftime(t2, t1) > 60 then
+		self:index()
+	else
+	    toast("距离重启脚本还有"..(60 - os.difftime(t2, t1)) .. "秒",1)
+	    mSleep(1000)
+	end
+end
+
+function model:savePerson()
+    ::getBaiDuToken::
+	local code,access_token = getAccessToken(self.API,self.Secret)
+	if code then
+		::snap::
+		local content_name = userPath() .. "/res/baiduAI_content_name1.jpg"
+
+		--内容
+		snapshot(content_name, 151, 45, 611, 91) 
+		mSleep(500)
+		local code, body = baiduAI(access_token,content_name,self.tab_CHN_ENG)
+		if code then
+			local tmp = json.decode(body)
+			if #tmp.words_result > 0 then
+				self.content = tmp.words_result[1].words
+				return true
+			else
+			    return false
+			end
+		else
+			toast("识别失败\n" .. tostring(body),1)
+			mSleep(1000)
+			goto snap
+		end
+
+		if content ~= nil and #content >= 1 then
+			toast("识别内容：\r\n" .. self.content,1)
+			mSleep(1000)
+		else
+			toast("识别内容失败,重新截图识别" .. tostring(body),1)
+			mSleep(1000)
+			goto snap
+		end
+	else
+		toast("获取token失败",1)
+		mSleep(1000)
+		goto getBaiDuToken
+	end
+end
+
+function model:tapDailog()
+	--跳过屏蔽通讯录
+	mSleep(50)
+	x, y = findMultiColorInRegionFuzzy(0x007aff,"20|4|0x007aff,15|3|0x007aff,36|5|0x007aff,38|9|0x007aff,56|6|0x007aff,284|14|0x007aff,304|13|0x007aff,317|12|0x007aff,328|5|0x007aff",90,0,0,750,1334,{orient = 2})
+	if x ~= -1 then
+		mSleep(200)
+		randomTap(x, y, 4)
+		mSleep(500)
+		toast("跳过屏蔽通讯录", 1)
+		mSleep(500)
+	end
+
+	--跳过：招呼一下/分享到动态
+	mSleep(50)
+	if getColor(669,82) == 0xbde1f7 and getColor(702,82) == 0xbde1f7 then
+		mSleep(200)
+		tap(669,82)
+		mSleep(500)
+		toast("跳过：招呼一下", 1)
+		mSleep(500)
+	end
+end
+
 function model:mm()
 	::run_again::
 	mSleep(500)
@@ -96,7 +191,7 @@ function model:mm()
 	mSleep(1000)
 
 	while (true) do
-		mSleep(50)
+		mSleep(100)
 		if getColor(22, 1293) == 0xfdfcfd then
 			mSleep(200)
 			randomTap(676, 1288, 4)
@@ -105,7 +200,7 @@ function model:mm()
 			mSleep(500)
 		end
 
-		mSleep(50)
+		mSleep(100)
 		x,y = findMultiColorInRegionFuzzy( 0x323333, "0|5|0x323333,-7|2|0x323333,-7|11|0x333434,1|9|0x323333,16|5|0x323333,28|7|0x323333,27|0|0x323333,18|11|0x333434,20|2|0x333434", 90, 0, 0, 749, 1333)
 		if x ~= -1 then
 			mSleep(200)
@@ -270,29 +365,138 @@ function model:mm()
 			break
 		end
 	end
+	
+	::tapAgain::
+	t1 = ts.ms()
+	while (true) do
+	    mSleep(100)
+		x,y = findMultiColorInRegionFuzzy( 0x323333, "0|5|0x323333,-7|2|0x323333,-7|11|0x333434,1|9|0x323333,16|5|0x323333,28|7|0x323333,27|0|0x323333,18|11|0x333434,20|2|0x333434", 90, 0, 0, 749, 1333)
+		if x ~= -1 then
+			mSleep(200)
+			randomTap(456, 598, 4)
+			mSleep(500)
+			toast("消息", 1)
+			mSleep(500)
+		end
+		
+        mSleep(100)
+        x,y = findMultiColorInRegionFuzzy( 0xf85543, "0|-25|0xf85543,-12|-11|0xf85543,13|-11|0xf85543", 90, 600, 0, 749, 1333)
+        if x ~= -1 and y ~= -1 then
+        	mSleep(100)
+        	if getColor(x + 7, y - 38) == 0xaaaaaa then
+        		mSleep(200)
+        		moveTowards(x, y - 10,250, 300, 10)
+        		mSleep(500)
+        	else
+        		mSleep(200)
+        		randomTap(x, y - 10, 3)
+        		mSleep(1000)
+        	end
+        end
+        
+        mSleep(100)
+        if getColor(690,1284) == 0x323333 then
+            break
+        end
+        
+        self:timeOutRestart(t1)
+	end
+	
+	if self:savePerson() then
+	    tmp2 = plist.read(plfilename)           
+        if tostring(tmp2[self.content]) ~= 'nil' then
+            if tmp2[self.content] < 3 then
+                tmp2[self.content] = tonumber(tmp2[self.content]) + 1
+            else
+                mSleep(200)
+        		randomTap(60, 83, 3)
+        		mSleep(1000)
+        		goto tapAgain
+            end
+        else
+            tmp2[self.content] = 0
+        end
+        plist.write(plfilename, tmp2) 
+	end
+		
+	while (true) do
+	    tmp2 = plist.read(plfilename)
+	    if tmp2[self.content] == 0 then
+    	    --点击关注
+    	    mSleep(100)
+            x,y = findMultiColorInRegionFuzzy(0xffffff, "-36|-9|0xffffff,82|-3|0xcdcdcd,-510|-22|0x323333,-477|-19|0x323333,-371|-20|0x323333,-345|-32|0x323333", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x ~= -1 then
+                mSleep(200)
+        		randomTap(x, y, 3)
+        		mSleep(500)
+        	else
+        	    mSleep(200)
+        		randomTap(60, 83, 3)
+        		mSleep(1000)
+            end
+            
+            mSleep(100)
+            x,y = findMultiColorInRegionFuzzy(0x323333, "20|3|0x323333,9|-15|0x323333,38|-10|0x323333,65|-11|0x323333,56|0|0x323333,55|-7|0x323333,43|11|0x323333", 90, 0, 0, 750, 1334, { orient = 2 })
+            if x ~= -1 then
+                goto tapAgain
+            end
+	    elseif tmp2[self.content] == 1 then
+	        writePasteboard('哈喽')
+            mSleep(200)
+    		randomTap(446, 1165, 3)
+    		mSleep(500)
+    		keyDown("RightGUI")
+			keyDown("v")
+			keyUp("v")
+			keyUp("RightGUI")
+			mSleep(200)
+			key = "ReturnOrEnter"
+            keyDown(key)
+            keyUp(key)
+    		mSleep(200)
+    		randomTap(60, 83, 3)
+    		mSleep(500)
+	    elseif tmp2[self.content] == 2 then
+	        writePasteboard('微说')
+            mSleep(200)
+    		randomTap(446, 1165, 3)
+    		mSleep(500)
+    		keyDown("RightGUI")
+			keyDown("v")
+			keyUp("v")
+			keyUp("RightGUI")
+			mSleep(200)
+			key = "ReturnOrEnter"
+            keyDown(key)
+            keyUp(key)
+            writePasteboard('235')
+            mSleep(200)
+    		keyDown("RightGUI")
+			keyDown("v")
+			keyUp("v")
+			keyUp("RightGUI")
+			mSleep(200)
+			key = "ReturnOrEnter"
+            keyDown(key)
+            keyUp(key)
+            writePasteboard('15')
+            mSleep(200)
+    		keyDown("RightGUI")
+			keyDown("v")
+			keyUp("v")
+			keyUp("RightGUI")
+			mSleep(200)
+			key = "ReturnOrEnter"
+            keyDown(key)
+            keyUp(key)
+	    end
+	end
 end
 
-function model:tapDailog()
-	--跳过屏蔽通讯录
-	mSleep(50)
-	x, y = findMultiColorInRegionFuzzy(0x007aff,"20|4|0x007aff,15|3|0x007aff,36|5|0x007aff,38|9|0x007aff,56|6|0x007aff,284|14|0x007aff,304|13|0x007aff,317|12|0x007aff,328|5|0x007aff",90,0,0,750,1334,{orient = 2})
-	if x ~= -1 then
-		mSleep(200)
-		randomTap(x, y, 4)
-		mSleep(500)
-		toast("跳过屏蔽通讯录", 1)
-		mSleep(500)
-	end
-
-	--跳过：招呼一下/分享到动态
-	mSleep(50)
-	if getColor(669,82) == 0xbde1f7 and getColor(702,82) == 0xbde1f7 then
-		mSleep(200)
-		tap(669,82)
-		mSleep(500)
-		toast("跳过：招呼一下", 1)
-		mSleep(500)
-	end
+function model:index()
+    self:run_app(self.awz_bid)
+	self:set_awz_request(self.next_url)
+	self:mm()
 end
 
 function model:main()
@@ -306,7 +510,7 @@ function model:main()
 		views = {
 			{
 				["type"] = "Label",
-				["text"] = "设置系统版本",
+				["text"] = "陌陌闪退设置系统版本",
 				["size"] = 20,
 				["align"] = "center",
 				["color"] = "0,0,255",
@@ -329,9 +533,7 @@ function model:main()
 	end
 
 	self:getConfig()
-	self:run_app(self.awz_bid)
-	self:set_awz_request(self.next_url)
-	self:mm()
+	self:index()
 end
 
 model:main()

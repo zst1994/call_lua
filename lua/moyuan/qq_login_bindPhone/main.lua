@@ -703,11 +703,13 @@ function model:mm()
 					toast("你的帐号暂时无法登录，请点击这里恢复正常使用", 1)
 					mSleep(500)
 					self.subName = "企鹅无法登陆"
+					self.subNameBool = false
 					goto reName
 				elseif getColor(422,219) == 0xffffff and getColor(412,216) == 0xffffff then
 					toast("网络异常", 1)
 					mSleep(500)
 					self.subName = "企鹅网络异常"
+					self.subNameBool = false
 					goto reName
 				end
     		end
@@ -718,6 +720,7 @@ function model:mm()
                 toast("你输入的帐号或密码不正确", 1)
 				mSleep(500)
 				self.subName = "企鹅密码错误"
+				self.subNameBool = false
 				goto reName
             end
     		
@@ -818,11 +821,13 @@ function model:mm()
 				toast("你的帐号暂时无法登录，请点击这里恢复正常使用", 1)
 				mSleep(500)
 				self.subName = "企鹅无法登陆"
+				self.subNameBool = false
 				goto reName
 			elseif getColor(422,219) == 0xffffff and getColor(412,216) == 0xffffff then
 				toast("网络异常", 1)
 				mSleep(500)
 				self.subName = "企鹅网络异常"
+				self.subNameBool = false
 				goto reName
 			end
 		end
@@ -833,6 +838,7 @@ function model:mm()
             toast("你输入的帐号或密码不正确", 1)
 			mSleep(500)
 			self.subName = "企鹅密码错误"
+			self.subNameBool = false
 			goto reName
         end
 

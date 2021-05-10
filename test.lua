@@ -1732,22 +1732,97 @@ end
 -- 	},
 -- }
 
---mSleep(500)
---x,y = findMultiColorInRegionFuzzy( 0xf85543, "0|-25|0xf85543,-12|-11|0xf85543,13|-11|0xf85543", 90, 600, 0, 749, 1333)
---if x ~= -1 and y ~= -1 then
---	mSleep(50)
---	if getColor(x + 7, y - 38) == 0xaaaaaa then
---		mSleep(math.random(500, 700))
---		moveTowards(x, y - 10,250,300,10)
---		mSleep(math.random(500, 700))
---	else
---		mSleep(math.random(500, 700))
---		randomTap(x, y - 10, 3)
---		mSleep(math.random(500, 700))
---	end
---end
+-- mSleep(500)
+-- x,y = findMultiColorInRegionFuzzy( 0xf85543, "0|-25|0xf85543,-12|-11|0xf85543,13|-11|0xf85543", 90, 600, 0, 749, 1333)
+-- if x ~= -1 and y ~= -1 then
+-- 	mSleep(50)
+-- 	if getColor(x + 7, y - 38) == 0xaaaaaa then
+-- 		mSleep(math.random(500, 700))
+-- 		moveTowards(x, y - 10,250,300,10)
+-- 		mSleep(math.random(500, 700))
+-- 	else
+-- 		mSleep(math.random(500, 700))
+-- 		randomTap(x, y - 10, 3)
+-- 		mSleep(math.random(500, 700))
+-- 	end
+-- end
 
+-- API                   = "CkjuQGtZUNumzQvjgTQ082Ih"
+-- Secret                = "XsYel9kpUUhG3OwFHfu9h2cKbXlhPpzj"
+-- tab_CHN_ENG           = {
+-- 	language_type           = "CHN_ENG",
+-- 	detect_direction        = "true",
+-- 	detect_language         = "true",
+-- 	ocrType                 = 1
+-- }
 
+-- ::getBaiDuToken::
+-- 	local code,access_token = getAccessToken(API,Secret)
+-- 	if code then
+-- 		::snap::
+-- 		local content_name = userPath() .. "/res/baiduAI_content_name1.jpg"
+
+-- 		--内容
+-- 		snapshot(content_name, 151, 45, 611, 91) 
+-- 		mSleep(500)
+-- 		local code, body = baiduAI(access_token,content_name,tab_CHN_ENG)
+-- 		if code then
+-- 			local tmp = json.decode(body)
+-- 			if #tmp.words_result > 0 then
+-- 				content = tmp.words_result[1].words
+-- 			end
+-- 		else
+-- 			toast("识别失败\n" .. tostring(body),1)
+-- 			mSleep(1000)
+-- 			goto snap
+-- 		end
+
+-- 		if content ~= nil and #content >= 1 then
+-- 			toast("识别内容：\r\n" .. content,1)
+-- 			mSleep(1000)
+-- 		else
+-- 			toast("识别内容失败,重新截图识别" .. tostring(body),1)
+-- 			mSleep(1000)
+-- 			goto snap
+-- 		end
+-- 	else
+-- 		toast("获取token失败",1)
+-- 		mSleep(1000)
+-- 		goto getBaiDuToken
+-- 	end
+-- file = io.open(userPath().."/res/person2.plist", "a+")
+writePasteboard('微说')
+            mSleep(200)
+    		randomTap(446, 1165, 3)
+    		mSleep(500)
+    		keyDown("RightGUI")
+			keyDown("v")
+			keyUp("v")
+			keyUp("RightGUI")
+			mSleep(200)
+			key = "ReturnOrEnter"
+            keyDown(key)
+            keyUp(key)
+            writePasteboard('235')
+            mSleep(200)
+    		keyDown("RightGUI")
+			keyDown("v")
+			keyUp("v")
+			keyUp("RightGUI")
+			mSleep(200)
+			key = "ReturnOrEnter"
+            keyDown(key)
+            keyUp(key)
+            writePasteboard('15')
+            mSleep(200)
+    		keyDown("RightGUI")
+			keyDown("v")
+			keyUp("v")
+			keyUp("RightGUI")
+			mSleep(200)
+			key = "ReturnOrEnter"
+            keyDown(key)
+            keyUp(key)
 --::new_phone::
 --local sz = require("sz");
 --local http = require("szocket.http")
