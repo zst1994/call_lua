@@ -1,0 +1,5 @@
+AWZ
+http://127.0.0.1:1688/cmd?fun=nextrecord
+http://127.0.0.1:1688/cmd?fun=getcurrentrecordparam
+http://127.0.0.1:1688/cmd?fun=setcurrentrecordparam
+/var/mobile/iggparams.txt
