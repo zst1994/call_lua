@@ -61,17 +61,17 @@ function _hexStringToFile(hex,file)
 	file:close();
 end
 
-function _writeData(data) --写入62
-	local wxdataPath = appDataPath(wc_bid) .. wc_folder;
-	newfolder(wxdataPath)
-	os.execute('chown mobile ' .. wxdataPath)
+function _writeData(data) --写入数据
+	local wcdataPath = appDataPath(wc_bid) .. wc_folder;
+	newfolder(wcdataPath)
+	os.execute('chown mobile ' .. wcdataPath)
 	_hexStringToFile(data,appDataPath(wc_bid) .. wc_file)
 	os.execute('chown mobile ' .. appDataPath(wc_bid) .. wc_file)
 	return true
 end
 
 function write_six_two()
-	local path = userPath().."/res/62数据.txt"
+	local path = userPath().."/res/sixTwoData.txt"
 
 	local result
 
@@ -81,23 +81,26 @@ function write_six_two()
 		lua_exit()
 	end
 
-	local data =  file_read_write("62数据.txt","已经读取","----已经读取")
+	local data =  file_read_write("sixTwoData.txt","已经读取","----已经读取")
 	data = TryRemoveUtf8BOM(data)
 	toast(data,1)
 	if data ~= "" and data ~= nil then
 		local data = strSplit(data,"----")
 		if #data > 2 then
-			wxzh = data[1]
-			wxmm = data[2]
+			wczh = data[1]
+			wcmm = data[2]
 			lesjk=data[3]
 		end	
 		_writeData(data[3])
 		toast("写入成功！") 
 		--sjkwj=data[3]
-
+		
+		dialog(data[1],0)
+		dialog(data[2],0)
+		dialog(data[3],0)
 		result = true
 	else
-		dialog("登录失败！原因：写入62数据无效！", 0) 
+		dialog("登录失败！原因：写入数据无效！", 0) 
 		result = false
 	end	
 	return result
@@ -161,7 +164,7 @@ function clear_data (bid)
 	delFileEx(dataPath.."/Library/APCfgInfo.plist") 
 	delFileEx(dataPath.."/Library/APWsjGameConfInfo.plist") 
 	delFileEx(dataPath.."/Library/Preferences/*")
-	delFileEx(dataPath.."/Library/WechatPrivate/*")
+	delFileEx(dataPath..wc_folder.."*")
 	mSleep(500)
 	newfolder(dataPath.."/Documents") 
 	newfolder(dataPath.."/tmp")
@@ -209,7 +212,7 @@ end
 function loop()
 	getConfig()
 	main()
-	toast('运行完成',10)
+	toast('运行完成',1)
 end
 
 loop()
