@@ -253,6 +253,7 @@ function model:mm()
 		end
 	end
 
+	dz_time = 0
 	while (true) do
 		--点击爱心
 		mSleep(50)
@@ -359,6 +360,10 @@ function model:mm()
 						mSleep(500)
 						toast("保存",1)
 						mSleep(500)
+					else
+						mSleep(500)
+						randomTap(661,   86, 4)
+						mSleep(500)
 					end
 
 					mSleep(100)
@@ -398,13 +403,29 @@ function model:mm()
 				mSleep(1000)
 				randomTap(51,   85, 4)
 				mSleep(500)
-				toast("点赞次数上限", 1)
+				dz_time = dz_time + 1
+				if dz_time > 1 then
+					toast("点赞次数上限", 1)
+					mSleep(500)
+					break
+				end
+			end
+			
+			--旗舰会员
+			mSleep(50)
+			x,y = findMultiColorInRegionFuzzy( 0xffffff, "67|-4|0xffffff,-279|2|0xffa73c,45|43|0xffa73c,37|-38|0xffa73c,352|0|0xffa73c", 90, 0, 0, 749, 1333)
+			if x ~= -1 then
+				mSleep(500)
+				randomTap(51,   85, 4)
+				mSleep(1000)
+				randomTap(51,   85, 4)
 				mSleep(500)
 				break
 			end
 		end
 	end
 
+	send_mess_bool = false
 	::tapAgain::
 	t1 = ts.ms()
 	while (true) do
@@ -416,26 +437,33 @@ function model:mm()
 			mSleep(500)
 			toast("消息", 1)
 			mSleep(500)
+			send_mess_bool = true
 		end
 
-		mSleep(100)
-		x,y = findMultiColorInRegionFuzzy( 0xf85543, "0|-25|0xf85543,-12|-11|0xf85543,13|-11|0xf85543", 90, 600, 0, 749, 1333)
-		if x ~= -1 and y ~= -1 then
+		if send_mess_bool then
 			mSleep(100)
-			if getColor(x + 7, y - 38) == 0xaaaaaa then
-				mSleep(500)
-				moveTowards(x, y - 10,250, 300, 10)
-				mSleep(500)
+			x,y = findMultiColorInRegionFuzzy( 0xf85543, "0|-25|0xf85543,-12|-11|0xf85543,13|-11|0xf85543", 90, 600, 0, 749, 1333)
+			if x ~= -1 and y ~= -1 then
+				mSleep(100)
+				if getColor(x + 7, y - 38) == 0xaaaaaa then
+					mSleep(500)
+					moveTowards(x, y - 10,250, 300, 10)
+					mSleep(500)
+				else
+					mSleep(500)
+					randomTap(x, y - 10, 3)
+					mSleep(1000)
+				end
 			else
-				mSleep(500)
-				randomTap(x, y - 10, 3)
-				mSleep(1000)
+				mSleep(200)
+				moveTowards(300,1000,80,300,10) 
+				mSleep(3000)
 			end
-		end
 
-		mSleep(100)
-		if getColor(690,1284) == 0x323333 then
-			break
+			mSleep(100)
+			if getColor(690,1284) == 0x323333 then
+				break
+			end
 		end
 
 		self:timeOutRestart(t1)
@@ -503,8 +531,8 @@ function model:mm()
 end
 
 function model:index()
---	self:run_app(self.awz_bid)
---	self:set_awz_request(self.next_url)
+	--	self:run_app(self.awz_bid)
+	--	self:set_awz_request(self.next_url)
 	self:mm()
 end
 

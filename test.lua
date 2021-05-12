@@ -1822,3 +1822,9 @@ end
 --local res, code = http.request('http://127.0.0.1:1688/cmd?fun=setcurrentrecordparam')
 --dialog(res, time)
 
+
+--openURL('App-Prefs:root=DO_NOT_DISTURB')
+
+openURL('prefs:root=DO_NOT_DISTURB&path=ALLOW_CALLS_FROM')
+
+--openURL('prefs:root=General&path=Keyboard/Hardware_Keyboard')

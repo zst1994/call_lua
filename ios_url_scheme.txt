@@ -1,0 +1,2 @@
+openURL('prefs:root=DO_NOT_DISTURB')     进入勿扰模式
+openURL('prefs:root=DO_NOT_DISTURB&path=ALLOW_CALLS_FROM')   进入勿扰模式 ----> 允许以下来电
