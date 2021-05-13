@@ -1825,6 +1825,21 @@ end
 
 --openURL('App-Prefs:root=DO_NOT_DISTURB')
 
-openURL('prefs:root=DO_NOT_DISTURB&path=ALLOW_CALLS_FROM')
+--openURL('prefs:root=DO_NOT_DISTURB&path=ALLOW_CALLS_FROM')
 
 --openURL('prefs:root=General&path=Keyboard/Hardware_Keyboard')
+
+
+
+
+				--点击关注
+				mSleep(100)
+				x,y = findMultiColorInRegionFuzzy(0xffffff, "20|8|0xffffff,42|8|0xffffff,124|7|0xcdcdcd,119|1|0xcdcdcd,129|1|0xcdcdcd,129|11|0xcdcdcd,120|11|0xcdcdcd", 100, 0, 0, 749, 330)
+				if x ~= -1 then
+					mSleep(500)
+					randomTap(x, y, 3)
+					mSleep(500)
+
+				end
+
+			
