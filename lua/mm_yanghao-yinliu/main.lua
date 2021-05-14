@@ -80,36 +80,6 @@ function model:mingyan()
 	end
 end
 
-function model:fabulous()
-	while (true) do
-		mSleep(100)
-		if getColor(18, 1289) == 0xfdfcfd then
-			self:click(95,  112)
-			self:doubleClick(75, 1290)
-			self:randomMove()
-			break
-		end
-	end
-
-	count = 0
-	while (true) do
-		mSleep(100)
-		x,y = findMultiColorInRegionFuzzy( 0xffffff, "-14|7|0xaaaaaa,-14|-5|0xaaaaaa,3|-8|0xaaaaaa,10|-8|0xaaaaaa,6|11|0xaaaaaa,-10|11|0xaaaaaa,-1|-18|0xaaaaaa", 100, 0, 0, 300, 1333)
-		if x ~= -1 then
-			self:click(x,  y)
-			count = count + 1
-		else
-			self:randomMove()
-		end
-
-		if count > tonumber(fabulous_times) then
-			toast("附近动态点赞流程完成",1)
-			mSleep(1000)
-			break
-		end
-	end
-end
-
 function model:savePerson(snapIndex, x)
 	::getBaiDuToken::
 	local code,access_token = getAccessToken(self.API,self.Secret)
@@ -151,6 +121,36 @@ function model:savePerson(snapIndex, x)
 	else
 		toast("获取token失败",1)
 		goto getBaiDuToken
+	end
+end
+
+function model:fabulous()
+	while (true) do
+		mSleep(100)
+		if getColor(18, 1289) == 0xfdfcfd then
+			self:click(95,  112)
+			self:doubleClick(75, 1290)
+			self:randomMove()
+			break
+		end
+	end
+
+	count = 0
+	while (true) do
+		mSleep(100)
+		x,y = findMultiColorInRegionFuzzy( 0xffffff, "-14|7|0xaaaaaa,-14|-5|0xaaaaaa,3|-8|0xaaaaaa,10|-8|0xaaaaaa,6|11|0xaaaaaa,-10|11|0xaaaaaa,-1|-18|0xaaaaaa", 100, 0, 0, 300, 1333)
+		if x ~= -1 then
+			self:click(x,  y)
+			count = count + 1
+		else
+			self:randomMove()
+		end
+
+		if count > tonumber(fabulous_times) then
+			toast("附近动态点赞流程完成",1)
+			mSleep(1000)
+			break
+		end
 	end
 end
 
@@ -752,7 +752,7 @@ function model:mm()
 
 	for i= 1, #wayList do
 		if wayList[i] == "0" then
-			if tonumber(fabulous_times) > 0 then
+			if fabulous_times ~= '' and fabulous_times ~= '默认值' and tonumber(fabulous_times) > 0 then
 				self:fabulous()
 			else
 				dialog("请检查点赞次数设置是否正确", 0)
@@ -798,7 +798,7 @@ function model:mm()
 		elseif wayList[i] == "2" then
 			self:matching()
 		elseif wayList[i] == "3" then
-			if tonumber(gz_fans) > 0 then
+			if gz_fans ~= '' and gz_fans ~= '默认值' and tonumber(gz_fans) > 0 then
 				self:follow_fans()
 			else
 				dialog("请检查关注粉丝数量设置是否正确", 0)
