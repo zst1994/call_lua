@@ -1,4 +1,4 @@
---仟夏工作室   陌陌点点匹配回复
+-- 陌陌点点匹配回复 引流
 require "TSLib"
 local ts 					= require('ts')
 local json 					= ts.json

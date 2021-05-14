@@ -1831,15 +1831,27 @@ end
 
 
 
+x,y = findMultiColorInRegionFuzzy( 0x323333, "-22|1|0x323333,-45|-2|0x323333,-50|2|0x323333,18|2|0x323333,27|-6|0x323333,40|-6|0x323333,36|13|0x323333,30|9|0x323333,-6|-17|0xffffff", 90, 0, 0, 749, 1333)
+if x ~= -1 then
+	mSleep(200)
+	dialog(x..y, time)
+end
 
-				--点击关注
-				mSleep(100)
-				x,y = findMultiColorInRegionFuzzy(0xffffff, "20|8|0xffffff,42|8|0xffffff,124|7|0xcdcdcd,119|1|0xcdcdcd,129|1|0xcdcdcd,129|11|0xcdcdcd,120|11|0xcdcdcd", 100, 0, 0, 749, 330)
-				if x ~= -1 then
-					mSleep(500)
-					randomTap(x, y, 3)
-					mSleep(500)
 
-				end
 
-			
+::my::
+	status_resp, header_resp,body_resp = ts.httpGet("http://api.eei8.cn/say/api.php?charset=utf-8&encode=json")
+	if status_resp == 200 then
+		tmp = json.decode(body_resp)
+		if tmp.text then
+			dialog( tmp.text,0)
+		else
+			toast("重新获取名言数据",1)
+			mSleep(3000)
+			goto my
+		end
+	else
+		toast("重新获取名言数据",1)
+		mSleep(3000)
+		goto my
+	end
