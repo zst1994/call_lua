@@ -515,10 +515,21 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 		--一键新机
 		if AMG.New() == true then
 			while true do
+			    mSleep(50)
 				if getColor(266, 601) == 0xffffff then
 					toast("newApp成功", 1)
 					break
 				end
+				
+				mSleep(50)
+				x,y = findMultiColorInRegionFuzzy(0x007aff, "-18|-4|0x007aff,-21|-8|0x007aff,13|2|0x007aff,26|-9|0x007aff,27|10|0x007aff,47|-12|0x0d80ff,57|11|0x007aff", 90, 0, 0, 750, 1334, { orient = 2 })
+                if x ~= -1 then
+                    mSleep(500)
+    				tap(x, y)
+    				mSleep(500)
+    				toast("我知道了",1)
+    				mSleep(500)
+                end
 
 				self:vpn_connection("0")
 			end
