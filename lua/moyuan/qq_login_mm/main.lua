@@ -867,6 +867,8 @@ function model:get_mess()
 	body_send = {}
 	ts.setHttpsTimeOut(60)
 	status_resp, header_resp, body_resp = ts.httpGet(self.code_token, header_send, body_send)
+	toast(status_resp .. "===" .. self.code_token,1)
+	mSleep(1000)
 	if status_resp == 200 then
 		if type(string.find(body_resp, "%d+%d+%d+%d+%d+%d+")) == "number" then
 			-- local i, j = string.find(body_resp, "%d+%d+%d+%d+%d+%d+")
@@ -981,6 +983,24 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				mSleep(2000)
 				runAgain = true
 			end
+		end
+		
+		--定位服务未开启
+		mSleep(200)
+		x, y = findMultiColorInRegionFuzzy(0x007aff,"11|1|0x007aff,41|2|0x007aff,40|-188|0x000000,66|-188|0x000000,54|-177|0x000000,79|-177|0x000000,119|-181|0x000000,192|-180|0x000000,260|-185|0x000000",90,0,0,750,1334,{orient = 2})
+		if x ~= -1 then
+			mSleep(500)
+			randomTap(x,y,4)
+			mSleep(500)
+		end
+
+		--定位服务未开启
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0x087dff, "11|1|0x087dff,41|0|0x087dff,248|-6|0x087dff,276|-7|0x087dff,336|1|0x087dff,41|-190|0x010101,66|-189|0x010101,62|-177|0x010101,64|-168|0x010101", 90, 0, 0, 750, 1334, { orient = 2 })
+		if x ~= -1 then
+			mSleep(500)
+			randomTap(x, y, 4)
+			mSleep(500)
 		end
 
 		--注册登录
@@ -1307,8 +1327,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			mSleep(200)
 			if getColor(677,357) == 0xbbbbbb then
 				if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) == 0x808080 or getColor(676,258) == 0x818181 or getColor(78,468) == 0x000000 then
+				    -- 你的账号暂时无法登陆，请点击这里恢复正常使用
 					if getColor(655,211) == 0xffffff then
-						toast("切换下一个账号1", 1)
+						toast("你的账号暂时无法登陆，请点击这里恢复正常使用", 1)
 						mSleep(500)
 						table.remove(self.qqList, 1)
 						writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
@@ -1318,12 +1339,17 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 						inputAgain = true
 						goto hk
 						--					goto over
+					--当前网络环境存在风险
 					elseif getColor(683,209) == 0xffffff then
-						toast("切换下一个账号,重新新机", 1)
+						toast("当前网络环境存在风险", 1)
 						mSleep(500)
-						table.remove(self.qqList, 1)
-						writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
-						goto over
+    					setVPNEnable(false)
+    					mSleep(2000)
+    					self:vpn()
+    					goto hk
+				-- 		table.remove(self.qqList, 1)
+				-- 		writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+				-- 		goto over
 					else
 						toast("切换下一个账号2", 1)
 						mSleep(500)
@@ -1467,7 +1493,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 						break
 					else
 						mSleep(500)
-						tap(55,   130)
+						tap(55,   85)
 						mSleep(2000)
 						goto get_phone_agagin
 					end
@@ -1488,9 +1514,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 		if getMessStatus then
 			mSleep(200)
 			if getColor(629, 1264) == 0 then
-				mSleep(500)
-				tap(119, 414)
-				mSleep(1000)
+				-- mSleep(500)
+				-- tap(119, 363)
+				-- mSleep(1000)
 				for i = 1, #(self.mm_yzm) do
 					mSleep(300)
 					num = string.sub(self.mm_yzm, i, i)
@@ -1553,7 +1579,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				mSleep(500)
 				self:getPhoneAndToken()
 				mSleep(500)
-				tap(55,   130)
+				tap(55,   85)
 				mSleep(2000)
 
 				t1 = ts.ms()
@@ -1562,7 +1588,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 					x,y = findMultiColorInRegionFuzzy(0x18d9f1, "32|-1|0x18d9f1,65|10|0x18d9f1,97|0|0x18d9f1,124|-1|0x18d9f1,150|0|0x18d9f1", 90, 0, 0, 750, 1334, { orient = 2 })
 					if x ~= -1 then
 						mSleep(500)
-						randomTap(584,401, 4)
+						randomTap(x + 444, y - 120, 4)
 						mSleep(1500)
 						for var=1,25 do
 							mSleep(50)
@@ -1793,7 +1819,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 		if getColor(677,357) == 0xbbbbbb then
 			if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) == 0x808080 or getColor(676,258) == 0x818181 or getColor(78,468) == 0x000000 then
 				if getColor(655,211) == 0xffffff then
-					toast("切换下一个账号1", 1)
+					toast("你的账号暂时无法登陆，请点击这里恢复正常使用", 1)
 					mSleep(500)
 					table.remove(self.qqList, 1)
 					writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
@@ -1804,11 +1830,15 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 					goto hk
 					-- 	goto over
 				elseif getColor(683,209) == 0xffffff then
-					toast("切换下一个账号,重新新机", 1)
+					toast("当前网络环境存在风险", 1)
 					mSleep(500)
-					table.remove(self.qqList, 1)
-					writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
-					goto over
+					setVPNEnable(false)
+					mSleep(2000)
+					self:vpn()
+					goto hk
+			-- 		table.remove(self.qqList, 1)
+			-- 		writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+			-- 		goto over
 				else
 					toast("切换下一个账号2", 1)
 					mSleep(500)

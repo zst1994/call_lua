@@ -1830,28 +1830,20 @@ end
 --openURL('prefs:root=General&path=Keyboard/Hardware_Keyboard')
 
 
+while (true) do
+					mSleep(200)
+					x,y = findMultiColorInRegionFuzzy(0x18d9f1, "32|-1|0x18d9f1,65|10|0x18d9f1,97|0|0x18d9f1,124|-1|0x18d9f1,150|0|0x18d9f1", 90, 0, 0, 750, 1334, { orient = 2 })
+					if x ~= -1 then
+					    dialog(x..y,0)
+						mSleep(500)
+						randomTap(584,401, 4)
+						mSleep(1500)
+						for var=1,25 do
+							mSleep(50)
+							keyDown("DeleteOrBackspace")
+							keyUp("DeleteOrBackspace")  
+						end
+						break
+					end
 
-x,y = findMultiColorInRegionFuzzy( 0x323333, "-22|1|0x323333,-45|-2|0x323333,-50|2|0x323333,18|2|0x323333,27|-6|0x323333,40|-6|0x323333,36|13|0x323333,30|9|0x323333,-6|-17|0xffffff", 90, 0, 0, 749, 1333)
-if x ~= -1 then
-	mSleep(200)
-	dialog(x..y, time)
-end
-
-
-
-::my::
-	status_resp, header_resp,body_resp = ts.httpGet("http://api.eei8.cn/say/api.php?charset=utf-8&encode=json")
-	if status_resp == 200 then
-		tmp = json.decode(body_resp)
-		if tmp.text then
-			dialog( tmp.text,0)
-		else
-			toast("重新获取名言数据",1)
-			mSleep(3000)
-			goto my
-		end
-	else
-		toast("重新获取名言数据",1)
-		mSleep(3000)
-		goto my
-	end
+				end
