@@ -287,11 +287,13 @@ function model:timeOutRestart(t1)
 	self:vpn_connection("1")
 
 	t2 = ts.ms()
-
-	if os.difftime(t2, t1) > 60 then
+    
+    diff_time = os.difftime(t2, t1)
+	if diff_time > 60 then
 		self:index()
 	else
-		toast("距离重启脚本还有"..(120 - os.difftime(t2, t1)) .. "秒",1)
+		toast("距离重启脚本还有"..(60 - os.difftime(t2, t1)) .. "秒",1)
+		return diff_time
 	end
 end
 
@@ -1074,7 +1076,8 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 		self:timeOutRestart(t1)
 		mSleep(1000)
 	end
-
+    
+    ::white::
 	if loginAccountWay == "0" then
 		t1 = ts.ms()
 		while true do
@@ -1149,6 +1152,8 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			if x ~= -1 and y ~= -1 then
 				mSleep(math.random(500, 700))
 				randomTap(x, y, 4)
+				mSleep(200)
+				toast("扣扣图标",1)
 				mSleep(math.random(3500, 5000))
 				break
 			end
@@ -1171,6 +1176,12 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 		t1 = ts.ms()
 		hk_whiteBool = true
 		while (true) do
+		    flag = isFrontApp(self.mm_bid)
+			if flag == 0 then
+				runApp(self.mm_bid)
+				mSleep(3000)
+			end
+			
 			mSleep(200)
 			if getColor(239, 629) == 0x12b7f5 then
 				if inputAgain then
@@ -1233,7 +1244,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 					t3 = ts.ms()
 					hk_whiteBool = false
 				end
-
+                
 				if os.difftime(ts.ms(), t3) > 5 then
 					mSleep(500)
 					setVPNEnable(false)
@@ -1244,7 +1255,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 					mSleep(1000)
 				end
 			end
-
+            
 			mSleep(200)
 			if getColor(116, 949) == 0x007aff then
 				if huakuai then
@@ -1375,13 +1386,16 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				end
 			end
 
-			flag = isFrontApp(self.mm_bid)
-			if flag == 0 then
-				runApp(self.mm_bid)
-				mSleep(3000)
+			diff_time = self:timeOutRestart(t1)
+			if diff_time > 30 then
+                mSleep(500)
+            	closeApp(self.mm_bid)
+			    mSleep(500)
+				setVPNEnable(false)
+				mSleep(2000)
+				self:vpn()
+				goto white
 			end
-
-			self:timeOutRestart(t1)
 			mSleep(1000)
 		end
 	elseif loginAccountWay == "1" then
