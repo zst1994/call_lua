@@ -85,10 +85,23 @@ local AMG = {
 			if changeVPNWay == "1" then
 				model:vpn()
 			end
-
+			
+			::newR::
 			local res, code = http.request("http://127.0.0.1:8080/cmd?fun=newRecord")
 			if code == 200 then
 				return model:Check_AMG_Result()
+			else
+				mSleep(50)
+				x,y = findMultiColorInRegionFuzzy(0x007aff, "-18|-4|0x007aff,-21|-8|0x007aff,13|2|0x007aff,26|-9|0x007aff,27|10|0x007aff,47|-12|0x0d80ff,57|11|0x007aff", 90, 0, 0, 750, 1334, { orient = 2 })
+                if x ~= -1 then
+                    mSleep(500)
+    				tap(x, y)
+    				mSleep(500)
+    				toast("我知道了",1)
+    				mSleep(500)
+                end
+				
+				goto newR
 			end
 		end),
 	Get_Name = (function()

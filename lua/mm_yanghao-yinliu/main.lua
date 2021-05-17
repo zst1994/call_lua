@@ -27,24 +27,24 @@ model.tab_CHN_ENG           = {
 math.randomseed(getRndNum())
 
 function model:click(click_x,click_y)
-	mSleep(500)
+	mSleep(math.random(200, 300))
 	randomTap(click_x, click_y, 5)
-	mSleep(500)
+	mSleep(math.random(500, 600))
 end
 
 function model:doubleClick(click_x,click_y)
-	mSleep(500)
+	mSleep(math.random(200, 300))
 	randomTap(click_x, click_y, 5)
-	mSleep(50)
+	mSleep(math.random(50, 60))
 	randomTap(click_x, click_y, 5)
-	mSleep(500)
+	mSleep(math.random(500, 600))
 end
 
 function model:randomMove()
 	for var= 1, math.random(1, 5) do
-		mSleep(200)
+		mSleep(math.random(200, 300))
 		moveTowards(300, 1000, math.random(70, 90), 300, 10) 
-		mSleep(3000)
+		mSleep(math.random(2000, 2500))
 	end
 end
 
@@ -86,7 +86,6 @@ function model:savePerson(snapIndex, x)
 	if code then
 		::snap::
 		local content_name = userPath() .. "/res/baiduAI_content_name1.jpg"
-
 		if snapIndex == "0" then
 			--内容
 			if x > 430 then
@@ -121,36 +120,6 @@ function model:savePerson(snapIndex, x)
 	else
 		toast("获取token失败",1)
 		goto getBaiDuToken
-	end
-end
-
-function model:fabulous()
-	while (true) do
-		mSleep(100)
-		if getColor(18, 1289) == 0xfdfcfd then
-			self:click(95,  112)
-			self:doubleClick(75, 1290)
-			self:randomMove()
-			break
-		end
-	end
-
-	count = 0
-	while (true) do
-		mSleep(100)
-		x,y = findMultiColorInRegionFuzzy( 0xffffff, "-14|7|0xaaaaaa,-14|-5|0xaaaaaa,3|-8|0xaaaaaa,10|-8|0xaaaaaa,6|11|0xaaaaaa,-10|11|0xaaaaaa,-1|-18|0xaaaaaa", 100, 0, 0, 300, 1333)
-		if x ~= -1 then
-			self:click(x,  y)
-			count = count + 1
-		else
-			self:randomMove()
-		end
-
-		if count > tonumber(fabulous_times) then
-			toast("附近动态点赞流程完成",1)
-			mSleep(1000)
-			break
-		end
 	end
 end
 
@@ -203,7 +172,6 @@ function model:diffSex(sexFindColor,sexStrColor1,sexStrColor2)
 							if tostring(tmp2[self.content]) ~= 'nil' then
 								self:click(53, 81)
 								self:click(53, 81)
-								mSleep(500)
 								toast("已经发过消息不需要重新发",1)
 								mSleep(1000)
 								break
@@ -292,6 +260,38 @@ function model:diffFollowFans(sexFindColor,sexStrColor)
 	end
 end
 
+--附近动态点赞
+function model:fabulous()
+	while (true) do
+		mSleep(100)
+		if getColor(18, 1289) == 0xfdfcfd then
+			self:click(95,  112)
+			self:doubleClick(75, 1290)
+			self:randomMove()
+			break
+		end
+	end
+
+	count = 0
+	while (true) do
+		mSleep(100)
+		x,y = findMultiColorInRegionFuzzy( 0xffffff, "-14|7|0xaaaaaa,-14|-5|0xaaaaaa,3|-8|0xaaaaaa,10|-8|0xaaaaaa,6|11|0xaaaaaa,-10|11|0xaaaaaa,-1|-18|0xaaaaaa", 100, 0, 0, 300, 1333)
+		if x ~= -1 then
+			self:click(x,  y)
+			count = count + 1
+		else
+			self:randomMove()
+		end
+
+		if count > tonumber(fabulous_times) then
+			toast("附近动态点赞流程完成",1)
+			mSleep(1000)
+			break
+		end
+	end
+end
+
+--附近打招呼
 function model:hit_call()
 	--关注打招呼
 	while (true) do
@@ -328,45 +328,32 @@ function model:hit_call()
 					self:click(456,  513)
 				end
 
-				--				mSleep(500)
-				--				if location then
-				--					age_group = strSplit(ageGroup,"-")
-				--					if #age_group == 2 then
-				--						if string.gsub(location_txt,"%s+","") == "64-678-684-680" then
-				--							age_left = (tonumber(age_group[1]) - oldAgeGroup[1] + 1) * 28
-				--						else
-				--							age_left = (tonumber(age_group[1]) - oldAgeGroup[1]) * 28
-				--						end
+				-- 设置年龄段
+				if oldAgeItem[1] == "18" then
+					mSleep(math.random(200, 300))
+					moveTowards(43, 680, 0, 30 * (tonumber(newAgeItem[1]) - 18), 10) 
+				else
+					if newAgeItem[1] > oldAgeItem[1] then
+						mSleep(math.random(200, 300))
+						moveTowards(43 + 30 * (tonumber(oldAgeItem[1]) - 18), 680, 0, 30 * (tonumber(newAgeItem[1]) - tonumber(oldAgeItem[1])), 10) 
+					elseif newAgeItem[1] < oldAgeItem[1] then
+						mSleep(math.random(200, 300))
+						moveTowards(43 + 30 * (tonumber(oldAgeItem[1]) - 18), 680, 180, 25 * (tonumber(oldAgeItem[1]) - tonumber(newAgeItem[1])), 10) 
+					end
+				end
 
-				--						age_right = (oldAgeGroup[2] - tonumber(age_group[2])) * 28
-
-				--						if age_left > 0 then
-				--							fx_left = 0
-				--							mSleep(500)
-				--							moveTowards(tonumber(location[1]), tonumber(location[2]), fx_left, math.abs(age_left), 10)
-				--						else
-				--							fx_left = 180
-				--							mSleep(500)
-				--							moveTowards(tonumber(location[1]), tonumber(location[2]), fx_left, math.abs(age_left), 10)
-				--						end
-
-				--						if age_right > 0 then
-				--							fx_right = 180
-				--							mSleep(500)
-				--							moveTowards(tonumber(location[3]), tonumber(location[4]), fx_right, math.abs(age_right), 10)
-				--						else
-				--							fx_right = 0
-				--							age_right = age_right - 14
-				--							mSleep(500)
-				--							moveTowards(tonumber(location[3]), tonumber(location[4]), fx_right, math.abs(age_right), 10)
-				--						end
-				--						nLog("age_left:"..age_left)
-				--						nLog("age_right:"..age_right)
-
-				--						self:saveStringFile(userPath().."/res/ageLocation.txt", tonumber(location[1]) + age_left .. "-" .. location[2] .. "-" .. tonumber(location[3]) - age_right .. "-" .. location[4], "w", "保存数据成功")
-				--						nLog(tonumber(location[1]) + age_left .. "-" .. location[2] .. "-" .. tonumber(location[3]) - age_right .. "-" .. location[4])
-				--					end
-				--				end
+				if oldAgeItem[2] == "40" then
+					mSleep(math.random(200, 300))
+					moveTowards(707, 680, 180, 25 * (40 - tonumber(newAgeItem[2])), 10) 
+				else
+					if newAgeItem[2] > oldAgeItem[2] then
+						mSleep(math.random(200, 300))
+						moveTowards(707 - 25 * (40 - tonumber(oldAgeItem[2])), 680, 0, 30 * (tonumber(newAgeItem[2]) - tonumber(oldAgeItem[2])), 10) 
+					elseif newAgeItem[2] < oldAgeItem[2] then
+						mSleep(math.random(200, 300))
+						moveTowards(707 - 25 * (40 - tonumber(oldAgeItem[2])), 680, 180, 25 * (tonumber(oldAgeItem[2]) - tonumber(newAgeItem[2])), 10) 
+					end
+				end
 
 				mSleep(500)
 				if getColor(643,  781) == 0xffffff then
@@ -394,15 +381,21 @@ function model:hit_call()
 		self:diffSex(0x4cd3ea, "-21|-4|0x4cd3ea,36|-5|0x4cd3ea,4|-11|0x4cd3ea,4|7|0x4cd3ea", "59|0|0x4cd3ea,21|0|0x4cd3ea,21|-10|0x4cd3ea,21|11|0x4cd3ea,21|-5|0xffffff")
 
 		--女
-		self:diffSex(0xff79b8, "32|-5|0xff79b8,14|-14|0xff79b8,13|6|0xff79b8,-21|-4|0xff79b8", "60|0|0xff79b8,39|-10|0xff79b8,39|11|0xff79b8,20|6|0xff79b8,11|5|0xffffff")
+		self:diffSex(0xff79b8, "32|-5|0xff79b8,14|-14|0xff79b8,13|6|0xff79b8,-21|-4|0xff79b8", "27|0|0xff79b8,58|0|0xff79b8,26|10|0xff79b8,26|-11|0xff79b8,11|4|0xffffff")
 
 		t2 = ts.ms()
 		if os.difftime(t2, t1) > 120 then
+			toast("附近打招呼流程完成",1)
+			mSleep(1000)
 			break
+		else
+			toast("倒计时剩余：" .. 120 - os.difftime(t2, t1),1)
+			mSleep(1000)
 		end
 	end
 end
 
+--点点匹配
 function model:matching()
 	while (true) do
 		--判断是否进入首页
@@ -558,8 +551,11 @@ function model:matching()
 	end
 
 	self:doubleClick(75, 1290)
+	toast("点点匹配流程完成",1)
+	mSleep(1000)
 end
 
+--关注粉丝
 function model:follow_fans()
 	while (true) do
 		--判断是否进入首页
@@ -605,6 +601,7 @@ function model:follow_fans()
 	end
 end
 
+--发动态
 function model:send_circle()
 	while (true) do
 		--判断是否进入首页
@@ -643,89 +640,110 @@ function model:send_circle()
 			keyDown("v")
 			keyUp("v")
 			keyUp("RightGUI")
-			mSleep(200)
+			mSleep(1000)
 		elseif getColor(641,   84) == 0x3bb3fa then
 			self:click(641, 84)
 			break
 		end
 	end
-	
-	self:click(51, 85)
+
+	while (true) do
+		mSleep(100)
+		x,y = findMultiColorInRegionFuzzy( 0x323333, "-22|1|0x323333,-45|-2|0x323333,-50|2|0x323333,18|2|0x323333,27|-6|0x323333,40|-6|0x323333,36|13|0x323333,30|9|0x323333,-6|-17|0xffffff", 90, 0, 0, 749, 1333)
+		if x ~= -1 then
+			break
+		else
+			self:click(51, 85)
+		end
+	end
+
 	self:doubleClick(75, 1290)
+	toast("发动态流程完成",1)
+	mSleep(1000)
 end
 
+--回复消息
 function model:reply_mess()
 	--回复消息
 	t1 = ts.ms()
 	while (true) do
-		--判断是否进入首页
-		mSleep(200)
-		if getColor(64, 1312) == 0x0fc9e1 then
-			--判断是否是在附近的人的页面，不是就切换
-			mSleep(200)
-			self:click(376, 1281)
-		end
-
-		mSleep(200)
-		x,y = findMultiColorInRegionFuzzy( 0xf85543, "18|1|0xf85543,8|-10|0xf85543,9|11|0xf85543,-4|-51|0xaaaaaa,-5|-42|0xaaaaaa,19|-121|0xffffff,30|-150|0xffffff", 100, 0, 0, 749, 1233)
-		if x ~= -1 then
-			self:click(x, y)
-			while (true) do
-				mSleep(200)
-				if getColor(689, 1284) == 0x323333 then
-					saveBool, returnBody = self:savePerson("1", x)
-					if saveBool then
-						tmp2 = plist.read(self.sendMessUserPath)           
-						if tostring(tmp2[self.content]) ~= 'nil' then
-							mess_reply_terms = strSplit(messReplyTerms, "-")
-
-							tmp2[self.content] = tonumber(tmp2[self.content]) + 1
-
-							if tmp2[self.content] > #mess_reply_terms then
-								self:click(53, 81)
-								toast("回复消息已经达到回复术语上限",1)
-								mSleep(1000)
-								break
-							else
-								writePasteboard(mess_reply_terms[tonumber(tmp2[self.content])])
-							end
-						else
-							tmp2[self.content] = 1
-							num = math.random(1, #reply_terms)
-							writePasteboard(reply_terms[num])
-						end
-					else
-						self:click(53, 81)
-						toast("识别失败\n" .. tostring(returnBody),1)
-						mSleep(1000)
-						break
-					end
-
-					toast(self.content .. ':' .. tmp2[self.content],1)
-					mSleep(1000)
-					plist.write(self.sendMessUserPath, tmp2) 
-					self:click(473, 1203)
-					keyDown("RightGUI")
-					keyDown("v")
-					keyUp("v")
-					keyUp("RightGUI")
-					mSleep(200)
-					key = "ReturnOrEnter"
-					keyDown(key)
-					keyUp(key)
-					self:click(53, 81)
-					break
-				end
-			end
+		t2 = ts.ms()
+		if os.difftime(t2, t1) > 120 or getColor(415, 1262) == 0xfdfcfd then
+			toast("回复消息流程完成",1)
+			mSleep(1000)
+			break
 		else
-			mSleep(500)
-			moveTowards(418,  824, 90, 200, 5)
+			toast("倒计时剩余：" .. 120 - os.difftime(t2, t1),1)
 			mSleep(1000)
 		end
 
-		t2 = ts.ms()
-		if os.difftime(t2, t1) > 120 then
-			break
+		--判断是否进入首页
+		mSleep(100)
+		if getColor(64, 1312) == 0x0fc9e1 then
+			self:click(376, 1281)
+		end
+
+		mSleep(100)
+		x,y = findMultiColorInRegionFuzzy( 0xf85543, "0|-25|0xf85543,-12|-11|0xf85543,13|-11|0xf85543", 90, 600, 0, 749, 1333)
+		if x ~= -1 then
+			mSleep(100)
+			if getColor(x + 7, y - 38) == 0xaaaaaa then
+				mSleep(500)
+				moveTowards(x, y - 10,250, 300, 10)
+				mSleep(500)
+			else
+				self:click(x, y - 10)
+				while (true) do
+					mSleep(200)
+					if getColor(689, 1284) == 0x323333 then
+						saveBool, returnBody = self:savePerson("1", x)
+						if saveBool then
+							tmp2 = plist.read(self.sendMessUserPath)           
+							if tostring(tmp2[self.content]) ~= 'nil' then
+								mess_reply_terms = strSplit(messReplyTerms, "-")
+								if tmp2[self.content] > #mess_reply_terms then
+									self:click(53, 81)
+									toast("回复消息已经达到回复术语上限",1)
+									mSleep(1000)
+									break
+								else
+									writePasteboard(mess_reply_terms[tonumber(tmp2[self.content])])
+									tmp2[self.content] = tonumber(tmp2[self.content]) + 1
+								end
+							else
+								tmp2[self.content] = 1
+								num = math.random(1, #reply_terms)
+								writePasteboard(reply_terms[num])
+							end
+						else
+							self:click(53, 81)
+							toast("识别失败\n" .. tostring(returnBody),1)
+							mSleep(1000)
+							break
+						end
+
+						toast(self.content .. ':' .. tmp2[self.content],1)
+						mSleep(1000)
+						plist.write(self.sendMessUserPath, tmp2) 
+						self:click(513, 1170)
+						keyDown("RightGUI")
+						keyDown("v")
+						keyUp("v")
+						keyUp("RightGUI")
+						mSleep(200)
+						key = "ReturnOrEnter"
+						keyDown(key)
+						keyUp(key)
+						mSleep(math.random(1000, 1500))
+						self:click(53, 81)
+						break
+					end
+				end
+			end
+		else
+			mSleep(200)
+			moveTowards(300, 1000, math.random(70, 90), 300, 10) 
+			mSleep(3000)
 		end
 	end
 end
@@ -759,39 +777,29 @@ function model:mm()
 				luaExit()
 			end
 		elseif wayList[i] == "1" then
-			--			::readAgeAgain::
 			choice_txt = readFileString(self.ageFilePath)--读取文件内容，返回全部内容的 string
 			if choice_txt then
 				choice = strSplit(choice_txt, "|")
-				--				oldAgeGroup = strSplit(choice[2], "-")
-				--				toast(choice[2],1)
-				--				mSleep(1000)
+				oldAgeItemStr = choice[2]
 
-				--				if string.gsub(choice_txt,"%s+","") ~= lookUser .. "|" .. string.gsub(ageGroup,"%s+","") .. "|" .. onLinePeople then
-				if string.gsub(choice_txt,"%s+","") ~= lookUser .. "|" .. onLinePeople then
-					self:saveStringFile(self.ageFilePath, lookUser .. "|" .. onLinePeople, "w", "保存筛选条件成功")
+				if string.gsub(choice_txt,"%s+","") ~= lookUser .. "|" .. string.gsub(setAgeItem,"%s+","") .. "|" .. onLinePeople then
+					self:saveStringFile(self.ageFilePath, lookUser .. "|" .. setAgeItem .. "|" .. onLinePeople, "w", "保存筛选条件成功")
 					self.choice = true
 				else
 					toast("筛选条件一样不需要筛选",1)
 					mSleep(1000)
 				end
 			else
-				self:saveStringFile(self.ageFilePath, lookUser .. "|" .. onLinePeople, "w", "保存筛选条件成功")
+				oldAgeItemStr = "18-40"
+				self:saveStringFile(self.ageFilePath, lookUser .. "|" .. setAgeItem .. "|" .. onLinePeople, "w", "保存筛选条件成功")
 				self.choice = true
-				--				goto readAgeAgain
 			end
 
-			--			::readLocationAgain::
-			--			location_txt = readFileString(self.ageLocationPath)--读取文件内容，返回全部内容的 string
-			--			if location_txt and choice[2] ~= string.gsub(ageGroup,"%s+","") then
-			--				location = strSplit(location_txt, "-")
-			--			elseif location_txt and choice[2] == string.gsub(ageGroup,"%s+","") then
-			--				toast("年龄段一样",1)
-			--				mSleep(1000)
-			--			else
-			--				self:saveStringFile(self.ageLocationPath, "64-678-684-680", "w", "保存数据成功")
-			--				goto readLocationAgain
-			--			end
+			toast("旧年龄段：" .. oldAgeItemStr,1)
+			mSleep(1000)
+
+			oldAgeItem = strSplit(oldAgeItemStr, "-")
+			newAgeItem = strSplit(setAgeItem, "-")
 
 			reply_terms = strSplit(firstReplyTerms, "-")
 			self:hit_call()
@@ -807,8 +815,13 @@ function model:mm()
 		elseif wayList[i] == "4" then
 			self:send_circle()
 		elseif wayList[i] == "5" then
-			reply_terms = strSplit(firstReplyTerms, "-")
-			self:reply_mess()
+			if messReplyTerms ~= '' and messReplyTerms ~= '默认值' then
+				reply_terms = strSplit(firstReplyTerms, "-")
+				self:reply_mess()
+			else
+				dialog("请检查回复术语是否设置正确", 0)
+				luaExit()
+			end
 		end
 	end
 end
@@ -825,21 +838,21 @@ function model:main()
 			{
 				["type"] = "Label",
 				["text"] = "养号引流脚本",
-				["size"] = 25,
+				["size"] = 20,
 				["align"] = "center",
 				["color"] = "255,0,0",
 			},
 			{
 				["type"] = "Label",
 				["text"] = "====================",
-				["size"] = 25,
+				["size"] = 20,
 				["align"] = "center",
 				["color"] = "255,0,0",
 			},
 			{
 				["type"] = "Label",
 				["text"] = "选择脚本流程",
-				["size"] = 20,
+				["size"] = 15,
 				["align"] = "center",
 				["color"] = "0,0,255",
 			},
@@ -854,7 +867,7 @@ function model:main()
 				["text"] = "随机点赞次数",
 				["size"] = 15,
 				["align"] = "center",
-				["color"] = "255,0,255",
+				["color"] = "0,0,255",
 			},
 			{
 				["type"] = "Edit",        
@@ -864,7 +877,7 @@ function model:main()
 			{
 				["type"] = "Label",
 				["text"] = "选择想看的用户",
-				["size"] = 20,
+				["size"] = 15,
 				["align"] = "center",
 				["color"] = "0,0,255",
 			},
@@ -876,8 +889,20 @@ function model:main()
 			},
 			{
 				["type"] = "Label",
+				["text"] = "设置年龄段(用-隔开)",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255",
+			},
+			{
+				["type"] = "Edit",        
+				["prompt"] = "请设置年龄段",
+				["text"] = "默认值",       
+			},
+			{
+				["type"] = "Label",
 				["text"] = "是否只看在线的人",
-				["size"] = 20,
+				["size"] = 15,
 				["align"] = "center",
 				["color"] = "0,0,255",
 			},
@@ -892,7 +917,7 @@ function model:main()
 				["text"] = "随机打招呼术语(多个术语用-隔开)",
 				["size"] = 15,
 				["align"] = "center",
-				["color"] = "255,0,255",
+				["color"] = "0,0,255",
 			},
 			{
 				["type"] = "Edit",        
@@ -904,7 +929,7 @@ function model:main()
 				["text"] = "回复消息术语(多个术语用-隔开)",
 				["size"] = 15,
 				["align"] = "center",
-				["color"] = "255,0,255",
+				["color"] = "0,0,255",
 			},
 			{
 				["type"] = "Edit",        
@@ -916,7 +941,7 @@ function model:main()
 				["text"] = "随机关注粉丝数量",
 				["size"] = 15,
 				["align"] = "center",
-				["color"] = "255,0,255",
+				["color"] = "0,0,255",
 			},
 			{
 				["type"] = "Edit",        
@@ -928,7 +953,7 @@ function model:main()
 
 	local MyJsonString = json.encode(MyTable)
 
-	ret, way, fabulous_times, lookUser, onLinePeople, firstReplyTerms, messReplyTerms, gz_fans = showUI(MyJsonString)
+	ret, way, fabulous_times, lookUser, setAgeItem, onLinePeople, firstReplyTerms, messReplyTerms, gz_fans = showUI(MyJsonString)
 	if ret == 0 then
 		dialog("取消运行脚本", 3)
 		luaExit()

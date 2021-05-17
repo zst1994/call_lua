@@ -1829,21 +1829,3 @@ end
 
 --openURL('prefs:root=General&path=Keyboard/Hardware_Keyboard')
 
-
-while (true) do
-					mSleep(200)
-					x,y = findMultiColorInRegionFuzzy(0x18d9f1, "32|-1|0x18d9f1,65|10|0x18d9f1,97|0|0x18d9f1,124|-1|0x18d9f1,150|0|0x18d9f1", 90, 0, 0, 750, 1334, { orient = 2 })
-					if x ~= -1 then
-					    dialog(x..y,0)
-						mSleep(500)
-						randomTap(584,401, 4)
-						mSleep(1500)
-						for var=1,25 do
-							mSleep(50)
-							keyDown("DeleteOrBackspace")
-							keyUp("DeleteOrBackspace")  
-						end
-						break
-					end
-
-				end
