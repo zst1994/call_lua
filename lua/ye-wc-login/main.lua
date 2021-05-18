@@ -1,6 +1,7 @@
 --夜
 require "TSLib"
 local ts 				= require('ts')
+local plist 			= ts.plist
 local json 				= ts.json
 
 local model 				= {}
@@ -3089,17 +3090,17 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			goto reset
 		end
 	end
-    
-    getLSJCodeBool = false
+
+	getLSJCodeBool = false
 	if mess_bool then
-	    ::getLSJCode::
+		::getLSJCode::
 		if get_ms_code then
-		    if not getLSJCodeBool then
-    			get_time = 1
-    			restart_time = 0
-		    end
-		    
-		    caozuo_more = false
+			if not getLSJCodeBool then
+				get_time = 1
+				restart_time = 0
+			end
+
+			caozuo_more = false
 			first_time = os.time()
 
 			::caozuo_more::
@@ -4124,72 +4125,72 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					if type(string.find(res, "%d+%d+%d+%d+%d+%d+")) == "number" then
 						mess_yzm = string.match(res,"%d+%d+%d+%d+%d+%d+")
 					else
-					    if not getLSJCodeBool then
-    						toast("暂未查询到验证码，请稍后再试"..get_time,1)
-    						mSleep(2000)
-    						get_time = get_time + 1
-    						if get_time > 15 then
-    							if country_id == "886" then
-    								mSleep(500)
-    								setVPNEnable(true)
-    								mSleep(math.random(2000, 3000))
-    								randomsTap(372,  749, 3)
-    								mSleep(math.random(1000, 1500))
-    								randomsTap(368, 1039,5)
-    								mSleep(math.random(5000, 6000))
-    								if content_type ~= "3" then
-    									setVPNEnable(false)
-    								end
-    							else
-    								if content_type == "1" then
-    									mSleep(math.random(2000, 3000))
-    									randomsTap(372,  749, 3)
-    									mSleep(math.random(1000, 1500))
-    									randomsTap(368, 1039,5)
-    									mSleep(math.random(5000, 6000))
-    								else
-    									mSleep(500)
-    									setVPNEnable(true)
-    									mSleep(math.random(2000, 3000))
-    									randomsTap(372,  749, 3)
-    									mSleep(math.random(1000, 1500))
-    									randomsTap(368, 1039,5)
-    									mSleep(math.random(5000, 6000))
-    									if content_type ~= "3" then
-    										setVPNEnable(false)
-    									end
-    								end
-    							end
-    							get_time = 1
-    							restart_time = restart_time + 1
-    							caozuo_more = true
-    							toast("重新获取验证码"..restart_time,1)
-    							goto caozuo_more
-    						end
-    
-    						if restart_time > 2 then
-    							::addblack::
-    							local sz = require("sz")        --登陆
-    							local http = require("szocket.http")
-    							local res, code = http.request("http://api.nwohsz.com:2086/registerApi/addBlack?uid=1608085312&pid=11&number="..telphone.."&sign="..lsj_key:md5())
-    							if code == 200 then
-    								local tmp = json.decode(res)
-    								if tmp.code == 0 then
-    									toast("拉黑成功",1)
-    									mSleep(500)
-    								else
-    									toast("拉黑失败:"..tostring(res),1)
-    									mSleep(5000)
-    									goto addblack
-    								end
-    							else
-    								toast("拉黑失败:"..tostring(res),1)
-    								mSleep(5000)
-    								goto addblack
-    							end
-    							goto over
-    						end
-    						goto get_mess
+						if not getLSJCodeBool then
+							toast("暂未查询到验证码，请稍后再试"..get_time,1)
+							mSleep(2000)
+							get_time = get_time + 1
+							if get_time > 15 then
+								if country_id == "886" then
+									mSleep(500)
+									setVPNEnable(true)
+									mSleep(math.random(2000, 3000))
+									randomsTap(372,  749, 3)
+									mSleep(math.random(1000, 1500))
+									randomsTap(368, 1039,5)
+									mSleep(math.random(5000, 6000))
+									if content_type ~= "3" then
+										setVPNEnable(false)
+									end
+								else
+									if content_type == "1" then
+										mSleep(math.random(2000, 3000))
+										randomsTap(372,  749, 3)
+										mSleep(math.random(1000, 1500))
+										randomsTap(368, 1039,5)
+										mSleep(math.random(5000, 6000))
+									else
+										mSleep(500)
+										setVPNEnable(true)
+										mSleep(math.random(2000, 3000))
+										randomsTap(372,  749, 3)
+										mSleep(math.random(1000, 1500))
+										randomsTap(368, 1039,5)
+										mSleep(math.random(5000, 6000))
+										if content_type ~= "3" then
+											setVPNEnable(false)
+										end
+									end
+								end
+								get_time = 1
+								restart_time = restart_time + 1
+								caozuo_more = true
+								toast("重新获取验证码"..restart_time,1)
+								goto caozuo_more
+							end
+
+							if restart_time > 2 then
+								::addblack::
+								local sz = require("sz")        --登陆
+								local http = require("szocket.http")
+								local res, code = http.request("http://api.nwohsz.com:2086/registerApi/addBlack?uid=1608085312&pid=11&number="..telphone.."&sign="..lsj_key:md5())
+								if code == 200 then
+									local tmp = json.decode(res)
+									if tmp.code == 0 then
+										toast("拉黑成功",1)
+										mSleep(500)
+									else
+										toast("拉黑失败:"..tostring(res),1)
+										mSleep(5000)
+										goto addblack
+									end
+								else
+									toast("拉黑失败:"..tostring(res),1)
+									mSleep(5000)
+									goto addblack
+								end
+								goto over
+							end
+							goto get_mess
 						end
 					end
 				else
@@ -4577,7 +4578,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					goto get_mess
 				end
 			end
-            
+
 			if tonumber(mess_yzm) ~= tonumber(old_mess_yzm) then
 				toast(mess_yzm,1)
 				mSleep(math.random(1000, 1700))
@@ -4762,7 +4763,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					menguNum = menguNum + 1
 					goto kq
 				elseif vpn_stauts == "15" and menguNum < 3 then
-				    mSleep(500)
+					mSleep(500)
 					randomsTap(x,  y, 3)
 					mSleep(1000)
 					getLSJCodeBool = true
@@ -5318,12 +5319,16 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				for var = 1,#Wildcard do 
 					local file = io.open("/var/mobile/Containers/Data/Application/"..Wildcard[var]..self.wc_file,"rb") 
 					if file then 
-						local ts = require("ts")
-						local plist = ts.plist
 						local plfilename = "/var/mobile/Containers/Data/Application/"..Wildcard[var].."/Library/LocalInfo.lst" --设置plist路径
 						local tmp2 = plist.read(plfilename)                --读取 PLIST 文件内容并返回一个 TABLE
 						for k, v in pairs(tmp2) do
 							if k == "$objects" then
+--								for k1, v1 in pairs(v) do
+--									if string.sub(tostring(v1), 1, 4) == "wxid" then
+--										wcid = v1
+--										wc = v[k1 + 1]
+--									end
+--								end
 								for i = 3 ,5 do
 									if tonumber(v[i]) then
 										wc = v[i]
@@ -5341,11 +5346,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					end 
 				end 
 			end 
-			
+
 			if type(wcid) == 'nil' or type(wcid) == nil then
-			    wcid = '获取不到wcid'
+				wcid = '获取不到wcid'
 			end
-		    
+
 			six_data = getData()
 			six_data = six_data .. "----" .. wcid
 -- 			six_data = six_data

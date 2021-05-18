@@ -686,6 +686,7 @@ function model:reply_mess()
 		mSleep(100)
 		x,y = findMultiColorInRegionFuzzy( 0xf85543, "0|-25|0xf85543,-12|-11|0xf85543,13|-11|0xf85543", 90, 600, 0, 749, 1333)
 		if x ~= -1 then
+			self:click(376, 1281)
 			mSleep(100)
 			if getColor(x + 7, y - 38) == 0xaaaaaa then
 				mSleep(500)
@@ -726,6 +727,7 @@ function model:reply_mess()
 						mSleep(1000)
 						plist.write(self.sendMessUserPath, tmp2) 
 						self:click(513, 1170)
+						mSleep(500)
 						keyDown("RightGUI")
 						keyDown("v")
 						keyUp("v")
@@ -748,6 +750,18 @@ function model:reply_mess()
 	end
 end
 
+-- 弹窗模块
+function model:closeDialog()
+	--给陌陌评价
+	mSleep(50)
+	x,y = findMultiColorInRegionFuzzy( 0x007aff, "35|2|0x007aff,49|3|0x007aff,-43|-357|0x000000,-28|-355|0x000000,-9|-350|0x000000,26|-350|0x000000,60|-350|0x000000,97|-350|0x000000", 90, 0, 0, 749, 1333)
+	if x ~= -1 then
+		self:click(53, 81)
+		toast("给陌陌评价",1)
+		mSleep(500)
+	end
+end
+
 function model:mm()
 	closeApp(self.appBid)
 	mSleep(2000)
@@ -764,6 +778,8 @@ function model:mm()
 		if getColor(64, 1312) == 0x0fc9e1 then
 			break
 		end
+
+		self:closeDialog()
 	end
 
 	wayList = strSplit(way,'@')

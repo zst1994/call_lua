@@ -71,7 +71,7 @@ function _writeData(data) --写入数据
 end
 
 function write_six_two()
-	local path = userPath().."/res/sixTwoData.txt"
+	local path = userPath().."/res/62数据.txt"
 
 	local result
 
@@ -81,7 +81,7 @@ function write_six_two()
 		lua_exit()
 	end
 
-	local data =  file_read_write("sixTwoData.txt","已经读取","----已经读取")
+	local data =  file_read_write("62数据.txt","已经读取","----已经读取")
 	data = TryRemoveUtf8BOM(data)
 	toast(data,1)
 	if data ~= "" and data ~= nil then

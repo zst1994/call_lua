@@ -1829,3 +1829,6 @@ end
 
 --openURL('prefs:root=General&path=Keyboard/Hardware_Keyboard')
 
+mSleep(200)
+x,y = findMultiColorInRegionFuzzy( 0xf85543, "0|-25|0xf85543,-12|-11|0xf85543,13|-11|0xf85543", 90, 600, 0, 749, 1333)
+dialog(x..y, time)
