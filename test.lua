@@ -1829,4 +1829,49 @@ end
 
 --openURL('prefs:root=General&path=Keyboard/Hardware_Keyboard')
 
-log("111111")
+local sz = require("sz")
+local cjson = sz.json
+local http = sz.i82.http
+
+function downFile(url, path)
+    ::down::
+    status, headers, body = http.get(url)
+    if status == 200 then
+        function decodeJson() 
+			return json.decode(body)
+        end
+	
+        local code = pcall(decodeJson)
+		if not code then
+		    ::write_file::
+    		file = io.open(path, "wb")
+            if file then
+                file:write(body)
+                file:close()
+                return true, "";
+            else
+                toast("保存文件到本地失败，重新保存",1)
+                mSleep(3000)
+                goto write_file
+            end
+		else
+			 return false, decodeJson();
+		end
+    else
+        toast("下载文件失败，重新下载",1)
+        mSleep(3000)
+        goto down
+    end
+end
+bool, body = downFile("http://39.99.192.160/download_file?file_name=7013.plist", userPath() .. "/res/7013.plist")
+dialog(tostring(bool),0)
+dialog(body.message,0)
+
+-- local plfilename = userPath() .. "/res/7013.plist"
+-- local file = io.open(plfilename,"rb") 
+-- if file then 
+-- 	local str = file:read("*a")
+-- 	file:close()
+
+-- 	log(str)
+-- end

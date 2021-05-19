@@ -92,8 +92,8 @@ local AMG = {
 
 			::newR::
 			mSleep(50)
-			if isFrontApp(self.awz_bid) == 0 then
-				runApp(self.awz_bid)
+			if isFrontApp(model.awz_bid) == 0 then
+				runApp(model.awz_bid)
 				mSleep(3000)
 				model:Check_AMG()
 			end

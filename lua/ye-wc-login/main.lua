@@ -3,8 +3,11 @@ require "TSLib"
 local ts 				= require('ts')
 local plist 			= ts.plist
 local json 				= ts.json
+local sz                = require("sz")
+local cjson             = sz.json
+local http              = sz.i82.http
 
-local model 				= {}
+local model 			= {}
 
 model.wc_bid 			= ""
 model.wc_name			= ""
@@ -65,6 +68,37 @@ end
 function model:file_exists(file_name)
 	local f = io.open(file_name, "r")
 	return f ~= nil and f:close()
+end
+
+function model:downFile(url, path)
+    ::down::
+    status, headers, body = http.get(url)
+    if status == 200 then
+        function decodeJson() 
+			return json.decode(body)
+        end
+	
+        local code = pcall(decodeJson)
+		if not code then
+		    ::write_file::
+    		file = io.open(path, "wb")
+            if file then
+                file:write(body)
+                file:close()
+                return true, "";
+            else
+                toast("保存文件到本地失败，重新保存",1)
+                mSleep(3000)
+                goto write_file
+            end
+		else
+			 return false, decodeJson();
+		end
+    else
+        toast("下载文件失败，重新下载",1)
+        mSleep(3000)
+        goto down
+    end
 end
 
 --[[检查网络方法]]
@@ -902,7 +936,7 @@ function model:sendServerStatus(telphone,status)
 	::send_code::
 	local sz = require("sz")       
 	local http = require("szocket.http")
-	local res, code = http.request("http://39.99.192.160//import_abnormal?phone="..telphone.."&code="..status)
+	local res, code = http.request("http://39.99.192.160/import_abnormal?phone="..telphone.."&code="..status)
 	if code == 200 then
 		tmp = json.decode(res)
 		if tmp.code == 200 then
@@ -6000,7 +6034,6 @@ function model:main()
 
 	self:getConfig()
 
-
 	local bool = isFileExist(userPath().."/res/info/wc_version.txt")
 	if bool then
 		txt = readFileString(userPath().."/res/info/wc_version.txt")--读取文件内容，返回全部内容的 string
@@ -6012,24 +6045,31 @@ function model:main()
 
 	if replaceFile == "0" then
 		file_name = "715.plist"
-		self:replace_file(file_name)
 	elseif replaceFile == "1" then
 		file_name = "717.plist"
-		self:replace_file(file_name)
 	elseif replaceFile == "2" then
 		file_name = "718.plist"
-		self:replace_file(file_name)
 	elseif replaceFile == "3" then
 		file_name = "720.plist"
-		self:replace_file(file_name)
 	elseif replaceFile == "4" then
 		file_name = "721.plist"
-		self:replace_file(file_name)
 	elseif replaceFile == "5" then
 		file_name = "722.plist"
-		self:replace_file(file_name)
 	end
-
+    
+    bool, body = self:downFile("http://39.99.192.160/download_file?file_name=" .. file_name, userPath() .. "/res/info/" .. file_name)
+    if bool then
+        self:replace_file(file_name)
+    else
+        if body.message == "当前不可获取文件" then
+            toast(body.message,1)
+            mSleep(500)
+            self:replace_file(file_name)
+        else
+            dialog(body.message,0)
+            luaExit()
+        end
+    end
 
 	get_six_two = false
 	while true do
