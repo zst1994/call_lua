@@ -3371,6 +3371,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
 				local res, code = http.request(getPhoneCode_url)
+				log(code .. "====" .. res)
 				toast(code .. "====" .. res,1)
 				if code == 200 then
 					data = strSplit(res, "|")
@@ -5323,8 +5324,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 						local tmp2 = plist.read(plfilename)                --读取 PLIST 文件内容并返回一个 TABLE
 						for k, v in pairs(tmp2) do
 							if k == "$objects" then
+								--在配置文件获取
 --								for k1, v1 in pairs(v) do
---									if string.sub(tostring(v1), 1, 4) == "wxid" then
+--									if string.sub(tostring(v1), 1, 4) == "" then
 --										wcid = v1
 --										wc = v[k1 + 1]
 --									end

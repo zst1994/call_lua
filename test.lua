@@ -1828,27 +1828,5 @@ end
 --openURL('prefs:root=DO_NOT_DISTURB&path=ALLOW_CALLS_FROM')
 
 --openURL('prefs:root=General&path=Keyboard/Hardware_Keyboard')
---个人资料
-			mSleep(200)
-			x,y = findMultiColorInRegionFuzzy( 0xaaaaaa, "30|-11|0xaaaaaa,68|-15|0xaaaaaa,62|-4|0xaaaaaa,69|0|0xaaaaaa,52|0|0xaaaaaa,84|-3|0xaaaaaa,101|-3|0xaaaaaa,17|-7|0xffffff,-82|-5|0xffffff", 90, 0, 0, 749, 1333)
-			if x~=-1 and y~=-1 then
-				mSleep(500)
-				tap(x,y)
-				mSleep(500)
-				toast("个人资料1",1)
-				mSleep(500)
-			end
 
-			--个人资料
-			mSleep(200)
-			x,y = findMultiColorInRegionFuzzy(0xaaaaaa, "0|13|0xaaaaaa,21|-1|0xffffff,31|-6|0xaaaaaa,41|-2|0xffffff,53|7|0xaaaaaa,64|2|0xaaaaaa,69|-9|0xaaaaaa,70|5|0xaaaaaa,101|3|0xaaaaaa", 90, 0, 0, 750, 1334, { orient = 2 })
-			if x~=-1 and y~=-1 then
-				mSleep(500)
-				tap(x,y)
-				mSleep(500)
-				toast("个人资料2",1)
-				mSleep(500)
-			end
-			
-			
-			
+log("111111")
