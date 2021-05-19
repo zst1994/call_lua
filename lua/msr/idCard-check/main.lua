@@ -8,6 +8,12 @@ local model 			= {}
 
 model.id_card_num       = ""
 
+function model:click(click_x,click_y)
+	mSleep(math.random(200, 300))
+	randomTap(click_x, click_y, 3)
+	mSleep(math.random(500, 600))
+end
+
 function model:getIdCardNum()
     ::get_idCard_data::
 	local category = "idCard-data"
@@ -28,9 +34,8 @@ function model:checkIdCard()
         mSleep(50)
         x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "4|7|0x1a1a1a,13|7|0x1a1a1a,21|7|0x1a1a1a,53|7|0x1a1a1a,74|-5|0x1a1a1a,91|-4|0x1a1a1a,83|3|0x1a1a1a,84|9|0x1a1a1a,86|18|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
         if x ~= -1 then
+            self:click(x + 300, y + 10)
             mSleep(500)
-            tap(x + 300,y + 10)
-            mSleep(1000)
             inputKey(self.id_card_num)
             mSleep(1000)
             key = "ReturnOrEnter"
@@ -49,34 +54,31 @@ function model:checkIdCard()
         mSleep(100)
         x,y = findMultiColorInRegionFuzzy(0xffffff, "34|-1|0xffffff,69|-5|0xffffff,-128|-28|0x07c160,-132|26|0x07c160,32|-30|0x07c160,32|28|0x07c160,201|-28|0x07c160,187|24|0x07c160", 90, 0, 0, 750, 1334, { orient = 2 })
         if x ~= -1 then
+            self:click(x, y)
+        else
             mSleep(500)
-            tap(x,y)
-            mSleep(1000)
+			moveTowards(404,1094,90,500,10)
+			mSleep(1500)
         end
         
         --系统连接异常
         mSleep(100)
         x,y = findMultiColorInRegionFuzzy(0x576b95, "17|0|0x576b95,44|1|0x576b95,55|10|0x576b95,-57|-183|0x1a1a1a,-56|-169|0x1a1a1a,-51|-155|0x1a1a1a,-34|-174|0x1a1a1a,-4|-175|0x1a1a1a,-18|-151|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
         if x ~= -1 then
-            mSleep(500)
-            tap(x,y)
-            mSleep(1000)
+            self:click(x, y)
         end
         
         --证件与姓名不匹配
         mSleep(100)
         x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "28|0|0x1a1a1a,244|-10|0x576b95,283|6|0x576b95,422|-14|0x576b95,-96|-206|0x1a1a1a,-90|-193|0x1a1a1a,-62|-202|0x1a1a1a,124|-197|0x1a1a1a,217|-203|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
         if x ~= -1 then
-            mSleep(500)
-            tap(x, y)
-            mSleep(1000)
+            self:click(x, y)
             while (true) do
                 mSleep(500)
                 x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "4|7|0x1a1a1a,13|7|0x1a1a1a,21|7|0x1a1a1a,53|7|0x1a1a1a,74|-5|0x1a1a1a,91|-4|0x1a1a1a,83|3|0x1a1a1a,84|9|0x1a1a1a,86|18|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
                 if x ~= -1 then
+                    self:click(x + 500, y + 10)
                     mSleep(500)
-                    tap(x + 500,y + 10)
-                    mSleep(1000)
                     for var=1,20 do
                         mSleep(100)
                         keyDown("DeleteOrBackspace")
@@ -94,16 +96,13 @@ function model:checkIdCard()
 		mSleep(100)
 		x,y = findMultiColorInRegionFuzzy( 0x1a1a1a, "245|-12|0x576b95,351|-13|0x576b95,423|-10|0x576b95,52|-307|0x1a1a1a,61|-296|0x1a1a1a,79|-306|0x1a1a1a,104|-291|0x1a1a1a,143|-309|0x1a1a1a,145|-279|0x1a1a1a", 90, 0, 0, 749, 1333)
 		if x ~= -1 then
-			mSleep(500)
-			tap(x,y)
-			mSleep(1000)
+			self:click(x, y)
 			while (true) do
                 mSleep(500)
                 x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "4|7|0x1a1a1a,13|7|0x1a1a1a,21|7|0x1a1a1a,53|7|0x1a1a1a,74|-5|0x1a1a1a,91|-4|0x1a1a1a,83|3|0x1a1a1a,84|9|0x1a1a1a,86|18|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
                 if x ~= -1 then
+                    self:click(x + 500, y + 10)
                     mSleep(500)
-                    tap(x + 500,y + 10)
-                    mSleep(1000)
                     for var=1,20 do
                         mSleep(100)
                         keyDown("DeleteOrBackspace")
@@ -121,16 +120,13 @@ function model:checkIdCard()
 		mSleep(100)
 		x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "34|0|0x1a1a1a,236|0|0x576b95,432|-4|0x576b95,41|-322|0x1a1a1a,42|-314|0x1a1a1a,42|-306|0x1a1a1a,55|-306|0x1a1a1a,99|-305|0x1a1a1a,224|-149|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
         if x ~= -1 then
-            mSleep(500)
-			tap(x,y)
-			mSleep(1000)
+            self:click(x, y)
 			while (true) do
                 mSleep(500)
                 x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "4|7|0x1a1a1a,13|7|0x1a1a1a,21|7|0x1a1a1a,53|7|0x1a1a1a,74|-5|0x1a1a1a,91|-4|0x1a1a1a,83|3|0x1a1a1a,84|9|0x1a1a1a,86|18|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
                 if x ~= -1 then
+                    self:click(x + 500, y + 10)
                     mSleep(500)
-                    tap(x + 500,y + 10)
-                    mSleep(1000)
                     for var=1,20 do
                         mSleep(100)
                         keyDown("DeleteOrBackspace")
@@ -147,16 +143,13 @@ function model:checkIdCard()
         mSleep(100)
         x,y = findMultiColorInRegionFuzzy(0x576b95, "16|0|0x576b95,44|-3|0x576b95,54|-2|0x576b95,12|-211|0x1a1a1a,33|-210|0x1a1a1a,27|-201|0x1a1a1a,94|-198|0x1a1a1a,102|-201|0x1a1a1a,120|-194|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
         if x ~= -1 then
-            mSleep(500)
-            tap(x,y)
-            mSleep(1000)
+            self:click(x, y)
             while (true) do
                 mSleep(500)
                 x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "4|7|0x1a1a1a,13|7|0x1a1a1a,21|7|0x1a1a1a,53|7|0x1a1a1a,74|-5|0x1a1a1a,91|-4|0x1a1a1a,83|3|0x1a1a1a,84|9|0x1a1a1a,86|18|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
                 if x ~= -1 then
+                    self:click(x + 500, y + 10)
                     mSleep(500)
-                    tap(x + 500,y + 10)
-                    mSleep(1000)
                     for var=1,20 do
                         mSleep(100)
                         keyDown("DeleteOrBackspace")
@@ -173,16 +166,13 @@ function model:checkIdCard()
         mSleep(100)
         x,y = findMultiColorInRegionFuzzy(0x576b95, "12|0|0x576b95,48|0|0x576b95,42|-214|0x1a1a1a,51|-188|0x1a1a1a,70|-192|0x1a1a1a,62|-200|0x1a1a1a,83|-206|0x1a1a1a,107|-210|0x1a1a1a,115|-196|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
         if x ~= -1 then
-            mSleep(500)
-            tap(x, y)
-            mSleep(1000)
+            self:click(x, y)
             while (true) do
                 mSleep(500)
                 x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "4|7|0x1a1a1a,13|7|0x1a1a1a,21|7|0x1a1a1a,53|7|0x1a1a1a,74|-5|0x1a1a1a,91|-4|0x1a1a1a,83|3|0x1a1a1a,84|9|0x1a1a1a,86|18|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
                 if x ~= -1 then
+                    self:click(x + 500, y + 10)
                     mSleep(500)
-                    tap(x + 500,y + 10)
-                    mSleep(1000)
                     for var=1,20 do
                         mSleep(100)
                         keyDown("DeleteOrBackspace")
@@ -200,23 +190,18 @@ function model:checkIdCard()
         mSleep(100)
         x,y = findMultiColorInRegionFuzzy(0x576b95, "38|16|0x576b95,89|15|0x576b95,109|13|0x576b95,173|-137|0x1a1a1a,145|-127|0x1a1a1a,179|-127|0x1a1a1a,161|-111|0x1a1a1a,63|-114|0x1a1a1a,-20|-140|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
         if x ~= -1 then
-            mSleep(500)
-            tap(65,84)
-            mSleep(500)
+            self:click(65, 84)
             while (true) do
                 mSleep(200)
                 if getColor(533,757) ~= 0xffffff then
-                    mSleep(500)
-                    tap(533, 757)
-                    mSleep(1000)
+                    self:click(533, 757)
                 end
                 
                 mSleep(200)
                 x,y = findMultiColorInRegionFuzzy(0x1a1a1a, "4|7|0x1a1a1a,13|7|0x1a1a1a,21|7|0x1a1a1a,53|7|0x1a1a1a,74|-5|0x1a1a1a,91|-4|0x1a1a1a,83|3|0x1a1a1a,84|9|0x1a1a1a,86|18|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
                 if x ~= -1 then
+                    self:click(x + 500, y + 10)
                     mSleep(500)
-                    tap(x + 500,y + 10)
-                    mSleep(1000)
                     for var=1,20 do
                         mSleep(100)
                         keyDown("DeleteOrBackspace")
