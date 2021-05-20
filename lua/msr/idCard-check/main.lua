@@ -200,6 +200,7 @@ function model:checkIdCard()
         x,y = findMultiColorInRegionFuzzy(0x576b95, "38|16|0x576b95,89|15|0x576b95,109|13|0x576b95,173|-137|0x1a1a1a,145|-127|0x1a1a1a,179|-127|0x1a1a1a,161|-111|0x1a1a1a,63|-114|0x1a1a1a,-20|-140|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
         if x ~= -1 then
             self:click(65, 84)
+			mSleep(500)
             while (true) do
                 mSleep(200)
                 if getColor(533,757) ~= 0xffffff then
