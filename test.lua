@@ -1352,33 +1352,26 @@ end
 --	end
 --end
 
--- API = "Hk8Ve2Duh6QCR5XUxLpRxPyv"
--- Secret  = "fD0az8pW8lNhGptCZC4TPfMWX5CyVtnh"
-
--- tab_CHN_ENG = {
--- 	language_type = "CHN_ENG",
--- 	detect_direction = "true",
--- 	detect_language = "true",
--- 	ocrType = 3
--- }
+--API               = "CkjuQGtZUNumzQvjgTQ082Ih"
+--Secret            = "XsYel9kpUUhG3OwFHfu9h2cKbXlhPpzj"
+--tab_CHN_ENG       = {
+--	language_type = "CHN_ENG",
+--	detect_direction = "true",
+--	detect_language = "true",
+--	ocrType = 4
+--}
 
 --::getBaiDuToken1::
 --local code,access_token = getAccessToken(API,Secret)
 --if code then
---	::snap1::
-
 --	local content_name = userPath() .. "/res/baiduAI_content_name1.jpg"
 
---	--内容
-----	if x > 430 then
-----		snapshot(content_name, x - 320, y - 27, x - 3, y + 22) 
-----	else
-----		snapshot(content_name, x - 180, y - 27, x - 3, y + 22) 
-----	end
---	snapshot(content_name, 187,  42, 598,  88) 
---	mSleep(500)
+----	snapshot(content_name, 390,  186, 618,  249) 
+--	degree = 155
+--	ts.binaryzation(255,  825, 294,  866,degree)
+--	--ts.binaryzation(183,  255, 217,  300,degree)
 
---	local code, body = baiduAI(access_token,content_name,tab_CHN_ENG)
+--	local code, body = baiduAI(access_token,userPath().."/res/tmp.jpg",tab_CHN_ENG)
 --	if code then
 --		local tmp = json.decode(body)
 --		if #tmp.words_result > 0 then
@@ -1386,12 +1379,10 @@ end
 --		else
 --			toast("识别内容失败\n" .. tostring(body),1)
 --			mSleep(3000)
---			goto snap1
 --		end
 --	else
 --		toast("识别内容失败\n" .. tostring(body),1)
 --		mSleep(3000)
---		goto snap1
 --	end
 
 --	if content_num ~= nil and #content_num >= 1 then
@@ -1399,15 +1390,13 @@ end
 --	else
 --		toast("识别内容失败,重新截图识别" .. tostring(body),1)
 --		mSleep(3000)
---		goto snap1
 --	end
 --else
 --	toast("获取token失败",1)
 --	goto getBaiDuToken1
 --end
-
-
-
+text = ocrText(183,  255, 217,  300, 0)
+dialog(text)
 --64-678-684-680
 --a = 23
 --b = 35
@@ -1431,447 +1420,401 @@ end
 --		moveTowards(tonumber(location[1]), tonumber(location[2]), fx_left, math.abs(age_left), 10)
 --	else
 --		fx_left = 180
---		mSleep(500)
---		moveTowards(tonumber(location[1]), tonumber(location[2]), fx_left, math.abs(age_left), 10)
---	end
+	--		mSleep(500)
+	--		moveTowards(tonumber(location[1]), tonumber(location[2]), fx_left, math.abs(age_left), 10)
+	--	end
 
---	if age_right > 0 then
---		fx_right = 180
---		mSleep(500)
---		moveTowards(tonumber(location[3]), tonumber(location[4]), fx_right, math.abs(age_right), 10)
---	else
---		fx_right = 0
---		age_right = age_right - 14
---		mSleep(500)
---		moveTowards(tonumber(location[3]), tonumber(location[4]), fx_right, math.abs(age_right), 10)
---	end
+	--	if age_right > 0 then
+	--		fx_right = 180
+	--		mSleep(500)
+	--		moveTowards(tonumber(location[3]), tonumber(location[4]), fx_right, math.abs(age_right), 10)
+	--	else
+	--		fx_right = 0
+	--		age_right = age_right - 14
+	--		mSleep(500)
+	--		moveTowards(tonumber(location[3]), tonumber(location[4]), fx_right, math.abs(age_right), 10)
+	--	end
 
---	saveStringFile(userPath().."/res/ageLocation.txt", tonumber(location[1]) + age_left .. "-" .. location[2] .. "-" .. tonumber(location[3]) - age_right .. "-" .. location[4], "w", "保存数据成功")
---end
-
-
-
-
--- local ts = require("ts")
--- local json = ts.json 
-
--- function imgupload2(_url,path,imageName)
--- 	local sz 				= require("sz")
--- 	local socket 			= require ("socket");
--- 	local http 			    = require("szocket.http")
--- 	local respbody 			= {}
--- 	local _end 				='\r\n'..[[--abcd--]]..'\r\n'
--- 	local reqfile			= io.open(path)
--- 	local size              = io.open(path):seek("end")
-
--- 	local res, code, rsp_body = http.request {
--- 		method = "POST",
--- 		url = _url,
--- 		headers = {
--- 			["Content-Type"] =  "multipart/form-data;boundary=abcd",
--- 			["Content-Length"] = #imageName + size + #_end,
--- 			["origin"] = "https://cli.im",
--- 		},
--- 		source = ltn12.source.cat(ltn12.source.string(imageName),ltn12.source.file(reqfile),ltn12.source.string(_end)),
--- 		sink = ltn12.sink.table(respbody)
--- 	}
-
--- 	if code  == 200 then
--- 		return table.concat(respbody)
--- 	else
--- 		return nil
--- 	end
--- end
-
--- function getUrl(path)
--- 	::ewm_go::
--- 	url = "https://upload.api.cli.im/upload.php?kid=cliim";
--- 	local _file1 = [[--abcd]]..'\r\n'..[[Content-Disposition: form-data; name="Filedata"; filename="1.png"]]..'\r\n'..[[Content-Type: image/png]]..'\r\n\r\n'
--- 	aa = imgupload2(url, path, _file1);
--- 	toast(aa, 1)
--- 	mSleep(1000)
--- 	if aa ~= nil then
--- 		local tmp = json.decode(aa)["data"]["path"]
--- 		header_send = {
--- 			["Content-Type"] = "application/x-www-form-urlencoded; charset=UTF-8",
--- 		}
--- 		body_send = {
--- 			["img"] = tmp,
--- 		}
--- 		ts.setHttpsTimeOut(60)
--- 		code,header_resp, body_resp = ts.httpsPost("https://cli.im/apis/up/deqrimg", header_send,body_send)
--- 		if code == 200 then
--- 			local tmp = json.decode(body_resp)
--- 			if tmp.status == 1 then
--- 				ewm_url = tmp["info"]["data"][1]
--- 				return ewm_url
--- 			else
--- 				toast("二维码解析失败:"..tostring(body_resp),1)
--- 				mSleep(2000)
--- 				goto ewm_go
--- 			end
--- 		else
--- 			toast("二维码解析失败:"..tostring(body_resp),1)
--- 			mSleep(2000)
--- 			goto ewm_go
--- 		end
--- 	else
--- 		toast("二维码图片上传失败:"..tostring(aa),1)
--- 		mSleep(2000)
--- 		goto ewm_go
--- 	end
--- end
-
--- path = userPath() .. "/res/1.png"
-
--- snapshot("1.png", 213,  323, 537,  646)
-
--- url = getUrl(path)
--- dialog(url, time)
-
-
---::put_work::
---header_send = {
---	["Content-Type"] = "application/json",
---}
---body_send = {
---	["appKey"] = "oIYEBCM8",
---	["secretKey"] = "b4343a772db14dd1bee548421e937576",
---	["infos"] = {
---		{
---			["productId"] = "4",
---			["abbr"] = "tw",
---			["number"] = 1
---		}
---	},
---}
---ts.setHttpsTimeOut(60)
---code,header_resp, body_resp = ts.httpPost("http://k76sk.com:20083/api/phone", header_send,body_send)
---dialog(body_resp, time)
+	--	saveStringFile(userPath().."/res/ageLocation.txt", tonumber(location[1]) + age_left .. "-" .. location[2] .. "-" .. tonumber(location[3]) - age_right .. "-" .. location[4], "w", "保存数据成功")
+	--end
 
 
 
--- mSleep(200)
--- 		x,y = findMultiColorInRegionFuzzy(0x323333, "-12|-12|0x323333,13|-12|0x323333,-11|11|0x323333,12|12|0x323333,65|859|0x3bb3fa,595|863|0x3bb3fa,280|852|0xffffff,363|868|0xffffff,319|821|0x3bb3fa", 90, 0, 0, 750, 1334, { orient = 2 })
--- 		if x ~= -1 and y ~= -1 then
--- 			mSleep(500)
--- 			tap(x, y)
--- 			mSleep(500)
--- 			toast("立即打卡1", 1)
--- 			mSleep(1000)
--- 		end
+
+	-- local ts = require("ts")
+	-- local json = ts.json 
+
+	-- function imgupload2(_url,path,imageName)
+	-- 	local sz 				= require("sz")
+	-- 	local socket 			= require ("socket");
+	-- 	local http 			    = require("szocket.http")
+	-- 	local respbody 			= {}
+	-- 	local _end 				='\r\n'..[[--abcd--]]..'\r\n'
+	-- 	local reqfile			= io.open(path)
+	-- 	local size              = io.open(path):seek("end")
+
+	-- 	local res, code, rsp_body = http.request {
+	-- 		method = "POST",
+	-- 		url = _url,
+	-- 		headers = {
+	-- 			["Content-Type"] =  "multipart/form-data;boundary=abcd",
+	-- 			["Content-Length"] = #imageName + size + #_end,
+	-- 			["origin"] = "https://cli.im",
+	-- 		},
+	-- 		source = ltn12.source.cat(ltn12.source.string(imageName),ltn12.source.file(reqfile),ltn12.source.string(_end)),
+	-- 		sink = ltn12.sink.table(respbody)
+	-- 	}
+
+	-- 	if code  == 200 then
+	-- 		return table.concat(respbody)
+	-- 	else
+	-- 		return nil
+	-- 	end
+	-- end
+
+	-- function getUrl(path)
+	-- 	::ewm_go::
+	-- 	url = "https://upload.api.cli.im/upload.php?kid=cliim";
+	-- 	local _file1 = [[--abcd]]..'\r\n'..[[Content-Disposition: form-data; name="Filedata"; filename="1.png"]]..'\r\n'..[[Content-Type: image/png]]..'\r\n\r\n'
+	-- 	aa = imgupload2(url, path, _file1);
+	-- 	toast(aa, 1)
+	-- 	mSleep(1000)
+	-- 	if aa ~= nil then
+	-- 		local tmp = json.decode(aa)["data"]["path"]
+	-- 		header_send = {
+	-- 			["Content-Type"] = "application/x-www-form-urlencoded; charset=UTF-8",
+	-- 		}
+	-- 		body_send = {
+	-- 			["img"] = tmp,
+	-- 		}
+	-- 		ts.setHttpsTimeOut(60)
+	-- 		code,header_resp, body_resp = ts.httpsPost("https://cli.im/apis/up/deqrimg", header_send,body_send)
+	-- 		if code == 200 then
+	-- 			local tmp = json.decode(body_resp)
+	-- 			if tmp.status == 1 then
+	-- 				ewm_url = tmp["info"]["data"][1]
+	-- 				return ewm_url
+	-- 			else
+	-- 				toast("二维码解析失败:"..tostring(body_resp),1)
+	-- 				mSleep(2000)
+	-- 				goto ewm_go
+	-- 			end
+	-- 		else
+	-- 			toast("二维码解析失败:"..tostring(body_resp),1)
+	-- 			mSleep(2000)
+	-- 			goto ewm_go
+	-- 		end
+	-- 	else
+	-- 		toast("二维码图片上传失败:"..tostring(aa),1)
+	-- 		mSleep(2000)
+	-- 		goto ewm_go
+	-- 	end
+	-- end
+
+	-- path = userPath() .. "/res/1.png"
+
+	-- snapshot("1.png", 213,  323, 537,  646)
+
+	-- url = getUrl(path)
+	-- dialog(url, time)
+
+
+	--::put_work::
+	--header_send = {
+	--	["Content-Type"] = "application/json",
+	--}
+	--body_send = {
+	--	["appKey"] = "oIYEBCM8",
+	--	["secretKey"] = "b4343a772db14dd1bee548421e937576",
+	--	["infos"] = {
+	--		{
+	--			["productId"] = "4",
+	--			["abbr"] = "tw",
+	--			["number"] = 1
+	--		}
+	--	},
+	--}
+	--ts.setHttpsTimeOut(60)
+	--code,header_resp, body_resp = ts.httpPost("http://k76sk.com:20083/api/phone", header_send,body_send)
+	--dialog(body_resp, time)
 
 
 
-function getData() --获取six-two-data (可以用的)
-	local getList = function(path) 
-		local a = io.popen("ls "..path) 
-		local f = {}; 
-		for l in a:lines() do 
-			table.insert(f,l) 
+	-- mSleep(200)
+	-- 		x,y = findMultiColorInRegionFuzzy(0x323333, "-12|-12|0x323333,13|-12|0x323333,-11|11|0x323333,12|12|0x323333,65|859|0x3bb3fa,595|863|0x3bb3fa,280|852|0xffffff,363|868|0xffffff,319|821|0x3bb3fa", 90, 0, 0, 750, 1334, { orient = 2 })
+	-- 		if x ~= -1 and y ~= -1 then
+	-- 			mSleep(500)
+	-- 			tap(x, y)
+	-- 			mSleep(500)
+	-- 			toast("立即打卡1", 1)
+	-- 			mSleep(1000)
+	-- 		end
+
+
+
+	function getData() --获取six-two-data (可以用的)
+		local getList = function(path) 
+			local a = io.popen("ls "..path) 
+			local f = {}; 
+			for l in a:lines() do 
+				table.insert(f,l) 
+			end 
+			return f 
 		end 
-		return f 
-	end 
-	local Wildcard = getList("/var/mobile/Containers/Data/Application") 
-	for var = 1,#Wildcard do 
-		local file = io.open("/var/mobile/Containers/Data/Application/"..Wildcard[var].."/Library/WechatPrivate/wx.dat","rb") 
-		if file then 
-			local ts = require("ts")
-			local plist = ts.plist
-			local plfilename = "/var/mobile/Containers/Data/Application/"..Wildcard[var].."/Library/LocalInfo.lst" --设置plist路径
-			local tmp2 = plist.read(plfilename)                --读取 PLIST 文件内容并返回一个 TABLE
-			for k, v in pairs(tmp2) do
-				if k == "$objects" then
-					for i = 3 ,5 do
-						if tonumber(v[i]) then
-							wx = v[i]
-							wxid = v[i-1]
-							break
+		local Wildcard = getList("/var/mobile/Containers/Data/Application") 
+		for var = 1,#Wildcard do 
+			local file = io.open("/var/mobile/Containers/Data/Application/"..Wildcard[var].."/Library/WechatPrivate/wx.dat","rb") 
+			if file then 
+				local ts = require("ts")
+				local plist = ts.plist
+				local plfilename = "/var/mobile/Containers/Data/Application/"..Wildcard[var].."/Library/LocalInfo.lst" --设置plist路径
+				local tmp2 = plist.read(plfilename)                --读取 PLIST 文件内容并返回一个 TABLE
+				for k, v in pairs(tmp2) do
+					if k == "$objects" then
+						for i = 3 ,5 do
+							if tonumber(v[i]) then
+								wx = v[i]
+								wxid = v[i-1]
+								break
+							end	
 						end	
 					end	
-				end	
-			end
-			local str = file:read("*a") 
-			file:close() 
-			require"sz" 
-			local str = string.tohex(str) --16进制编码 
-			return str 
+				end
+				local str = file:read("*a") 
+				file:close() 
+				require"sz" 
+				local str = string.tohex(str) --16进制编码 
+				return str 
+			end 
 		end 
 	end 
-end 
 
--- six_data = getData()
--- dialog(six_data,0)
-
-
--- local ts = require("ts")
--- local plist = ts.plist
-
--- local plfilename = userPath().."/res/test.plist"
-
--- local tmp2 = {}
--- local p = {}
--- p['创建当前时间']=os.date("%Y-%m-%d %H:%M %S",nowtime)
--- p['进程']='抖音'
--- p['数据']={}
--- p['数据']['抖音号1']='qwe1111'
--- p['数据']['抖音号2']='qwe2222'
--- p['数据']['任务状态']=false
--- p['数据']['任务进度']=9
-
--- function writePlist(a)
---     for k,v in pairs (a) do
---         if type(k) == "table" then
---             writePlist(v)
---         else
---             tmp2[k] = v
---             plist.write(plfilename, tmp2)
---         end
---     end
--- end
-
--- writePlist(p)
--- dialog("写入成功",0)
-
---  --该微信帐号因使用了微信外挂、非官方客户端或模拟器，将永久限制登录，请尽快卸载对应的非法软件。若帐号内有资金，可轻触“确定”按相关指引进行操作。
--- 	    x,y = findMultiColorInRegionFuzzy(0x576b95, "27|0|0x576b95,-330|-6|0x181819,-11|-329|0x000000,7|-331|0x000000,17|-334|0x000000,26|-319|0x000000,-26|-286|0x000000,-16|-270|0x000000,24|-289|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
---         if x ~= -1 then
---             mSleep(200)
--- 			tap(x - 300, y)
--- 			mSleep(500)
--- 			toast("该微信帐号因使用了微信外挂、非官方客户端或模拟器，将永久限制登录，请尽快卸载对应的非法软件。若帐号内有资金，可轻触“确定”按相关指引进行操作。",1)
--- 			mSleep(500)
---         end
-
---     --帐号或密码错误，请出现填写
---         x,y = findMultiColorInRegionFuzzy(0x576b95, "11|-1|0x576b95,40|0|0x576b95,-110|-155|0x000000,-100|-155|0x000000,-89|-156|0x000000,-72|-162|0x000000,-61|-158|0x000000,-27|-158|0x000000,8|-177|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
---         if x ~= -1 then
---             mSleep(200)
--- 			tap(x - 300, y)
--- 			mSleep(500)
--- 			toast("帐号或密码错误，请出现填写")
--- 			mSleep(500)
---         end
+	-- six_data = getData()
+	-- dialog(six_data,0)
 
 
---         function getIp()
---             ::ip_addresss::
---     		local sz = require("sz");
---     		local szhttp = require("szocket.http")
---     		local res, code = szhttp.request("http://myip.ipip.net/")
---     		if code == 200 then
---     		    if type(string.match(res,"%d+.%d+.%d+.%d+")) == "string" then
---     		        return string.match(res,"%d+.%d+.%d+.%d+")
---     		    else
---     		        return false
---     		    end
---     		else
---     			return false
---     		end
---         end
+	-- local ts = require("ts")
+	-- local plist = ts.plist
 
--- 	aa = getIp()
--- 	if aa then
--- 	    dialog(aa,0)
--- 	else
--- 	    dialog("text",0)
--- 	end
+	-- local plfilename = userPath().."/res/test.plist"
 
+	-- local tmp2 = {}
+	-- local p = {}
+	-- p['创建当前时间']=os.date("%Y-%m-%d %H:%M %S",nowtime)
+	-- p['进程']='抖音'
+	-- p['数据']={}
+	-- p['数据']['抖音号1']='qwe1111'
+	-- p['数据']['抖音号2']='qwe2222'
+	-- p['数据']['任务状态']=false
+	-- p['数据']['任务进度']=9
 
--- mSleep(200)
---         x,y = findMultiColorInRegionFuzzy(0x323333, "53|-15|0x323333,87|-16|0x323333,124|-16|0x323333,148|-22|0x323333,184|-22|0x323333,51|430|0xebebeb,566|431|0xebebeb,276|380|0xebebeb,249|423|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
---         if x ~= -1 then
---         	mSleep(500)
--- 			tap(x + 30, y + 109)
--- 			mSleep(500)
--- 			toast("选择区号",1)
--- 			mSleep(500)
---         end
+	-- function writePlist(a)
+	--     for k,v in pairs (a) do
+	--         if type(k) == "table" then
+	--             writePlist(v)
+	--         else
+	--             tmp2[k] = v
+	--             plist.write(plfilename, tmp2)
+	--         end
+	--     end
+	-- end
 
+	-- writePlist(p)
+	-- dialog("写入成功",0)
 
--- openURL("prefs:root=General&path=VPN");
+	--  --该微信帐号因使用了微信外挂、非官方客户端或模拟器，将永久限制登录，请尽快卸载对应的非法软件。若帐号内有资金，可轻触“确定”按相关指引进行操作。
+	-- 	    x,y = findMultiColorInRegionFuzzy(0x576b95, "27|0|0x576b95,-330|-6|0x181819,-11|-329|0x000000,7|-331|0x000000,17|-334|0x000000,26|-319|0x000000,-26|-286|0x000000,-16|-270|0x000000,24|-289|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+	--         if x ~= -1 then
+	--             mSleep(200)
+	-- 			tap(x - 300, y)
+	-- 			mSleep(500)
+	-- 			toast("该微信帐号因使用了微信外挂、非官方客户端或模拟器，将永久限制登录，请尽快卸载对应的非法软件。若帐号内有资金，可轻触“确定”按相关指引进行操作。",1)
+	-- 			mSleep(500)
+	--         end
 
---writePasteboard('111111')
---                			mSleep(200)
---        					keyDown("RightGUI")
---        					keyDown("v")
---        					keyUp("v")
---        					keyUp("RightGUI")
---        					mSleep(200)
---        					key = "ReturnOrEnter"
---                            keyDown(key)
---                            keyUp(key)
---                            mSleep(200)
---							key = "ReturnOrEnter"
---                            keyDown(key)
---                            keyUp(key)
---							mSleep(200)
---                            writePasteboard('111111')
---                			mSleep(200)
---        					keyDown("RightGUI")
---        					keyDown("v")
---        					keyUp("v")
---        					keyUp("RightGUI")
---        					mSleep(200)
---        					key = "ReturnOrEnter"
---                            keyDown(key)
---                            keyUp(key)
-
--- header_send = {
--- 	["Content-Type"] = "application/json"
--- }
--- body_send = {
--- 	["appKey"] = appKey,
--- 	["secretKey"] = secretKey,
--- 	["infos"] = {
--- 		{
--- 			["productId"] = productId,
--- 			["abbr"] = countryId,
--- 			["number"] = 1
--- 		}
--- 	},
--- }
-
--- mSleep(500)
--- x,y = findMultiColorInRegionFuzzy( 0xf85543, "0|-25|0xf85543,-12|-11|0xf85543,13|-11|0xf85543", 90, 600, 0, 749, 1333)
--- if x ~= -1 and y ~= -1 then
--- 	mSleep(50)
--- 	if getColor(x + 7, y - 38) == 0xaaaaaa then
--- 		mSleep(math.random(500, 700))
--- 		moveTowards(x, y - 10,250,300,10)
--- 		mSleep(math.random(500, 700))
--- 	else
--- 		mSleep(math.random(500, 700))
--- 		randomTap(x, y - 10, 3)
--- 		mSleep(math.random(500, 700))
--- 	end
--- end
-
--- API                   = "CkjuQGtZUNumzQvjgTQ082Ih"
--- Secret                = "XsYel9kpUUhG3OwFHfu9h2cKbXlhPpzj"
--- tab_CHN_ENG           = {
--- 	language_type           = "CHN_ENG",
--- 	detect_direction        = "true",
--- 	detect_language         = "true",
--- 	ocrType                 = 1
--- }
-
--- ::getBaiDuToken::
--- 	local code,access_token = getAccessToken(API,Secret)
--- 	if code then
--- 		::snap::
--- 		local content_name = userPath() .. "/res/baiduAI_content_name1.jpg"
-
--- 		--内容
--- 		snapshot(content_name, 151, 45, 611, 91) 
--- 		mSleep(500)
--- 		local code, body = baiduAI(access_token,content_name,tab_CHN_ENG)
--- 		if code then
--- 			local tmp = json.decode(body)
--- 			if #tmp.words_result > 0 then
--- 				content = tmp.words_result[1].words
--- 			end
--- 		else
--- 			toast("识别失败\n" .. tostring(body),1)
--- 			mSleep(1000)
--- 			goto snap
--- 		end
-
--- 		if content ~= nil and #content >= 1 then
--- 			toast("识别内容：\r\n" .. content,1)
--- 			mSleep(1000)
--- 		else
--- 			toast("识别内容失败,重新截图识别" .. tostring(body),1)
--- 			mSleep(1000)
--- 			goto snap
--- 		end
--- 	else
--- 		toast("获取token失败",1)
--- 		mSleep(1000)
--- 		goto getBaiDuToken
--- 	end
--- file = io.open(userPath().."/res/person2.plist", "a+")
-
---::new_phone::
---local sz = require("sz");
---local http = require("szocket.http")
---local res, code = http.request('http://127.0.0.1:1688/cmd?fun=getcurrentrecordparam')
---dialog(res, time)
-
---local file = "/var/mobile/iggparams.txt"
---txt = readFile(file)--读取文件内容，返回全部内容的 string
---	for k,v in ipairs(txt) do
---		strList = strSplit(v,":")
---		if strList[1] == 'SystemVersion' then
---			dialog(v, time)
---			txt[k] = strList[1] .. ":" .. "11.0.1"
---			break
---		end
---	end
-
---bool = writeFile(file,txt,"w",1) --将 table 内容存入文件，成功返回 true
---if bool then
---    dialog("写入成功")
---else
---    dialog("写入失败")
---end
-
---::new_phone::
---local sz = require("sz");
---local http = require("szocket.http")
---local res, code = http.request('http://127.0.0.1:1688/cmd?fun=setcurrentrecordparam')
---dialog(res, time)
+	--     --帐号或密码错误，请出现填写
+	--         x,y = findMultiColorInRegionFuzzy(0x576b95, "11|-1|0x576b95,40|0|0x576b95,-110|-155|0x000000,-100|-155|0x000000,-89|-156|0x000000,-72|-162|0x000000,-61|-158|0x000000,-27|-158|0x000000,8|-177|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+	--         if x ~= -1 then
+	--             mSleep(200)
+	-- 			tap(x - 300, y)
+	-- 			mSleep(500)
+	-- 			toast("帐号或密码错误，请出现填写")
+	-- 			mSleep(500)
+	--         end
 
 
---openURL('App-Prefs:root=DO_NOT_DISTURB')
+	--         function getIp()
+	--             ::ip_addresss::
+	--     		local sz = require("sz");
+	--     		local szhttp = require("szocket.http")
+	--     		local res, code = szhttp.request("http://myip.ipip.net/")
+	--     		if code == 200 then
+	--     		    if type(string.match(res,"%d+.%d+.%d+.%d+")) == "string" then
+	--     		        return string.match(res,"%d+.%d+.%d+.%d+")
+	--     		    else
+	--     		        return false
+	--     		    end
+	--     		else
+	--     			return false
+	--     		end
+	--         end
 
---openURL('prefs:root=DO_NOT_DISTURB&path=ALLOW_CALLS_FROM')
+	-- 	aa = getIp()
+	-- 	if aa then
+	-- 	    dialog(aa,0)
+	-- 	else
+	-- 	    dialog("text",0)
+	-- 	end
 
---openURL('prefs:root=General&path=Keyboard/Hardware_Keyboard')
 
-local sz = require("sz")
-local cjson = sz.json
-local http = sz.i82.http
+	-- mSleep(200)
+	--         x,y = findMultiColorInRegionFuzzy(0x323333, "53|-15|0x323333,87|-16|0x323333,124|-16|0x323333,148|-22|0x323333,184|-22|0x323333,51|430|0xebebeb,566|431|0xebebeb,276|380|0xebebeb,249|423|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+	--         if x ~= -1 then
+	--         	mSleep(500)
+	-- 			tap(x + 30, y + 109)
+	-- 			mSleep(500)
+	-- 			toast("选择区号",1)
+	-- 			mSleep(500)
+	--         end
 
-function downFile(url, path)
-    ::down::
-    status, headers, body = http.get(url)
-    if status == 200 then
-        function decodeJson() 
-			return json.decode(body)
-        end
-	
-        local code = pcall(decodeJson)
-		if not code then
-		    ::write_file::
-    		file = io.open(path, "wb")
-            if file then
-                file:write(body)
-                file:close()
-                return true, "";
-            else
-                toast("保存文件到本地失败，重新保存",1)
-                mSleep(3000)
-                goto write_file
-            end
-		else
-			 return false, decodeJson();
-		end
-    else
-        toast("下载文件失败，重新下载",1)
-        mSleep(3000)
-        goto down
-    end
-end
-bool, body = downFile("http://39.99.192.160/download_file?file_name=7013.plist", userPath() .. "/res/7013.plist")
-dialog(tostring(bool),0)
-dialog(body.message,0)
 
--- local plfilename = userPath() .. "/res/7013.plist"
--- local file = io.open(plfilename,"rb") 
--- if file then 
--- 	local str = file:read("*a")
--- 	file:close()
+	-- openURL("prefs:root=General&path=VPN");
 
--- 	log(str)
--- end
+	--writePasteboard('111111')
+	--                			mSleep(200)
+	--        					keyDown("RightGUI")
+	--        					keyDown("v")
+	--        					keyUp("v")
+	--        					keyUp("RightGUI")
+	--        					mSleep(200)
+	--        					key = "ReturnOrEnter"
+	--                            keyDown(key)
+	--                            keyUp(key)
+	--                            mSleep(200)
+	--							key = "ReturnOrEnter"
+	--                            keyDown(key)
+	--                            keyUp(key)
+	--							mSleep(200)
+	--                            writePasteboard('111111')
+	--                			mSleep(200)
+	--        					keyDown("RightGUI")
+	--        					keyDown("v")
+	--        					keyUp("v")
+	--        					keyUp("RightGUI")
+	--        					mSleep(200)
+	--        					key = "ReturnOrEnter"
+	--                            keyDown(key)
+	--                            keyUp(key)
+
+	-- header_send = {
+	-- 	["Content-Type"] = "application/json"
+	-- }
+	-- body_send = {
+	-- 	["appKey"] = appKey,
+	-- 	["secretKey"] = secretKey,
+	-- 	["infos"] = {
+	-- 		{
+	-- 			["productId"] = productId,
+	-- 			["abbr"] = countryId,
+	-- 			["number"] = 1
+	-- 		}
+	-- 	},
+	-- }
+
+	-- mSleep(500)
+	-- x,y = findMultiColorInRegionFuzzy( 0xf85543, "0|-25|0xf85543,-12|-11|0xf85543,13|-11|0xf85543", 90, 600, 0, 749, 1333)
+	-- if x ~= -1 and y ~= -1 then
+	-- 	mSleep(50)
+	-- 	if getColor(x + 7, y - 38) == 0xaaaaaa then
+	-- 		mSleep(math.random(500, 700))
+	-- 		moveTowards(x, y - 10,250,300,10)
+	-- 		mSleep(math.random(500, 700))
+	-- 	else
+	-- 		mSleep(math.random(500, 700))
+	-- 		randomTap(x, y - 10, 3)
+	-- 		mSleep(math.random(500, 700))
+	-- 	end
+	-- end
+
+	-- API                   = "CkjuQGtZUNumzQvjgTQ082Ih"
+	-- Secret                = "XsYel9kpUUhG3OwFHfu9h2cKbXlhPpzj"
+	-- tab_CHN_ENG           = {
+	-- 	language_type           = "CHN_ENG",
+	-- 	detect_direction        = "true",
+	-- 	detect_language         = "true",
+	-- 	ocrType                 = 1
+	-- }
+
+	-- ::getBaiDuToken::
+	-- 	local code,access_token = getAccessToken(API,Secret)
+	-- 	if code then
+	-- 		::snap::
+	-- 		local content_name = userPath() .. "/res/baiduAI_content_name1.jpg"
+
+	-- 		--内容
+	-- 		snapshot(content_name, 151, 45, 611, 91) 
+	-- 		mSleep(500)
+	-- 		local code, body = baiduAI(access_token,content_name,tab_CHN_ENG)
+	-- 		if code then
+	-- 			local tmp = json.decode(body)
+	-- 			if #tmp.words_result > 0 then
+	-- 				content = tmp.words_result[1].words
+	-- 			end
+	-- 		else
+	-- 			toast("识别失败\n" .. tostring(body),1)
+	-- 			mSleep(1000)
+	-- 			goto snap
+	-- 		end
+
+	-- 		if content ~= nil and #content >= 1 then
+	-- 			toast("识别内容：\r\n" .. content,1)
+	-- 			mSleep(1000)
+	-- 		else
+	-- 			toast("识别内容失败,重新截图识别" .. tostring(body),1)
+	-- 			mSleep(1000)
+	-- 			goto snap
+	-- 		end
+	-- 	else
+	-- 		toast("获取token失败",1)
+	-- 		mSleep(1000)
+	-- 		goto getBaiDuToken
+	-- 	end
+	-- file = io.open(userPath().."/res/person2.plist", "a+")
+
+	--::new_phone::
+	--local sz = require("sz");
+	--local http = require("szocket.http")
+	--local res, code = http.request('http://127.0.0.1:1688/cmd?fun=getcurrentrecordparam')
+	--dialog(res, time)
+
+	--local file = "/var/mobile/iggparams.txt"
+	--txt = readFile(file)--读取文件内容，返回全部内容的 string
+	--	for k,v in ipairs(txt) do
+	--		strList = strSplit(v,":")
+	--		if strList[1] == 'SystemVersion' then
+	--			dialog(v, time)
+	--			txt[k] = strList[1] .. ":" .. "11.0.1"
+	--			break
+	--		end
+	--	end
+
+	--bool = writeFile(file,txt,"w",1) --将 table 内容存入文件，成功返回 true
+	--if bool then
+	--    dialog("写入成功")
+	--else
+	--    dialog("写入失败")
+	--end
+
+	--::new_phone::
+	--local sz = require("sz");
+	--local http = require("szocket.http")
+	--local res, code = http.request('http://127.0.0.1:1688/cmd?fun=setcurrentrecordparam')
+	--dialog(res, time)
+
+
+	--openURL('App-Prefs:root=DO_NOT_DISTURB')
+
+	--openURL('prefs:root=DO_NOT_DISTURB&path=ALLOW_CALLS_FROM')
+
+	--openURL('prefs:root=General&path=Keyboard/Hardware_Keyboard')
+
