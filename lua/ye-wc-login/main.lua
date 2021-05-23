@@ -978,119 +978,8 @@ function model:replace_file(fileName)
 	end
 end
 
-function model:wc(ksUrl,move_type,operator,login_times,content_user,content_country,content_type,vpn_stauts,phone_token,kn_country,kn_id,countryId,nickName,password,country_len,login_type,addBlack,diff_user,ran_pass,ddwGet,airplaneStatus,connect_vpn,EU_countries,tmFailBack)
-	account_len = 0
-	old_mess_yzm = ""
-	login_diff_bool = false
-	load_ewm_bool= false
-	closeApp(self.wc_bid)
-	mSleep(math.random(1000, 1500))
-	runApp(self.wc_bid)
-	mSleep(math.random(1000, 1500))
-	while (true) do
-		mSleep(200)
-		x,y = findMultiColorInRegionFuzzy( 0x07c160, "171|-1|0x07c160,57|-5|0xffffff,-163|-3|0xf2f2f2,-411|1|0xf2f2f2,-266|-6|0x06ae56", 90, 0, 0, 749, 1333)
-		if x ~= -1 and y ~= -1 then
-			if airplaneStatus == "1" then
-				mSleep(math.random(200, 500))
-				setAirplaneMode(true)
-				mSleep(3000)
-				setAirplaneMode(false)
-			end
-			randomsTap(549, 1240,10)
-			mSleep(math.random(200, 500))
-			toast("注册",1)
-			break
-		end
-	end
-
-	tm_bool = false
-	::reset::
-	if tm_bool then
-		while true do
-			mSleep(200)
-			if getColor(561,1265) == 0x576b95 then
-				mSleep(math.random(500, 700))
-				randomsTap(536,1266,3)
-				mSleep(math.random(500, 700))
-				if airplaneStatus == "1" then
-					mSleep(math.random(200, 500))
-					setAirplaneMode(true)
-					mSleep(3000)
-					setAirplaneMode(false)
-				end
-			end
-
-			mSleep(200)
-			if getColor(393,1170) == 0 then
-				mSleep(math.random(500, 700))
-				randomsTap(393,1170,3)
-				mSleep(math.random(500, 700))
-				break
-			end
-
-			--取消
-			mSleep(200)
-			if getColor(79,88) == 0x2bb00 then
-				mSleep(math.random(500, 700))
-				randomsTap(79,88,3)
-				mSleep(math.random(500, 700))
-			end
-		end
-	end
-
-	while (true) do
-		--11系统
-		mSleep(200)
-		x, y = findMultiColorInRegionFuzzy(0x9ce6bf,"161|-2|0xd7f5e5,387|-10|0x9ce6bf,163|30|0x9ce6bf,156|-31|0x9ce6bf",90,0,831,749,1053)
-		if x ~= -1 and y ~= -1 then
-			mSleep(math.random(200, 500))
-			toast("注册页面",1)
-			break
-		end
-
-		--点击模态框10
-		mSleep(200)
-		x,y = findMultiColorInRegionFuzzy( 0x1a1a1a,"11|2|0x1a1a1a,44|1|0x1a1a1a,79|-1|0x1a1a1a,114|-1|0x1a1a1a,153|3|0x1a1a1a,187|3|0x1a1a1a", 90, 228, 0, 749, 1333)
-		if x ~= -1 and y ~= -1 then
-			mSleep(math.random(200, 500))
-			randomsTap(x,y,10)
-			mSleep(math.random(200, 500))
-		end
-
-		--点击模态框11
-		mSleep(200)
-		x, y = findMultiColorInRegionFuzzy(0,"10|7|0,22|7|0,45|4|0,80|3|0,117|3|0,153|8|0,178|8|0", 90, 228, 0, 749, 1333)
-		if x ~= -1 and y ~= -1 then
-			mSleep(math.random(500, 700))
-			randomsTap(367,1042,10)
-			mSleep(math.random(500, 700))
-		end
-
-		mSleep(200)
-		if getColor(561,1265) == 0x576b95 then
-			mSleep(math.random(500, 700))
-			randomsTap(536,1266,3)
-			mSleep(math.random(500, 700))
-		end
-
-		mSleep(200)
-		x,y = findMultiColorInRegionFuzzy( 0x07c160, "171|-1|0x07c160,57|-5|0xffffff,-163|-3|0xf2f2f2,-411|1|0xf2f2f2,-266|-6|0x06ae56", 90, 0, 0, 749, 1333)
-		if x ~= -1 and y ~= -1 then
-			mSleep(math.random(200, 500))
-			randomsTap(549, 1240,10)
-			mSleep(math.random(200, 500))
-		end
-
-		mSleep(200)
-		if getColor(393,1170) == 0 then
-			mSleep(math.random(500, 700))
-			randomsTap(393,1170,3)
-			mSleep(math.random(500, 700))
-		end
-	end
-
-	if vpn_stauts == "1" then
+function model:getPhoneNum()
+    if vpn_stauts == "1" then
 		::get_token::
 		local sz = require("sz")        --登陆
 		local http = require("szocket.http")
@@ -1800,7 +1689,125 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			goto get_phone
 		end
 	end
+end
 
+function model:wc(ksUrl,move_type,operator,login_times,content_user,content_country,content_type,vpn_stauts,phone_token,kn_country,kn_id,countryId,nickName,password,country_len,login_type,addBlack,diff_user,ran_pass,ddwGet,airplaneStatus,connect_vpn,EU_countries,tmFailBack)
+	account_len = 0
+	old_mess_yzm = ""
+	login_diff_bool = false
+	load_ewm_bool= false
+	closeApp(self.wc_bid)
+	mSleep(math.random(1000, 1500))
+	runApp(self.wc_bid)
+	mSleep(math.random(1000, 1500))
+	while (true) do
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy( 0x07c160, "171|-1|0x07c160,57|-5|0xffffff,-163|-3|0xf2f2f2,-411|1|0xf2f2f2,-266|-6|0x06ae56", 90, 0, 0, 749, 1333)
+		if x ~= -1 and y ~= -1 then
+			if airplaneStatus == "1" then
+				mSleep(math.random(200, 500))
+				setAirplaneMode(true)
+				mSleep(3000)
+				setAirplaneMode(false)
+			end
+			randomsTap(549, 1240,10)
+			mSleep(math.random(200, 500))
+			toast("注册",1)
+			break
+		end
+	end
+
+	tm_bool = false
+	::reset::
+	if tm_bool then
+		while true do
+			mSleep(200)
+			if getColor(561,1265) == 0x576b95 then
+				mSleep(math.random(500, 700))
+				randomsTap(536,1266,3)
+				mSleep(math.random(500, 700))
+				if airplaneStatus == "1" then
+					mSleep(math.random(200, 500))
+					setAirplaneMode(true)
+					mSleep(3000)
+					setAirplaneMode(false)
+				end
+			end
+
+			mSleep(200)
+			if getColor(393,1170) == 0 then
+				mSleep(math.random(500, 700))
+				randomsTap(393,1170,3)
+				mSleep(math.random(500, 700))
+				break
+			end
+
+			--取消
+			mSleep(200)
+			if getColor(79,88) == 0x2bb00 then
+				mSleep(math.random(500, 700))
+				randomsTap(79,88,3)
+				mSleep(math.random(500, 700))
+			end
+		end
+	end
+
+	while (true) do
+		--11系统
+		mSleep(200)
+		x, y = findMultiColorInRegionFuzzy(0x9ce6bf,"161|-2|0xd7f5e5,387|-10|0x9ce6bf,163|30|0x9ce6bf,156|-31|0x9ce6bf",90,0,831,749,1053)
+		if x ~= -1 and y ~= -1 then
+			mSleep(math.random(200, 500))
+			toast("注册页面",1)
+			break
+		end
+
+		--点击模态框10
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy( 0x1a1a1a,"11|2|0x1a1a1a,44|1|0x1a1a1a,79|-1|0x1a1a1a,114|-1|0x1a1a1a,153|3|0x1a1a1a,187|3|0x1a1a1a", 90, 228, 0, 749, 1333)
+		if x ~= -1 and y ~= -1 then
+			mSleep(math.random(200, 500))
+			randomsTap(x,y,10)
+			mSleep(math.random(200, 500))
+		end
+
+		--点击模态框11
+		mSleep(200)
+		x, y = findMultiColorInRegionFuzzy(0,"10|7|0,22|7|0,45|4|0,80|3|0,117|3|0,153|8|0,178|8|0", 90, 228, 0, 749, 1333)
+		if x ~= -1 and y ~= -1 then
+			mSleep(math.random(500, 700))
+			randomsTap(367,1042,10)
+			mSleep(math.random(500, 700))
+		end
+
+		mSleep(200)
+		if getColor(561,1265) == 0x576b95 then
+			mSleep(math.random(500, 700))
+			randomsTap(536,1266,3)
+			mSleep(math.random(500, 700))
+		end
+
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy( 0x07c160, "171|-1|0x07c160,57|-5|0xffffff,-163|-3|0xf2f2f2,-411|1|0xf2f2f2,-266|-6|0x06ae56", 90, 0, 0, 749, 1333)
+		if x ~= -1 and y ~= -1 then
+			mSleep(math.random(200, 500))
+			randomsTap(549, 1240,10)
+			mSleep(math.random(200, 500))
+		end
+
+		mSleep(200)
+		if getColor(393,1170) == 0 then
+			mSleep(math.random(500, 700))
+			randomsTap(393,1170,3)
+			mSleep(math.random(500, 700))
+		end
+	end
+
+	if getPhoneBool then
+	    self:getPhoneNum()
+	    getPhoneBool = false
+	end
+	
 	if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "3" or vpn_stauts == "5" 
 	or vpn_stauts == "6" or vpn_stauts == "7" or vpn_stauts == "8" or vpn_stauts == "9" 
 	or vpn_stauts == "12" or vpn_stauts == "13" or vpn_stauts == "14" or vpn_stauts == "15" 
@@ -2210,6 +2217,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			if account_len ~= 0 then
 				tm_bool = true
 			end
+			getPhoneBool = true
 			goto reset
 		end
 
@@ -2799,6 +2807,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				goto over
 			else
 				tm_bool = true
+				getPhoneBool = true
 				goto reset
 			end
 		end
@@ -3121,6 +3130,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			goto over
 		else
 			tm_bool = true
+			getPhoneBool = true
 			goto reset
 		end
 	end
@@ -3165,6 +3175,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 						goto over
 					else
 						tm_bool = true
+						getPhoneBool = true
 						goto reset
 					end
 				end
@@ -4868,6 +4879,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 					toast("验证码不正确",1)
 					mSleep(1000)
+					getPhoneBool = true
 					goto reset
 				end
 			end
@@ -4938,6 +4950,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				end
 				toast("环境异常",1)
 				mSleep(1000)
+				getPhoneBool = true
 				goto reset
 			end
 		end
@@ -5112,6 +5125,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 						break
 					end
 				end
+				getPhoneBool = true
 				goto reset
 			end
 		end
@@ -5596,6 +5610,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 								mSleep(math.random(500, 700))
 							end
 						end
+						getPhoneBool = true
 						goto reset
 					end
 				end
@@ -5671,6 +5686,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				mSleep(math.random(500, 700))
 			end
 		end
+		getPhoneBool = true
 		goto reset
 	end
 	data_six_two = false
@@ -5999,7 +6015,7 @@ function model:main()
 			},
 			{
 				["type"] = "RadioGroup",                    
-				["list"] = "715,717,718,720,721,722",
+				["list"] = "80,81,82,83,84,85,86",
 				["select"] = "0",  
 				["countperline"] = "4",
 			}
@@ -6023,6 +6039,19 @@ function model:main()
 		dialog("密码不能为空，请重新运行脚本设置密码", 3)
 		luaExit()
 	end
+	
+	if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16" or vpn_stauts == "19" then
+		if kn_country == "" or kn_country == "默认值" then
+			dialog("国家区号不能为空，请重新运行脚本设置国家区号", 3)
+			luaExit()
+		end
+
+		if kn_id == "" or kn_id == "默认值" then
+			dialog("项目id不能为空，请重新运行脚本设置id", 3)
+			luaExit()
+		end
+	end
+	
 	local m = TSVersions()
 	if m <= "1.2.7" then
 		dialog("请使用 v1.2.8 及其以上版本 TSLib",0)
@@ -6044,35 +6073,38 @@ function model:main()
 	end
 
 	if replaceFile == "0" then
-		file_name = "715.plist"
+		file_name = "80.plist"
 	elseif replaceFile == "1" then
-		file_name = "717.plist"
+		file_name = "81.plist"
 	elseif replaceFile == "2" then
-		file_name = "718.plist"
+		file_name = "82.plist"
 	elseif replaceFile == "3" then
-		file_name = "720.plist"
+		file_name = "83.plist"
 	elseif replaceFile == "4" then
-		file_name = "721.plist"
+		file_name = "84.plist"
 	elseif replaceFile == "5" then
-		file_name = "722.plist"
+		file_name = "85.plist"
+	elseif replaceFile == "6" then
+		file_name = "86.plist"
 	end
-    
-    bool, body = self:downFile("http://39.99.192.160/download_file?file_name=" .. file_name, userPath() .. "/res/info/" .. file_name)
-    if bool then
-        self:replace_file(file_name)
-    else
-        if body.message == "当前不可获取文件" then
-            toast(body.message,1)
-            mSleep(500)
-            self:replace_file(file_name)
-        else
-            dialog(body.message,0)
-            luaExit()
-        end
-    end
 
 	get_six_two = false
+	getPhoneBool = true
 	while true do
+	    mSleep(math.random(200, 500))
+		closeApp(self.wc_bid)
+		mSleep(500)
+		setVPNEnable(false)
+		setVPNEnable(false)
+		mSleep(500)
+		if content_type == "2" then
+			self:changeIP(content_user,content_country)
+		else
+			if content_type ~= "1" then
+				self:change_IP(content_user,content_country)
+			end
+		end
+		
 		if vpn_stauts == "2" then
 			ksUrl = "http://www.3cpt.com"
 			ApiName = "huqianjin54"
@@ -6102,33 +6134,6 @@ function model:main()
 			ksUrl = "http://k76sk.com:20083"
 		end
 
-
-		if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16" or vpn_stauts == "19" then
-			mSleep(500)
-			if kn_country == "" or kn_country == "默认值" then
-				dialog("国家区号不能为空，请重新运行脚本设置国家区号", 3)
-				luaExit()
-			end
-
-			if kn_id == "" or kn_id == "默认值" then
-				dialog("项目id不能为空，请重新运行脚本设置id", 3)
-				luaExit()
-			end
-		end
-		mSleep(math.random(200, 500))
-		closeApp(self.wc_bid)
-		mSleep(500)
-		setVPNEnable(false)
-		setVPNEnable(false)
-		mSleep(500)
-		if content_type == "2" then
-			self:changeIP(content_user,content_country)
-		else
-			if content_type ~= "1" then
-				self:change_IP(content_user,content_country)
-			end
-		end
-
 		if vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16" or vpn_stauts == "19" then
 			::get_token::
 			local sz = require("sz");
@@ -6146,11 +6151,30 @@ function model:main()
 				goto get_token
 			end
 		end
+		
+		if getPhoneBool then
+		    self:getPhoneNum()
+		    getPhoneBool = false
+		end
+		
+		bool, body = self:downFile("http://39.99.192.160/download_file?file_name=" .. file_name, userPath() .. "/res/info/" .. file_name)
+        if bool then
+            self:replace_file(file_name)
+        else
+            if body.message == "当前不可获取文件" then
+                toast(body.message,1)
+                mSleep(500)
+                self:replace_file(file_name)
+            else
+                dialog(body.message,0)
+                luaExit()
+            end
+        end
 
 		self:clear_App()
 		self:Net()
 		self:wc(ksUrl,move_type,operator,login_times,content_user,content_country,content_type,vpn_stauts,phone_token,kn_country,kn_id,countryId,nickName,password,country_len,login_type,addBlack,diff_user,ran_pass,ddwGet,airplaneStatus,connect_vpn,EU_countries,tmFailBack)
-		mSleep(1000)
+		getPhoneBool = true
 	end
 end
 
