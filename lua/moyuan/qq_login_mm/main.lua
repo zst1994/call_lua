@@ -1216,7 +1216,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 					hk_whiteBool = false
 				end
 
-				if os.difftime(ts.ms(), t3) > 5 then
+				if os.difftime(ts.ms(), t3) > 20 then
 					mSleep(500)
 					setVPNEnable(false)
 					mSleep(2000)
