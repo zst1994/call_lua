@@ -19,6 +19,10 @@ model.awz_getparam      = ""
 
 model.newIndex          = "0"
 
+model.decodeJson        = function (res) 
+	return json.decode(res)
+end
+
 math.randomseed(getRndNum()) -- 随机种子初始化真随机数
 
 --随机字符串
@@ -74,11 +78,7 @@ function model:downFile(url, path)
     ::down::
     status, headers, body = http.get(url)
     if status == 200 then
-        function decodeJson() 
-			return json.decode(body)
-        end
-	
-        local code = pcall(decodeJson)
+        local code = pcall(self.decodeJson, body)
 		if not code then
 		    ::write_file::
     		file = io.open(path, "wb")
@@ -92,7 +92,7 @@ function model:downFile(url, path)
                 goto write_file
             end
 		else
-			 return false, decodeJson();
+			 return false, self.decodeJson(body)
 		end
     else
         toast("下载文件失败，重新下载",1)
@@ -6017,7 +6017,7 @@ function model:main()
 				["type"] = "RadioGroup",                    
 				["list"] = "80,81,82,83,84,85,86",
 				["select"] = "0",  
-				["countperline"] = "4",
+				["countperline"] = "6",
 			}
 		}
 	}
