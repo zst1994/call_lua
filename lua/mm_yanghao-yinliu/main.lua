@@ -80,6 +80,18 @@ function model:mingyan()
 	end
 end
 
+function model:timeOutRestart(t1, str)
+	t2 = ts.ms()
+	if os.difftime(t2, t1) > 120 then
+		toast(str,1)
+		mSleep(1000)
+		break
+	else
+		toast("倒计时剩余：" .. 120 - os.difftime(t2, t1),1)
+		mSleep(1000)
+	end
+end
+
 function model:savePerson(snapIndex, x)
 	::getBaiDuToken::
 	local code,access_token = getAccessToken(self.API,self.Secret)
@@ -382,16 +394,8 @@ function model:hit_call()
 
 		--女
 		self:diffSex(0xff79b8, "32|-5|0xff79b8,14|-14|0xff79b8,13|6|0xff79b8,-21|-4|0xff79b8", "27|0|0xff79b8,58|0|0xff79b8,26|10|0xff79b8,26|-11|0xff79b8,11|4|0xffffff")
-
-		t2 = ts.ms()
-		if os.difftime(t2, t1) > 120 then
-			toast("附近打招呼流程完成",1)
-			mSleep(1000)
-			break
-		else
-			toast("倒计时剩余：" .. 120 - os.difftime(t2, t1),1)
-			mSleep(1000)
-		end
+		
+		self:timeOutRestart(t1, "附近打招呼流程完成")
 	end
 end
 
@@ -667,26 +671,18 @@ function model:reply_mess()
 	--回复消息
 	t1 = ts.ms()
 	while (true) do
-		t2 = ts.ms()
-		if os.difftime(t2, t1) > 120 or getColor(415, 1262) == 0xfdfcfd then
-			toast("回复消息流程完成",1)
-			mSleep(1000)
-			break
-		else
-			toast("倒计时剩余：" .. 120 - os.difftime(t2, t1),1)
-			mSleep(1000)
-		end
-
+		self:timeOutRestart(t1, "回复消息流程完成")
+		
 		--判断是否进入首页
 		mSleep(100)
 		if getColor(64, 1312) == 0x0fc9e1 then
-			self:click(376, 1281)
+			self:doubleClick(376, 1281)
+			mSleep(1500)
 		end
 
 		mSleep(100)
 		x,y = findMultiColorInRegionFuzzy( 0xf85543, "0|-25|0xf85543,-12|-11|0xf85543,13|-11|0xf85543", 90, 600, 0, 749, 1333)
 		if x ~= -1 then
-			self:click(376, 1281)
 			mSleep(100)
 			if getColor(x + 7, y - 38) == 0xaaaaaa then
 				mSleep(500)
@@ -737,6 +733,9 @@ function model:reply_mess()
 						keyDown(key)
 						keyUp(key)
 						mSleep(math.random(1000, 1500))
+						self:click(53, 81)
+						break
+					elseif getColor(689, 1284) == 0xffffff then
 						self:click(53, 81)
 						break
 					end
