@@ -1622,12 +1622,13 @@ function model:getPhoneNum()
 			kn_country = "27"
 		elseif string.gsub(countryId,"%s+","") == "us" then
 			::get_test::
-			later_phone = self:randomStr("1234567890", 10)
-			if string.sub(later_phone, 1, 1) == "0" or string.sub(later_phone, 1, 1) == "1" then
-				goto get_test
-			else
-				telphone = later_phone
-			end
+			later_phone = self:randomStr("1234567890", 7)
+			telphone = "235" .. later_phone
+-- 			if string.sub(later_phone, 1, 1) == "0" or string.sub(later_phone, 1, 1) == "1" then
+-- 				goto get_test
+-- 			else
+-- 				telphone = later_phone
+-- 			end
 			kn_country = "1"
 		elseif string.gsub(countryId,"%s+","") == "mn" then
 			later_phone = self:randomStr("1234567890", 7)
