@@ -39,12 +39,23 @@ function model:timeOutRestart(t1)
 	end
 end
 
+function model:uninstallApp()
+	::uninstall::
+	flag = ipaUninstall(frontAppBid())
+	if flag == 1 then
+		self:myToast("卸载成功")
+	else
+		self:myToast("卸载失败")
+		goto uninstall
+	end
+end
+
 function model:main()
 	closeApp(self.app_bid)
 	mSleep(500)
 	runApp(self.app_bid)
 	mSleep(1000)
-	
+
 	t1 = ts.ms()
 	while (true) do
 		mSleep(500)
@@ -52,13 +63,13 @@ function model:main()
 			self:myToast("进入应用成功")
 			break
 		end
-		
+
 		mSleep(500)
 		if getColor(11,   78) == 0xfd554a and getColor(686,  627) == 0xf6f5f8 then
 			self:click(702,   68)
 			self:myToast("暂无试玩任务")
 		end
-		
+
 		self:timeOutRestart(t1)
 	end
 
@@ -96,6 +107,12 @@ function model:main()
 			break
 		else
 			self:click(137, 724)
+		end
+		
+		x,y = findMultiColorInRegionFuzzy( 0x474747, "9|0|0x474747,15|0|0x474747,9|22|0x474747,39|22|0x474747,65|11|0x474747,110|3|0x474747,53|57|0xecf0f4,292|-20|0xd8d8d8", 100, 0, 0, 749, 1333)
+		if x ~= -1 then
+			self:click(373,  812)
+			self:myToast("您已经下载过这个应用")
 		end
 	end
 end

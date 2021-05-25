@@ -1817,41 +1817,11 @@ end
 
 --openURL('prefs:root=General&path=Keyboard/Hardware_Keyboard')
 
-local sz                = require("sz")
-local http              = sz.i82.http
-
-local model = {}
-
-model.pcallFun = function (res) 
-	return json.decode(res)
-end
-
-function model:get()
-	::down::
-	status, headers, body = http.get("http://39.99.192.160/download_file?file_name=803.plist")
-	if status == 200 then
-		local code = pcall(self.pcallFun, body)
-		if not code then
-			return true, "";
-		else
-			return false, self.pcallFun(body)
-		end
-	else
-		toast("下载文件失败，重新下载",1)
-		mSleep(3000)
-		goto down
-	end
-end
 
 
-bool, body = model:get()
-if bool then
-	dialog("aaaaa", time)
+flag = ipaUninstall(frontAppBid())
+if flag == 1 then
+    dialog("卸载成功")
 else
-	if body.message == "当前不可获取文件" then
-		toast(body.message,1)
-		mSleep(500)
-	else
-		dialog(body.message,0)
-	end
+    dialog("卸载失败")
 end
