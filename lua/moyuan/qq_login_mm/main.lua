@@ -29,6 +29,8 @@ model.sys_version           = "脚本自动选择"
 
 model.updatePass            = false
 
+model.special_str           = "ぁあぃいぅうぇえぉおかがきぎくぐけげこごさざしじすずせぜそぞただちぢっつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむめもゃやゅゆょよらりるれろゎわゐゑをんゔゕゖァアィイゥウェエォオカガキギクグケゲコゴサザシジスズセゼソゾタダチヂッツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミムメモャヤュユョヨラリルレロヮワヰヱヲンヴヵヶヷヸヹヺ・ーヽヾヿ゠ㇰㇱㇲㇳㇴㇵㇶㇷㇸㇹㇺㇻㇼㇽㇾㇿ"
+
 math.randomseed(getRndNum()) -- 随机种子初始化真随机数
 
 function model:click(click_x,click_y)
@@ -1047,6 +1049,17 @@ function model:location(index)
 	end
 end
 
+function model:ranSpecialStr()
+	local options = {
+		["tstab"] = 1, 
+		--随机生成 2 位字符串
+		["num"] = 1,
+	}
+
+	name = getRndStr(self.special_str,options)
+	return name
+end
+
 function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikcNameType, changePass)
 	Nickname = "已经注册过的账号无昵称"
 
@@ -1187,6 +1200,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 					mSleep(200)
 					if getColor(677,  469) == 0xbbbbbb or getColor(163,471) == 0x000000 then
 						self:click(239, 629)
+						mSleep(3000)
 						break
 					else
 						self:click(447, 477)
@@ -1216,7 +1230,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 					hk_whiteBool = false
 				end
 
-				if os.difftime(ts.ms(), t3) > 20 then
+				if os.difftime(ts.ms(), t3) > 25 then
 					mSleep(500)
 					setVPNEnable(false)
 					mSleep(2000)
@@ -1224,6 +1238,8 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 					hk_whiteBool = true
 					toast("滑块未加载成功",1)
 					mSleep(1000)
+				else
+					toast("滑块白色：" .. os.difftime(ts.ms(), t3),1)
 				end
 			end
 
@@ -1701,6 +1717,10 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 		State["随机常量"] = tonumber(self:Rnd_Word("0123456789", 5))
 
 		Nickname = self:Rnd_Word(State["姓氏"], 1, 3) .. State["名字"][math.random(1, #State["名字"])]
+	end
+	
+	if addSpecialStr == "1" then
+		Nickname = self:ranSpecialStr() .. Nickname .. self:ranSpecialStr()
 	end
 
 	t1 = ts.ms()
@@ -3101,13 +3121,26 @@ function model:main()
 				["list"] = "不需要,需要",
 				["select"] = "0",
 				["countperline"] = "4"
+			},
+			{
+				["type"] = "Label",
+				["text"] = "昵称是否需要添加特殊字符",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255"
+			},
+			{
+				["type"] = "RadioGroup",
+				["list"] = "不需要,需要",
+				["select"] = "0",
+				["countperline"] = "4"
 			}
 		}
 	}
 
 	local MyJsonString = json.encode(MyTable)
 
-	ret, password, sex, searchFriend, searchAccount, changeHeader, nikcNameType, sysVersion, sysPhoneType, openPingNet, gpsAddress, changePass, editorWay, changeVPNWay, loginAccountWay, inputPhoneAgain = showUI(MyJsonString)
+	ret, password, sex, searchFriend, searchAccount, changeHeader, nikcNameType, sysVersion, sysPhoneType, openPingNet, gpsAddress, changePass, editorWay, changeVPNWay, loginAccountWay, inputPhoneAgain, addSpecialStr = showUI(MyJsonString)
 	if ret == 0 then
 		dialog("取消运行脚本", 3)
 		luaExit()

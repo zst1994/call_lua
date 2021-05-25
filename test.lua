@@ -1819,9 +1819,22 @@ end
 
 
 
-flag = ipaUninstall(frontAppBid())
-if flag == 1 then
-    dialog("卸载成功")
-else
-    dialog("卸载失败")
-end
+--flag = ipaUninstall(frontAppBid())
+--if flag == 1 then
+--    dialog("卸载成功")
+--else
+--    dialog("卸载失败")
+--end
+
+
+special_str = "ぁあぃいぅうぇえぉおかがきぎくぐけげこごさざしじすずせぜそぞただちぢっつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむめもゃやゅゆょよらりるれろゎわゐゑをんゔゕゖァアィイゥウェエォオカガキギクグケゲコゴサザシジスズセゼソゾタダチヂッツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミムメモャヤュユョヨラリルレロヮワヰヱヲンヴヵヶヷヸヹヺ・ーヽヾヿ゠ㇰㇱㇲㇳㇴㇵㇶㇷㇸㇹㇺㇻㇼㇽㇾㇿ"
+
+local options = {
+	["tstab"] = 1, 
+--随机生成 2 位字符串
+	["num"] = 1,
+}
+
+
+
+dialog(getRndStr(special_str,options) .. "aaaa" .. getRndStr(special_str,options), time)
