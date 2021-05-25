@@ -941,7 +941,8 @@ function model:shouye()
 	getColor(411, 176) == 0x323333 and getColor(419, 135) == 0x323333 or
 	getColor(45, 109) == 0x323333 and getColor(222, 95) == 0x323333 or
 	getColor(206, 156) == 0x323333 and getColor(336, 157) == 0x323333 or
-	getColor(206,  153) == 0x313232 and getColor(371,  131) == 0x313232 then
+	getColor(206,  153) == 0x313232 and getColor(371,  131) == 0x313232 or
+	getColor(410,  127) == 0x323333 and getColor(404,  107) == 0x323333 then
 		toast("首页1", 1)
 		mSleep(500)
 		return true
@@ -1853,6 +1854,13 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			mSleep(500)
 			self.subName = "注册过"
 			goto get_mmId
+		end
+		
+		x,y = findMultiColorInRegionFuzzy( 0x323333, "8|0|0x323333,17|-7|0x323333,40|7|0x323333,48|4|0x323333,276|2|0x3bb3fa,290|-2|0x3bb3fa,314|7|0x3bb3fa,326|-6|0x3bb3fa,219|-211|0x323333", 90, 0, 0, 749, 1333)
+		if x ~= -1 then
+			self:click(x, y)
+			toast("当前为非wifi环境", 1)
+			mSleep(1000)
 		end
 
 		if self:location("1") then
