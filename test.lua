@@ -1836,5 +1836,12 @@ local options = {
 }
 
 
+function click(click_x, click_y, ms)
+	mSleep(math.random(150, 250))
+	randomTap(click_x, click_y, 5)
+	mSleep(ms and ms or math.random(400, 500))
+end
 
-dialog(getRndStr(special_str,options) .. "aaaa" .. getRndStr(special_str,options), time)
+mSleep(500)
+						moveTowards(418,  424, 270, 200, 5)
+						mSleep(1000)

@@ -19,6 +19,8 @@ model.awz_getparam      = ""
 
 model.newIndex          = "0"
 
+model.pid				= ""
+
 model.decodeJson        = function (res) 
 	return json.decode(res)
 end
@@ -1024,6 +1026,7 @@ function model:getPhoneNum()
 		local sz = require("sz")        --登陆
 		local http = require("szocket.http")
 		local res, code = http.request(ksUrl.."/yhapi.ashx?act=getPhone&token="..phone_token.."&iid="..kn_id)
+		log("获取手机号码：" .. code .. "====" .. res)
 		if code == 200 then
 			data = strSplit(res, "|")
 			if data[1] == "1" then
@@ -1031,7 +1034,7 @@ function model:getPhoneNum()
 					telphone = data[4]
 				elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" or vpn_stauts == "19" then
 					telphone = data[5]
-					pid = data[2]
+					self.pid = data[2]
 				end
 				toast(telphone,1)
 			elseif data[1] == "0" then
@@ -2894,9 +2897,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16" or vpn_stauts == "19" then		--奥迪
 			if addBlack == "0" then
 				if vpn_stauts == "13" then
-					setRel_url = ksUrl.."/yhapi.ashx?act=setRel&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone
+					setRel_url = ksUrl .. "/yhapi.ashx?act=setRel&token=" .. phone_token .. "&iid=" .. kn_id .. "&mobile=" .. telphone
 				elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" or vpn_stauts == "19" then
-					setRel_url = ksUrl.."/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
+					setRel_url = ksUrl .. "/yhapi.ashx?act=setRel&token=" .. phone_token .. "&pid=" .. self.pid
 				end
 
 				::open_phone::
@@ -2937,7 +2940,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				if vpn_stauts == "13" then
 					black_url = ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
 				elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" or vpn_stauts == "19" then
-					black_url = ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&pid="..pid.."&reason="..urlEncoder("获取失败")
+					black_url = ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&pid="..self.pid.."&reason="..urlEncoder("获取失败")
 				end
 
 				::addblack::
@@ -3350,7 +3353,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 						if vpn_stauts == "13" then
 							setRel_url = ksUrl.."/yhapi.ashx?act=setRel&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone
 						elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" or vpn_stauts == "19" then
-							setRel_url = ksUrl.."/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..pid
+							setRel_url = ksUrl.."/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..self.pid
 						end
 
 						::addblack::
@@ -3379,7 +3382,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 						if vpn_stauts == "13" then
 							black_url = ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
 						elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" or vpn_stauts == "19" then
-							black_url = ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&pid="..pid.."&reason="..urlEncoder("获取失败")
+							black_url = ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&pid="..self.pid.."&reason="..urlEncoder("获取失败")
 						end
 
 						::addblack::
@@ -3411,14 +3414,14 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				if vpn_stauts == "13" then
 					getPhoneCode_url = ksUrl.."/yhapi.ashx?act=getPhoneCode&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone
 				elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" or vpn_stauts == "19" then
-					getPhoneCode_url = ksUrl.."/yhapi.ashx?act=getPhoneCode&token="..phone_token.."&pid="..pid
+					getPhoneCode_url = ksUrl.."/yhapi.ashx?act=getPhoneCode&token="..phone_token.."&pid="..self.pid
 				end
 
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
 				local res, code = http.request(getPhoneCode_url)
-				log(code .. "====" .. res)
-				toast(code .. "====" .. res,1)
+				log("获取验证码：" .. code .. "====" .. res)
+				toast("获取验证码：" .. code .. "====" .. res,1)
 				if code == 200 then
 					data = strSplit(res, "|")
 					if data[1] == "1" then

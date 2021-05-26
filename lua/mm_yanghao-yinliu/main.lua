@@ -26,37 +26,40 @@ model.tab_CHN_ENG           = {
 
 math.randomseed(getRndNum())
 
-function model:click(click_x,click_y)
-	mSleep(math.random(200, 300))
+function model:click(click_x, click_y, ms)
+	mSleep(math.random(150, 250))
 	randomTap(click_x, click_y, 5)
-	mSleep(math.random(500, 600))
+	mSleep(ms and ms or math.random(400, 500))
 end
 
-function model:doubleClick(click_x,click_y)
-	mSleep(math.random(200, 300))
+function model:doubleClick(click_x, click_y)
+	mSleep(math.random(150, 250))
 	randomTap(click_x, click_y, 5)
 	mSleep(math.random(50, 60))
 	randomTap(click_x, click_y, 5)
-	mSleep(math.random(500, 600))
+	mSleep(math.random(400, 500))
 end
 
 function model:randomMove()
 	for var= 1, math.random(1, 5) do
-		mSleep(math.random(200, 300))
+		mSleep(math.random(150, 250))
 		moveTowards(300, 1000, math.random(70, 90), 300, 10) 
-		mSleep(math.random(2000, 2500))
+		mSleep(math.random(1500, 2000))
 	end
 end
 
-function model:saveStringFile(filePath,data,mode,toastString)
+function model:myToast(str, ms)
+	toast(str,1)
+	mSleep(ms and ms or 500)
+end
+
+function model:saveStringFile(filePath, data, mode, toastString)
 	::save::
 	bool = writeFileString(filePath, data, mode, 1)
 	if bool then
-		toast(toastString,1)
-		mSleep(1000)
+		self:myToast(toastString,1000)
 	else
-		toast("存储失败",1)
-		mSleep(1000)
+		self:myToast("存储失败",1000)
 		goto save
 	end
 end
@@ -69,26 +72,23 @@ function model:mingyan()
 		if tmp.text then
 			return tmp.text
 		else
-			toast("重新获取名言数据",1)
-			mSleep(3000)
+			self:myToast("重新获取名言数据",3000)
 			goto my
 		end
 	else
-		toast("重新获取名言数据",1)
-		mSleep(3000)
+		self:myToast("重新获取名言数据",3000)
 		goto my
 	end
 end
 
 function model:timeOutRestart(t1, str)
 	t2 = ts.ms()
-	if os.difftime(t2, t1) > 120 then
-		toast(str,1)
-		mSleep(1000)
-		break
+	if os.difftime(t2, t1) > 180 then
+		self:myToast(str)
+		return true
 	else
-		toast("倒计时剩余：" .. 120 - os.difftime(t2, t1),1)
-		mSleep(1000)
+		self:myToast("倒计时剩余：" .. 180 - os.difftime(t2, t1))
+		return false
 	end
 end
 
@@ -106,7 +106,14 @@ function model:savePerson(snapIndex, x)
 				snapshot(content_name, x - 250, y - 27, x - 3, y + 22) 
 			end
 		else
-			snapshot(content_name, 187,  42, 598,  88) 
+			-- 判断有没有xxx分钟前字样
+			mSleep(100)
+			x,y = findMultiColorInRegionFuzzy( 0xc0c0c0, "19|3|0xc0c0c0,41|3|0xc0c0c0,48|3|0xc0c0c0,58|3|0xc0c0c0,73|1|0xc0c0c0", 100, 0, 0, 749, 170)
+			if x ~= -1 then
+				snapshot(content_name, 187, 42, 598, 88) 
+			else
+				snapshot(content_name, 110, 45, 645, 122) 
+			end
 		end
 
 		local code, body = baiduAI(access_token,content_name,self.tab_CHN_ENG)
@@ -119,24 +126,24 @@ function model:savePerson(snapIndex, x)
 				return false, body
 			end
 		else
-			toast("识别失败\n" .. tostring(body),1)
+			self:myToast("识别失败\n" .. tostring(body))
 			return false, body
 		end
 
 		if content ~= nil and #content >= 1 then
-			toast("识别内容：\r\n" .. self.content,1)
+			self:myToast("识别内容：\r\n" .. self.content)
 		else
-			toast("识别内容失败,重新截图识别" .. tostring(body),1)
+			self:myToast("识别内容失败,重新截图识别" .. tostring(body))
 			return false, body
 		end
 	else
-		toast("获取token失败",1)
+		self:myToast("获取token失败")
 		goto getBaiDuToken
 	end
 end
 
-function model:diffSex(sexFindColor,sexStrColor1,sexStrColor2)
-	mSleep(100)
+function model:diffSex(sexFindColor, sexStrColor1, sexStrColor2)
+	mSleep(50)
 	x,y = findMultiColorInRegionFuzzy( sexFindColor, sexStrColor1, 90, 0, 0, 330, 430)
 	if x ~= -1 then
 		mSleep(200)
@@ -145,100 +152,98 @@ function model:diffSex(sexFindColor,sexStrColor1,sexStrColor2)
 			mSleep(500)
 			moveTowards(418,  824, 90, 200, 5)
 			mSleep(1000)
-		end
-
-		--判断是否是在线用户
-		mSleep(200)
-		if getColor(x + 470, y - 45) ~= 0xffffff then
-			self:click(x,  y)
-			while (true) do
-				mSleep(200)
-				if getColor(673, 1247) ~= 0xffffff and getColor(513, 1247) == 0xffffff then
-					--随机关注
-					num = math.random(1, 2)
-					if num == 1 then
-						self:click(673, 1247)
+		else
+			--判断是否是在线用户
+			mSleep(200)
+			if getColor(x + 470, y - 45) ~= 0xffffff then
+				self:click(x,  y)
+				while (true) do
+					mSleep(50)
+					if getColor(673, 1247) ~= 0xffffff and getColor(513, 1247) == 0xffffff then
+						--随机关注
+						num = math.random(1, 2)
+						if num == 1 then
+							self:click(673, 1247)
+						end
+						break
 					end
-					break
-				end
-			end
-
-			while (true) do
-				mSleep(200)
-				if getColor(673, 1247) ~= 0xffffff and getColor(328, 1254) == 0xffffff then
-					--打招呼
-					self:click(673, 1247)
-				else
-					--打招呼(禁止添加新关注直接点击打招呼)
-					self:click(124, 1247)
 				end
 
-				mSleep(200)
-				if getColor(630, 1196) == 0xaaaaaa and getColor(641, 1196) == 0xaaaaaa then
-					mSleep(200)
-					x,y = findMultiColorInRegionFuzzy( sexFindColor, sexStrColor2, 100, 0, 0, 749, 1333)
-					if x ~= -1 then
-						saveBool, returnBody = self:savePerson("0", x)
-						if saveBool then
-							tmp2 = plist.read(self.sendMessUserPath)           
-							if tostring(tmp2[self.content]) ~= 'nil' then
-								self:click(53, 81)
-								self:click(53, 81)
-								toast("已经发过消息不需要重新发",1)
-								mSleep(1000)
-								break
+				while (true) do
+					mSleep(50)
+					if getColor(673, 1247) ~= 0xffffff and getColor(328, 1254) == 0xffffff then
+						--打招呼
+						self:click(673, 1247)
+					else
+						--打招呼(禁止添加新关注直接点击打招呼)
+						self:click(124, 1247)
+					end
+
+					mSleep(50)
+					if getColor(630, 1196) == 0xaaaaaa and getColor(641, 1196) == 0xaaaaaa then
+						mSleep(200)
+						x,y = findMultiColorInRegionFuzzy( sexFindColor, sexStrColor2, 100, 0, 0, 749, 1333)
+						if x ~= -1 then
+							saveBool, returnBody = self:savePerson("0", x)
+							if saveBool then
+								tmp2 = plist.read(self.sendMessUserPath)           
+								if tostring(tmp2[self.content]) ~= 'nil' then
+									self:click(53, 81)
+									self:click(53, 81)
+									self:myToast("已经发过消息不需要重新发",1000)
+									break
+								else
+									tmp2[self.content] = 1
+									self:myToast(x .. "--" .. self.content .. ':' .. tmp2[self.content],1000)
+
+									plist.write(self.sendMessUserPath, tmp2) 
+
+									num = math.random(1, #reply_terms)
+									self:click(473, 1203)
+									writePasteboard(reply_terms[num])
+									mSleep(500)
+									keyDown("RightGUI")
+									keyDown("v")
+									keyUp("v")
+									keyUp("RightGUI")
+									mSleep(200)
+									key = "ReturnOrEnter"
+									keyDown(key)
+									keyUp(key)
+									mSleep(math.random(1000,2000))
+									self:click(53, 81, math.random(500, 600))
+									self:click(53, 81)
+									break
+								end
 							else
-								tmp2[self.content] = 1
-								toast(x .. "--" .. self.content .. ':' .. tmp2[self.content],1)
-								mSleep(1000)
-
-								plist.write(self.sendMessUserPath, tmp2) 
-
-								num = math.random(1, #reply_terms)
-								self:click(473, 1203)
-								writePasteboard(reply_terms[num])
-								mSleep(500)
-								keyDown("RightGUI")
-								keyDown("v")
-								keyUp("v")
-								keyUp("RightGUI")
-								mSleep(200)
-								key = "ReturnOrEnter"
-								keyDown(key)
-								keyUp(key)
+								self:click(53, 81, math.random(500, 600))
 								self:click(53, 81)
-								self:click(53, 81)
+								self:myToast("识别失败\n" .. tostring(returnBody),1000)
 								break
 							end
-						else
-							self:click(53, 81)
-							self:click(53, 81)
-							toast("识别失败\n" .. tostring(returnBody),1)
+						end
+					end
+				end
+
+				while (true) do
+					--判断是否返回首页
+					mSleep(50)
+					if getColor(64, 1312) == 0x0fc9e1 then
+						--判断是否是在附近的人的页面，不是就切换
+						mSleep(200)
+						if getColor(298,  148) ~= 0xffffff then
+							mSleep(500)
+							moveTowards(418,  824, 90, 200, 5)
 							mSleep(1000)
 							break
 						end
 					end
 				end
+			else
+				mSleep(500)
+				moveTowards(418,  824, 90, 200, 5)
+				mSleep(1000)
 			end
-
-			while (true) do
-				--判断是否返回首页
-				mSleep(200)
-				if getColor(64, 1312) == 0x0fc9e1 then
-					--判断是否是在附近的人的页面，不是就切换
-					mSleep(200)
-					if getColor(298,  148) ~= 0xffffff then
-						mSleep(500)
-						moveTowards(418,  824, 90, 200, 5)
-						mSleep(1000)
-						break
-					end
-				end
-			end
-		else
-			mSleep(500)
-			moveTowards(418,  824, 90, 200, 5)
-			mSleep(1000)
 		end
 	else
 		mSleep(500)
@@ -247,18 +252,18 @@ function model:diffSex(sexFindColor,sexStrColor1,sexStrColor2)
 	end
 end
 
-function model:diffFollowFans(sexFindColor,sexStrColor)
-	mSleep(200)
+function model:diffFollowFans(sexFindColor, sexStrColor)
+	mSleep(50)
 	x,y = findMultiColorInRegionFuzzy( sexFindColor, sexStrColor, 100, 0, 0, 749, 1333)
 	if x ~= -1 then
 		self:click(x, y)
 		while (true) do
-			mSleep(200)
+			mSleep(50)
 			if getColor(163, 1239) == 0xffffff and getColor(66, 1244) ~= 0xffffff then
 				self:click(553, 1244)
 			end
 
-			mSleep(200)
+			mSleep(50)
 			if getColor(286,  216) == 0x323333 then
 				break
 			elseif getColor(335, 1240) == 0xffffff and getColor(66, 1244) ~= 0xffffff then
@@ -272,10 +277,10 @@ function model:diffFollowFans(sexFindColor,sexStrColor)
 	end
 end
 
---附近动态点赞
+--附近动态点赞随机评论
 function model:fabulous()
 	while (true) do
-		mSleep(100)
+		mSleep(50)
 		if getColor(18, 1289) == 0xfdfcfd then
 			self:click(95,  112)
 			self:doubleClick(75, 1290)
@@ -286,18 +291,47 @@ function model:fabulous()
 
 	count = 0
 	while (true) do
-		mSleep(100)
+		mSleep(50)
 		x,y = findMultiColorInRegionFuzzy( 0xffffff, "-14|7|0xaaaaaa,-14|-5|0xaaaaaa,3|-8|0xaaaaaa,10|-8|0xaaaaaa,6|11|0xaaaaaa,-10|11|0xaaaaaa,-1|-18|0xaaaaaa", 100, 0, 0, 300, 1333)
 		if x ~= -1 then
 			self:click(x,  y)
+			if math.random(0,1) == 0 then
+				self:myToast("准备评论")
+				while (true) do
+					mSleep(50)
+					x,y = findMultiColorInRegionFuzzy( 0x3bb3fa, "1|-16|0x3bb3fa,13|-5|0x3bb3fa,10|10|0x3bb3fa,-11|10|0x3bb3fa,-11|-4|0x3bb3fa,1|-33|0xffffff", 100, 0, 0, 300, 1333)
+					if x ~= -1 and y > 330 then
+						self:click(x + 100,  y - 100)
+						writePasteboard("互关吗")
+						mSleep(500)
+						keyDown("RightGUI")
+						keyDown("v")
+						keyUp("v")
+						keyUp("RightGUI")
+						mSleep(200)
+						key = "ReturnOrEnter"
+						keyDown(key)
+						keyUp(key)
+						mSleep(math.random(1000, 1500))
+						break
+					else
+						mSleep(500)
+						moveTowards(418,  424, 270, 200, 5)
+						mSleep(1000)
+					end
+				end
+			else
+				self:myToast("暂不评论")
+			end
+
 			count = count + 1
+			self:myToast(count)
 		else
 			self:randomMove()
 		end
 
 		if count > tonumber(fabulous_times) then
-			toast("附近动态点赞流程完成",1)
-			mSleep(1000)
+			self:myToast("附近动态点赞流程完成",1000)
 			break
 		end
 	end
@@ -308,7 +342,7 @@ function model:hit_call()
 	--关注打招呼
 	while (true) do
 		--判断是否进入首页
-		mSleep(100)
+		mSleep(50)
 		if getColor(64, 1312) == 0x0fc9e1 then
 			--判断是否是在附近的人的页面，不是就切换
 			mSleep(200)
@@ -316,8 +350,7 @@ function model:hit_call()
 				if self.choice then
 					self:click(702,  108)
 				end
-				toast("下一步操作",1)
-				mSleep(1000)
+				self:myToast("下一步操作",1000)
 				break
 			else
 				self:click(336,  121)
@@ -329,7 +362,7 @@ function model:hit_call()
 
 	while (true) do
 		--筛选条件
-		mSleep(100)
+		mSleep(50)
 		if self.choice then
 			if getColor(118, 1246) == 0x3bb3fa and getColor(602, 1234) == 0x3bb3fa then
 				if lookUser == "0" then
@@ -394,8 +427,10 @@ function model:hit_call()
 
 		--女
 		self:diffSex(0xff79b8, "32|-5|0xff79b8,14|-14|0xff79b8,13|6|0xff79b8,-21|-4|0xff79b8", "27|0|0xff79b8,58|0|0xff79b8,26|10|0xff79b8,26|-11|0xff79b8,11|4|0xffffff")
-		
-		self:timeOutRestart(t1, "附近打招呼流程完成")
+
+		if self:timeOutRestart(t1, "附近打招呼流程完成") then
+			break
+		end
 	end
 end
 
@@ -403,19 +438,17 @@ end
 function model:matching()
 	while (true) do
 		--判断是否进入首页
-		mSleep(100)
+		mSleep(50)
 		if getColor(64, 1312) == 0x0fc9e1 then
 			self:click(676, 1288)
-			toast("更多", 1)
-			mSleep(500)
+			self:myToast("更多")
 		end
 
-		mSleep(100)
+		mSleep(50)
 		x,y = findMultiColorInRegionFuzzy( 0x323333, "-15|1|0x323333,-8|-6|0x323333,-2|-7|0x323333,-6|4|0x333434,6|2|0xffffff,14|-2|0x323333,19|-6|0x333434,25|-7|0x323333,25|4|0x333434", 90, 550, 0, 749, 1333)
 		if x ~= -1 then
 			self:click(x,y)
-			toast("点点", 1)
-			mSleep(500)
+			self:myToast("点点")
 			break
 		end
 	end
@@ -468,8 +501,7 @@ function model:matching()
 					x,y = findMultiColorInRegionFuzzy( 0x007aff, "6|15|0x007aff,16|-4|0x007aff,15|8|0x007aff,26|8|0x007aff,21|12|0x007aff,18|22|0x007aff", 90, 0, 0, 749, 1333)
 					if x ~= -1 then
 						self:click(x, y)
-						toast("相册", 1)
-						mSleep(500)
+						self:myToast("相册")
 					end
 
 					mSleep(100)
@@ -496,25 +528,23 @@ function model:matching()
 
 				while (true) do
 					--保存
-					mSleep(100)
+					mSleep(50)
 					if getColor(623,   83) == 0x3bb3fa and getColor(714,   83) == 0x3bb3fa then
 						self:click(661, 86)
-						toast("保存",1)
-						mSleep(500)
+						self:myToast("保存")
 					else
 						self:click(661, 86)
 					end
 
-					mSleep(100)
+					mSleep(50)
 					x,y = findMultiColorInRegionFuzzy( 0x007aff, "10|0|0x007aff,39|-4|0x007aff,40|8|0x007aff,61|8|0x007aff,74|8|0x007aff,74|-9|0x007aff,112|-8|0x007aff,112|-1|0x007aff,111|12|0x007aff", 90, 0, 0, 749, 1333)
 					if x ~= -1 then
 						self:click(x, y)
-						toast("继续保存", 1)
-						mSleep(500)
+						self:myToast("继续保存")
 					end
 
 					--点击爱心
-					mSleep(100)
+					mSleep(50)
 					if getColor(88, 1185) == 0xdfdfdf then
 						mSleep(200)
 						break
@@ -526,8 +556,7 @@ function model:matching()
 			x,y = findMultiColorInRegionFuzzy( 0x006ee5, "6|17|0x006ee5,23|14|0x006ee5,24|4|0x006ee5,42|8|0x006ee5,74|8|0x006ee5,70|3|0x006ee5,54|3|0x006ee5", 90, 0, 0, 749, 1333)
 			if x ~= -1 then
 				self:click(x, y)
-				toast("好", 1)
-				mSleep(500)
+				self:myToast("好")
 			end
 
 			mSleep(50)
@@ -537,8 +566,7 @@ function model:matching()
 				self:click(51, 85)
 				dz_time = dz_time + 1
 				if dz_time > 1 then
-					toast("点赞次数上限", 1)
-					mSleep(500)
+					self:myToast("点赞次数上限")
 					break
 				end
 			end
@@ -555,34 +583,31 @@ function model:matching()
 	end
 
 	self:doubleClick(75, 1290)
-	toast("点点匹配流程完成",1)
-	mSleep(1000)
+	self:myToast("点点匹配流程完成",1000)
 end
 
 --关注粉丝
 function model:follow_fans()
 	while (true) do
 		--判断是否进入首页
-		mSleep(100)
+		mSleep(50)
 		if getColor(64, 1312) == 0x0fc9e1 then
 			self:click(676, 1288)
-			toast("更多", 1)
-			mSleep(500)
+			self:myToast("更多")
 		end
 
-		mSleep(100)
-		x,y = findMultiColorInRegionFuzzy( 0xaaaaaa, "-13|9|0xaaaaaa,-13|-9|0xaaaaaa,-15|-1|0xaaaaaa,3|4|0xaaaaaa,14|-1|0xaaaaaa,14|6|0xaaaaaa,26|6|0xaaaaaa,25|-1|0xaaaaaa,18|11|0xaaaaaa", 90, 0, 0, 749, 1333)
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy( 0xaaaaaa, "-13|9|0xaaaaaa,-13|-9|0xaaaaaa,-15|-1|0xaaaaaa,3|4|0xaaaaaa,14|-1|0xaaaaaa,14|6|0xaaaaaa,26|6|0xaaaaaa,25|-1|0xaaaaaa,18|11|0xaaaaaa", 90, 0, 0, 749, 650)
 		if x ~= -1 then
 			self:click(x,y)
-			toast("粉丝", 1)
-			mSleep(500)
+			self:myToast("粉丝")
 			break
 		end
 	end
 
 	while (true) do
-		mSleep(100)
-		x,y = findMultiColorInRegionFuzzy( 0xaaaaaa, "-13|9|0xaaaaaa,-13|-9|0xaaaaaa,-15|-1|0xaaaaaa,3|4|0xaaaaaa,14|-1|0xaaaaaa,14|6|0xaaaaaa,26|6|0xaaaaaa,25|-1|0xaaaaaa,18|11|0xaaaaaa", 90, 0, 0, 749, 1333)
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy( 0xaaaaaa, "-13|9|0xaaaaaa,-13|-9|0xaaaaaa,-15|-1|0xaaaaaa,3|4|0xaaaaaa,14|-1|0xaaaaaa,14|6|0xaaaaaa,26|6|0xaaaaaa,25|-1|0xaaaaaa,18|11|0xaaaaaa", 90, 0, 0, 749, 650)
 		if x ~= -1 then
 			self:click(x,y)
 		end
@@ -593,13 +618,12 @@ function model:follow_fans()
 		--女
 		self:diffFollowFans(0xff79b8, "10|5|0xff79b8,32|-5|0xff79b8,3|-16|0xff79b8,-21|-7|0xff79b8,48|-6|0xffffff")
 
-		mSleep(100)
+		mSleep(50)
 		x,y = findMultiColorInRegionFuzzy( 0xaaaaaa, "1|9|0xaaaaaa,1|21|0xaaaaaa,-8|14|0xaaaaaa,33|13|0xaaaaaa,87|13|0xaaaaaa,119|13|0xaaaaaa,154|9|0xaaaaaa,173|15|0xaaaaaa,173|21|0xaaaaaa", 90, 0, 0, 749, 1333)
 		if x ~= -1 then
 			self:click(51, 85)
 			self:doubleClick(75, 1290)
-			toast("粉丝已加载全部内容",1)
-			mSleep(1000)
+			self:myToast("粉丝已加载全部内容",1000)
 			break
 		end
 	end
@@ -609,33 +633,30 @@ end
 function model:send_circle()
 	while (true) do
 		--判断是否进入首页
-		mSleep(100)
+		mSleep(50)
 		if getColor(64, 1312) == 0x0fc9e1 then
 			self:click(676, 1288)
-			toast("更多", 1)
-			mSleep(500)
+			self:myToast("更多")
 		end
 
-		mSleep(100)
+		mSleep(50)
 		x,y = findMultiColorInRegionFuzzy( 0x323333, "-22|1|0x323333,-45|-2|0x323333,-50|2|0x323333,18|2|0x323333,27|-6|0x323333,40|-6|0x323333,36|13|0x323333,30|9|0x323333,-6|-17|0xffffff", 90, 0, 0, 749, 1333)
 		if x ~= -1 then
 			self:click(x,y)
-			toast("我的动态", 1)
-			mSleep(500)
+			self:myToast("我的动态")
 			break
 		end
 	end
 
 	content = self:mingyan()
-
 	while (true) do
-		mSleep(100)
+		mSleep(50)
 		x,y = findMultiColorInRegionFuzzy( 0x323333, "-22|1|0x323333,-45|-2|0x323333,-50|2|0x323333,18|2|0x323333,27|-6|0x323333,40|-6|0x323333,36|13|0x323333,30|9|0x323333,-6|-17|0xffffff", 90, 0, 0, 749, 1333)
 		if x ~= -1 then
 			self:click(x,y)
 		end
 
-		mSleep(100)
+		mSleep(50)
 		if getColor(674,   78) == 0x323333 then
 			self:click(674, 78)
 		elseif getColor(641,   84) == 0xf3f3f3 and getColor(694,   86) == 0xaaaaaa then
@@ -644,7 +665,7 @@ function model:send_circle()
 			keyDown("v")
 			keyUp("v")
 			keyUp("RightGUI")
-			mSleep(1000)
+			mSleep(math.random(1000,2000))
 		elseif getColor(641,   84) == 0x3bb3fa then
 			self:click(641, 84)
 			break
@@ -652,7 +673,7 @@ function model:send_circle()
 	end
 
 	while (true) do
-		mSleep(100)
+		mSleep(50)
 		x,y = findMultiColorInRegionFuzzy( 0x323333, "-22|1|0x323333,-45|-2|0x323333,-50|2|0x323333,18|2|0x323333,27|-6|0x323333,40|-6|0x323333,36|13|0x323333,30|9|0x323333,-6|-17|0xffffff", 90, 0, 0, 749, 1333)
 		if x ~= -1 then
 			break
@@ -662,8 +683,7 @@ function model:send_circle()
 	end
 
 	self:doubleClick(75, 1290)
-	toast("发动态流程完成",1)
-	mSleep(1000)
+	self:myToast("发动态流程完成",1000)
 end
 
 --回复消息
@@ -671,16 +691,25 @@ function model:reply_mess()
 	--回复消息
 	t1 = ts.ms()
 	while (true) do
-		self:timeOutRestart(t1, "回复消息流程完成")
-		
+		if self:timeOutRestart(t1, "回复消息流程完成") then
+			break
+		end
+
+		--判断消息有没有小红点
+		mSleep(50)
+		if getColor(414, 1258) == 0xfdfcfd then
+			self:myToast("暂无消息需要回复")
+			break
+		end
+
 		--判断是否进入首页
-		mSleep(100)
+		mSleep(50)
 		if getColor(64, 1312) == 0x0fc9e1 then
 			self:doubleClick(376, 1281)
 			mSleep(1500)
 		end
 
-		mSleep(100)
+		mSleep(50)
 		x,y = findMultiColorInRegionFuzzy( 0xf85543, "0|-25|0xf85543,-12|-11|0xf85543,13|-11|0xf85543", 90, 600, 0, 749, 1333)
 		if x ~= -1 then
 			mSleep(100)
@@ -691,7 +720,7 @@ function model:reply_mess()
 			else
 				self:click(x, y - 10)
 				while (true) do
-					mSleep(200)
+					mSleep(50)
 					if getColor(689, 1284) == 0x323333 then
 						saveBool, returnBody = self:savePerson("1", x)
 						if saveBool then
@@ -700,8 +729,7 @@ function model:reply_mess()
 								mess_reply_terms = strSplit(messReplyTerms, "-")
 								if tmp2[self.content] > #mess_reply_terms then
 									self:click(53, 81)
-									toast("回复消息已经达到回复术语上限",1)
-									mSleep(1000)
+									self:myToast("回复消息已经达到回复术语上限",1000)
 									break
 								else
 									writePasteboard(mess_reply_terms[tonumber(tmp2[self.content])])
@@ -714,13 +742,11 @@ function model:reply_mess()
 							end
 						else
 							self:click(53, 81)
-							toast("识别失败\n" .. tostring(returnBody),1)
-							mSleep(1000)
+							self:myToast("识别失败\n" .. tostring(returnBody),1000)
 							break
 						end
 
-						toast(self.content .. ':' .. tmp2[self.content],1)
-						mSleep(1000)
+						self:myToast(self.content .. ':' .. tmp2[self.content],1000)
 						plist.write(self.sendMessUserPath, tmp2) 
 						self:click(513, 1170)
 						mSleep(500)
@@ -756,8 +782,7 @@ function model:closeDialog()
 	x,y = findMultiColorInRegionFuzzy( 0x007aff, "35|2|0x007aff,49|3|0x007aff,-43|-357|0x000000,-28|-355|0x000000,-9|-350|0x000000,26|-350|0x000000,60|-350|0x000000,97|-350|0x000000", 90, 0, 0, 749, 1333)
 	if x ~= -1 then
 		self:click(53, 81)
-		toast("给陌陌评价",1)
-		mSleep(500)
+		self:myToast("给陌陌评价")
 	end
 end
 
@@ -801,8 +826,7 @@ function model:mm()
 					self:saveStringFile(self.ageFilePath, lookUser .. "|" .. setAgeItem .. "|" .. onLinePeople, "w", "保存筛选条件成功")
 					self.choice = true
 				else
-					toast("筛选条件一样不需要筛选",1)
-					mSleep(1000)
+					self:myToast("筛选条件一样不需要筛选",1000)
 				end
 			else
 				oldAgeItemStr = "18-40"
@@ -810,8 +834,7 @@ function model:mm()
 				self.choice = true
 			end
 
-			toast("旧年龄段：" .. oldAgeItemStr,1)
-			mSleep(1000)
+			self:myToast("旧年龄段：" .. oldAgeItemStr,1000)
 
 			oldAgeItem = strSplit(oldAgeItemStr, "-")
 			newAgeItem = strSplit(setAgeItem, "-")
@@ -866,6 +889,13 @@ function model:main()
 			},
 			{
 				["type"] = "Label",
+				["text"] = "随机关注/打招呼，回复消息流程默认操作时间3分钟",
+				["size"] = 20,
+				["align"] = "center",
+				["color"] = "255,0,0",
+			},
+			{
+				["type"] = "Label",
 				["text"] = "选择脚本流程",
 				["size"] = 15,
 				["align"] = "center",
@@ -873,7 +903,7 @@ function model:main()
 			},
 			{
 				["type"] = "CheckBoxGroup",                    
-				["list"] = "点赞,随机关注/打招呼,点点匹配,随机关注粉丝,发动态,回复消息",
+				["list"] = "点赞随机评论,随机关注/打招呼,点点匹配,随机关注粉丝,发动态,回复消息",
 				["select"] = "0",  
 				["countperline"] = "3",
 			},
