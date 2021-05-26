@@ -77,30 +77,30 @@ function model:file_exists(file_name)
 end
 
 function model:downFile(url, path)
-    ::down::
-    status, headers, body = http.get(url)
-    if status == 200 then
-        local code = pcall(self.decodeJson, body)
+	::down::
+	status, headers, body = http.get(url)
+	if status == 200 then
+		local code = pcall(self.decodeJson, body)
 		if not code then
-		    ::write_file::
-    		file = io.open(path, "wb")
-            if file then
-                file:write(body)
-                file:close()
-                return true, "";
-            else
-                toast("保存文件到本地失败，重新保存",1)
-                mSleep(3000)
-                goto write_file
-            end
+			::write_file::
+			file = io.open(path, "wb")
+			if file then
+				file:write(body)
+				file:close()
+				return true, "";
+			else
+				toast("保存文件到本地失败，重新保存",1)
+				mSleep(3000)
+				goto write_file
+			end
 		else
-			 return false, self.decodeJson(body)
+			return false, self.decodeJson(body)
 		end
-    else
-        toast("下载文件失败，重新下载",1)
-        mSleep(3000)
-        goto down
-    end
+	else
+		toast("下载文件失败，重新下载",1)
+		mSleep(3000)
+		goto down
+	end
 end
 
 --[[检查网络方法]]
@@ -980,8 +980,8 @@ function model:replace_file(fileName)
 	end
 end
 
-function model:getPhoneNum()
-    if vpn_stauts == "1" then
+function model:getPhoneNum(ksUrl,phone_token)
+	if vpn_stauts == "1" then
 		::get_token::
 		local sz = require("sz")        --登陆
 		local http = require("szocket.http")
@@ -1022,13 +1022,15 @@ function model:getPhoneNum()
 			goto get_phone
 		end
 	elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16" or vpn_stauts == "19" then
+		log("获取手机号码：" .. ksUrl .. "====" .. phone_token .. "====" .. kn_id)
 		::get_phone::
-		local sz = require("sz")        --登陆
-		local http = require("szocket.http")
-		local res, code = http.request(ksUrl.."/yhapi.ashx?act=getPhone&token="..phone_token.."&iid="..kn_id)
-		log("获取手机号码：" .. code .. "====" .. res)
-		if code == 200 then
-			data = strSplit(res, "|")
+		header_send = {}
+		body_send = {}
+		ts.setHttpsTimeOut(60)
+		status_resp, header_resp,body_resp = ts.httpGet(ksUrl.."/yhapi.ashx?act=getPhone&token="..phone_token.."&iid="..kn_id, header_send, body_send)
+		log("获取手机号码：" .. status_resp .. "====" .. body_resp)
+		if status_resp == 200 then
+			data = strSplit(body_resp, "|")
 			if data[1] == "1" then
 				if vpn_stauts == "13" then
 					telphone = data[4]
@@ -1627,11 +1629,11 @@ function model:getPhoneNum()
 			::get_test::
 			later_phone = self:randomStr("1234567890", 7)
 			telphone = "235" .. later_phone
--- 			if string.sub(later_phone, 1, 1) == "0" or string.sub(later_phone, 1, 1) == "1" then
--- 				goto get_test
--- 			else
--- 				telphone = later_phone
--- 			end
+			-- 			if string.sub(later_phone, 1, 1) == "0" or string.sub(later_phone, 1, 1) == "1" then
+			-- 				goto get_test
+			-- 			else
+			-- 				telphone = later_phone
+			-- 			end
 			kn_country = "1"
 		elseif string.gsub(countryId,"%s+","") == "mn" then
 			later_phone = self:randomStr("1234567890", 7)
@@ -1808,10 +1810,10 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 	end
 
 	if getPhoneBool then
-	    self:getPhoneNum()
-	    getPhoneBool = false
+		self:getPhoneNum(ksUrl,phone_token)
+		getPhoneBool = false
 	end
-	
+
 	if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "3" or vpn_stauts == "5" 
 	or vpn_stauts == "6" or vpn_stauts == "7" or vpn_stauts == "8" or vpn_stauts == "9" 
 	or vpn_stauts == "12" or vpn_stauts == "13" or vpn_stauts == "14" or vpn_stauts == "15" 
@@ -2014,8 +2016,8 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			keyUp("v")
 			keyUp("RightGUI")
 			mSleep(500)
--- 			mSleep(500)
--- 			inputStr(password)
+			-- 			mSleep(500)
+			-- 			inputStr(password)
 			mSleep(500)
 			break
 		end
@@ -3356,58 +3358,41 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 							setRel_url = ksUrl.."/yhapi.ashx?act=setRel&token="..phone_token.."&pid="..self.pid
 						end
 
-						::addblack::
-						local sz = require("sz")        --登陆
-						local http = require("szocket.http")
-						local res, code = http.request(setRel_url)
-						if code == 200 then
-							data = strSplit(res, "|")
-							if data[1] == "1" then
-								toast("释放手机号码",1)
-							else
-								if data[2] ~= "-4" then
-									toast("拉黑失败"..tostring(res),1)
-									mSleep(2000)
-									goto addblack
-								else
-									toast("号码已经不存在或者释放",1)
-									mSleep(1000)
-								end
-							end
-						else
-							toast('释放失败，重新释放',1)
-							goto addblack
-						end
+						toast_str = "释放"
 					else
 						if vpn_stauts == "13" then
-							black_url = ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
+							setRel_url = ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..kn_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
 						elseif vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "16" or vpn_stauts == "19" then
-							black_url = ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&pid="..self.pid.."&reason="..urlEncoder("获取失败")
+							setRel_url = ksUrl.."/yhapi.ashx?act=addBlack&token="..phone_token.."&pid="..self.pid.."&reason="..urlEncoder("获取失败")
 						end
 
-						::addblack::
-						local sz = require("sz")        --登陆
-						local http = require("szocket.http")
-						local res, code = http.request(black_url)
-						if code == 200 then
-							data = strSplit(res, "|")
-							if data[1] == "1" then
-								toast("拉黑手机号码",1)
-							else
-								if data[2] ~= "-4" then
-									toast("拉黑失败"..tostring(res),1)
-									mSleep(2000)
-									goto addblack
-								else
-									toast("号码已经不存在或者释放",1)
-									mSleep(1000)
-								end
-							end
-						else
-							toast('拉黑失败，重新拉黑',1)
-							goto addblack
-						end
+						toast_str = "拉黑"
 					end
+
+					::addblack::
+					header_send = {}
+					body_send = {}
+					ts.setHttpsTimeOut(60)
+					status_resp, header_resp, body_resp = ts.httpGet(setRel_url, header_send, body_send)
+					if status_resp == 200 then
+						data = strSplit(body_resp, "|")
+						if data[1] == "1" then
+							toast(toast_str .. "手机号码",1)
+						else
+							if data[2] ~= "-4" then
+								toast(toast_str .. "失败"..tostring(body_resp),1)
+								mSleep(2000)
+								goto addblack
+							else
+								toast("号码已经不存在或者" .. toast_str,1)
+								mSleep(1000)
+							end
+						end
+					else
+						toast(toast_str .. '失败，重新' .. toast_str,1)
+						goto addblack
+					end
+
 					goto over
 				end
 
@@ -3417,13 +3402,14 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					getPhoneCode_url = ksUrl.."/yhapi.ashx?act=getPhoneCode&token="..phone_token.."&pid="..self.pid
 				end
 
-				local sz = require("sz")        --登陆
-				local http = require("szocket.http")
-				local res, code = http.request(getPhoneCode_url)
-				log("获取验证码：" .. code .. "====" .. res)
-				toast("获取验证码：" .. code .. "====" .. res,1)
-				if code == 200 then
-					data = strSplit(res, "|")
+				header_send = {}
+				body_send = {}
+				ts.setHttpsTimeOut(60)
+				status_resp, header_resp, body_resp = ts.httpGet(getPhoneCode_url, header_send, body_send)
+				log("获取验证码：" .. status_resp .. "====" .. body_resp)
+				toast("获取验证码：" .. status_resp .. "====" .. body_resp,1)
+				if status_resp == 200 then
+					data = strSplit(body_resp, "|")
 					if data[1] == "1" then
 						mess_yzm = data[2]
 					elseif data[1] == "0" then
@@ -5377,12 +5363,12 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 						for k, v in pairs(tmp2) do
 							if k == "$objects" then
 								--在配置文件获取
---								for k1, v1 in pairs(v) do
---									if string.sub(tostring(v1), 1, 4) == "" then
---										wcid = v1
---										wc = v[k1 + 1]
---									end
---								end
+								--								for k1, v1 in pairs(v) do
+								--									if string.sub(tostring(v1), 1, 4) == "" then
+								--										wcid = v1
+								--										wc = v[k1 + 1]
+								--									end
+								--								end
 								for i = 3 ,5 do
 									if tonumber(v[i]) then
 										wc = v[i]
@@ -5407,7 +5393,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 			six_data = getData()
 			six_data = six_data .. "----" .. wcid
--- 			six_data = six_data
+			-- 			six_data = six_data
 			mSleep(500)
 			toast(six_data);
 			mSleep(500)
@@ -6043,7 +6029,7 @@ function model:main()
 		dialog("密码不能为空，请重新运行脚本设置密码", 3)
 		luaExit()
 	end
-	
+
 	if vpn_stauts == "1" or vpn_stauts == "2" or vpn_stauts == "9" or vpn_stauts == "13" or vpn_stauts == "16" or vpn_stauts == "19" then
 		if kn_country == "" or kn_country == "默认值" then
 			dialog("国家区号不能为空，请重新运行脚本设置国家区号", 3)
@@ -6055,7 +6041,7 @@ function model:main()
 			luaExit()
 		end
 	end
-	
+
 	local m = TSVersions()
 	if m <= "1.2.7" then
 		dialog("请使用 v1.2.8 及其以上版本 TSLib",0)
@@ -6095,7 +6081,7 @@ function model:main()
 	get_six_two = false
 	getPhoneBool = true
 	while true do
-	    mSleep(math.random(200, 500))
+		mSleep(math.random(200, 500))
 		closeApp(self.wc_bid)
 		mSleep(500)
 		setVPNEnable(false)
@@ -6108,7 +6094,7 @@ function model:main()
 				self:change_IP(content_user,content_country)
 			end
 		end
-		
+
 		if vpn_stauts == "2" then
 			ksUrl = "http://www.3cpt.com"
 			ApiName = "huqianjin54"
@@ -6155,25 +6141,25 @@ function model:main()
 				goto get_token
 			end
 		end
-		
+
 		if getPhoneBool then
-		    self:getPhoneNum()
-		    getPhoneBool = false
+			self:getPhoneNum(ksUrl,phone_token)
+			getPhoneBool = false
 		end
-		
+
 		bool, body = self:downFile("http://39.99.192.160/download_file?file_name=" .. file_name, userPath() .. "/res/info/" .. file_name)
-        if bool then
-            self:replace_file(file_name)
-        else
-            if body.message == "当前不可获取文件" then
-                toast(body.message,1)
-                mSleep(500)
-                self:replace_file(file_name)
-            else
-                dialog(body.message,0)
-                luaExit()
-            end
-        end
+		if bool then
+			self:replace_file(file_name)
+		else
+			if body.message == "当前不可获取文件" then
+				toast(body.message,1)
+				mSleep(500)
+				self:replace_file(file_name)
+			else
+				dialog(body.message,0)
+				luaExit()
+			end
+		end
 
 		self:clear_App()
 		self:Net()
