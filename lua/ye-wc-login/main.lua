@@ -2029,10 +2029,12 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 	::tiaoma::
 	if connect_vpn == "1" then
-		if set_vpn then
-			if content_type == "0" or content_type == "2" or content_type == "3" then
+		if content_type == "0" or content_type == "2" then
+			if set_vpn then
 				self:vpn()
 			end
+		elseif content_type == "3" then
+			self:vpn()
 		end
 	end
 
@@ -2275,7 +2277,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 	if cheack_bool then
 		if login_type == "0" then
-			if EU_countries == "1" then
+			if EU_countries == "1" and content_type ~= "3" then
 				while (true) do
 					mSleep(200)
 					if getColor(118,  948) == 0x007aff then
