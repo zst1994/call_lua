@@ -521,7 +521,8 @@ function model:ewm(phone,country_id,ewm_url,fz_terrace,load_ewm_bool,base_six_fo
 		end
 
 		mSleep(200)
-		x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 100, 0, 0, 749, 1333)
+-- 		x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 100, 0, 0, 749, 1333)
+		x,y = findMultiColorInRegionFuzzy(0x000000, "4|15|0x000000,8|20|0x000000,21|9|0x000000,21|27|0x000000,39|17|0x000000,60|12|0x000000,90|21|0x000000,55|143|0x9ce6bf,634|188|0x9ce6bf", 100, 0, 0, 750, 1334, { orient = 2 })
 		if x ~= -1 and y ~= -1 then
 			setVPNEnable(false)
 			mSleep(4000)
@@ -1868,7 +1869,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			x, y = findMultiColorInRegionFuzzy(0,"21|17|0,36|21|0,41|4|0,-15|12|0", 90, 0, 0, 749, 701)
 			if x ~= -1 and y ~= -1 then
 				mSleep(math.random(200, 500))
-				randomsTap(348, 518, 8)
+				randomsTap(x + 300, y + 13, 4)
 				mSleep(math.random(200, 500))
 				--	if login_type == "0" then
 				if diff_user == "0" then
@@ -1904,7 +1905,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		x, y = findMultiColorInRegionFuzzy(0,"27|26|0,3|25|0,17|-2|0,14|6|0,35|2|0,63|1|0", 90, 0, 0, 749, 701)
 		if x ~= -1 and y ~= -1 then
 			mSleep(math.random(200, 500))
-			randomsTap(x+110,y+90, 6)
+			randomsTap(x + 110,y + 90, 6)
 			mSleep(math.random(200, 500))
 			break
 		end
@@ -2333,7 +2334,8 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					end
 
 					mSleep(200)
-					x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 100, 0, 0, 749, 1333)
+				-- 	x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 100, 0, 0, 749, 1333)
+					x,y = findMultiColorInRegionFuzzy(0x000000, "4|15|0x000000,8|20|0x000000,21|9|0x000000,21|27|0x000000,39|17|0x000000,60|12|0x000000,90|21|0x000000,55|143|0x9ce6bf,634|188|0x9ce6bf", 100, 0, 0, 750, 1334, { orient = 2 })
 					if x ~= -1 and y ~= -1 then
 						toast("跳过滑块，短信界面",1)
 						mSleep(1000)
@@ -2469,7 +2471,8 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				end
 
 				mSleep(200)
-				x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 100, 0, 0, 749, 1333)
+				-- x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 100, 0, 0, 749, 1333)
+				x,y = findMultiColorInRegionFuzzy(0x000000, "4|15|0x000000,8|20|0x000000,21|9|0x000000,21|27|0x000000,39|17|0x000000,60|12|0x000000,90|21|0x000000,55|143|0x9ce6bf,634|188|0x9ce6bf", 100, 0, 0, 750, 1334, { orient = 2 })
 				if x ~= -1 and y ~= -1 then
 					toast("跳过滑块，短信界面",1)
 					mSleep(1000)
@@ -2615,7 +2618,8 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			end
 
 			mSleep(200)
-			x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 100, 0, 0, 749, 1333)
+-- 			x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 100, 0, 0, 749, 1333)
+			x,y = findMultiColorInRegionFuzzy(0x000000, "4|15|0x000000,8|20|0x000000,21|9|0x000000,21|27|0x000000,39|17|0x000000,60|12|0x000000,90|21|0x000000,55|143|0x9ce6bf,634|188|0x9ce6bf", 100, 0, 0, 750, 1334, { orient = 2 })
 			if x ~= -1 and y ~= -1 then
 				toast("辅助成功，短信界面",1)
 				mSleep(1000)
@@ -2629,7 +2633,8 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 	tiaoma_next = false
 	while true do
 		mSleep(200)
-		x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 90, 0, 0, 749, 1333)
+-- 		x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 90, 0, 0, 749, 1333)
+        x,y = findMultiColorInRegionFuzzy(0x000000, "4|15|0x000000,8|20|0x000000,21|9|0x000000,21|27|0x000000,39|17|0x000000,60|12|0x000000,90|21|0x000000,55|143|0x9ce6bf,634|188|0x9ce6bf", 90, 0, 0, 750, 1334, { orient = 2 })
 		if x ~= -1 and y ~= -1 then
 			if vpn_stauts == "21" then
 				dialog("测试平台跳码成功", 0)
@@ -2641,7 +2646,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					setVPNEnable(false)
 				end
 				mSleep(math.random(1500, 2700))
-				randomsTap(412, 489,5)
+				randomsTap(x + 340, y + 10, 4)
 				mSleep(math.random(500, 700))
 				toast("接收短信中",1)
 				mess_bool = true
@@ -3212,7 +3217,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 									mSleep(500)
 									setVPNEnable(true)
 									mSleep(math.random(2000, 3000))
-									randomsTap(372,  749, 3)
+									if getColor(280,642) == 0x9ce6bf then
+									    randomsTap(372,  749, 3)
+									else
+									    randomsTap(372,  622, 3)
+									end
 									mSleep(math.random(1000, 1500))
 									randomsTap(368, 1039,5)
 									mSleep(math.random(5000, 6000))
@@ -3223,7 +3232,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 									mSleep(500)
 									setVPNEnable(true)
 									mSleep(math.random(2000, 3000))
-									randomsTap(372,  749, 3)
+									if getColor(280,642) == 0x9ce6bf then
+									    randomsTap(372,  749, 3)
+									else
+									    randomsTap(372,  622, 3)
+									end
 									mSleep(math.random(1000, 1500))
 									randomsTap(368, 1039,5)
 									mSleep(math.random(5000, 6000))
@@ -3326,7 +3339,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 						mSleep(500)
 						setVPNEnable(true)
 						mSleep(math.random(2000, 3000))
-						randomsTap(372,  749, 3)
+						if getColor(280,642) == 0x9ce6bf then
+						    randomsTap(372,  749, 3)
+						else
+						    randomsTap(372,  622, 3)
+						end
 						mSleep(math.random(1000, 1500))
 						randomsTap(368, 1039,5)
 						mSleep(math.random(5000, 6000))
@@ -3337,7 +3354,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 						mSleep(500)
 						setVPNEnable(true)
 						mSleep(math.random(2000, 3000))
-						randomsTap(372,  749, 3)
+						if getColor(280,642) == 0x9ce6bf then
+						    randomsTap(372,  749, 3)
+						else
+						    randomsTap(372,  622, 3)
+						end
 						mSleep(math.random(1000, 1500))
 						randomsTap(368, 1039,5)
 						mSleep(math.random(5000, 6000))
@@ -3539,7 +3560,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 						mSleep(500)
 						setVPNEnable(true)
 						mSleep(math.random(2000, 3000))
-						randomsTap(372,  749, 3)
+						if getColor(280,642) == 0x9ce6bf then
+						    randomsTap(372,  749, 3)
+						else
+						    randomsTap(372,  622, 3)
+						end
 						mSleep(math.random(1000, 1500))
 						randomsTap(368, 1039,5)
 						mSleep(math.random(5000, 6000))
@@ -3550,7 +3575,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 						mSleep(500)
 						setVPNEnable(true)
 						mSleep(math.random(2000, 3000))
-						randomsTap(372,  749, 3)
+						if getColor(280,642) == 0x9ce6bf then
+						    randomsTap(372,  749, 3)
+						else
+						    randomsTap(372,  622, 3)
+						end
 						mSleep(math.random(1000, 1500))
 						randomsTap(368, 1039,5)
 						mSleep(math.random(5000, 6000))
@@ -3665,7 +3694,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 								mSleep(500)
 								setVPNEnable(true)
 								mSleep(math.random(2000, 3000))
-								randomsTap(372,  749, 3)
+								if getColor(280,642) == 0x9ce6bf then
+        						    randomsTap(372,  749, 3)
+        						else
+        						    randomsTap(372,  622, 3)
+        						end
 								mSleep(math.random(1000, 1500))
 								randomsTap(368, 1039,5)
 								mSleep(math.random(5000, 6000))
@@ -3676,7 +3709,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 								mSleep(500)
 								setVPNEnable(true)
 								mSleep(math.random(2000, 3000))
-								randomsTap(372,  749, 3)
+    							if getColor(280,642) == 0x9ce6bf then
+        						    randomsTap(372,  749, 3)
+        						else
+        						    randomsTap(372,  622, 3)
+        						end
 								mSleep(math.random(1000, 1500))
 								randomsTap(368, 1039,5)
 								mSleep(math.random(5000, 6000))
@@ -3790,7 +3827,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 								mSleep(500)
 								setVPNEnable(true)
 								mSleep(math.random(2000, 3000))
-								randomsTap(372,  749, 3)
+								if getColor(280,642) == 0x9ce6bf then
+        						    randomsTap(372,  749, 3)
+        						else
+        						    randomsTap(372,  622, 3)
+        						end
 								mSleep(math.random(1000, 1500))
 								randomsTap(368, 1039,5)
 								mSleep(math.random(5000, 6000))
@@ -3801,7 +3842,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 								mSleep(500)
 								setVPNEnable(true)
 								mSleep(math.random(2000, 3000))
-								randomsTap(372,  749, 3)
+								if getColor(280,642) == 0x9ce6bf then
+        						    randomsTap(372,  749, 3)
+        						else
+        						    randomsTap(372,  622, 3)
+        						end
 								mSleep(math.random(1000, 1500))
 								randomsTap(368, 1039,5)
 								mSleep(math.random(5000, 6000))
@@ -3848,7 +3893,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 								mSleep(500)
 								setVPNEnable(true)
 								mSleep(math.random(2000, 3000))
-								randomsTap(372,  749, 3)
+								if getColor(280,642) == 0x9ce6bf then
+        						    randomsTap(372,  749, 3)
+        						else
+        						    randomsTap(372,  622, 3)
+        						end
 								mSleep(math.random(1000, 1500))
 								randomsTap(368, 1039,5)
 								mSleep(math.random(5000, 6000))
@@ -3858,7 +3907,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 							else
 								if content_type == "1" then
 									mSleep(math.random(2000, 3000))
-									randomsTap(372,  749, 3)
+									if getColor(280,642) == 0x9ce6bf then
+            						    randomsTap(372,  749, 3)
+            						else
+            						    randomsTap(372,  622, 3)
+            						end
 									mSleep(math.random(1000, 1500))
 									randomsTap(368, 1039,5)
 									mSleep(math.random(5000, 6000))
@@ -3866,7 +3919,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 									mSleep(500)
 									setVPNEnable(true)
 									mSleep(math.random(2000, 3000))
-									randomsTap(372,  749, 3)
+									if getColor(280,642) == 0x9ce6bf then
+            						    randomsTap(372,  749, 3)
+            						else
+            						    randomsTap(372,  622, 3)
+            						end
 									mSleep(math.random(1000, 1500))
 									randomsTap(368, 1039,5)
 									mSleep(math.random(5000, 6000))
@@ -3917,7 +3974,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					if country_id ~= "886" then
 						if content_type == "1" then
 							mSleep(math.random(2000, 3000))
-							randomsTap(372,  749, 3)
+							if getColor(280,642) == 0x9ce6bf then
+    						    randomsTap(372,  749, 3)
+    						else
+    						    randomsTap(372,  622, 3)
+    						end
 							mSleep(math.random(1000, 1500))
 							randomsTap(368, 1039,5)
 							mSleep(math.random(5000, 6000))
@@ -3925,7 +3986,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 							mSleep(500)
 							setVPNEnable(true)
 							mSleep(math.random(2000, 3000))
-							randomsTap(372,  749, 3)
+							if getColor(280,642) == 0x9ce6bf then
+    						    randomsTap(372,  749, 3)
+    						else
+    						    randomsTap(372,  622, 3)
+    						end
 							mSleep(math.random(1000, 1500))
 							randomsTap(368, 1039,5)
 							mSleep(math.random(5000, 6000))
@@ -4025,7 +4090,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 								mSleep(500)
 								setVPNEnable(true)
 								mSleep(math.random(2000, 3000))
-								randomsTap(372,  749, 3)
+								if getColor(280,642) == 0x9ce6bf then
+    						        randomsTap(372,  749, 3)
+        						else
+        						    randomsTap(372,  622, 3)
+        						end
 								mSleep(math.random(1000, 1500))
 								randomsTap(368, 1039,5)
 								mSleep(math.random(5000, 6000))
@@ -4036,7 +4105,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 								mSleep(500)
 								setVPNEnable(true)
 								mSleep(math.random(2000, 3000))
-								randomsTap(372,  749, 3)
+								if getColor(280,642) == 0x9ce6bf then
+    						        randomsTap(372,  749, 3)
+        						else
+        						    randomsTap(372,  622, 3)
+        						end
 								mSleep(math.random(1000, 1500))
 								randomsTap(368, 1039,5)
 								mSleep(math.random(5000, 6000))
@@ -4105,7 +4178,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 								mSleep(500)
 								setVPNEnable(true)
 								mSleep(math.random(2000, 3000))
-								randomsTap(372,  749, 3)
+								if getColor(280,642) == 0x9ce6bf then
+    						        randomsTap(372,  749, 3)
+        						else
+        						    randomsTap(372,  622, 3)
+        						end
 								mSleep(math.random(1000, 1500))
 								randomsTap(368, 1039,5)
 								mSleep(math.random(5000, 6000))
@@ -4115,7 +4192,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 							else
 								if content_type == "1" then
 									mSleep(math.random(2000, 3000))
-									randomsTap(372,  749, 3)
+									if getColor(280,642) == 0x9ce6bf then
+        						        randomsTap(372,  749, 3)
+            						else
+            						    randomsTap(372,  622, 3)
+            						end
 									mSleep(math.random(1000, 1500))
 									randomsTap(368, 1039,5)
 									mSleep(math.random(5000, 6000))
@@ -4123,7 +4204,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 									mSleep(500)
 									setVPNEnable(true)
 									mSleep(math.random(2000, 3000))
-									randomsTap(372,  749, 3)
+									if getColor(280,642) == 0x9ce6bf then
+        						        randomsTap(372,  749, 3)
+            						else
+            						    randomsTap(372,  622, 3)
+            						end
 									mSleep(math.random(1000, 1500))
 									randomsTap(368, 1039,5)
 									mSleep(math.random(5000, 6000))
@@ -4172,7 +4257,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 									mSleep(500)
 									setVPNEnable(true)
 									mSleep(math.random(2000, 3000))
-									randomsTap(372,  749, 3)
+									if getColor(280,642) == 0x9ce6bf then
+        						        randomsTap(372,  749, 3)
+            						else
+            						    randomsTap(372,  622, 3)
+            						end
 									mSleep(math.random(1000, 1500))
 									randomsTap(368, 1039,5)
 									mSleep(math.random(5000, 6000))
@@ -4182,7 +4271,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 								else
 									if content_type == "1" then
 										mSleep(math.random(2000, 3000))
-										randomsTap(372,  749, 3)
+										if getColor(280,642) == 0x9ce6bf then
+            						        randomsTap(372,  749, 3)
+                						else
+                						    randomsTap(372,  622, 3)
+                						end
 										mSleep(math.random(1000, 1500))
 										randomsTap(368, 1039,5)
 										mSleep(math.random(5000, 6000))
@@ -4190,7 +4283,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 										mSleep(500)
 										setVPNEnable(true)
 										mSleep(math.random(2000, 3000))
-										randomsTap(372,  749, 3)
+										if getColor(280,642) == 0x9ce6bf then
+            						        randomsTap(372,  749, 3)
+                						else
+                						    randomsTap(372,  622, 3)
+                						end
 										mSleep(math.random(1000, 1500))
 										randomsTap(368, 1039,5)
 										mSleep(math.random(5000, 6000))
@@ -4259,7 +4356,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 								mSleep(500)
 								setVPNEnable(true)
 								mSleep(math.random(2000, 3000))
-								randomsTap(372,  749, 3)
+								if getColor(280,642) == 0x9ce6bf then
+    						        randomsTap(372,  749, 3)
+        						else
+        						    randomsTap(372,  622, 3)
+        						end
 								mSleep(math.random(1000, 1500))
 								randomsTap(368, 1039,5)
 								mSleep(math.random(5000, 6000))
@@ -4269,7 +4370,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 							else
 								if content_type == "1" then
 									mSleep(math.random(2000, 3000))
-									randomsTap(372,  749, 3)
+									if getColor(280,642) == 0x9ce6bf then
+        						        randomsTap(372,  749, 3)
+            						else
+            						    randomsTap(372,  622, 3)
+            						end
 									mSleep(math.random(1000, 1500))
 									randomsTap(368, 1039,5)
 									mSleep(math.random(5000, 6000))
@@ -4277,7 +4382,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 									mSleep(500)
 									setVPNEnable(true)
 									mSleep(math.random(2000, 3000))
-									randomsTap(372,  749, 3)
+									if getColor(280,642) == 0x9ce6bf then
+        						        randomsTap(372,  749, 3)
+            						else
+            						    randomsTap(372,  622, 3)
+            						end
 									mSleep(math.random(1000, 1500))
 									randomsTap(368, 1039,5)
 									mSleep(math.random(5000, 6000))
@@ -4365,7 +4474,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 								mSleep(500)
 								setVPNEnable(true)
 								mSleep(math.random(2000, 3000))
-								randomsTap(372,  749, 3)
+								if getColor(280,642) == 0x9ce6bf then
+    						        randomsTap(372,  749, 3)
+        						else
+        						    randomsTap(372,  622, 3)
+        						end
 								mSleep(math.random(1000, 1500))
 								randomsTap(368, 1039,5)
 								mSleep(math.random(5000, 6000))
@@ -4375,7 +4488,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 							else
 								if content_type == "1" then
 									mSleep(math.random(2000, 3000))
-									randomsTap(372,  749, 3)
+									if getColor(280,642) == 0x9ce6bf then
+        						        randomsTap(372,  749, 3)
+            						else
+            						    randomsTap(372,  622, 3)
+            						end
 									mSleep(math.random(1000, 1500))
 									randomsTap(368, 1039,5)
 									mSleep(math.random(5000, 6000))
@@ -4383,7 +4500,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 									mSleep(500)
 									setVPNEnable(true)
 									mSleep(math.random(2000, 3000))
-									randomsTap(372,  749, 3)
+									if getColor(280,642) == 0x9ce6bf then
+        						        randomsTap(372,  749, 3)
+            						else
+            						    randomsTap(372,  622, 3)
+            						end
 									mSleep(math.random(1000, 1500))
 									randomsTap(368, 1039,5)
 									mSleep(math.random(5000, 6000))
@@ -4484,7 +4605,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 								mSleep(500)
 								setVPNEnable(true)
 								mSleep(math.random(2000, 3000))
-								randomsTap(372,  749, 3)
+								if getColor(280,642) == 0x9ce6bf then
+    						        randomsTap(372,  749, 3)
+        						else
+        						    randomsTap(372,  622, 3)
+        						end
 								mSleep(math.random(1000, 1500))
 								randomsTap(368, 1039,5)
 								mSleep(math.random(5000, 6000))
@@ -4495,7 +4620,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 								mSleep(500)
 								setVPNEnable(true)
 								mSleep(math.random(2000, 3000))
-								randomsTap(372,  749, 3)
+								if getColor(280,642) == 0x9ce6bf then
+    						        randomsTap(372,  749, 3)
+        						else
+        						    randomsTap(372,  622, 3)
+        						end
 								mSleep(math.random(1000, 1500))
 								randomsTap(368, 1039,5)
 								mSleep(math.random(5000, 6000))
@@ -4558,7 +4687,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 								mSleep(500)
 								setVPNEnable(true)
 								mSleep(math.random(2000, 3000))
-								randomsTap(372,  749, 3)
+								if getColor(280,642) == 0x9ce6bf then
+    						        randomsTap(372,  749, 3)
+        						else
+        						    randomsTap(372,  622, 3)
+        						end
 								mSleep(math.random(1000, 1500))
 								randomsTap(368, 1039,5)
 								mSleep(math.random(5000, 6000))
@@ -4568,7 +4701,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 							else
 								if content_type == "1" then
 									mSleep(math.random(2000, 3000))
-									randomsTap(372,  749, 3)
+									if getColor(280,642) == 0x9ce6bf then
+        						        randomsTap(372,  749, 3)
+            						else
+            						    randomsTap(372,  622, 3)
+            						end
 									mSleep(math.random(1000, 1500))
 									randomsTap(368, 1039,5)
 									mSleep(math.random(5000, 6000))
@@ -4576,7 +4713,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 									mSleep(500)
 									setVPNEnable(true)
 									mSleep(math.random(2000, 3000))
-									randomsTap(372,  749, 3)
+									if getColor(280,642) == 0x9ce6bf then
+        						        randomsTap(372,  749, 3)
+            						else
+            						    randomsTap(372,  622, 3)
+            						end
 									mSleep(math.random(1000, 1500))
 									randomsTap(368, 1039,5)
 									mSleep(math.random(5000, 6000))
@@ -4620,7 +4761,12 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			if tonumber(mess_yzm) ~= tonumber(old_mess_yzm) then
 				toast(mess_yzm,1)
 				mSleep(math.random(1000, 1700))
-				randomsTap(390,  472,9)
+				if getColor(280,642) == 0x9ce6bf then
+			        randomsTap(390,  472, 5)
+				else
+				    randomsTap(390,  360, 5)
+				end
+				
 				mSleep(math.random(1000, 1500))
 				if menguNum > 0 then
 					for var= 1, 10 do
@@ -4671,7 +4817,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				goto get_new_mess
 			end
 			mSleep(math.random(500, 700))
-			randomsTap(216,  623,11)
+			if getColor(280,642) == 0x9ce6bf then
+		        randomsTap(216,  623, 5)
+			else
+			    randomsTap(390,  511, 5)
+			end
 			mSleep(math.random(2000, 3000))
 		end
 		data_six_two = false

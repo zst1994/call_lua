@@ -1843,8 +1843,8 @@ function click(click_x, click_y, ms)
 end
 
 mSleep(200)
-		x, y = findMultiColorInRegionFuzzy(0x9ce6bf,"161|-2|0xd7f5e5,387|-10|0x9ce6bf,163|30|0x9ce6bf,156|-31|0x9ce6bf",90,0,531,749,1053)
+		x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 90, 0, 0, 749, 1333)
 		if x ~= -1 and y ~= -1 then
-			mSleep(math.random(200, 500))
-			toast("注册页面",1)
+			dialog(x..y,0)
+
 		end
