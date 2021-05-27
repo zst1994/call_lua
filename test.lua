@@ -1842,6 +1842,9 @@ function click(click_x, click_y, ms)
 	mSleep(ms and ms or math.random(400, 500))
 end
 
-mSleep(500)
-						moveTowards(418,  424, 270, 200, 5)
-						mSleep(1000)
+mSleep(200)
+		x, y = findMultiColorInRegionFuzzy(0x9ce6bf,"161|-2|0xd7f5e5,387|-10|0x9ce6bf,163|30|0x9ce6bf,156|-31|0x9ce6bf",90,0,531,749,1053)
+		if x ~= -1 and y ~= -1 then
+			mSleep(math.random(200, 500))
+			toast("注册页面",1)
+		end
