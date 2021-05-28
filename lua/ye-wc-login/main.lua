@@ -4817,7 +4817,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				goto get_new_mess
 			end
 			mSleep(math.random(500, 700))
-			if getColor(280,642) == 0x9ce6bf then
+			if getColor(280,642) == 0x9ce6bf or getColor(280,  642) == 0x07c160 then
 		        randomsTap(216,  623, 5)
 			else
 			    randomsTap(390,  511, 5)

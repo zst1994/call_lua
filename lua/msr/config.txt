@@ -1,4 +1,5 @@
-YOY
 com.tencent.xin
-http://127.0.0.1:1688/cmd?fun=newrecord
+/Library/WechatPrivate/
 /Library/WechatPrivate/wx.dat
+AWZ
+http://127.0.0.1:1688/cmd?fun=newrecord

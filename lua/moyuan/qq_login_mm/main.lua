@@ -1199,7 +1199,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				writePasteboard(self.qqPassword)
 				while (true) do
 					mSleep(200)
-					if getColor(677,  469) == 0xbbbbbb or getColor(163,471) == 0x000000 then
+					if getColor(89,  465) == 0x000000 or getColor(163,471) == 0x000000 then
 						self:click(239, 629)
 						mSleep(3000)
 						break
@@ -1306,8 +1306,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			end
 
 			mSleep(200)
-			if getColor(677,357) == 0xbbbbbb then
-				if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) == 0x808080 or getColor(676,258) == 0x818181 or getColor(78,468) == 0x000000 then
+			if getColor(74,  464) == 0x000000 then
+				if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) == 0x808080 or getColor(676,258) == 0x818181 or getColor(78,468) == 0x000000 
+				or getColor(676,  257) == 0x7f7f7f or getColor(78,468) == 0x000000 then
 					-- 你的账号暂时无法登陆，请点击这里恢复正常使用
 					if getColor(655,211) == 0xffffff then
 						toast("你的账号暂时无法登陆，请点击这里恢复正常使用", 1)
@@ -1346,15 +1347,15 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			end
 
 			diff_time = self:timeOutRestart(t1)
-			if diff_time > 30 then
-				mSleep(500)
-				closeApp(self.mm_bid)
-				mSleep(500)
-				setVPNEnable(false)
-				mSleep(2000)
-				self:vpn()
-				goto white
-			end
+--			if diff_time > 30 then
+--				mSleep(500)
+--				closeApp(self.mm_bid)
+--				mSleep(500)
+--				setVPNEnable(false)
+--				mSleep(2000)
+--				self:vpn()
+--				goto white
+--			end
 			mSleep(1000)
 		end
 	elseif loginAccountWay == "1" then
