@@ -1164,6 +1164,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 
 	huakuai = false
 	inputAgain = false
+	huanjing_error = 0
 	::hk::
 	if loginAccountWay == "0" then
 		t1 = ts.ms()
@@ -1215,16 +1216,16 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 
 			mSleep(50)
 			if getColor(391,541) == 0x12b7f5 and getColor(379,884) == 0x000000 then
-			    if selectWay == "0" then
-    				self:click(379, 884)
-    				table.remove(self.qqList, 1)
-    				writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
-    				self:getAccount()
-    				inputAgain = true
+				if selectWay == "0" then
+					self:click(379, 884)
+					table.remove(self.qqList, 1)
+					writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+					self:getAccount()
+					inputAgain = true
 				else
-    				toast("扣扣登陆不上去,重新运行",1)
-    				mSleep(1000)
-    				goto over
+					toast("扣扣登陆不上去,重新运行",1)
+					mSleep(1000)
+					goto over
 				end
 			end
 
@@ -1329,18 +1330,26 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 						--					goto over
 						--当前网络环境存在风险
 					elseif getColor(683,209) == 0xffffff then
-					    if selectWay == "0" then
-    						toast("当前网络环境存在风险", 1)
-    						mSleep(500)
-    						setVPNEnable(false)
-    						mSleep(2000)
-    						self:vpn()
-    						goto hk
-    					else
+						if selectWay == "0" then
+							toast("当前网络环境存在风险", 1)
+							mSleep(500)
+							setVPNEnable(false)
+							mSleep(2000)
+							self:vpn()
+
+							huanjing_error = huanjing_error + 1
+							if huanjing_error > 3 then
+								writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
+								self:getAccount()
+								inputAgain = true
+								huanjing_error = 0
+							end
+							goto hk
+						else
 							table.remove(self.qqList, 1)
 							writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
 							goto over
-					    end
+						end
 					else
 						toast("切换下一个账号2", 1)
 						mSleep(500)
@@ -1729,7 +1738,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 
 		Nickname = self:Rnd_Word(State["姓氏"], 1, 3) .. State["名字"][math.random(1, #State["名字"])]
 	end
-	
+
 	if addSpecialStr == "1" then
 		Nickname = self:ranSpecialStr() .. Nickname .. self:ranSpecialStr()
 	end
@@ -1756,18 +1765,18 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 
 		mSleep(200)
 		if getColor(391,541) == 0x12b7f5 and getColor(379,884) == 0x000000 then
-		    if selectWay == "0" then
-    			self:click(379, 884)
-    			table.remove(self.qqList, 1)
-    			writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
-    			self:getAccount()
-    			inputAgain = true
-    			goto hk
+			if selectWay == "0" then
+				self:click(379, 884)
+				table.remove(self.qqList, 1)
+				writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+				self:getAccount()
+				inputAgain = true
+				goto hk
 			else
-    			toast("扣扣登陆不上去,重新运行",1)
-    			mSleep(1000)
-    			goto over
-            end
+				toast("扣扣登陆不上去,重新运行",1)
+				mSleep(1000)
+				goto over
+			end
 		end
 
 		mSleep(200)
@@ -1818,18 +1827,26 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 					goto hk
 					-- 	goto over
 				elseif getColor(683,209) == 0xffffff then
-				    if selectWay == "0" then
-    					toast("当前网络环境存在风险", 1)
-    					mSleep(500)
-    					setVPNEnable(false)
-    					mSleep(2000)
-    					self:vpn()
-    					goto hk
-    				else
+					if selectWay == "0" then
+						toast("当前网络环境存在风险", 1)
+						mSleep(500)
+						setVPNEnable(false)
+						mSleep(2000)
+						self:vpn()
+
+						huanjing_error = huanjing_error + 1
+						if huanjing_error > 3 then
+							writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
+							self:getAccount()
+							inputAgain = true
+							huanjing_error = 0
+						end
+						goto hk
+					else
 						table.remove(self.qqList, 1)
 						writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
 						goto over
-				    end
+					end
 				else
 					toast("切换下一个账号2", 1)
 					mSleep(500)
@@ -1876,7 +1893,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			self.subName = "注册过"
 			goto get_mmId
 		end
-		
+
 		x,y = findMultiColorInRegionFuzzy( 0x323333, "8|0|0x323333,17|-7|0x323333,40|7|0x323333,48|4|0x323333,276|2|0x3bb3fa,290|-2|0x3bb3fa,314|7|0x3bb3fa,326|-6|0x3bb3fa,219|-211|0x323333", 90, 0, 0, 749, 1333)
 		if x ~= -1 then
 			self:click(x, y)
