@@ -2787,6 +2787,10 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 	end
 
 	if changePass == "0" then
+	    if selPassWay == "1" then
+	        password = self:getMMId(appDataPath(self.mm_bid) .. "/Documents") .. "w"
+	    end
+        
 		t1 = ts.ms()
 		while true do
 			--设置
@@ -2869,7 +2873,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 	--重命名当前记录名
 	local old_name = AMG.Get_Name()
 	if loginAccountWay == "0" then
-		new_name = self.mm_accountId .. "----" .. self.subName .. "----" .. self.qqAcount .. "----" .. self.qqPassword .. "----" .. sj
+		new_name = self.mm_accountId .. "----" .. self.subName .. "----" .. self.qqAcount .. "----" .. self.qqPassword .. "----" .. password .. "----" .. sj
 	elseif loginAccountWay == "1" then
 		new_name = self.mm_accountId .. "----" .. self.subName .. "----" .. self.phone .. "----" .. sj
 
@@ -3205,13 +3209,26 @@ function model:main()
 				["list"] = "换号重新输入,重新运行",
 				["select"] = "0",
 				["countperline"] = "4"
+			},
+			{
+				["type"] = "Label",
+				["text"] = "选择更改密码方式",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255"
+			},
+			{
+				["type"] = "RadioGroup",
+				["list"] = "固定,id + w",
+				["select"] = "0",
+				["countperline"] = "4"
 			}
 		}
 	}
 
 	local MyJsonString = json.encode(MyTable)
 
-	ret, password, sex, searchFriend, searchAccount, changeHeader, nikcNameType, sysVersion, sysPhoneType, openPingNet, gpsAddress, changePass, editorWay, changeVPNWay, loginAccountWay, inputPhoneAgain, addSpecialStr, selectWay = showUI(MyJsonString)
+	ret, password, sex, searchFriend, searchAccount, changeHeader, nikcNameType, sysVersion, sysPhoneType, openPingNet, gpsAddress, changePass, editorWay, changeVPNWay, loginAccountWay, inputPhoneAgain, addSpecialStr, selectWay, selPassWay = showUI(MyJsonString)
 	if ret == 0 then
 		dialog("取消运行脚本", 3)
 		luaExit()
