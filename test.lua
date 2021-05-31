@@ -1842,9 +1842,10 @@ function click(click_x, click_y, ms)
 	mSleep(ms and ms or math.random(400, 500))
 end
 
-mSleep(200)
-		x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 90, 0, 0, 749, 1333)
-		if x ~= -1 and y ~= -1 then
-			dialog(x..y,0)
-
+--跳过屏蔽通讯录
+		mSleep(200)
+		x, y = findMultiColorInRegionFuzzy(0x007aff,"20|4|0x007aff,15|3|0x007aff,36|5|0x007aff,38|9|0x007aff,56|6|0x007aff,284|14|0x007aff,304|13|0x007aff,317|12|0x007aff,328|5|0x007aff",90,0,0,750,1334,{orient = 2})
+		if x ~= -1 then
+			toast("跳过屏蔽通讯录", 1)
+			mSleep(500)
 		end
