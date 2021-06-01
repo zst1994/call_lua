@@ -1022,23 +1022,23 @@ end
 --0123456789
 --14789
 
---local model = {}
---model.API = "Hk8Ve2Duh6QCR5XUxLpRxPyv"
---model.Secret  = "fD0az8pW8lNhGptCZC4TPfMWX5CyVtnh"
+local model = {}
+model.API = "Hk8Ve2Duh6QCR5XUxLpRxPyv"
+model.Secret  = "fD0az8pW8lNhGptCZC4TPfMWX5CyVtnh"
 
---model.tab_CHN_ENG={
---	language_type="CHN_ENG",
---	detect_direction="true",
---	detect_language="true",
---	ocrType = 3
---}
+model.tab_CHN_ENG={
+	language_type="CHN_ENG",
+	detect_direction="true",
+	detect_language="true",
+	ocrType = 3
+}
 
---model.tab_ENG = {
---	language_type = "ENG",
---	detect_direction = "true",
---	detect_language = "true",
---	ocrType = 3
---}
+model.tab_ENG = {
+	language_type = "ENG",
+	detect_direction = "true",
+	detect_language = "true",
+	ocrType = 3
+}
 
 --function model:readFileBase64(path)
 --	f = io.open(path,"rb")
@@ -1352,49 +1352,53 @@ end
 --	end
 --end
 
---API               = "CkjuQGtZUNumzQvjgTQ082Ih"
---Secret            = "XsYel9kpUUhG3OwFHfu9h2cKbXlhPpzj"
---tab_CHN_ENG       = {
---	language_type = "CHN_ENG",
---	detect_direction = "true",
---	detect_language = "true",
---	ocrType = 4
---}
+function shibie()
+	API               = "CkjuQGtZUNumzQvjgTQ082Ih"
+	Secret            = "XsYel9kpUUhG3OwFHfu9h2cKbXlhPpzj"
+	tab_CHN_ENG       = {
+		language_type = "CHN_ENG",
+		detect_direction = "true",
+		detect_language = "true",
+		ocrType = 1
+	}
 
---::getBaiDuToken1::
---local code,access_token = getAccessToken(API,Secret)
---if code then
---	local content_name = userPath() .. "/res/baiduAI_content_name1.jpg"
+	::getBaiDuToken1::
+	local code,access_token = getAccessToken(API,Secret)
+	if code then
+		local content_name = userPath() .. "/res/baiduAI_content_name1.jpg"
 
-----	snapshot(content_name, 390,  186, 618,  249) 
---	degree = 155
---	ts.binaryzation(255,  825, 294,  866,degree)
---	--ts.binaryzation(183,  255, 217,  300,degree)
+		degree = 155
+		ts.binaryzation(136,  611, 676,  755, degree)
 
---	local code, body = baiduAI(access_token,userPath().."/res/tmp.jpg",tab_CHN_ENG)
---	if code then
---		local tmp = json.decode(body)
---		if #tmp.words_result > 0 then
---			content_num = string.lower(tmp.words_result[1].words)
---		else
---			toast("识别内容失败\n" .. tostring(body),1)
---			mSleep(3000)
---		end
---	else
---		toast("识别内容失败\n" .. tostring(body),1)
---		mSleep(3000)
---	end
+		local code, body = baiduAI(access_token,userPath().."/res/tmp.jpg",tab_CHN_ENG)
+		if code then
+			local tmp = json.decode(body)
+			if #tmp.words_result > 0 then
+				content_num = string.lower(tmp.words_result[1].words)
+			else
+				toast("识别内容失败\n" .. tostring(body),1)
+				mSleep(3000)
+			end
+		else
+			toast("识别内容失败\n" .. tostring(body),1)
+			mSleep(3000)
+		end
 
---	if content_num ~= nil and #content_num >= 1 then
---		toast("识别内容：\r\n"..content_num,1)
---	else
---		toast("识别内容失败,重新截图识别" .. tostring(body),1)
---		mSleep(3000)
---	end
---else
---	toast("获取token失败",1)
---	goto getBaiDuToken1
---end
+		if content_num ~= nil and #content_num >= 1 then
+			toast("识别内容：\r\n"..content_num,1)
+			return content_num
+		else
+			toast("识别内容失败,重新截图识别" .. tostring(body),1)
+			mSleep(3000)
+		end
+	else
+		toast("获取token失败",1)
+		goto getBaiDuToken1
+	end
+end
+
+num = shibie()
+dialog(num, 0)
 
 --64-678-684-680
 --a = 23
@@ -1841,11 +1845,13 @@ function click(click_x, click_y, ms)
 	randomTap(click_x, click_y, 5)
 	mSleep(ms and ms or math.random(400, 500))
 end
+--str = string.char("\u524d\u5e741N")
+--dialog(str,5)
 
---跳过屏蔽通讯录
-		mSleep(200)
-		x, y = findMultiColorInRegionFuzzy(0x007aff,"20|4|0x007aff,15|3|0x007aff,36|5|0x007aff,38|9|0x007aff,56|6|0x007aff,284|14|0x007aff,304|13|0x007aff,317|12|0x007aff,328|5|0x007aff",90,0,0,750,1334,{orient = 2})
-		if x ~= -1 then
-			toast("跳过屏蔽通讯录", 1)
-			mSleep(500)
-		end
+
+
+--local tmp = ts.json.totable([[{"toUTF8":"\u524d\u5e741N"}]])
+--dialog(tmp["toUTF8"],0)
+
+--ocr_text = ocrText(136,  611, 676,  755, 0)
+--dialog(ocr_text, time)

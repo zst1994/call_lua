@@ -389,7 +389,7 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 		--设置当前设备机型
 		if editorWay == "2" or editorWay == "4" then
 			while true do
-				mSleep(50)
+				mSleep(200)
 				x,y = findMultiColorInRegionFuzzy(0x000000, "5|6|0x000000,22|4|0x000000,38|4|0x000000,54|6|0x000000,59|-11|0x000000,70|-2|0x000000,74|4|0x000000,88|2|0x000000,118|10|0x000000", 90, 0, 0, 749, 1333)
 				if x ~= -1 then
 					self:click(x + 200, y)
@@ -399,14 +399,14 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 				else
 					mSleep(500)
 					moveTowards(404,1194,90,900,10)
-					mSleep(1500)
+					mSleep(2500)
 				end
 			end
 
-			idx = (math.random(1, 7) - 1) * 90
+			idx = (math.random(1, 8) - 1) * 90
 			while true do
-				mSleep(50)
-				x,y = findMultiColorInRegionFuzzy( 0x000000, "-7|-10|0x000000,7|-10|0x000000,7|11|0x000000,-7|11|0x000000,-29|3|0x000000,-53|2|0x000000,-92|6|0x000000,-113|4|0x000000,-121|2|0x000000", 90, 0, 0, 749, 1333)
+				mSleep(200)
+				x,y = findMultiColorInRegionFuzzy( 0x000000, "5|-9|0x000000,5|3|0x000000,21|3|0x000000,27|3|0x000000,39|3|0x000000,52|5|0x000000,-24|1|0x000000,-51|4|0x000000,-143|4|0x000000", 100, 0, 0, 749, 1333)
 				if x ~= -1 then
 					self:click(x, y + idx)
 					toast("选择机型",1)
@@ -415,7 +415,7 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 				else
 					mSleep(500)
 					moveTowards(404,1194,90,900,10)
-					mSleep(1500)
+					mSleep(2500)
 				end
 			end
 
@@ -442,7 +442,7 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 		--设置当前系统版本
 		if editorWay == "3" or editorWay == "4" then
 			while true do
-				mSleep(50)
+				mSleep(200)
 				x,y = findMultiColorInRegionFuzzy( 0x000000, "4|5|0x000000,21|5|0x000000,38|5|0x000000,53|5|0x000000,53|-11|0x000000,83|9|0x000000,124|-8|0x000000,145|-7|0x000000,230|7|0x000000", 90, 0, 0, 749, 1333)
 				if x ~= -1 then
 					self:click(x + 200, y)
@@ -452,7 +452,7 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 				else
 					mSleep(500)
 					moveTowards(404,1194,90,900,10)
-					mSleep(1500)
+					mSleep(2500)
 				end
 			end
 
@@ -2498,7 +2498,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 
 			--编辑
 			mSleep(200)
-			x,y = findMultiColorInRegionFuzzy( 0x323333, "2|5|0x323333,4|14|0x323333,-31|9|0xffffff,12|6|0xffffff,19|10|0x323333,27|10|0x323333,36|10|0x323333,34|5|0x323333,53|0|0xffffff", 90, 0, 0, 749, 1333)
+			x,y = findMultiColorInRegionFuzzy( 0x323333, "2|5|0x323333,4|14|0x323333,-31|9|0xffffff,12|6|0xffffff,19|10|0x323333,27|10|0x323333,36|10|0x323333,34|5|0x323333,53|0|0xffffff", 100, 0, 0, 749, 333)
 			if x~=-1 and y~=-1 then
 				self:click(x, y)
 				toast("编辑",1)
@@ -2522,7 +2522,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 
 			--编辑
 			mSleep(200)
-			x,y = findMultiColorInRegionFuzzy( 0x323333, "2|5|0x323333,4|14|0x323333,-31|9|0xffffff,12|6|0xffffff,19|10|0x323333,27|10|0x323333,36|10|0x323333,34|5|0x323333,53|0|0xffffff", 90, 0, 0, 749, 1333)
+			x,y = findMultiColorInRegionFuzzy( 0x323333, "2|5|0x323333,4|14|0x323333,-31|9|0xffffff,12|6|0xffffff,19|10|0x323333,27|10|0x323333,36|10|0x323333,34|5|0x323333,53|0|0xffffff", 100, 0, 0, 749, 333)
 			if x~=-1 and y~=-1 then
 				self:click(x, y)
 			end
@@ -2734,7 +2734,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 
 			--编辑
 			mSleep(200)
-			x,y = findMultiColorInRegionFuzzy( 0x323333, "2|5|0x323333,4|14|0x323333,-31|9|0xffffff,12|6|0xffffff,19|10|0x323333,27|10|0x323333,36|10|0x323333,34|5|0x323333,53|0|0xffffff", 90, 0, 0, 749, 1333)
+			x,y = findMultiColorInRegionFuzzy( 0x323333, "2|5|0x323333,4|14|0x323333,-31|9|0xffffff,12|6|0xffffff,19|10|0x323333,27|10|0x323333,36|10|0x323333,34|5|0x323333,53|0|0xffffff", 100, 0, 0, 749, 333)
 			if x~=-1 and y~=-1 then
 				self:click(55, y)
 			end
