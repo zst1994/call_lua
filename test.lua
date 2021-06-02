@@ -1397,8 +1397,8 @@ function shibie()
 	end
 end
 
-num = shibie()
-dialog(num, 0)
+--num = shibie()
+--dialog(num, 0)
 
 --64-678-684-680
 --a = 23
@@ -1855,3 +1855,8 @@ end
 
 --ocr_text = ocrText(136,  611, 676,  755, 0)
 --dialog(ocr_text, time)
+
+x, y = findMultiColorInRegionFuzzy(0x007aff,"20|4|0x007aff,15|3|0x007aff,36|5|0x007aff,38|9|0x007aff,56|6|0x007aff,284|14|0x007aff,304|13|0x007aff,317|12|0x007aff,328|5|0x007aff",90,0,0,750,1334,{orient = 2})
+if x ~= -1 then
+	dialog(x.."=="..y, time)
+end

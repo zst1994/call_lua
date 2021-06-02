@@ -1268,6 +1268,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 						mSleep(500)
 						self:click(370, 1024)
 						mSleep(1500)
+						huakuai = false
 						break
 					else
 						mSleep(200)
@@ -1847,12 +1848,16 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 
 						huanjing_error = huanjing_error + 1
 						if huanjing_error > 3 then
-							writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
-							self:getAccount()
-							inputAgain = true
-							huanjing_error = 0
+--							writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
+--							self:getAccount()
+--							inputAgain = true
+--							huanjing_error = 0
+							table.remove(self.qqList, 1)
+							writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+							goto over
+						else
+							goto hk
 						end
-						goto hk
 					else
 						table.remove(self.qqList, 1)
 						writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
@@ -1956,6 +1961,12 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			mSleep(1000)
 			toast("生日前输入昵称", 1)
 			mSleep(500)
+		end
+		
+		if self:location("1") then
+			self.subName = "注册过"
+			self.updatePass = true
+			goto sy
 		end
 
 		self:timeOutRestart(t1)
@@ -2787,10 +2798,10 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 	end
 
 	if changePass == "0" then
-	    if selPassWay == "1" then
-	        password = self:getMMId(appDataPath(self.mm_bid) .. "/Documents") .. "w"
-	    end
-        
+		if selPassWay == "1" then
+			password = self:getMMId(appDataPath(self.mm_bid) .. "/Documents") .. "w"
+		end
+
 		t1 = ts.ms()
 		while true do
 			--设置
