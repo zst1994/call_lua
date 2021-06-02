@@ -947,7 +947,8 @@ function model:shouye()
 	getColor(45, 109) == 0x323333 and getColor(222, 95) == 0x323333 or
 	getColor(206, 156) == 0x323333 and getColor(336, 157) == 0x323333 or
 	getColor(206,  153) == 0x313232 and getColor(371,  131) == 0x313232 or
-	getColor(410,  127) == 0x323333 and getColor(404,  107) == 0x323333 then
+	getColor(410,  127) == 0x323333 and getColor(404,  107) == 0x323333 or
+	getColor(297, 128) == 0x323333 and getColor(303, 106) == 0x323333 then
 		toast("首页1", 1)
 		mSleep(500)
 		return true
@@ -2142,7 +2143,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			break
 		end
 
-		mSleep(200)
+		mSleep(50)
 		x, y = findMultiColorInRegionFuzzy(0x18d9f1,"121|-9|0x18d9f1,64|55|0x18d9f1,62|36|0xf6f6f6,-28|12|0xf6f6f6,164|-4|0xf6f6f6,58|328|0xd8d8d8",90,0,0,750,1334,{orient = 2})
 		if x ~= -1 and y ~= -1 then
 			self:click(675, 83)
@@ -2150,7 +2151,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			mSleep(1000)
 		end
 
-		mSleep(200)
+		mSleep(50)
 		x, y = findMultiColorInRegionFuzzy(0xf6f6f6,"-75|-88|0x18d9f1,-18|-44|0x18d9f1,47|-57|0x18d9f1,92|-113|0xf6f6f6,-8|-187|0xf6f6f6,-131|367|0xd8d8d8,144|374|0xd8d8d8",90,0,0,749,1333)
 		if x ~= -1 and y ~= -1 then
 			self:click(675, 83)
@@ -2158,7 +2159,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			mSleep(1000)
 		end
 
-		mSleep(200)
+		mSleep(50)
 		x,y = findMultiColorInRegionFuzzy( 0xcdcdcd, "13|5|0xcdcdcd,17|5|0xcdcdcd,25|8|0xffffff,32|8|0xcdcdcd,46|8|0xcdcdcd,39|1|0xcdcdcd,-448|824|0x18d9f1,-86|815|0x18d9f1,-298|819|0xffffff", 90, 0, 0, 749, 1333)
 		if x ~= -1 and y ~= -1 then
 			self:click(x + 20, y + 10)
@@ -2166,7 +2167,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			mSleep(1000)
 		end
 
-		mSleep(200)
+		mSleep(50)
 		x,y = findMultiColorInRegionFuzzy(0x323333, "-12|-12|0x323333,13|-12|0x323333,-11|11|0x323333,12|12|0x323333,65|859|0x3bb3fa,595|863|0x3bb3fa,280|852|0xffffff,363|868|0xffffff,319|821|0x3bb3fa", 90, 0, 0, 750, 1334, { orient = 2 })
 		if x ~= -1 and y ~= -1 then
 			self:click(x, y)
@@ -2174,7 +2175,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			mSleep(1000)
 		end
 
-		mSleep(200)
+		mSleep(50)
 		x,y = findMultiColorInRegionFuzzy(0x323333, "-11|-11|0x323333,13|-12|0x323333,11|11|0x323333,57|886|0x3bb3fa,571|885|0x3bb3fa,339|846|0x3bb3fa,315|924|0x3bb3fa,280|874|0xffffff,363|891|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
 		if x ~= -1 and y ~= -1 then
 			self:click(x, y)
@@ -2183,13 +2184,22 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 		end
 
 		--下一步
-		mSleep(200)
+		mSleep(50)
 		if getColor(113,839) == 0x18d9f1 or getColor(632,841) == 0x18d9f1 then
 			self:click(470, 842)
 		end
+		
+		--她们在附近 ：跳过
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy( 0x323333, "4|0|0x323333,-10|6|0x323333,15|3|0x323333,33|3|0x323333,27|-2|0x323333,36|17|0x323333", 90, 0, 0, 749, 133)
+		if x ~= -1 then
+			self:click(x + 20, y)
+			toast("跳过", 1)
+			mSleep(500)
+		end
 
 		--跳过
-		mSleep(200)
+		mSleep(50)
 		x, y = findMultiColorInRegionFuzzy(0x323333,"4|10|0x323333,13|4|0x323333,17|4|0x323333,32|7|0x323333,47|7|0x323333,42|-1|0x323333,59|5|0xffffff,-20|3|0xffffff,25|27|0xffffff",90,0,0,750,1334,{orient = 2})
 		if x ~= -1 then
 			self:click(x + 20, y + 10)
@@ -2200,7 +2210,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 		self:bindPhoneDialog()
 
 		--有新版本
-		mSleep(200)
+		mSleep(50)
 		if getColor(265, 944) == 0x3bb3fa and getColor(491, 949) == 0x3bb3fa then
 			self:click(377, 1042)
 			toast("有新版本", 1)
@@ -2208,7 +2218,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 		end
 
 		--绑定手机号码
-		mSleep(200)
+		mSleep(50)
 		if getColor(672, 85) == 0x323333 and getColor(702, 85) == 0x323333 then
 			self:click(672, 85)
 			toast("绑定手机号码", 1)
