@@ -1181,9 +1181,12 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			if flag == 0 then
 				runApp(self.mm_bid)
 				mSleep(3000)
+			else
+				toast("应用在线",1)
+				mSleep(1000)
 			end
 
-			mSleep(50)
+			mSleep(100)
 			if getColor(239, 629) == 0x12b7f5 then
 				if inputAgain then
 					self:clear_input()
@@ -1221,7 +1224,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				end
 			end
 
-			mSleep(50)
+			mSleep(100)
 			if getColor(391,541) == 0x12b7f5 and getColor(379,884) == 0x000000 then
 				if selectWay == "0" then
 					self:click(379, 884)
@@ -1257,7 +1260,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 -- 				end
 -- 			end
 
-			mSleep(50)
+			mSleep(100)
 			if getColor(116, 949) == 0x007aff then
 				toast("准备滑块",1)
 				mSleep(500)
@@ -1289,7 +1292,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				end
 			end
 
-			mSleep(50)
+			mSleep(100)
 			if getColor(296,  615) == 0x12b7f5 and getColor(682,  259) == 0x818181 then
 				toast("暂时无法登陆", 1)
 				mSleep(500)
@@ -1303,7 +1306,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			end
 
 			--填写资料
-			mSleep(50)
+			mSleep(100)
 			x, y = findMultiColorInRegionFuzzy(0x323333,"16|-1|0x323333,8|7|0x323333,10|19|0x323333,24|26|0x323333,30|13|0x323333,25|-7|0x323333,54|-3|0x323333,83|8|0x323333,66|-8|0x323333",100,0,0,750,1334,{orient = 2})
 			if x ~= -1 then
 				toast("不需要过滑块", 1)
@@ -1312,7 +1315,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			end
 
 			--已经注册过，需要绑定手机号码
-			mSleep(50)
+			mSleep(100)
 			if getColor(672, 85) == 0x323333 and getColor(702, 85) == 0x323333 then
 				toast("已经注册过，需要绑定手机号码", 1)
 				mSleep(500)
@@ -1327,7 +1330,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				goto sy
 			end
 
-			mSleep(50)
+			mSleep(100)
 			if getColor(74,  464) == 0x000000 then
 				-- if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) == 0x808080 or getColor(676,258) == 0x818181 or getColor(78,468) == 0x000000 
 				-- or getColor(676,  257) == 0x7f7f7f or getColor(78,468) == 0x000000 then
