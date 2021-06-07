@@ -1343,7 +1343,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			end
 
 			mSleep(100)
-			if getColor(74,  464) == 0x000000 then
+			if getColor(74,  464) == 0x000000 and getColor(676, 258) ~= 0xffffff then
 				-- if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) == 0x808080 or getColor(676,258) == 0x818181 or getColor(78,468) == 0x000000 
 				-- or getColor(676,  257) == 0x7f7f7f or getColor(78,468) == 0x000000 then
 				if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) ~= 0xffffff then
