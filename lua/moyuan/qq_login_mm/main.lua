@@ -1204,6 +1204,11 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 						inputStr(self.qqAcount)
 						mSleep(1000)
 					end
+					
+					flag = isFrontApp(self.mm_bid)
+        			if flag == 0 then
+        				goto over
+        			end
 				end
 
 				writePasteboard(self.qqPassword)
@@ -1221,23 +1226,28 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 						keyUp("RightGUI")
 						mSleep(1000)
 					end
+					
+					flag = isFrontApp(self.mm_bid)
+        			if flag == 0 then
+        				goto over
+        			end
 				end
 			end
 
-			mSleep(100)
-			if getColor(391,541) == 0x12b7f5 and getColor(379,884) == 0x000000 then
-				if selectWay == "0" then
-					self:click(379, 884)
-					table.remove(self.qqList, 1)
-					writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
-					self:getAccount()
-					inputAgain = true
-				else
-					toast("扣扣登陆不上去,重新运行",1)
-					mSleep(1000)
-					goto over
-				end
-			end
+-- 			mSleep(100)
+-- 			if getColor(391,541) == 0x12b7f5 and getColor(379,884) == 0x000000 then
+-- 				if selectWay == "0" then
+-- 					self:click(379, 884)
+-- 					table.remove(self.qqList, 1)
+-- 					writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+-- 					self:getAccount()
+-- 					inputAgain = true
+-- 				else
+-- 					toast("扣扣登陆不上去,重新运行",1)
+-- 					mSleep(1000)
+-- 					goto over
+-- 				end
+-- 			end
 
 -- 			--滑块白色为加载出图片
 -- 			mSleep(200)
@@ -1261,8 +1271,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 -- 			end
 
 			mSleep(100)
-			if getColor(116, 949) == 0x007aff then
+			if isColor(116,949,0x007aff,100) then
 				toast("准备滑块",1)
+				log("准备滑块")
 				mSleep(500)
 				if huakuai then
 					x_lens = self:moves()
@@ -1288,20 +1299,20 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 					huakuai = true
 					toast("刷新滑块2",1)
 					mSleep(500)
-					goto hk
 				end
 			end
 
-			mSleep(100)
-			if getColor(296,  615) == 0x12b7f5 and getColor(682,  259) == 0x818181 then
-				toast("暂时无法登陆", 1)
-				mSleep(500)
-				self.subName = "暂时无法登陆"
-				goto get_mmId
-			end
+-- 			mSleep(100)
+-- 			if getColor(296,  615) == 0x12b7f5 and getColor(682,  259) == 0x818181 then
+-- 				toast("暂时无法登陆", 1)
+-- 				mSleep(500)
+-- 				self.subName = "暂时无法登陆"
+-- 				goto get_mmId
+-- 			end
 
 			if self:vpn_connection("2") then
 				toast("结束进行下一个",1)
+				log("结束进行下一个")
 				goto over
 			end
 
@@ -1314,19 +1325,20 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				break
 			end
 
-			--已经注册过，需要绑定手机号码
-			mSleep(100)
-			if getColor(672, 85) == 0x323333 and getColor(702, 85) == 0x323333 then
-				toast("已经注册过，需要绑定手机号码", 1)
-				mSleep(500)
-				self.subName = "注册过"
-				goto get_mmId
-			end
+-- 			--已经注册过，需要绑定手机号码
+-- 			mSleep(100)
+-- 			if getColor(672, 85) == 0x323333 and getColor(702, 85) == 0x323333 then
+-- 				toast("已经注册过，需要绑定手机号码", 1)
+-- 				mSleep(500)
+-- 				self.subName = "注册过"
+-- 				goto get_mmId
+-- 			end
 
 			if self:location("1") then
 				self.subName = "注册过"
 				self.updatePass = true
 				toast("注册过",1)
+				log("注册过")
 				goto sy
 			end
 
@@ -1345,7 +1357,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 						self:getAccount()
 						self:clear_input()
 						inputAgain = true
-						goto hk
+				-- 		goto hk
 						--					goto over
 						--当前网络环境存在风险
 					elseif getColor(683,209) == 0xffffff then
@@ -1363,7 +1375,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 								inputAgain = true
 								huanjing_error = 0
 							end
-							goto hk
+				-- 			goto hk
 						else
 							table.remove(self.qqList, 1)
 							writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
