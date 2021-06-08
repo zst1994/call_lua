@@ -1856,3 +1856,11 @@ end
 --ocr_text = ocrText(136,  611, 676,  755, 0)
 --dialog(ocr_text, time)
 
+--填写资料
+		mSleep(50)
+		x, y = findMultiColorInRegionFuzzy(0x323333,"16|-1|0x323333,8|7|0x323333,10|19|0x323333,24|26|0x323333,30|13|0x323333,25|-7|0x323333,54|-3|0x323333,83|8|0x323333,66|-8|0x323333",100,0,0,750,334,{orient = 2})
+		if x ~= -1 then
+			mSleep(1000)
+			toast("输入昵称", 1)
+			mSleep(500)
+		end
