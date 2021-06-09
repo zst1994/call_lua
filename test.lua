@@ -1861,10 +1861,12 @@ end
 --local res, code = http.request("http://127.0.0.1:1688/cmd?fun=setcurrentrecordlocation&location=114.1374_22.5318")
 --dialog(code .. "===" .. res, time)
 
-mSleep(50)
-		x,y = findMultiColorInRegionFuzzy( 0x323333, "8|0|0x323333,17|-7|0x323333,40|7|0x323333,48|4|0x323333,276|2|0x3bb3fa,290|-2|0x3bb3fa,314|7|0x3bb3fa,326|-6|0x3bb3fa,219|-211|0x323333", 90, 0, 0, 749, 1333)
+
+		
+		--密码错误
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy( 0x007aff, "8|0|0x007aff,18|-8|0x007aff,42|7|0x007aff,57|7|0x007aff,281|-9|0x007aff,356|10|0x007aff,116|-96|0x000000,153|-104|0x000000,327|-95|0x000000", 90, 0, 0, 749, 1333)
 		if x ~= -1 then
-			click(x, y)
-			toast("当前为非wifi环境", 1)
+			toast("密码错误2", 1)
 			mSleep(1000)
 		end

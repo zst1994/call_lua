@@ -971,6 +971,14 @@ function model:shouye()
 		mSleep(500)
 		return true
 	end
+	
+	mSleep(50)
+	x,y = findMultiColorInRegionFuzzy( 0x323333, "8|0|0x323333,17|-7|0x323333,40|7|0x323333,48|4|0x323333,276|2|0x3bb3fa,290|-2|0x3bb3fa,314|7|0x3bb3fa,326|-6|0x3bb3fa,219|-211|0x323333", 90, 0, 0, 749, 1333)
+	if x ~= -1 then
+		self:click(x, y)
+		toast("当前为非wifi环境", 1)
+		mSleep(1000)
+	end
 end
 
 function model:bindPhoneDialog()
@@ -1053,14 +1061,6 @@ function model:location(index)
 			toast("跳过屏蔽通讯录", 1)
 			mSleep(500)
 			return true
-		end
-		
-		mSleep(50)
-		x,y = findMultiColorInRegionFuzzy( 0x323333, "8|0|0x323333,17|-7|0x323333,40|7|0x323333,48|4|0x323333,276|2|0x3bb3fa,290|-2|0x3bb3fa,314|7|0x3bb3fa,326|-6|0x3bb3fa,219|-211|0x323333", 90, 0, 0, 749, 1333)
-		if x ~= -1 then
-			self:click(x, y)
-			toast("当前为非wifi环境", 1)
-			mSleep(1000)
 		end
 	end
 end
