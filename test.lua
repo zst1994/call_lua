@@ -1856,11 +1856,15 @@ end
 --ocr_text = ocrText(136,  611, 676,  755, 0)
 --dialog(ocr_text, time)
 
---填写资料
-		mSleep(50)
-		x, y = findMultiColorInRegionFuzzy(0x323333,"16|-1|0x323333,8|7|0x323333,10|19|0x323333,24|26|0x323333,30|13|0x323333,25|-7|0x323333,54|-3|0x323333,83|8|0x323333,66|-8|0x323333",100,0,0,750,334,{orient = 2})
+--local sz = require("sz");
+--local http = require("szocket.http")
+--local res, code = http.request("http://127.0.0.1:1688/cmd?fun=setcurrentrecordlocation&location=114.1374_22.5318")
+--dialog(code .. "===" .. res, time)
+
+mSleep(50)
+		x,y = findMultiColorInRegionFuzzy( 0x323333, "8|0|0x323333,17|-7|0x323333,40|7|0x323333,48|4|0x323333,276|2|0x3bb3fa,290|-2|0x3bb3fa,314|7|0x3bb3fa,326|-6|0x3bb3fa,219|-211|0x323333", 90, 0, 0, 749, 1333)
 		if x ~= -1 then
+			click(x, y)
+			toast("当前为非wifi环境", 1)
 			mSleep(1000)
-			toast("输入昵称", 1)
-			mSleep(500)
 		end
