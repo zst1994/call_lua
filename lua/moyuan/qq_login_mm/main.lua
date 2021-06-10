@@ -305,16 +305,18 @@ function model:renameRecord(updateResultName)
 end
 
 function model:timeOutRestart(t1)
-	self:vpn_connection("1")
+	if not self:vpn_connection("1") then
+		return true
+	end
 
 	t2 = ts.ms()
 
 	diff_time = os.difftime(t2, t1)
 	if diff_time > 60 then
-		self:index()
+		return true
 	else
 		toast("距离重启脚本还有"..(60 - os.difftime(t2, t1)) .. "秒",1)
-		return diff_time
+		mSleep(1000)
 	end
 end
 
@@ -659,7 +661,7 @@ function model:vpn_connection(idx)
 		toast("vpn连接0", 1)
 		mSleep(500)
 		if idx == "1" then
-			self:index()
+			return false
 		elseif idx == "2" then
 			return true
 		end
@@ -971,7 +973,7 @@ function model:shouye()
 		mSleep(500)
 		return true
 	end
-	
+
 	mSleep(50)
 	x,y = findMultiColorInRegionFuzzy( 0x323333, "8|0|0x323333,17|-7|0x323333,40|7|0x323333,48|4|0x323333,276|2|0x3bb3fa,290|-2|0x3bb3fa,314|7|0x3bb3fa,326|-6|0x3bb3fa,219|-211|0x323333", 90, 0, 0, 749, 1333)
 	if x ~= -1 then
@@ -1139,8 +1141,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			mSleep(3000)
 		end
 
-		self:timeOutRestart(t1)
-		mSleep(1000)
+		if self:timeOutRestart(t1) then
+			goto over
+		end
 	end
 
 	::white::
@@ -1172,8 +1175,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				mSleep(3000)
 			end
 
-			self:timeOutRestart(t1)
-			mSleep(1000)
+			if self:timeOutRestart(t1) then
+				goto over
+			end
 		end
 	end
 
@@ -1212,11 +1216,11 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 						inputStr(self.qqAcount)
 						mSleep(1000)
 					end
-					
+
 					flag = isFrontApp(self.mm_bid)
-        			if flag == 0 then
-        				goto over
-        			end
+					if flag == 0 then
+						goto over
+					end
 				end
 
 				writePasteboard(self.qqPassword)
@@ -1234,28 +1238,30 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 						keyUp("RightGUI")
 						mSleep(1000)
 					end
-					
+
 					flag = isFrontApp(self.mm_bid)
-        			if flag == 0 then
-        				goto over
-        			end
+					if flag == 0 then
+						goto over
+					end
 				end
 			end
 
--- 			mSleep(100)
--- 			if getColor(391,541) == 0x12b7f5 and getColor(379,884) == 0x000000 then
--- 				if selectWay == "0" then
--- 					self:click(379, 884)
--- 					table.remove(self.qqList, 1)
--- 					writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
--- 					self:getAccount()
--- 					inputAgain = true
--- 				else
--- 					toast("扣扣登陆不上去,重新运行",1)
--- 					mSleep(1000)
--- 					goto over
--- 				end
--- 			end
+ 			mSleep(100)
+ 			if getColor(391,541) == 0x12b7f5 and getColor(379,884) == 0x000000 then
+ 				if selectWay == "0" then
+ 					self:click(379, 884)
+ 					table.remove(self.qqList, 1)
+ 					writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+ 					self:getAccount()
+ 					inputAgain = true
+					toast("扣扣登陆异常,换号重新登录",1)
+ 					mSleep(1000)
+ 				else
+ 					toast("扣扣登陆不上去,重新运行",1)
+ 					mSleep(1000)
+ 					goto over
+ 				end
+ 			end
 
 -- 			--滑块白色为加载出图片
 -- 			mSleep(200)
@@ -1365,7 +1371,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 						self:getAccount()
 						self:clear_input()
 						inputAgain = true
-				-- 		goto hk
+						-- 		goto hk
 						--					goto over
 						--当前网络环境存在风险
 					elseif getColor(683,209) == 0xffffff then
@@ -1383,7 +1389,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 								inputAgain = true
 								huanjing_error = 0
 							end
-				-- 			goto hk
+							-- 			goto hk
 						else
 							table.remove(self.qqList, 1)
 							writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
@@ -1403,7 +1409,10 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				end
 			end
 
-			diff_time = self:timeOutRestart(t1)
+			if self:timeOutRestart(t1) then
+				goto over
+			end
+--			diff_time = self:timeOutRestart(t1)
 --			if diff_time > 30 then
 --				mSleep(500)
 --				closeApp(self.mm_bid)
@@ -1454,8 +1463,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				break
 			end
 
-			self:timeOutRestart(t1)
-			mSleep(1000)
+			if self:timeOutRestart(t1) then
+				goto over
+			end
 		end
 
 		::get_phone_agagin::
@@ -1476,8 +1486,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 					break
 				end
 
-				self:timeOutRestart(t1)
-				mSleep(1000)
+				if self:timeOutRestart(t1) then
+					goto over
+				end
 			end
 		end
 
@@ -1512,8 +1523,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				break
 			end
 
-			self:timeOutRestart(t1)
-			mSleep(1000)
+			if self:timeOutRestart(t1) then
+				goto over
+			end
 		end
 
 		t1 = ts.ms()
@@ -1538,8 +1550,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				mSleep(1000)
 			end
 
-			self:timeOutRestart(t1)
-			mSleep(1000)
+			if self:timeOutRestart(t1) then
+				goto over
+			end
 		end
 
 		getMessStatus = self:get_mess()
@@ -1625,8 +1638,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 						break
 					end
 
-					self:timeOutRestart(t1)
-					mSleep(1000)
+					if self:timeOutRestart(t1) then
+						goto over
+					end
 				end
 
 				back_again = 0
@@ -1945,8 +1959,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			goto sy
 		end
 
-		self:timeOutRestart(t1)
-		mSleep(1000)
+		if self:timeOutRestart(t1) then
+			goto over
+		end
 	end
 
 	t1 = ts.ms()
@@ -1980,15 +1995,16 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			toast("生日前输入昵称", 1)
 			mSleep(500)
 		end
-		
+
 		if self:location("1") then
 			self.subName = "注册过"
 			self.updatePass = true
 			goto sy
 		end
 
-		self:timeOutRestart(t1)
-		mSleep(1000)
+		if self:timeOutRestart(t1) then
+			goto over
+		end
 	end
 
 	--上下
@@ -2054,14 +2070,16 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 					mSleep(500)
 				end
 
-				self:timeOutRestart(t1)
-				mSleep(1000)
+				if self:timeOutRestart(t1) then
+					goto over
+				end
 			end
 			break
 		end
 
-		self:timeOutRestart(t1)
-		mSleep(1000)
+		if self:timeOutRestart(t1) then
+			goto over
+		end
 	end
 
 	t1 = ts.ms()
@@ -2077,8 +2095,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			break
 		end
 
-		self:timeOutRestart(t1)
-		mSleep(1000)
+		if self:timeOutRestart(t1) then
+			goto over
+		end
 	end
 
 	if loginAccountWay == "1" then
@@ -2123,7 +2142,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			if x ~= -1 then
 				toast("无照片或视频",1)
 				mSleep(1000)
-				self:index()
+				goto over
 			end
 
 			mSleep(200)
@@ -2132,9 +2151,13 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				break
 			end
 
-			self:vpn_connection("1")
-			self:timeOutRestart(t1)
-			mSleep(1000)
+			if not self:vpn_connection("1") then
+				goto over
+			end
+
+			if self:timeOutRestart(t1) then
+				goto over
+			end
 		end
 
 		t1 = ts.ms()
@@ -2148,8 +2171,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				self:click(688, 1264)
 			end
 
-			self:timeOutRestart(t1)
-			mSleep(1000)
+			if self:timeOutRestart(t1) then
+				goto over
+			end
 		end
 	end
 
@@ -2205,7 +2229,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 		if getColor(113,839) == 0x18d9f1 or getColor(632,841) == 0x18d9f1 then
 			self:click(470, 842)
 		end
-		
+
 		--她们在附近 ：跳过
 		mSleep(50)
 		x,y = findMultiColorInRegionFuzzy( 0x323333, "4|0|0x323333,-10|6|0x323333,15|3|0x323333,33|3|0x323333,27|-2|0x323333,36|17|0x323333", 90, 0, 0, 749, 133)
@@ -2243,9 +2267,14 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 		end
 
 		self:location("1")
-		self:vpn_connection("1")
-		self:timeOutRestart(t1)
-		mSleep(1000)
+
+		if not self:vpn_connection("1") then
+			goto over
+		end
+
+		if self:timeOutRestart(t1) then
+			goto over
+		end
 	end
 
 	time = 0
@@ -2290,8 +2319,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 
 		self:bindPhoneDialog()
 		self:location("1")
-		self:timeOutRestart(t1)
-		mSleep(1000)
+		if self:timeOutRestart(t1) then
+			goto over
+		end
 	end
 
 	if searchFriend == "0" and not self.updatePass then
@@ -2386,8 +2416,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				break
 			end
 
-			self:timeOutRestart(t1)
-			mSleep(1000)
+			if self:timeOutRestart(t1) then
+				goto over
+			end
 		end
 
 		t1 = ts.ms()
@@ -2438,13 +2469,16 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 						end
 					end
 
-					self:timeOutRestart(t1)
-					mSleep(1000)
+					if self:timeOutRestart(t1) then
+						goto over
+					end
 				end
 				break
 			end
-			self:timeOutRestart(t1)
-			mSleep(1000)
+
+			if self:timeOutRestart(t1) then
+				goto over
+			end
 		end
 	end
 
@@ -2544,8 +2578,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				break
 			end
 
-			self:timeOutRestart(t1)
-			mSleep(1000)
+			if self:timeOutRestart(t1) then
+				goto over
+			end
 		end
 
 		t1 = ts.ms()
@@ -2697,8 +2732,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				break
 			end
 
-			self:timeOutRestart(t1)
-			mSleep(1000)
+			if self:timeOutRestart(t1) then
+				goto over
+			end
 		end
 
 		t1 = ts.ms()
@@ -2732,8 +2768,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				break
 			end
 
-			self:timeOutRestart(t1)
-			mSleep(1000)
+			if self:timeOutRestart(t1) then
+				goto over
+			end
 		end
 
 		toast("保存头像完成",1)
@@ -2786,15 +2823,34 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				self:click(55, 84)
 			end
 
-			self:timeOutRestart(t1)
-			mSleep(1000)
+			if self:timeOutRestart(t1) then
+				goto over
+			end
 		end
 	end
 
 	t1 = ts.ms()
 	while true do
 		--更多
-		mSleep(200)
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy( 0x323333, "6|0|0x323333,12|0|0x323333,-3|-26|0x565656,37|-26|0x565656,54|-20|0xfdfcfd,-32|-20|0xfdfcfd", 100, 0, 0, 749, 1333)
+		if x~=-1 and y~=-1 then
+			self:click(x + 10, y - 10)
+			self:click(x + 10, y - 10)
+			toast("更多1",1)
+			mSleep(500)
+		end
+
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy( 0x565656, "40|0|0x565656,-596|30|0x0fc9e1,-584|30|0x0fc9e1,-575|28|0x0fc9e1,-564|27|0x0fc9e1,-450|-21|0x3e3e3e,-408|-20|0x3e3e3e,-117|25|0x424343", 100, 0, 747, 749, 1333)
+		if x~=-1 and y~=-1 then
+			self:click(x + 10, y)
+			self:click(x + 10, y)
+			toast("更多2",1)
+			mSleep(500)
+		end
+		
+		mSleep(50)
 		if getColor(665, 1310) == 0xf6aa00 or getColor(664,1322) == 0xecae3f and getColor(686,1317) == 0xecae3f or 
 		getColor(664,1321) == 0xebad3b and getColor(670,1323) == 0xebad3b then
 			self:click(693, 80)
@@ -2803,7 +2859,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			break
 		end
 
-		mSleep(200)
+		mSleep(50)
 		if getColor(664, 1253) == 0xf8aa05 or getColor(664, 1253) == 0xf6aa00 then
 			self:click(696, 130)
 			toast("进入设置",1)
@@ -2811,7 +2867,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			break
 		end
 
-		mSleep(200)
+		mSleep(50)
 		x,y = findMultiColorInRegionFuzzy(0x323333, "-1|-35|0x323333,-78|-28|0x4b4c4c,-77|0|0x4b4c4c,-97|-14|0x4b4c4c,-61|-13|0x4b4c4c,-67|-13|0x4b4c4c,-41|-16|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
 		if x ~= -1 then
 			self:click(x, y - 20)
@@ -2819,9 +2875,18 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			mSleep(500)
 			break
 		end
-
-		self:timeOutRestart(t1)
-		mSleep(1000)
+		
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy( 0xaaaaaa, "27|0|0xaaaaaa,-161|-95|0x3bb3fa,199|-91|0x3bb3fa,3|-94|0xffffff,31|-94|0xffffff,-215|-91|0xffffff,240|-91|0xffffff", 90, 0, 0, 749, 1333)
+		if x ~= -1 then
+			self:click(x, y - 20)
+			toast("立即体验",1)
+			mSleep(500)
+		end
+		
+		if self:timeOutRestart(t1) then
+			goto over
+		end
 	end
 
 	if changePass == "0" then
@@ -2872,8 +2937,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 						mSleep(1000)
 					end
 
-					self:timeOutRestart(t1)
-					mSleep(1000)
+					if self:timeOutRestart(t1) then
+						goto over
+					end
 				end
 
 				mSleep(500)
@@ -2888,8 +2954,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 						mSleep(1000)
 					end
 
-					self:timeOutRestart(t1)
-					mSleep(1000)
+					if self:timeOutRestart(t1) then
+						goto over
+					end
 				end
 				mSleep(500)
 				self:click(666, 81)
@@ -2897,8 +2964,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				break
 			end
 
-			self:timeOutRestart(t1)
-			mSleep(1000)
+			if self:timeOutRestart(t1) then
+				goto over
+			end
 		end
 	end
 
