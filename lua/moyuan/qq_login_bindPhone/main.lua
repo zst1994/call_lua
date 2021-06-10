@@ -709,6 +709,18 @@ function model:mm()
 			mSleep(500)
 			goto over
 		end
+	else
+	    if selectPassWay == "1" then
+	        local old_name = AMG.Get_Name()
+		    data = strSplit(old_name,"----")
+		    if #data > 2 then
+    			old_pass = data[5]
+    		else
+    			dialog("数据没有账号密码，进行下一个",5)
+    			mSleep(500)
+    			goto over
+    		end
+	    end
 	end
 
 	::back_restore::
@@ -720,6 +732,8 @@ function model:mm()
 			end
 
 			self:new_version()
+			
+			self:location_model()
 
 			--跳过：招呼一下/分享到动态
 			mSleep(50)
@@ -2128,12 +2142,25 @@ function model:main()
 				["prompt"] = "输入vpn连接密钥",
 				["text"] = "默认值"
 			},
+			{
+				["type"] = "Label",
+				["text"] = "选择原密码方式",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255"
+			},
+			{
+				["type"] = "RadioGroup",
+				["list"] = "固定,id + w",
+				["select"] = "0",
+				["countperline"] = "4"
+			}
 		}
 	}
 
 	local MyJsonString = json.encode(MyTable)
 
-	ret, old_pass, password, searchFriend, searchAccount, changeHeader, inputPhoneAgain, networkMode, restoreBackup, vpnPass, vpnSecretKey = showUI(MyJsonString)
+	ret, old_pass, password, searchFriend, searchAccount, changeHeader, inputPhoneAgain, networkMode, restoreBackup, vpnPass, vpnSecretKey, selectPassWay = showUI(MyJsonString)
 	if ret == 0 then
 		dialog("取消运行脚本", 3)
 		luaExit()
