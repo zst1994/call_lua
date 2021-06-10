@@ -305,9 +305,7 @@ function model:renameRecord(updateResultName)
 end
 
 function model:timeOutRestart(t1)
-	if not self:vpn_connection("1") then
-		return true
-	end
+	self:vpn_connection("1")
 
 	t2 = ts.ms()
 
