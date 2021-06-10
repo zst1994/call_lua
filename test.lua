@@ -1863,10 +1863,58 @@ end
 
 
 		
-		--密码错误
+function model:vpn_connection(idx)
+	if idx ~= "2" then
+		--vpn连接
 		mSleep(50)
-		x,y = findMultiColorInRegionFuzzy( 0x007aff, "8|0|0x007aff,18|-8|0x007aff,42|7|0x007aff,57|7|0x007aff,281|-9|0x007aff,356|10|0x007aff,116|-96|0x000000,153|-104|0x000000,327|-95|0x000000", 90, 0, 0, 749, 1333)
+		x,y = findMultiColorInRegionFuzzy(0x1382ff, "-4|4|0x1382ff,5|10|0x1382ff,2|19|0x1382ff,12|-1|0x1382ff,17|8|0x1382ff,10|13|0x1382ff,24|13|0x1382ff,13|26|0x1382ff,17|19|0x1382ff", 90, 0, 0, 750, 1334, { orient = 2 })
 		if x ~= -1 then
-			toast("密码错误2", 1)
+			self:click(x, y)
+			setVPNEnable(true)
+			toast("好",1)
+			mSleep(3000)
+		end
+
+		--网络连接失败：知道了
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy(0x007aff, "34|5|0x007aff,66|5|0x007aff,63|-11|0x007aff,-63|-102|0x000000,-44|-102|0x000000,3|-98|0x000000,53|-105|0x000000,49|-140|0x000000,4|-142|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+		if x ~= -1 then
+			self:click(x, y)
+			toast("知道了",1)
 			mSleep(1000)
 		end
+	end
+
+	--vpn连接: 好
+	mSleep(50)
+	x,y = findMultiColorInRegionFuzzy( 0x007aff, "6|15|0x007aff,16|-5|0x007aff,20|15|0x007aff,-56|-177|0x000000,-48|-159|0x000000,-41|-179|0x000000,40|-167|0x000000,60|-171|0x000000", 90, 0, 0, 749, 1333)
+	if x ~= -1 then
+		self:click(x, y)
+		toast("vpn连接0", 1)
+		mSleep(500)
+		if idx == "1" then
+			return 1
+		elseif idx == "2" then
+			return true
+		end
+	end
+end
+
+function aa()
+while (true) do
+				mSleep(200)
+				x,y = findMultiColorInRegionFuzzy(0x000000, "44|-1|0x000000,79|0|0x000000,-25|154|0x007aff,0|155|0x007aff,17|155|0x007aff,56|161|0x007aff,-22|253|0x007aff,35|251|0x097fff,81|243|0x007aff", 100, 0, 0, 750, 1334, { orient = 2 })
+				if x ~= -1 then
+					mSleep(500)
+					return true
+				else
+					click(58,83)
+				end
+end
+end
+
+if aa() then
+    dialog("text",1)
+end
+
+	

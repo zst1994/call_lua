@@ -305,7 +305,9 @@ function model:renameRecord(updateResultName)
 end
 
 function model:timeOutRestart(t1)
-	self:vpn_connection("1")
+	if self:vpn_connection("1") == 1 then
+		return true
+	end
 
 	t2 = ts.ms()
 
@@ -659,7 +661,7 @@ function model:vpn_connection(idx)
 		toast("vpn连接0", 1)
 		mSleep(500)
 		if idx == "1" then
-			return false
+			return 1
 		elseif idx == "2" then
 			return true
 		end
@@ -1950,6 +1952,8 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 		if self:location("1") then
 			self.subName = "注册过"
 			self.updatePass = true
+			toast("注册过1",1)
+			mSleep(1000)
 			goto sy
 		end
 
@@ -1981,11 +1985,11 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			self:click(x + 300, y + 121)
 			mSleep(1000)
 			for var = 1, 20 do
-				mSleep(200)
+				mSleep(50)
 				keyDown("DeleteOrBackspace")
-				mSleep(100)
+				mSleep(50)
 				keyUp("DeleteOrBackspace")
-				mSleep(100)
+				mSleep(50)
 			end
 			mSleep(500)
 			inputStr(Nickname)
@@ -1997,6 +2001,8 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 		if self:location("1") then
 			self.subName = "注册过"
 			self.updatePass = true
+			toast("注册过2",1)
+			mSleep(1000)
 			goto sy
 		end
 
@@ -2149,9 +2155,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				break
 			end
 
-			if not self:vpn_connection("1") then
-				goto over
-			end
+			if self:vpn_connection("1") == 1 then
+    			goto over
+    		end
 
 			if self:timeOutRestart(t1) then
 				goto over
@@ -2176,6 +2182,9 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 	end
 
 	::sy::
+	toast("判断首页",1)
+	mSleep(1000)
+	
 	t1 = ts.ms()
 	while true do
 		if self:shouye() then
@@ -2266,7 +2275,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 
 		self:location("1")
 
-		if not self:vpn_connection("1") then
+		if self:vpn_connection("1") == 1 then
 			goto over
 		end
 

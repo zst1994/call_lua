@@ -88,12 +88,11 @@ local AMG = {
 				x,y = findMultiColorInRegionFuzzy(0x000000, "44|-1|0x000000,79|0|0x000000,-25|154|0x007aff,0|155|0x007aff,17|155|0x007aff,56|161|0x007aff,-22|253|0x007aff,35|251|0x097fff,81|243|0x007aff", 100, 0, 0, 750, 1334, { orient = 2 })
 				if x ~= -1 then
 					mSleep(500)
-					break
+					return true
 				else
-					model:click(58,83)
+					model:click(58, 83, 1000)
 				end
 			end
-			return true
 
 -- 			return model:Check_AMG_Result()
 --             ::record::
@@ -523,7 +522,9 @@ function model:shouye()
 	getColor(411, 176) == 0x323333 and getColor(419, 135) == 0x323333 or
 	getColor(45, 109) == 0x323333 and getColor(222, 95) == 0x323333 or
 	getColor(206, 156) == 0x323333 and getColor(336, 157) == 0x323333 or
-	getColor(206,  153) == 0x313232 and getColor(371,  131) == 0x313232 then
+	getColor(206,  153) == 0x313232 and getColor(371,  131) == 0x313232 or
+	getColor(410,  127) == 0x323333 and getColor(404,  107) == 0x323333 or
+	getColor(297, 128) == 0x323333 and getColor(303, 106) == 0x323333 then
 		self:myToast("首页1")
 		return true
 	end
@@ -1002,6 +1003,13 @@ function model:mm()
 			self:myToast("跳过")
 		end
 
+		--跳过：招呼一下/分享到动态
+		mSleep(50)
+		if getColor(669,42) == 0x3bb3fa and getColor(702,43) == 0x3bb3fa then
+			self:click(699,43)
+			self:myToast("跳过")
+		end
+		
 		--绑定手机号码
 		mSleep(50)
 		if getColor(672, 85) == 0x323333 and getColor(702, 85) == 0x323333 then
@@ -1074,6 +1082,14 @@ function model:mm()
 			self:click(x, y)
 			self:myToast("更多2")
 			break
+		end
+		
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy( 0xaaaaaa, "27|0|0xaaaaaa,-161|-95|0x3bb3fa,199|-91|0x3bb3fa,3|-94|0xffffff,31|-94|0xffffff,-215|-91|0xffffff,240|-91|0xffffff", 90, 0, 0, 749, 1333)
+		if x ~= -1 then
+			self:click(x, y - 20)
+			toast("立即体验",1)
+			mSleep(500)
 		end
 
 		self:bind_phone_model()
