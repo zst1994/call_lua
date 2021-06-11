@@ -330,7 +330,7 @@ function model:timeOutRestart(t1)
 	if os.difftime(t2, t1) > 60 then
 		self:index()
 	else
-		self:myToast("距离重启脚本还有"..(120 - os.difftime(t2, t1)) .. "秒")
+		self:myToast("距离重启脚本还有"..(120 - os.difftime(t2, t1)) .. "秒", 1000)
 	end
 end
 
@@ -845,7 +845,6 @@ function model:mm()
 			end
 
 			self:timeOutRestart(t1)
-			mSleep(1000)
 		end
 	end
 
@@ -1056,7 +1055,6 @@ function model:mm()
 		end
 
 		self:timeOutRestart(t1)
-		mSleep(1000)
 	end
 
 	mSleep(1000)
@@ -1117,7 +1115,6 @@ function model:mm()
 		end
 
 		self:timeOutRestart(t1)
-		mSleep(1000)
 	end
 
 	if searchFriend == "0" then
@@ -1209,7 +1206,6 @@ function model:mm()
 				break
 			end
 			self:timeOutRestart(t1)
-			mSleep(1000)
 		end
 	end
 
@@ -1268,7 +1264,6 @@ function model:mm()
 			end
 
 			self:timeOutRestart(t1)
-			mSleep(1000)
 		end
 
 		t1 = ts.ms()
@@ -1360,7 +1355,6 @@ function model:mm()
 			end
 
 			self:timeOutRestart(t1)
-			mSleep(1000)
 		end
 
 		t1 = ts.ms()
@@ -1402,7 +1396,6 @@ function model:mm()
 			end
 
 			self:timeOutRestart(t1)
-			mSleep(1000)
 		end
 
 		self:myToast("保存头像完成")
@@ -1454,7 +1447,6 @@ function model:mm()
 			end
 
 			self:timeOutRestart(t1)
-			mSleep(1000)
 		end
 	end
 
@@ -1485,7 +1477,6 @@ function model:mm()
 		end
 
 		self:timeOutRestart(t1)
-		mSleep(1000)
 	end
 
 	t1 = ts.ms()
@@ -1574,7 +1565,6 @@ function model:mm()
 		-- 		end
 
 		self:timeOutRestart(t1)
-		mSleep(1000)
 	end
 
 	back_again = 0
@@ -1650,7 +1640,6 @@ function model:mm()
 		-- 		end
 
 		self:timeOutRestart(t1)
-		mSleep(1000)
 	end
 
 	t1 = ts.ms()
@@ -1718,7 +1707,6 @@ function model:mm()
 		end
 
 		self:timeOutRestart(t1)
-		mSleep(1000)
 	end
 
 	getMessStatus = self:get_mess()
@@ -1868,7 +1856,6 @@ function model:mm()
 				end
 
 				self:timeOutRestart(t1)
-				mSleep(1000)
 			end
 
 			self:click(396, 279)
@@ -1883,14 +1870,12 @@ function model:mm()
 				end
 
 				self:timeOutRestart(t1)
-				mSleep(1000)
 			end
 			self:click(666, 81, 5000)
 			break
 		end
 
 		self:timeOutRestart(t1)
-		mSleep(1000)
 	end
 
 	::reName::

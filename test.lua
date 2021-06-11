@@ -5,6 +5,7 @@ local socket = require("socket")
 local http = require("szocket.http")
 require("TSLib")
 local sqlite3 = sz.sqlite3
+local http              = sz.i82.http
 
 --local sz = require("sz")
 --local cjson = sz.json
@@ -1862,7 +1863,7 @@ end
 --dialog(code .. "===" .. res, time)
 
 
-		
+
 function model:vpn_connection(idx)
 	if idx ~= "2" then
 		--vpn连接
@@ -1901,20 +1902,90 @@ function model:vpn_connection(idx)
 end
 
 function aa()
-while (true) do
-				mSleep(200)
-				x,y = findMultiColorInRegionFuzzy(0x000000, "44|-1|0x000000,79|0|0x000000,-25|154|0x007aff,0|155|0x007aff,17|155|0x007aff,56|161|0x007aff,-22|253|0x007aff,35|251|0x097fff,81|243|0x007aff", 100, 0, 0, 750, 1334, { orient = 2 })
-				if x ~= -1 then
-					mSleep(500)
-					return true
-				else
-					click(58,83)
-				end
-end
-end
-
-if aa() then
-    dialog("text",1)
+	while (true) do
+		mSleep(200)
+		x,y = findMultiColorInRegionFuzzy(0x000000, "44|-1|0x000000,79|0|0x000000,-25|154|0x007aff,0|155|0x007aff,17|155|0x007aff,56|161|0x007aff,-22|253|0x007aff,35|251|0x097fff,81|243|0x007aff", 100, 0, 0, 750, 1334, { orient = 2 })
+		if x ~= -1 then
+			mSleep(500)
+			return true
+		else
+			click(58,83)
+		end
+	end
 end
 
-	
+local sz                = require("sz")
+local cjson             = sz.json
+
+function readJson()
+	local file = userPath().."/res/content.json"
+	local filepath = io.open(file,"r")
+	local real_path = filepath:read("*a")
+	filepath:close()
+	return real_path
+end
+
+decodeJson        = function (res) 
+	return json.decode(res)
+end
+
+--aa = readJson()
+--dialog(aa, time)
+--local json = cjson.decode(aa);
+--dialog(#json, time)
+
+function downFile(url, path)
+	::down::
+	status, headers, body = http.get(url)
+	if status == 200 then
+		local code = pcall(decodeJson, body)
+		if not code then
+			::write_file::
+			file = io.open(path, "wb")
+			if file then
+				file:write(body)
+				file:close()
+				return true, "";
+			else
+				toast("保存文件到本地失败，重新保存",1)
+				mSleep(3000)
+				goto write_file
+			end
+		else
+			return false, self.decodeJson(body)
+		end
+	else
+		toast("下载文件失败，重新下载",1)
+		mSleep(3000)
+		goto down
+	end
+end
+
+operator = "1.2"
+count = strSplit(string.gsub(operator,"%s+",""), ".")[1]
+downConfigFileName = "script_" .. count .. ".txt"
+target_url = userPath() .. "/res/script_config/" .. downConfigFileName
+
+::down_config::
+bool, body = downFile("http://39.99.192.160/download_file?file_name=803.plist", target_url)
+if bool then
+--	::read_config::
+--	tab = readFile(target_url) 
+--	if tab then 
+--		content_country 	= strSplit(string.gsub(tab[1],"%s+",""), "----")[2]
+--		vpn_stauts 			= tostring(tonumber(strSplit(string.gsub(tab[2],"%s+",""), "----")[2]) - 1)
+--		kn_country 			= strSplit(string.gsub(tab[3],"%s+",""), "----")[2]
+--		kn_id				= strSplit(string.gsub(tab[4],"%s+",""), "----")[2]
+--		countryId			= strSplit(string.gsub(tab[5],"%s+",""), "----")[2]
+--		toast("获取脚本配置信息成功",1)
+--		log("获取脚本配置信息成功:" .. content_country .. "----" .. vpn_stauts .. "----" .. kn_country .. "----" .. kn_id .. "----" .. countryId)
+--		mSleep(1000)
+--	else
+--		dialog("脚本配置文件不存在,请检查配置文件路径",5)
+--		goto read_config
+--	end
+else
+	toast("等待下载脚本配置文件",1)
+	mSleep(10000)
+	goto down_config
+end
