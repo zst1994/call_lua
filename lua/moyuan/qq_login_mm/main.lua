@@ -2183,6 +2183,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 
 	::sy::
 	toast("判断首页",1)
+	log("判断首页")
 	mSleep(1000)
 	
 	t1 = ts.ms()
