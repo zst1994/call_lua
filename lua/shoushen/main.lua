@@ -60,8 +60,8 @@ function model:main()
 			toast("成功",1)
 			mSleep(1000)
 		else 
-			toast("失败，请手动查看问题"..tostring(body_resp), 1)
-			log("失败，请手动查看问题"..tostring(body_resp))
+			toast("获取文件失败，请手动查看问题"..tostring(body_resp), 1)
+			log("获取文件失败，请手动查看问题"..tostring(body_resp))
 			mSleep(4000)
 			goto new_phone
 		end
@@ -70,8 +70,8 @@ function model:main()
 	end
 	
 	getcurrentrecordparam = readFile(self.file_url)
-	if tab then 
-		recordID = strSplit(string.gsub(getcurrentrecordparam[1],"%s+",""), ":")[2]
+	if getcurrentrecordparam then 
+		recordID = strSplit(getcurrentrecordparam[1], ":")[2]
 		toast(recordID,1)
 		log(recordID)
 		mSleep(1000)
@@ -94,8 +94,8 @@ function model:main()
 			toast("瘦身成功",1)
 			mSleep(1000)
 		else 
-			toast("失败，请手动查看问题"..tostring(body_resp), 1)
-			log("失败，请手动查看问题"..tostring(body_resp))
+			toast("瘦身失败，请手动查看问题"..tostring(body_resp), 1)
+			log("瘦身失败，请手动查看问题"..tostring(body_resp))
 			mSleep(4000)
 			goto thinrecord
 		end
