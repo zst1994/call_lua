@@ -477,5 +477,16 @@
                     "prompt": "请输入第一次切换ip国家代码",
                     "text": "默认值",
                     "kbtype": "ascii"
+                },{
+                    "type": "Label",
+                    "text": "选择vpn流程",
+                    "size": 16,
+                    "align": "left",
+                    "color": "0,168,233"
+                },{
+                    "id": "sel_vpn_way",
+                    "type": "RadioGroup",
+                    "list": "正常vpn流程,全程vpn",
+                    "select": "0"
                 }]
     }

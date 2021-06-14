@@ -5846,21 +5846,21 @@ function model:main()
 			{
 				["type"] = "Label",
 				["text"] = "注册脚本",
-				["size"] = 30,
+				["size"] = 20,
 				["align"] = "center",
 				["color"] = "255,0,0",
 			},
 			{
 				["type"] = "Label",
 				["text"] = "====================",
-				["size"] = 20,
+				["size"] = 15,
 				["align"] = "center",
 				["color"] = "255,0,0",
 			},
 			{
 				["type"] = "Label",
 				["text"] = "滑块滑动方式",
-				["size"] = 20,
+				["size"] = 15,
 				["align"] = "center",
 				["color"] = "0,0,255",
 			},
@@ -5873,7 +5873,7 @@ function model:main()
 			{
 				["type"] = "Label",
 				["text"] = "跳马注册次数",
-				["size"] = 20,
+				["size"] = 15,
 				["align"] = "center",
 				["color"] = "0,0,255",
 			},
@@ -5886,7 +5886,7 @@ function model:main()
 			{
 				["type"] = "Label",
 				["text"] = "选择网络连接方式",
-				["size"] = 20,
+				["size"] = 15,
 				["align"] = "center",
 				["color"] = "0,0,255",
 			},
@@ -5901,7 +5901,7 @@ function model:main()
 				["text"] = "网页切换ip账号",
 				["size"] = 15,
 				["align"] = "center",
-				["color"] = "255,0,255",
+				["color"] = "0,0,255",
 			},
 			{
 				["type"] = "Edit",        
@@ -5913,7 +5913,7 @@ function model:main()
 				["text"] = "网页切换ip国家代码",
 				["size"] = 15,
 				["align"] = "center",
-				["color"] = "255,0,255",
+				["color"] = "0,0,255",
 			},
 			{
 				["type"] = "Edit",        
@@ -5923,7 +5923,7 @@ function model:main()
 			{
 				["type"] = "Label",
 				["text"] = "选择卡商平台",
-				["size"] = 20,
+				["size"] = 15,
 				["align"] = "center",
 				["color"] = "0,0,255",
 			},
@@ -5938,7 +5938,7 @@ function model:main()
 				["text"] = "卡农注册/奥迪/52/东帝汶/服务器取号/各国API/老友的区号",
 				["size"] = 15,
 				["align"] = "center",
-				["color"] = "255,0,255",
+				["color"] = "0,0,255",
 			},
 			{
 				["type"] = "Edit",        
@@ -5950,7 +5950,7 @@ function model:main()
 				["text"] = "卡农注册/奥迪/老友的项目ID",
 				["size"] = 15,
 				["align"] = "center",
-				["color"] = "255,0,255",
+				["color"] = "0,0,255",
 			},
 			{
 				["type"] = "Edit",        
@@ -5960,7 +5960,7 @@ function model:main()
 			{
 				["type"] = "Label",
 				["text"] = "设置柠檬/52/俄罗斯1/俄罗斯2/各国API/测试平台的国家代码",
-				["size"] = 20,
+				["size"] = 15,
 				["align"] = "center",
 				["color"] = "0,0,255",
 			},
@@ -5972,7 +5972,7 @@ function model:main()
 			{
 				["type"] = "Label",
 				["text"] = "选择国家区号位数",
-				["size"] = 20,
+				["size"] = 15,
 				["align"] = "center",
 				["color"] = "0,0,255",
 			},
@@ -5985,7 +5985,7 @@ function model:main()
 			{
 				["type"] = "Label",
 				["text"] = "选择注册方式",
-				["size"] = 20,
+				["size"] = 15,
 				["align"] = "center",
 				["color"] = "0,0,255",
 			},
@@ -6000,7 +6000,7 @@ function model:main()
 				["text"] = "选择需要辅助的平台",
 				["size"] = 15,
 				["align"] = "center",
-				["color"] = "255,0,255",
+				["color"] = "0,0,255",
 			},
 			{
 				["type"] = "RadioGroup",                    
@@ -6011,7 +6011,7 @@ function model:main()
 			{
 				["type"] = "Label",
 				["text"] = "设置昵称",
-				["size"] = 20,
+				["size"] = 15,
 				["align"] = "center",
 				["color"] = "0,0,255",
 			},
@@ -6023,7 +6023,7 @@ function model:main()
 			{
 				["type"] = "Label",
 				["text"] = "设置密码",
-				["size"] = 20,
+				["size"] = 15,
 				["align"] = "center",
 				["color"] = "0,0,255",
 			},
@@ -6035,9 +6035,9 @@ function model:main()
 			{
 				["type"] = "Label",
 				["text"] = "上传服务器标识",
-				["size"] = 20,
+				["size"] = 15,
 				["align"] = "center",
-				["color"] = "255,0,0",
+				["color"] = "0,0,255",
 			},
 			{
 				["type"] = "Edit",        
@@ -6047,7 +6047,7 @@ function model:main()
 			{
 				["type"] = "Label",
 				["text"] = "奥迪卡农老友拉黑释放选择",
-				["size"] = 20,
+				["size"] = 15,
 				["align"] = "center",
 				["color"] = "0,0,255",
 			},
@@ -6060,7 +6060,7 @@ function model:main()
 			{
 				["type"] = "Label",
 				["text"] = "随机昵称",
-				["size"] = 20,
+				["size"] = 15,
 				["align"] = "center",
 				["color"] = "0,0,255",
 			},
@@ -6073,7 +6073,7 @@ function model:main()
 			{
 				["type"] = "Label",
 				["text"] = "随机密码",
-				["size"] = 20,
+				["size"] = 15,
 				["align"] = "center",
 				["color"] = "0,0,255",
 			},
@@ -6086,7 +6086,7 @@ function model:main()
 			{
 				["type"] = "Label",
 				["text"] = "东帝汶号码获取方式",
-				["size"] = 20,
+				["size"] = 15,
 				["align"] = "center",
 				["color"] = "0,0,255",
 			},
@@ -6099,7 +6099,7 @@ function model:main()
 			{
 				["type"] = "Label",
 				["text"] = "是否开启关闭飞行模式",
-				["size"] = 20,
+				["size"] = 15,
 				["align"] = "center",
 				["color"] = "0,0,255",
 			},
@@ -6112,7 +6112,7 @@ function model:main()
 			{
 				["type"] = "Label",
 				["text"] = "是否新机连vpn",
-				["size"] = 20,
+				["size"] = 15,
 				["align"] = "center",
 				["color"] = "0,0,255",
 			},
@@ -6125,7 +6125,7 @@ function model:main()
 			{
 				["type"] = "Label",
 				["text"] = "是否是欧盟国家注册",
-				["size"] = 20,
+				["size"] = 15,
 				["align"] = "center",
 				["color"] = "0,0,255",
 			},
@@ -6138,7 +6138,7 @@ function model:main()
 			{
 				["type"] = "Label",
 				["text"] = "跳马失败是否返回",
-				["size"] = 20,
+				["size"] = 15,
 				["align"] = "center",
 				["color"] = "0,0,255",
 			},
@@ -6151,7 +6151,7 @@ function model:main()
 			{
 				["type"] = "Label",
 				["text"] = "选择替换文件版本",
-				["size"] = 20,
+				["size"] = 15,
 				["align"] = "center",
 				["color"] = "0,0,255",
 			},
@@ -6164,7 +6164,7 @@ function model:main()
 			{
 				["type"] = "Label",
 				["text"] = "选择脚本配置文件",
-				["size"] = 20,
+				["size"] = 15,
 				["align"] = "center",
 				["color"] = "0,0,255",
 			},
@@ -6244,10 +6244,10 @@ function model:main()
 	end
 
 	if selConfigWay == "1" then
-		path = userPath() .. "/res/script_config"
-		local bool= isFileExist(path)
+		dir_path = userPath() .. "/res/script_config"
+		local bool= isFileExist(dir_path)
 		if not bool then
-			os.execute("mkdir "..path);
+			os.execute("mkdir " .. dir_path)
 		end
 	end
 
@@ -6263,26 +6263,26 @@ function model:main()
 		mSleep(500)
 
 		if selConfigWay == "1" then
-			count = strSplit(string.gsub(operator,"%s+",""), ".")[1]
+			count = strSplit(string.gsub(operator,"%s+",""), ".")[2]
 			downConfigFileName = "script_" .. count .. ".txt"
 			target_url = userPath() .. "/res/script_config/" .. downConfigFileName
 
 			::down_config::
-			bool, body = self:downFile("http://39.99.192.160/download_file?file_name=" .. downConfigFileName, target_url)
+			bool, body = self:downFile("http://39.99.192.160/download_txt_file?file_name=" .. downConfigFileName, target_url)
 			if bool then
 				::read_config::
 				tab = readFile(target_url) 
-				if tab then 
+				if #tab == 5 then 
 					content_country 	= strSplit(string.gsub(tab[1],"%s+",""), "----")[2]
 					vpn_stauts 			= tostring(tonumber(strSplit(string.gsub(tab[2],"%s+",""), "----")[2]) - 1)
 					kn_country 			= strSplit(string.gsub(tab[3],"%s+",""), "----")[2]
 					kn_id				= strSplit(string.gsub(tab[4],"%s+",""), "----")[2]
 					countryId			= strSplit(string.gsub(tab[5],"%s+",""), "----")[2]
-					toast("获取脚本配置信息成功",1)
+					toast("获取脚本配置信息成功:" .. content_country .. "----" .. vpn_stauts .. "----" .. kn_country .. "----" .. kn_id .. "----" .. countryId,1)
 					log("获取脚本配置信息成功:" .. content_country .. "----" .. vpn_stauts .. "----" .. kn_country .. "----" .. kn_id .. "----" .. countryId)
 					mSleep(1000)
 				else
-					dialog("脚本配置文件不存在,请检查配置文件路径",5)
+					dialog("脚本配置文件不存在或者文件格式有误,请检查配置文件路径",5)
 					goto read_config
 				end
 			else

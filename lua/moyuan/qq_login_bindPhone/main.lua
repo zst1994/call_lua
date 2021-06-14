@@ -231,6 +231,7 @@ function model:vpn(start)
 				elseif networkMode == "1" then
 					self:myToast("wifi链接成功")
 				end
+				
 				if start then
 					mSleep(1000)
 					self:Check_AMG()
@@ -246,7 +247,7 @@ function model:vpn(start)
 			else
 				--vpn连接：需要输入帐号密码重新连接vpn
 				mSleep(200)
-				x,y = findMultiColorInRegionFuzzy(0x007aff, "9|-1|0x007aff,51|2|0x077dff,288|-7|0x007aff,307|6|0x007aff,95|-239|0x000000,103|-217|0x000000,111|-239|0x000000,119|-224|0x000000,231|-232|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+				x,y = findMultiColorInRegionFuzzy(0x007aff, "9|0|0x007aff,20|-10|0x007aff,43|7|0x007aff,58|6|0x007aff,307|5|0x007aff,97|-261|0x000000,112|-260|0x000000,121|-253|0x000000,158|-242|0x000000", 100, 0, 0, 750, 1334, { orient = 2 })
 				if x ~= -1 then
 					self:click(x,y)
 					self:myToast("取消")
@@ -548,7 +549,7 @@ end
 
 function model:toRename()
 	mSleep(50)
-	if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) == 0x808080 or getColor(676,258) == 0x818181 or getColor(167,473) == 0x000000 then
+	if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) ~= 0xffffff and getColor(600,1004) == 0xffffff then
 		if getColor(655,211) == 0xffffff then
 			self:myToast("你的帐号暂时无法登录，请点击这里恢复正常使用")
 			self.subName = "企鹅无法登陆"
@@ -570,6 +571,21 @@ function model:toRename()
 		self.subNameBool = false
 		return true
 	end
+	
+	--此账号是第三方登录账号
+	mSleep(50)
+	x,y = findMultiColorInRegionFuzzy(0x000000, "32|-1|0x000000,105|2|0x000000,110|9|0x000000,137|-7|0x000000,136|2|0x000000,138|12|0x000000,154|-5|0x000000,170|5|0x000000,234|-38|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+    if x ~= -1 then
+        --取消
+        mSleep(50)
+        x,y = findMultiColorInRegionFuzzy(0x007aff, "9|-1|0x007aff,22|-11|0x007aff,44|5|0x007aff,58|8|0x007aff", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+            self:myToast("此账号是第三方登录账号")
+    		self.subName = "第三方"
+    		self.subNameBool = false
+    		return true
+        end
+    end
 end
 
 function model:login_button()
@@ -669,6 +685,14 @@ function model:other_model()
 		self:click(x, y)
 		self:myToast("立即展示")
 	end
+	
+	--立即聊天
+	mSleep(50)
+	x,y = findMultiColorInRegionFuzzy(0xaaaaaa, "-12|-13|0xaaaaaa,-11|12|0xaaaaaa,12|12|0xaaaaaa,12|-11|0xaaaaaa,-12|0|0xffffff,12|1|0xffffff,-1|-12|0xffffff,-1|10|0xffffff,22|-187|0xb2b2b2", 100, 0, 0, 750, 1334, { orient = 2 })
+    if x ~= -1 then
+        self:click(x, y)
+        self:myToast("立即聊天")
+    end
 end
 
 function model:done()
@@ -693,17 +717,14 @@ function model:mm()
 	reRunApp = 0
 	huakuai = false
 	hk_whiteBool = true
-
-	::reRunAppAgagin::
-	runApp(self.mm_bid)
-	mSleep(1000)
-
+	
 	if restoreBackup == "1" then
 		local old_name = AMG.Get_Name()
 		data = strSplit(old_name,"----")
 		if #data > 2 then
 			self.qqAcount = data[3]
 			self.qqPassword = data[4]
+			self:myToast(self.qqAcount .. "\r\n" .. self.qqPassword)
 		else
 			dialog("数据没有账号密码，进行下一个",5)
 			mSleep(500)
@@ -715,6 +736,7 @@ function model:mm()
 		    data = strSplit(old_name,"----")
 		    if #data > 2 then
     			old_pass = data[5]
+    			self:myToast(old_pass)
     		else
     			dialog("数据没有账号密码，进行下一个",5)
     			mSleep(500)
@@ -723,10 +745,15 @@ function model:mm()
 	    end
 	end
 
+	::reRunAppAgagin::
+	runApp(self.mm_bid)
+	mSleep(1000)
+
 	::back_restore::
 	if restoreBackup == "1" then
 		t1 = ts.ms()
 		while (true) do
+		    mSleep(50)
 			if self:shouye() then
 				break
 			end
@@ -859,6 +886,14 @@ function model:mm()
 		if self:toRename() then
 			goto reName
 		end
+		
+		--立即收听
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy(0xffffff, "332|127|0xffffff,275|913|0x323333,277|931|0x323333,295|918|0x323333,309|918|0x323333,330|919|0x323333,341|913|0x323333,352|921|0x323333,371|926|0x323333", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+            self:click(x, y)
+			self:myToast("立即收听")
+        end
 
 		--登陆过期
 		mSleep(50)
@@ -1268,6 +1303,12 @@ function model:mm()
 
 		t1 = ts.ms()
 		while true do
+		    mSleep(50)
+		    if getColor(201,81) == 0x989898 then
+		        self:click(357, 78)
+		        self:myToast("关闭弹框")
+		    end
+	        
 			--账号存在异常
 			mSleep(50)
 			x,y = findMultiColorInRegionFuzzy(0x3bb3fa, "14|62|0x3bb3fa,11|29|0xc5e8fe,31|28|0xc5e8fe,623|9|0x3bb3fa,623|57|0x3bb3fa,344|-5|0x3bb3fa,343|64|0x3bb3fa,592|-64|0x323333,624|-54|0x323333", 90, 0, 0, 750, 1334, { orient = 2 })
@@ -1499,6 +1540,8 @@ function model:mm()
 					moveTowards(341,1031, 85, 600)
 					mSleep(2000)
 				end
+				
+				self:other_model()
 			end
 		end
 

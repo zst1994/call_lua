@@ -1961,43 +1961,10 @@ function downFile(url, path)
 	end
 end
 
---operator = "1.2"
---count = strSplit(string.gsub(operator,"%s+",""), ".")[1]
---downConfigFileName = "script_" .. count .. ".txt"
---target_url = userPath() .. "/res/script_config/" .. downConfigFileName
-
---::down_config::
---bool, body = downFile("http://39.99.192.160/download_file?file_name=803.plist", target_url)
---if bool then
-----	::read_config::
-----	tab = readFile(target_url) 
-----	if tab then 
-----		content_country 	= strSplit(string.gsub(tab[1],"%s+",""), "----")[2]
-----		vpn_stauts 			= tostring(tonumber(strSplit(string.gsub(tab[2],"%s+",""), "----")[2]) - 1)
-----		kn_country 			= strSplit(string.gsub(tab[3],"%s+",""), "----")[2]
-----		kn_id				= strSplit(string.gsub(tab[4],"%s+",""), "----")[2]
-----		countryId			= strSplit(string.gsub(tab[5],"%s+",""), "----")[2]
-----		toast("获取脚本配置信息成功",1)
-----		log("获取脚本配置信息成功:" .. content_country .. "----" .. vpn_stauts .. "----" .. kn_country .. "----" .. kn_id .. "----" .. countryId)
-----		mSleep(1000)
-----	else
-----		dialog("脚本配置文件不存在,请检查配置文件路径",5)
-----		goto read_config
-----	end
---else
---	toast("等待下载脚本配置文件",1)
---	mSleep(10000)
---	goto down_config
---end
-
-
-
-getcurrentrecordparam = readFile("/var/mobile/iggparams.txt")
-	if getcurrentrecordparam then 
-		recordID = strSplit(getcurrentrecordparam[1], ":")[2]
-		toast(recordID,1)
-		log(recordID)
-		mSleep(1000)
-	else
-		dialog("参数文件不存在,请检查配置文件路径",5)
+--定位服务未开启
+	mSleep(50)
+	x,y = findMultiColorInRegionFuzzy(0x007aff, "9|-1|0x007aff,51|2|0x077dff,288|-7|0x007aff,307|6|0x007aff,95|-239|0x000000,103|-217|0x000000,111|-239|0x000000,119|-224|0x000000,231|-232|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+	if x ~= -1 then
+		dialog(x.. "===" .. y,0)
 	end
+

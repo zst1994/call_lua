@@ -3609,11 +3609,12 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 -- 			self:changeGWIP(ip_userName,ip_country)
 -- 		end
 
-		if fz_type ~= "3" then
+		if fz_type ~= "3" or sel_vpn_way == "1" then
 			ip = self:vpn()
 			toast(ip,1)
 			mSleep(800)
 		end
+	    
 	end
 
 	if wc_version == "1" then
@@ -3632,8 +3633,8 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 
 	next_again_time = 0
 	againLogin_bool = false
-	set_vpn =false
-	cheack_bool = true
+	set_vpn = true
+	cheack_bool = false
 
 	::next_again::
 	if againLogin_bool then
@@ -3899,32 +3900,34 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0xd8f0d8,"-254|21|0x9ed99d,368|13|0x9ed99d,61|-20|0x9ed99d,49|46|0x9ed99d",100, 0, 920, 749, 1333)
 			if x~=-1 and y~=-1 then
-				if not cheack_bool then
-					flag = getVPNStatus()
-					if not flag.active then
-						self:changeGWIP(ip_userName,ip_country)
-					end
-
-					if set_vpn then
-						ip = self:vpn()
-						toast(ip,1)
-						mSleep(500)
-					end
-				else
-					if openFirstIP == "0" and fz_type == "3" then
-						mSleep(200)
-						if api_change == "7" or api_change == "8" or api_change == "15" then
-							::change_ip::
-							self:changeGWIP(ip_userName,first_ip_country)
-							if self:vpn() == "失败" then
-								toast("vpn连接失败，重新连接",1)
-								mSleep(1000)
-								setVPNEnable(false)
-								mSleep(2000)
-								goto change_ip
-							end
-						end
-					end
+			    if sel_vpn_way == "0" then
+    				if not cheack_bool then
+    					flag = getVPNStatus()
+    					if not flag.active then
+    						self:changeGWIP(ip_userName,ip_country)
+    					end
+    
+    					if set_vpn then
+    						ip = self:vpn()
+    						toast(ip,1)
+    						mSleep(500)
+    					end
+    				else
+    					if openFirstIP == "0" and fz_type == "3" then
+    						mSleep(200)
+    						if api_change == "7" or api_change == "8" or api_change == "15" then
+    							::change_ip::
+    							self:changeGWIP(ip_userName,first_ip_country)
+    							if self:vpn() == "失败" then
+    								toast("vpn连接失败，重新连接",1)
+    								mSleep(1000)
+    								setVPNEnable(false)
+    								mSleep(2000)
+    								goto change_ip
+    							end
+    						end
+    					end
+    				end
 				end
 
 				mSleep(500)
@@ -3940,33 +3943,35 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			mSleep(200)
 			x, y = findMultiColorInRegionFuzzy(0xc2c2c2,"13|19|0xc2c2c2,52|12|0xc2c2c2,83|0|0xc2c2c2,84|16|0xc2c2c2,-111|-5|0xf2f2f2,219|43|0xf2f2f2,274|18|0xededed,-172|9|0xededed", 100, 0, 920, 749, 1333)
 			if x~=-1 and y~=-1 then
-				if not cheack_bool then
-					flag = getVPNStatus()
-					if not flag.active then
-						self:changeGWIP(ip_userName,ip_country)
-					end
-
-					if set_vpn then
-						ip = self:vpn()
-						toast(ip,1)
-						mSleep(500)
-					end
-				else
-					if openFirstIP == "0" and fz_type == "3" then
-						mSleep(200)
-						if api_change == "7" or api_change == "8" or api_change == "15" then
-							::change_ip::
-							self:changeGWIP(ip_userName,first_ip_country)
-							if self:vpn() == "失败" then
-								toast("vpn连接失败，重新连接",1)
-								mSleep(1000)
-								setVPNEnable(false)
-								mSleep(2000)
-								goto change_ip
-							end
-						end
-					end
-				end
+			    if sel_vpn_way == "0" then
+    				if not cheack_bool then
+    					flag = getVPNStatus()
+    					if not flag.active then
+    						self:changeGWIP(ip_userName,ip_country)
+    					end
+    
+    					if set_vpn then
+    						ip = self:vpn()
+    						toast(ip,1)
+    						mSleep(500)
+    					end
+    				else
+    					if openFirstIP == "0" and fz_type == "3" then
+    						mSleep(200)
+    						if api_change == "7" or api_change == "8" or api_change == "15" then
+    							::change_ip::
+    							self:changeGWIP(ip_userName,first_ip_country)
+    							if self:vpn() == "失败" then
+    								toast("vpn连接失败，重新连接",1)
+    								mSleep(1000)
+    								setVPNEnable(false)
+    								mSleep(2000)
+    								goto change_ip
+    							end
+    						end
+    					end
+    				end
+			    end
 
 				mSleep(500)
 				randomTap(x - 240, y-95,1)
@@ -3976,33 +3981,36 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				mSleep(200)
 				x,y = findMultiColorInRegionFuzzy( 0xc2c2c2, "-148|-7|0xf2f2f2,140|2|0xf2f2f2,245|2|0xededed,-175|6|0xf2f2f2", 100, 0, 920, 749, 1333)
 				if x~=-1 and y~=-1 then
-					if not cheack_bool then
-						flag = getVPNStatus()
-						if not flag.active then
-							self:changeGWIP(ip_userName,ip_country)
-						end
-
-						if set_vpn then
-							ip = self:vpn()
-							toast(ip,1)
-							mSleep(500)
-						end
-					else
-						if openFirstIP == "0" and fz_type == "3" then
-							mSleep(200)
-							if api_change == "7" or api_change == "8" or api_change == "15" then
-								::change_ip::
-								self:changeGWIP(ip_userName,first_ip_country)
-								if self:vpn() == "失败" then
-									toast("vpn连接失败，重新连接",1)
-									mSleep(1000)
-									setVPNEnable(false)
-									mSleep(2000)
-									goto change_ip
-								end
-							end
-						end
-					end
+				    if sel_vpn_way == "0" then
+    					if not cheack_bool then
+    						flag = getVPNStatus()
+    						if not flag.active then
+    							self:changeGWIP(ip_userName,ip_country)
+    						end
+    
+    						if set_vpn then
+    							ip = self:vpn()
+    							toast(ip,1)
+    							mSleep(500)
+    						end
+    					else
+    						if openFirstIP == "0" and fz_type == "3" then
+    							mSleep(200)
+    							if api_change == "7" or api_change == "8" or api_change == "15" then
+    								::change_ip::
+    								self:changeGWIP(ip_userName,first_ip_country)
+    								if self:vpn() == "失败" then
+    									toast("vpn连接失败，重新连接",1)
+    									mSleep(1000)
+    									setVPNEnable(false)
+    									mSleep(2000)
+    									goto change_ip
+    								end
+    							end
+    						end
+    					end
+				    end
+					
 					mSleep(500)
 					randomTap(x, y-112,1)
 					mSleep(500)
@@ -4324,42 +4332,42 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		end
 	end
 
-	if cheack_bool then
-		if fz_type == "3" then
-			while (true) do
-				mSleep(200)
-				x,y = findMultiColorInRegionFuzzy( 0xffffff, "-63|12|0x07c160,128|13|0x07c160,54|13|0xffffff,295|-2|0x07c160,-262|6|0x07c160", 90, 0, 0, 749, 1333)
-				if x~=-1 and y~=-1 then
-					break
-				end
+-- 	if cheack_bool then
+-- 		if fz_type == "3" then
+-- 			while (true) do
+-- 				mSleep(200)
+-- 				x,y = findMultiColorInRegionFuzzy( 0xffffff, "-63|12|0x07c160,128|13|0x07c160,54|13|0xffffff,295|-2|0x07c160,-262|6|0x07c160", 90, 0, 0, 749, 1333)
+-- 				if x~=-1 and y~=-1 then
+-- 					break
+-- 				end
 
-				mSleep(200)
-				x, y = findMultiColorInRegionFuzzy(0x9ce6bf,"540|-7|0x9ce6bf,270|30|0x9ce6bf,270|-89|0x576b95",90,0,0,749,1333)
-				if x~=-1 and y~=-1 then
-					break
-				end
+-- 				mSleep(200)
+-- 				x, y = findMultiColorInRegionFuzzy(0x9ce6bf,"540|-7|0x9ce6bf,270|30|0x9ce6bf,270|-89|0x576b95",90,0,0,749,1333)
+-- 				if x~=-1 and y~=-1 then
+-- 					break
+-- 				end
 
-				mSleep(200)
-				if getColor(118,  948) == 0x007aff then
-					mSleep(500)
-					randomTap(56, 81, 8)
-					mSleep(math.random(500, 700))
-				end
+-- 				mSleep(200)
+-- 				if getColor(118,  948) == 0x007aff then
+-- 					mSleep(500)
+-- 					randomTap(56, 81, 8)
+-- 					mSleep(math.random(500, 700))
+-- 				end
 
-				mSleep(200)
-				x, y = findMultiColorInRegionFuzzy(0x10aeff,"55|8|0x10aeff,-79|817|0x7c160,116|822|0x7c160", 100, 0, 0, 749, 1333)
-				if x~=-1 and y~=-1 then
-					mSleep(500)
-					randomTap(372, 1105,6)
-					mSleep(500)
-				end
-			end
-			toast("跳马注册",1)
-			set_vpn = true
-			cheack_bool = false
-			goto next_again
-		end
-	end
+-- 				mSleep(200)
+-- 				x, y = findMultiColorInRegionFuzzy(0x10aeff,"55|8|0x10aeff,-79|817|0x7c160,116|822|0x7c160", 100, 0, 0, 749, 1333)
+-- 				if x~=-1 and y~=-1 then
+-- 					mSleep(500)
+-- 					randomTap(372, 1105,6)
+-- 					mSleep(500)
+-- 				end
+-- 			end
+-- 			toast("跳马注册",1)
+-- 			set_vpn = true
+-- 			cheack_bool = false
+-- 			goto next_again
+-- 		end
+-- 	end
 
 	::hk::
 	if hk_way == "0" then
@@ -4673,7 +4681,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 					mSleep(1000)
 					setVPNEnable(false)
 					mSleep(1000)
-					goto next_again
+					goto change_again
 				end
 			end
 
