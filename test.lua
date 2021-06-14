@@ -1961,10 +1961,19 @@ function downFile(url, path)
 	end
 end
 
---定位服务未开启
-	mSleep(50)
-	x,y = findMultiColorInRegionFuzzy(0x007aff, "9|-1|0x007aff,51|2|0x077dff,288|-7|0x007aff,307|6|0x007aff,95|-239|0x000000,103|-217|0x000000,111|-239|0x000000,119|-224|0x000000,231|-232|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
-	if x ~= -1 then
-		dialog(x.. "===" .. y,0)
-	end
-
+local model = {
+    a = (function ()
+        function aa()
+            dialog("text222",0)
+        end
+        dialog("text",0)
+        aa()
+    end
+    ),
+    
+    b = (function()
+        dialog("111",0)
+    end
+    )
+}
+model.a()

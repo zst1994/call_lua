@@ -64,6 +64,16 @@ end
 
 local AMG = {
 	Next = (function()  --下一条
+	        function get_re_name()
+	            model:Check_AMG()
+    			local res, code = http.request("http://127.0.0.1:8080/cmd?fun=getCurrentRecordName")
+    			if code == 200 then
+    				if model:Check_AMG_Result() == true then
+    					return res
+    				end
+    			end
+	        end
+		
 	        ::toNext::
 			model:Check_AMG()
 			while (true) do
@@ -79,7 +89,7 @@ local AMG = {
 				mSleep(50)
 				x,y = findMultiColorInRegionFuzzy(0x007aff, "-35|6|0x007aff,-47|-13|0x067dff,-23|-12|0x007aff,37|-12|0x007aff,35|8|0x007aff,29|4|0x007aff,45|4|0x007aff", 90, 0, 0, 750, 1334, { orient = 2 })
 				if x ~= -1 then
-				    old_re = AMG.Get_Name()
+				    old_re = get_re_name()
 					model:click(x,y,2000)
 					break
 				end
@@ -89,7 +99,7 @@ local AMG = {
 				mSleep(200)
 				x,y = findMultiColorInRegionFuzzy(0x000000, "44|-1|0x000000,79|0|0x000000,-25|154|0x007aff,0|155|0x007aff,17|155|0x007aff,56|161|0x007aff,-22|253|0x007aff,35|251|0x097fff,81|243|0x007aff", 100, 0, 0, 750, 1334, { orient = 2 })
 				if x ~= -1 then
-					new_re = AMG.Get_Name()
+					new_re = get_re_name()
 					if new_re ~= old_re then
 					    model:myToast("备份切换成功")
 					    return true
