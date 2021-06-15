@@ -1961,19 +1961,8 @@ function downFile(url, path)
 	end
 end
 
-local model = {
-    a = (function ()
-        function aa()
-            dialog("text222",0)
-        end
-        dialog("text",0)
-        aa()
-    end
-    ),
-    
-    b = (function()
-        dialog("111",0)
-    end
-    )
-}
-model.a()
+mSleep(50)
+		x, y = findMultiColorInRegionFuzzy(0x323333,"4|10|0x323333,13|4|0x323333,17|4|0x323333,32|7|0x323333,47|7|0x323333,42|-1|0x323333,59|5|0xffffff,-20|3|0xffffff,25|27|0xffffff",90,0,0,750,1334,{orient = 2})
+		if x ~= -1 then
+			click(x + 20, y + 10)
+		end
