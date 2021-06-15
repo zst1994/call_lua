@@ -1962,7 +1962,7 @@ function downFile(url, path)
 end
 
 mSleep(50)
-		x, y = findMultiColorInRegionFuzzy(0x323333,"4|10|0x323333,13|4|0x323333,17|4|0x323333,32|7|0x323333,47|7|0x323333,42|-1|0x323333,59|5|0xffffff,-20|3|0xffffff,25|27|0xffffff",90,0,0,750,1334,{orient = 2})
-		if x ~= -1 then
-			click(x + 20, y + 10)
+		x,y = findMultiColorInRegionFuzzy(0xeeeef0, "351|-1|0xffffff,-92|-84|0x000000,-59|-86|0x000000,-29|-85|0x000000,5|-103|0x000000,37|-95|0x000000,-96|2|0xeeeef0", 100, 0, 0, 750, 334, { orient = 2 })
+		if x~=-1 and y~=-1 then
+		    dialog(x.."==="..y,0)
 		end

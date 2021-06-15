@@ -1669,10 +1669,26 @@ function model:mm()
 			self:click(x + 30, y + 109)
 			self:myToast("选择区号")
 		end
-
+        
+        --14系统
 		mSleep(50)
-		x,y = findMultiColorInRegionFuzzy(0xeeeef0, "351|-1|0xffffff,-92|-84|0x000000,-59|-86|0x000000,-29|-85|0x000000,5|-103|0x000000,37|-95|0x000000,-96|2|0xeeeef0", 90, 0, 0, 750, 1334, { orient = 2 })
+		x,y = findMultiColorInRegionFuzzy(0xeeeef0, "351|-1|0xffffff,-92|-84|0x000000,-59|-86|0x000000,-29|-85|0x000000,5|-103|0x000000,37|-95|0x000000,-96|2|0xeeeef0", 100, 0, 0, 750, 334, { orient = 2 })
 		if x~=-1 and y~=-1 then
+			self:click(x + 100, y)
+			inputStr("美国")
+			mSleep(1000)
+			key = "ReturnOrEnter"
+			keyDown(key)
+			keyUp(key)
+			mSleep(1000)
+			self:click(x + 100, y + 10)
+			break
+		end
+		
+		--12系统
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy(0x8e8e93, "14|-8|0x8e8e93,43|7|0x8e8e93,639|8|0xc9c9ce,331|-44|0xc9c9ce,281|46|0xc9c9ce,-73|12|0xc9c9ce", 100, 1, 109, 749, 246, { orient = 2 })
+        if x~=-1 and y~=-1 then
 			self:click(x + 100, y)
 			inputStr("美国")
 			mSleep(1000)
