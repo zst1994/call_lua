@@ -1961,8 +1961,14 @@ function downFile(url, path)
 	end
 end
 
-mSleep(50)
-		x,y = findMultiColorInRegionFuzzy(0xeeeef0, "351|-1|0xffffff,-92|-84|0x000000,-59|-86|0x000000,-29|-85|0x000000,5|-103|0x000000,37|-95|0x000000,-96|2|0xeeeef0", 100, 0, 0, 750, 334, { orient = 2 })
-		if x~=-1 and y~=-1 then
-		    dialog(x.."==="..y,0)
-		end
+setScreenResolution("default") 
+mSleep(10000)
+
+function file_exists(file_name)
+	local f = io.open(file_name, "r")
+	return f ~= nil and f:close()
+end
+
+
+	
+	
