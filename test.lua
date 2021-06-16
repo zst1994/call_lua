@@ -1970,5 +1970,36 @@ function file_exists(file_name)
 end
 
 
-	
-	
+function file_exists(file_name)
+	local f = io.open(file_name, "r")
+	return f ~= nil and f:close()
+end
+
+mns = 80
+mnm = "0|17|0,0|40|0,0|74|0,17|74|0,84|74|0,84|60|0,84|16|0,84|-1|0,72|-1|0"
+
+toast("滑动",1)
+mSleep(math.random(500, 700))
+keepScreen(true)
+mSleep(1000)
+snapshot("test_3.jpg", 60, 364, 579, 682)
+mSleep(500)
+ts.img.binaryzationImg(userPath().."/res/test_3.jpg",mns)
+if file_exists(userPath().."/res/tmp.jpg") then
+	toast("正在计算",1)
+	mSleep(200)
+	keepScreen(false)
+	point = ts.imgFindColor(userPath().."/res/tmp.jpg", 0, mnm, 0, 0, 640, 1136); 
+	dialog(#point,0)
+	if type(point) == "table"  and #point ~=0  then
+		mSleep(500)
+		x_len = point[1].x
+		toast(x_len,1)
+	else
+		x_len = 0
+	end
+else
+	dialog("文件不存在",1)
+	mSleep(math.random(1000, 1500))
+end
+
