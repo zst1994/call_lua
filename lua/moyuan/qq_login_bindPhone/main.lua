@@ -706,7 +706,7 @@ function model:other_model()
 	
 	--立即聊天
 	mSleep(50)
-	x,y = findMultiColorInRegionFuzzy(0xaaaaaa, "-12|-13|0xaaaaaa,-11|12|0xaaaaaa,12|12|0xaaaaaa,12|-11|0xaaaaaa,-12|0|0xffffff,12|1|0xffffff,-1|-12|0xffffff,-1|10|0xffffff,22|-187|0xb2b2b2", 100, 0, 0, 750, 1334, { orient = 2 })
+	x,y = findMultiColorInRegionFuzzy(0xaaaaaa, "-9|-9|0xaaaaaa,-9|9|0xaaaaaa,10|11|0xaaaaaa,9|-9|0xaaaaaa,9|-1|0xffffff,0|-9|0xffffff,-13|1|0xffffff,2|12|0xffffff", 100, 0, 0, 750, 1334, { orient = 2 })
     if x ~= -1 then
         self:click(x, y)
         self:myToast("立即聊天")

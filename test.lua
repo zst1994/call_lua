@@ -1961,8 +1961,8 @@ function downFile(url, path)
 	end
 end
 
-setScreenResolution("default") 
-mSleep(10000)
+-- setScreenResolution("default") 
+-- mSleep(10000)
 
 function file_exists(file_name)
 	local f = io.open(file_name, "r")
@@ -1975,31 +1975,170 @@ function file_exists(file_name)
 	return f ~= nil and f:close()
 end
 
-mns = 80
-mnm = "0|17|0,0|40|0,0|74|0,17|74|0,84|74|0,84|60|0,84|16|0,84|-1|0,72|-1|0"
+-- mns = 80
+-- mnm = "0|17|0,0|40|0,0|74|0,17|74|0,84|74|0,84|60|0,84|16|0,84|-1|0,72|-1|0"
 
-toast("滑动",1)
-mSleep(math.random(500, 700))
-keepScreen(true)
+-- toast("滑动",1)
+-- mSleep(math.random(500, 700))
+-- keepScreen(true)
+-- mSleep(1000)
+-- snapshot("test_3.jpg", 60, 364, 579, 682)
+-- mSleep(500)
+-- ts.img.binaryzationImg(userPath().."/res/test_3.jpg",mns)
+-- if file_exists(userPath().."/res/tmp.jpg") then
+-- 	toast("正在计算",1)
+-- 	mSleep(200)
+-- 	keepScreen(false)
+-- 	point = ts.imgFindColor(userPath().."/res/tmp.jpg", 0, mnm, 0, 0, 640, 1136); 
+-- 	dialog(#point,0)
+-- 	if type(point) == "table"  and #point ~=0  then
+-- 		mSleep(500)
+-- 		x_len = point[1].x
+-- 		toast(x_len,1)
+-- 	else
+-- 		x_len = 0
+-- 	end
+-- else
+-- 	dialog("文件不存在",1)
+-- 	mSleep(math.random(1000, 1500))
+-- end
+
+-- function readFileBase64(path) 
+-- 	f = io.open(path,"rb")
+-- 	if f == null then
+-- 		toast("no file")
+-- 		mSleep(3000);
+-- 		return null;
+-- 	end 
+-- 	bytes = f:read("*all");
+-- 	f:close();
+-- 	return bytes:base64_encode();
+-- end
+
+-- function location(imgPath)
+-- 	::token::
+-- 	header_send = {
+-- 	    ["Content-Type"] = "application/json",
+-- 	}
+-- 	body_send = {
+-- 	    ["username"] = "cx3881156",
+-- 	    ["pwd"] = "cx940912"
+-- 	}
+
+-- 	ts.setHttpsTimeOut(60)--安卓不支持设置超时时间 
+-- 	status_resp, header_resp, body_resp  = ts.httpPost("http://51learn.vip:3001/pub/login", header_send, body_send, true)
+-- 	if status_resp == 200 then
+-- 		local tmp = json.decode(body_resp)
+-- 		if tmp.code == 200 then
+-- 			authentication = tmp.data.authentication
+-- 			toast("token:"..authentication,1)
+-- 		else
+-- 			goto token
+-- 		end
+-- 	else
+-- 		goto token
+-- 	end
+	
+-- 	::location::
+-- 	header_send = {
+-- 	    ["Content-Type"] = "application/json",
+-- 	}
+-- 	body_send = {
+-- 	    ["captchaData"] = imageBase64(imgPath),
+-- 	}
+
+-- 	ts.setHttpsTimeOut(60)--安卓不支持设置超时时间 
+-- 	status_resp, header_resp, body_resp  = ts.httpPost("http://51learn.vip:3001/slider/reg?Authorization=" .. authentication, header_send, body_send, true)
+-- 	if status_resp == 200 then
+-- 		local tmp = json.decode(body_resp)
+-- 		if tmp.code == 200 then
+-- 			location_xy = tmp.data
+-- 			return location_xy
+-- 		else
+-- 			goto location
+-- 		end
+-- 	else
+-- 		goto location
+-- 	end
+-- end
+	
+-- location_xy = location(userPath() .. "/res/test_3.jpg")
+-- xy = strSplit(location_xy,",")
+-- x1 = xy[1]
+-- y1 = xy[2]
+
+-- x2 = xy[3]
+-- y2 = xy[4]
+
+
+
+require "TSLib"
+local ts     = require('ts')
+local json     = ts.json
+
+
+function location(imgPath)
+ ::token::
+ header_send = {
+     ["Content-Type"] = "application/json",
+ }
+ body_send = {
+     ["username"] = "cx3881156",
+     ["pwd"] = "cx940912"
+ }
+
+ ts.setHttpsTimeOut(60)--安卓不支持设置超时时间 
+ status_resp, header_resp, body_resp  = ts.httpPost("http://51learn.vip:3001/pub/login", header_send, body_send, true)
+ if status_resp == 200 then
+  local tmp = json.decode(body_resp)
+  if tmp.code == 200 then
+   authentication = tmp.data.authentication
+   toast("token:"..authentication,1)
+  else
+   goto token
+  end
+ else
+  goto token
+ end
+ 
+ ::reg::
+ header_send = {
+     ["Content-Type"] = "application/json",
+ }
+ body_send = {
+     ["captchaData"] = imageBase64(imgPath),
+ }
+
+ ts.setHttpsTimeOut(60)--安卓不支持设置超时时间 
+ status_resp, header_resp, body_resp  = ts.httpPost("http://51learn.vip:3001/slider/reg?Authorization=" .. authentication, header_send, body_send, true)
+ if status_resp == 200 then
+  local tmp = json.decode(body_resp)
+  if tmp.code == 200 then
+   location_xy = tmp.data
+   return location_xy
+  else
+   goto reg
+  end
+ else
+  goto reg
+ end
+end
+nLog("开始截图")
+
+snapshot("微博.jpg", 70, 428, 679, 801); 
 mSleep(1000)
-snapshot("test_3.jpg", 60, 364, 579, 682)
-mSleep(500)
-ts.img.binaryzationImg(userPath().."/res/test_3.jpg",mns)
-if file_exists(userPath().."/res/tmp.jpg") then
-	toast("正在计算",1)
-	mSleep(200)
-	keepScreen(false)
-	point = ts.imgFindColor(userPath().."/res/tmp.jpg", 0, mnm, 0, 0, 640, 1136); 
-	dialog(#point,0)
-	if type(point) == "table"  and #point ~=0  then
-		mSleep(500)
-		x_len = point[1].x
-		toast(x_len,1)
-	else
-		x_len = 0
-	end
-else
-	dialog("文件不存在",1)
-	mSleep(math.random(1000, 1500))
-end
 
+
+
+location_xy = location(userPath().."/res/微博.jpg")
+xy = strSplit(location_xy,",")
+
+x1 = tonumber(xy[1])
+y1 = tonumber(xy[2])
+
+x2 = tonumber(xy[3])
+y2 = tonumber(xy[4])
+
+moveTowards(114, 752, 0, x1 - 71)
+
+nLog(x1 .. "===" .. y1 .. "===" .. x2 .. "===" .. y2)

@@ -2025,37 +2025,46 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 		--生日
 		mSleep(200)
 		if getColor(38, 873) == 0x848484 and getColor(57, 1012) == 0xffffff then
+		    mSleep(100)
+		    if getColor(85,1117) == 0xeeeef0 then
+		        y_top = 1046
+		        y_bottom = 1193
+		    else
+		        y_top = 1100
+		        y_bottom = 1229
+		    end
+	            
 			if topBottom == 1 then
 				mSleep(500)
 				for i = 1, year do
 					mSleep(500)
-					randomTap(212, 1100, 4)
+					randomTap(212, y_top, 4)
 				end
 
 				for i = 1, month do
 					mSleep(500)
-					randomTap(363, 1100, 4)
+					randomTap(363, y_top, 4)
 				end
 
 				for i = 1, day do
 					mSleep(500)
-					randomTap(526, 1100, 4)
+					randomTap(526, y_top, 4)
 				end
 			else
 				mSleep(500)
 				for i = 1, year do
 					mSleep(500)
-					randomTap(212, 1229, 4)
+					randomTap(212, y_bottom, 4)
 				end
 
 				for i = 1, month do
 					mSleep(500)
-					randomTap(363, 1229, 4)
+					randomTap(363, y_bottom, 4)
 				end
 
 				for i = 1, day do
 					mSleep(500)
-					randomTap(526, 1229, 4)
+					randomTap(526, y_bottom, 4)
 				end
 			end
 

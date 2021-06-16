@@ -1086,6 +1086,16 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 		State["随机常量"] = tonumber(self:Rnd_Word("0123456789", 5))
 
 		Nickname = self:Rnd_Word(State["姓氏"], 1, 3) .. State["名字"][math.random(1, #State["名字"])]
+	elseif nikcNameType == "2" then
+	    nick_tab = readFile(userPath() .. "/res/nick_name.txt") 
+        if nick_tab and #nick_tab > 1 then 
+            Nickname = string.gsub(nick_tab[1],"%s+","")
+            table.remove(nick_tab, 1)
+ 			writeFile(userPath() .. "/res/nick_name.txt", nick_tab, "w", 1)
+        else
+            dialog("文件不存在或者文件格式有问题或者当前昵称数量不足，请检查昵称文件", 0)
+            luaExit()
+        end
 	end
 	
 	self:myToast(Nickname)
@@ -2392,7 +2402,7 @@ function model:main()
 			},
 			{
 				["type"] = "RadioGroup",
-				["list"] = "正常,偏女性化",
+				["list"] = "正常,偏女性化,文本读取昵称",
 				["select"] = "0",
 				["countperline"] = "4"
 			},
