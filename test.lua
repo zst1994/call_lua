@@ -2144,7 +2144,8 @@ end
 --nLog(x1 .. "===" .. y1 .. "===" .. x2 .. "===" .. y2)
 
 mSleep(math.random(500, 700))
-		x,y = findMultiColorInRegionFuzzy( 0x07c160, "7|0|0x07c160,17|-9|0x07c160,47|15|0x07c160,81|6|0x07c160,112|8|0x07c160,135|-1|0xf2f2f2,-51|1|0xf2f2f2,-380|9|0x1a1a1a,-449|15|0x1a1a1a", 90, 0, 0, 749, 1333)
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy(0x000000, "20|1|0x000000,55|0|0x000000,75|1|0x000000,110|-1|0x000000,128|1|0x000000,144|1|0x000000,161|1|0x000000,-232|3|0x007aff,-187|0|0x007aff", 90, 0, 0, 750, 1334, { orient = 2 })
 		if x~=-1 and y~=-1 then
 			dialog(x .. "==" .. y, time)
 			mSleep(math.random(500, 700))

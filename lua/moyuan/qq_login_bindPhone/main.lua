@@ -1877,6 +1877,109 @@ function model:mm()
 			-- 			tap(577, 209)
 			-- 			mSleep(500)
 			-- 			self:myToast("设置")
+			if openBookWay == "0" then
+	    		self:click(57, 84)
+				
+        	    t1 = ts.ms()
+        	    while true do
+        	        self:bind_phone_model()
+        
+        			--更多
+        			mSleep(50)
+        			x,y = findMultiColorInRegionFuzzy( 0x323333, "6|0|0x323333,12|0|0x323333,-3|-26|0x565656,37|-26|0x565656,54|-20|0xfdfcfd,-32|-20|0xfdfcfd", 100, 0, 0, 749, 1333)
+        			if x~=-1 and y~=-1 then
+        				self:click(x + 10, y - 10)
+        			end
+        
+        			--好友
+        			mSleep(50)
+        			x,y = findMultiColorInRegionFuzzy( 0xb0b0b0, "2|12|0xaaaaaa,23|2|0xaaaaaa,24|7|0xafafaf,83|3|0xffffff,205|8|0xaaaaaa,360|12|0xaaaaaa,556|7|0xaaaaaa,589|-15|0xffffff", 90, 0, 0, 749, 1333)
+        			if x~=-1 and y~=-1 then
+        				self:click(x,y)
+        				self:myToast("好友")
+        			end
+        			
+        			--查看通讯录好友
+        			mSleep(50)
+        			x,y = findMultiColorInRegionFuzzy(0xffffff, "191|-5|0xffffff,-192|-5|0x3bb3fa,86|-50|0x3bb3fa,111|43|0x3bb3fa,379|5|0x3bb3fa", 90, 0, 0, 750, 1334, { orient = 2 })
+                    if x ~= -1 then
+                        self:click(x,y)
+        				self:myToast("查看通讯录好友")
+                    end
+                    
+                    --取消屏蔽
+                    mSleep(50)
+                    x,y = findMultiColorInRegionFuzzy(0xffffff, "7|1|0xffffff,42|3|0xffffff,73|6|0xffffff,95|-8|0xffffff,-243|3|0x3bb3fa,54|-41|0x3bb3fa,64|43|0x3bb3fa,366|-4|0x3bb3fa", 90, 0, 0, 750, 1334, { orient = 2 })
+                    if x ~= -1 then
+                        self:click(x,y)
+        				self:myToast("取消屏蔽")
+                    end
+                    
+                    --是否取消屏蔽
+                    mSleep(50)
+                    x,y = findMultiColorInRegionFuzzy(0x007aff, "17|2|0x0a7fff,9|19|0x007aff,-261|8|0x007aff,-261|22|0x007aff,-155|-198|0x000000,-139|-208|0x000000,-109|-197|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+                    if x ~= -1 then
+                        self:click(x,y)
+        				self:myToast("是否取消屏蔽")
+                    end
+                    
+                    --开启通讯录权限
+                    mSleep(50)
+                    x,y = findMultiColorInRegionFuzzy(0xffffff, "16|7|0xffffff,42|-2|0xffffff,171|-1|0xffffff,191|-4|0xffffff,-210|9|0x3bb3fa,112|-43|0x3bb3fa,115|45|0x3bb3fa,404|-3|0x3bb3fa", 90, 0, 0, 750, 1334, { orient = 2 })
+                    if x ~= -1 then
+                        self:click(x,y)
+        				self:myToast("开启通讯录权限")
+                    end
+                    
+                    --去开启通讯录权限请求
+                    mSleep(50)
+                    x,y = findMultiColorInRegionFuzzy(0x007aff, "22|7|0x007aff,41|21|0x007aff,70|5|0x007aff,73|21|0x007aff,-214|-167|0x000000,-200|-167|0x000000,-169|-167|0x000000,-135|-165|0x000000,25|-168|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+                    if x ~= -1 then
+                        self:click(x,y)
+        				self:myToast("去开启通讯录权限请求")
+                    end
+                    
+                    --设置里面打开权限
+                    mSleep(50)
+                    x,y = findMultiColorInRegionFuzzy(0x000000, "5|6|0x000000,19|5|0x000000,27|2|0x000000,39|4|0x000000,49|4|0x000000,58|-1|0x000000,83|10|0x000000,78|0|0x000000,78|-11|0x000000", 90, 1, 129, 749, 578, { orient = 2 })
+                    if x ~= -1 then
+                        mSleep(200)
+                        if getColor(x + 525,y + 3) == 0xffffff then
+                            self:click(x + 525,y + 3)
+                            self:myToast("打开")
+                            break
+                        end
+                    end
+        			
+        	        self:timeOutRestart(t1)
+        	    end
+        	    
+        	    while (true) do
+        	        self:location_model()
+        	        
+        	        --更多
+        			mSleep(50)
+        			x,y = findMultiColorInRegionFuzzy( 0x323333, "6|0|0x323333,12|0|0x323333,-3|-26|0x565656,37|-26|0x565656,54|-20|0xfdfcfd,-32|-20|0xfdfcfd", 100, 0, 0, 749, 1333)
+        			if x~=-1 and y~=-1 then
+        				self:click(x + 10, y - 10)
+        			end
+        			
+        			mSleep(50)
+            		x,y = findMultiColorInRegionFuzzy(0x323333, "-1|-35|0x323333,-78|-28|0x4b4c4c,-77|0|0x4b4c4c,-97|-14|0x4b4c4c,-61|-13|0x4b4c4c,-67|-13|0x4b4c4c,-41|-16|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+            		if x ~= -1 then
+            			self:click(x, y - 20)
+            			self:myToast("进入设置")
+            			break
+            		end
+                    
+        	        flag = isFrontApp(self.mm_bid)
+            		if flag == 0 then
+            			runApp(self.mm_bid)
+            			mSleep(3000)
+            		end
+        	    end
+			end
+    	
 			while (true) do
 				mSleep(200)
 				x,y = findMultiColorInRegionFuzzy(0x1e1e1e, "4|0|0x1e1e1e,9|0|0x1e1e1e,14|0|0x1e1e1e,25|-2|0x1e1e1e,46|-2|0x1e1e1e,46|4|0x1e1e1e,75|4|0x1e1e1e,85|-10|0x1e1e1e,154|12|0x1e1e1e", 90, 0, 0, 750, 1334, { orient = 2 })
@@ -2061,14 +2164,14 @@ function model:main()
 			{
 				["type"] = "Label",
 				["text"] = "照片文件夹路径是在触动res下，文件夹名字是picFile",
-				["size"] = 20,
+				["size"] = 15,
 				["align"] = "center",
 				["color"] = "255,0,0"
 			},
 			{
 				["type"] = "Label",
 				["text"] = "号码文件路径是在触动res下，文件名字是phoneNum.txt",
-				["size"] = 20,
+				["size"] = 15,
 				["align"] = "center",
 				["color"] = "255,0,0"
 			},
@@ -2216,13 +2319,26 @@ function model:main()
 				["list"] = "固定,id + w",
 				["select"] = "0",
 				["countperline"] = "4"
+			},
+			{
+				["type"] = "Label",
+				["text"] = "选择是否打开通讯录",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255"
+			},
+			{
+				["type"] = "RadioGroup",
+				["list"] = "打开,不打开",
+				["select"] = "0",
+				["countperline"] = "4"
 			}
 		}
 	}
 
 	local MyJsonString = json.encode(MyTable)
 
-	ret, old_pass, password, searchFriend, searchAccount, changeHeader, inputPhoneAgain, networkMode, restoreBackup, vpnPass, vpnSecretKey, selectPassWay = showUI(MyJsonString)
+	ret, old_pass, password, searchFriend, searchAccount, changeHeader, inputPhoneAgain, networkMode, restoreBackup, vpnPass, vpnSecretKey, selectPassWay, openBookWay = showUI(MyJsonString)
 	if ret == 0 then
 		dialog("取消运行脚本", 3)
 		luaExit()
