@@ -2038,7 +2038,7 @@ end
 -- 	else
 -- 		goto token
 -- 	end
-	
+
 -- 	::location::
 -- 	header_send = {
 -- 	    ["Content-Type"] = "application/json",
@@ -2061,7 +2061,7 @@ end
 -- 		goto location
 -- 	end
 -- end
-	
+
 -- location_xy = location(userPath() .. "/res/test_3.jpg")
 -- xy = strSplit(location_xy,",")
 -- x1 = xy[1]
@@ -2078,67 +2078,75 @@ local json     = ts.json
 
 
 function location(imgPath)
- ::token::
- header_send = {
-     ["Content-Type"] = "application/json",
- }
- body_send = {
-     ["username"] = "cx3881156",
-     ["pwd"] = "cx940912"
- }
+	::token::
+	header_send = {
+		["Content-Type"] = "application/json",
+	}
+	body_send = {
+		["username"] = "cx3881156",
+		["pwd"] = "cx940912"
+	}
 
- ts.setHttpsTimeOut(60)--安卓不支持设置超时时间 
- status_resp, header_resp, body_resp  = ts.httpPost("http://51learn.vip:3001/pub/login", header_send, body_send, true)
- if status_resp == 200 then
-  local tmp = json.decode(body_resp)
-  if tmp.code == 200 then
-   authentication = tmp.data.authentication
-   toast("token:"..authentication,1)
-  else
-   goto token
-  end
- else
-  goto token
- end
- 
- ::reg::
- header_send = {
-     ["Content-Type"] = "application/json",
- }
- body_send = {
-     ["captchaData"] = imageBase64(imgPath),
- }
+	ts.setHttpsTimeOut(60)--安卓不支持设置超时时间 
+	status_resp, header_resp, body_resp  = ts.httpPost("http://51learn.vip:3001/pub/login", header_send, body_send, true)
+	if status_resp == 200 then
+		local tmp = json.decode(body_resp)
+		if tmp.code == 200 then
+			authentication = tmp.data.authentication
+			toast("token:"..authentication,1)
+		else
+			goto token
+		end
+	else
+		goto token
+	end
 
- ts.setHttpsTimeOut(60)--安卓不支持设置超时时间 
- status_resp, header_resp, body_resp  = ts.httpPost("http://51learn.vip:3001/slider/reg?Authorization=" .. authentication, header_send, body_send, true)
- if status_resp == 200 then
-  local tmp = json.decode(body_resp)
-  if tmp.code == 200 then
-   location_xy = tmp.data
-   return location_xy
-  else
-   goto reg
-  end
- else
-  goto reg
- end
+	::reg::
+	header_send = {
+		["Content-Type"] = "application/json",
+	}
+	body_send = {
+		["captchaData"] = imageBase64(imgPath),
+	}
+
+	ts.setHttpsTimeOut(60)--安卓不支持设置超时时间 
+	status_resp, header_resp, body_resp  = ts.httpPost("http://51learn.vip:3001/slider/reg?Authorization=" .. authentication, header_send, body_send, true)
+	if status_resp == 200 then
+		local tmp = json.decode(body_resp)
+		if tmp.code == 200 then
+			location_xy = tmp.data
+			return location_xy
+		else
+			goto reg
+		end
+	else
+		goto reg
+	end
 end
-nLog("开始截图")
+--nLog("开始截图")
 
-snapshot("微博.jpg", 70, 428, 679, 801); 
-mSleep(1000)
+--snapshot("微博.jpg", 70, 428, 679, 801); 
+--mSleep(1000)
 
 
 
-location_xy = location(userPath().."/res/微博.jpg")
-xy = strSplit(location_xy,",")
+--location_xy = location(userPath().."/res/微博.jpg")
+--xy = strSplit(location_xy,",")
 
-x1 = tonumber(xy[1])
-y1 = tonumber(xy[2])
+--x1 = tonumber(xy[1])
+--y1 = tonumber(xy[2])
 
-x2 = tonumber(xy[3])
-y2 = tonumber(xy[4])
+--x2 = tonumber(xy[3])
+--y2 = tonumber(xy[4])
 
-moveTowards(114, 752, 0, x1 - 71)
+--moveTowards(114, 752, 0, x1 - 71)
 
-nLog(x1 .. "===" .. y1 .. "===" .. x2 .. "===" .. y2)
+--nLog(x1 .. "===" .. y1 .. "===" .. x2 .. "===" .. y2)
+
+mSleep(math.random(500, 700))
+		x,y = findMultiColorInRegionFuzzy( 0x07c160, "7|0|0x07c160,17|-9|0x07c160,47|15|0x07c160,81|6|0x07c160,112|8|0x07c160,135|-1|0xf2f2f2,-51|1|0xf2f2f2,-380|9|0x1a1a1a,-449|15|0x1a1a1a", 90, 0, 0, 749, 1333)
+		if x~=-1 and y~=-1 then
+			dialog(x .. "==" .. y, time)
+			mSleep(math.random(500, 700))
+			toast("微信界面",1)
+		end

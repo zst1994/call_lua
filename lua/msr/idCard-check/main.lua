@@ -38,6 +38,7 @@ function model:checkIdCard()
             mSleep(500)
             inputKey(self.id_card_num)
             mSleep(1000)
+			self:click(497,  339)
             key = "ReturnOrEnter"
 			keyDown(key)
 			keyUp(key)
@@ -45,7 +46,9 @@ function model:checkIdCard()
 			keyDown(key)
 			keyUp(key)
 			mSleep(200)
-			moveTowards(404,1094,90,300,10)
+			if moveWay == "0" then
+				moveTowards(404,1094,90,300,10)
+			end
             -- tap(592,1262)
             -- mSleep(1000)
 			break
@@ -59,7 +62,9 @@ function model:checkIdCard()
             self:click(x, y)
             break
         else
-			moveTowards(404,1094,90,300,10)
+			if moveWay == "0" then
+				moveTowards(404,1094,90,300,10)
+			end
         end
         
         --系统连接异常
