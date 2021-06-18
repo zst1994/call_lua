@@ -9,6 +9,7 @@ local model           = {}
 
 model.awz_bid         = "com.superdev.AMG"
 model.mm_bid          = "com.wemomo.momoappdemo1"
+model.root_setting    = "com.apple.Preferences"
 
 model.qqAcount        = ""
 model.qqPassword      = ""
@@ -64,17 +65,17 @@ end
 
 local AMG = {
 	Next = (function()  --下一条
-	        function get_re_name()
-	            model:Check_AMG()
-    			local res, code = http.request("http://127.0.0.1:8080/cmd?fun=getCurrentRecordName")
-    			if code == 200 then
-    				if model:Check_AMG_Result() == true then
-    					return res
-    				end
-    			end
-	        end
-		
-	        ::toNext::
+			function get_re_name()
+				model:Check_AMG()
+				local res, code = http.request("http://127.0.0.1:8080/cmd?fun=getCurrentRecordName")
+				if code == 200 then
+					if model:Check_AMG_Result() == true then
+						return res
+					end
+				end
+			end
+
+			::toNext::
 			model:Check_AMG()
 			while (true) do
 				mSleep(50)
@@ -89,7 +90,7 @@ local AMG = {
 				mSleep(50)
 				x,y = findMultiColorInRegionFuzzy(0x007aff, "-35|6|0x007aff,-47|-13|0x067dff,-23|-12|0x007aff,37|-12|0x007aff,35|8|0x007aff,29|4|0x007aff,45|4|0x007aff", 90, 0, 0, 750, 1334, { orient = 2 })
 				if x ~= -1 then
-				    old_re = get_re_name()
+					old_re = get_re_name()
 					model:click(x,y,2000)
 					break
 				end
@@ -101,11 +102,11 @@ local AMG = {
 				if x ~= -1 then
 					new_re = get_re_name()
 					if new_re ~= old_re then
-					    model:myToast("备份切换成功")
-					    return true
+						model:myToast("备份切换成功")
+						return true
 					else
-					    model:myToast("当前备份记录与之前一样，重新切备份", 1000)
-					    goto toNext
+						model:myToast("当前备份记录与之前一样，重新切备份", 1000)
+						goto toNext
 					end
 				else
 					model:click(58, 83, 1000)
@@ -249,7 +250,7 @@ function model:vpn(start)
 				elseif networkMode == "1" then
 					self:myToast("wifi链接成功")
 				end
-				
+
 				if start then
 					mSleep(1000)
 					self:Check_AMG()
@@ -589,21 +590,21 @@ function model:toRename()
 		self.subNameBool = false
 		return true
 	end
-	
+
 	--此账号是第三方登录账号
 	mSleep(50)
 	x,y = findMultiColorInRegionFuzzy(0x000000, "32|-1|0x000000,105|2|0x000000,110|9|0x000000,137|-7|0x000000,136|2|0x000000,138|12|0x000000,154|-5|0x000000,170|5|0x000000,234|-38|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
-    if x ~= -1 then
-        --取消
-        mSleep(50)
-        x,y = findMultiColorInRegionFuzzy(0x007aff, "9|-1|0x007aff,22|-11|0x007aff,44|5|0x007aff,58|8|0x007aff", 90, 0, 0, 750, 1334, { orient = 2 })
-        if x ~= -1 then
-            self:myToast("此账号是第三方登录账号")
-    		self.subName = "第三方"
-    		self.subNameBool = false
-    		return true
-        end
-    end
+	if x ~= -1 then
+		--取消
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy(0x007aff, "9|-1|0x007aff,22|-11|0x007aff,44|5|0x007aff,58|8|0x007aff", 90, 0, 0, 750, 1334, { orient = 2 })
+		if x ~= -1 then
+			self:myToast("此账号是第三方登录账号")
+			self.subName = "第三方"
+			self.subNameBool = false
+			return true
+		end
+	end
 end
 
 function model:login_button()
@@ -703,14 +704,14 @@ function model:other_model()
 		self:click(x, y)
 		self:myToast("立即展示")
 	end
-	
+
 	--立即聊天
 	mSleep(50)
 	x,y = findMultiColorInRegionFuzzy(0xaaaaaa, "-9|-9|0xaaaaaa,-9|9|0xaaaaaa,10|11|0xaaaaaa,9|-9|0xaaaaaa,9|-1|0xffffff,0|-9|0xffffff,-13|1|0xffffff,2|12|0xffffff", 100, 0, 0, 750, 1334, { orient = 2 })
-    if x ~= -1 then
-        self:click(x, y)
-        self:myToast("立即聊天")
-    end
+	if x ~= -1 then
+		self:click(x, y)
+		self:myToast("立即聊天")
+	end
 end
 
 function model:done()
@@ -735,7 +736,7 @@ function model:mm()
 	reRunApp = 0
 	huakuai = false
 	hk_whiteBool = true
-	
+
 	if restoreBackup == "1" then
 		local old_name = AMG.Get_Name()
 		data = strSplit(old_name,"----")
@@ -749,18 +750,18 @@ function model:mm()
 			goto over
 		end
 	else
-	    if selectPassWay == "1" then
-	        local old_name = AMG.Get_Name()
-		    data = strSplit(old_name,"----")
-		    if #data > 2 then
-    			old_pass = data[5]
-    			self:myToast(old_pass)
-    		else
-    			dialog("数据没有账号密码，进行下一个",5)
-    			mSleep(500)
-    			goto over
-    		end
-	    end
+		if selectPassWay == "1" then
+			local old_name = AMG.Get_Name()
+			data = strSplit(old_name,"----")
+			if #data > 2 then
+				old_pass = data[5]
+				self:myToast(old_pass)
+			else
+				dialog("数据没有账号密码，进行下一个",5)
+				mSleep(500)
+				goto over
+			end
+		end
 	end
 
 	::reRunAppAgagin::
@@ -771,13 +772,13 @@ function model:mm()
 	if restoreBackup == "1" then
 		t1 = ts.ms()
 		while (true) do
-		    mSleep(50)
+			mSleep(50)
 			if self:shouye() then
 				break
 			end
 
 			self:new_version()
-			
+
 			self:location_model()
 
 			--跳过：招呼一下/分享到动态
@@ -904,14 +905,14 @@ function model:mm()
 		if self:toRename() then
 			goto reName
 		end
-		
+
 		--立即收听
 		mSleep(50)
 		x,y = findMultiColorInRegionFuzzy(0xffffff, "332|127|0xffffff,275|913|0x323333,277|931|0x323333,295|918|0x323333,309|918|0x323333,330|919|0x323333,341|913|0x323333,352|921|0x323333,371|926|0x323333", 90, 0, 0, 750, 1334, { orient = 2 })
-        if x ~= -1 then
-            self:click(x, y)
+		if x ~= -1 then
+			self:click(x, y)
 			self:myToast("立即收听")
-        end
+		end
 
 		--登陆过期
 		mSleep(50)
@@ -1075,7 +1076,7 @@ function model:mm()
 			self:click(699,43)
 			self:myToast("跳过")
 		end
-		
+
 		--绑定手机号码
 		mSleep(50)
 		if getColor(672, 85) == 0x323333 and getColor(702, 85) == 0x323333 then
@@ -1148,7 +1149,7 @@ function model:mm()
 			self:myToast("更多2")
 			break
 		end
-		
+
 		mSleep(50)
 		x,y = findMultiColorInRegionFuzzy( 0xaaaaaa, "27|0|0xaaaaaa,-161|-95|0x3bb3fa,199|-91|0x3bb3fa,3|-94|0xffffff,31|-94|0xffffff,-215|-91|0xffffff,240|-91|0xffffff", 90, 0, 0, 749, 1333)
 		if x ~= -1 then
@@ -1321,12 +1322,12 @@ function model:mm()
 
 		t1 = ts.ms()
 		while true do
-		    mSleep(50)
-		    if getColor(201,81) == 0x989898 then
-		        self:click(357, 78)
-		        self:myToast("关闭弹框")
-		    end
-	        
+			mSleep(50)
+			if getColor(201,81) == 0x989898 then
+				self:click(357, 78)
+				self:myToast("关闭弹框")
+			end
+
 			--账号存在异常
 			mSleep(50)
 			x,y = findMultiColorInRegionFuzzy(0x3bb3fa, "14|62|0x3bb3fa,11|29|0xc5e8fe,31|28|0xc5e8fe,623|9|0x3bb3fa,623|57|0x3bb3fa,344|-5|0x3bb3fa,343|64|0x3bb3fa,592|-64|0x323333,624|-54|0x323333", 90, 0, 0, 750, 1334, { orient = 2 })
@@ -1558,7 +1559,7 @@ function model:mm()
 					moveTowards(341,1031, 85, 600)
 					mSleep(2000)
 				end
-				
+
 				self:other_model()
 			end
 		end
@@ -1630,6 +1631,7 @@ function model:mm()
 
 	back_again = 0
 	getPhoneAgain = false
+	getCodeErr = 0
 
 	::get_phone_agagin::
 	if getPhoneAgain then
@@ -1669,8 +1671,8 @@ function model:mm()
 			self:click(x + 30, y + 109)
 			self:myToast("选择区号")
 		end
-        
-        --14系统
+
+		--14系统
 		mSleep(50)
 		x,y = findMultiColorInRegionFuzzy(0xeeeef0, "351|-1|0xffffff,-92|-84|0x000000,-59|-86|0x000000,-29|-85|0x000000,5|-103|0x000000,37|-95|0x000000,-96|2|0xeeeef0", 100, 0, 0, 750, 334, { orient = 2 })
 		if x~=-1 and y~=-1 then
@@ -1684,11 +1686,11 @@ function model:mm()
 			self:click(x + 100, y + 10)
 			break
 		end
-		
+
 		--12系统
 		mSleep(50)
 		x,y = findMultiColorInRegionFuzzy(0x8e8e93, "14|-8|0x8e8e93,43|7|0x8e8e93,639|8|0xc9c9ce,331|-44|0xc9c9ce,281|46|0xc9c9ce,-73|12|0xc9c9ce", 100, 1, 109, 749, 246, { orient = 2 })
-        if x~=-1 and y~=-1 then
+		if x~=-1 and y~=-1 then
 			self:click(x + 100, y)
 			inputStr("美国")
 			mSleep(1000)
@@ -1823,21 +1825,27 @@ function model:mm()
 			self:remove_phone()
 		end
 	else
-		self:myToast("获取验证码失败，保存号码到失败文件")
-		::saveAgain::
-		bool = writeFileString(userPath().."/res/phoneError.txt",self.phone .. "----" .. self.code_token,"a",1) --将 string 内容存入文件，成功返回 true
-		if bool then
-			self:myToast("保存号码到失败文件成功")
+		getCodeErr = getCodeErr + 1
+		if getCodeErr > 4 then
+			self:myToast("换号四次都获取不到验证码，切换下一个备份")
+			goto over
 		else
-			self:myToast("保存号码到失败文件失败")
-			goto saveAgain
+			self:myToast("获取验证码失败，保存号码到失败文件:" .. getCodeErr)
+			::saveAgain::
+			bool = writeFileString(userPath().."/res/phoneError.txt",self.phone .. "----" .. self.code_token,"a",1) --将 string 内容存入文件，成功返回 true
+			if bool then
+				self:myToast("保存号码到失败文件成功")
+			else
+				self:myToast("保存号码到失败文件失败")
+				goto saveAgain
+			end
+			mSleep(1000)
+			self:remove_phone()
+			self:click(60, 84, 2000)
+			back_again = 0
+			getPhoneAgain =true
+			goto get_phone_agagin
 		end
-		mSleep(1000)
-		self:remove_phone()
-		self:click(60, 84, 2000)
-		back_again = 0
-		getPhoneAgain =true
-		goto get_phone_agagin
 	end
 
 	t1 = ts.ms()
@@ -1878,108 +1886,108 @@ function model:mm()
 			-- 			mSleep(500)
 			-- 			self:myToast("设置")
 			if openBookWay == "0" then
-	    		self:click(57, 84)
-				
-        	    t1 = ts.ms()
-        	    while true do
-        	        self:bind_phone_model()
-        
-        			--更多
-        			mSleep(50)
-        			x,y = findMultiColorInRegionFuzzy( 0x323333, "6|0|0x323333,12|0|0x323333,-3|-26|0x565656,37|-26|0x565656,54|-20|0xfdfcfd,-32|-20|0xfdfcfd", 100, 0, 0, 749, 1333)
-        			if x~=-1 and y~=-1 then
-        				self:click(x + 10, y - 10)
-        			end
-        
-        			--好友
-        			mSleep(50)
-        			x,y = findMultiColorInRegionFuzzy( 0xb0b0b0, "2|12|0xaaaaaa,23|2|0xaaaaaa,24|7|0xafafaf,83|3|0xffffff,205|8|0xaaaaaa,360|12|0xaaaaaa,556|7|0xaaaaaa,589|-15|0xffffff", 90, 0, 0, 749, 1333)
-        			if x~=-1 and y~=-1 then
-        				self:click(x,y)
-        				self:myToast("好友")
-        			end
-        			
-        			--查看通讯录好友
-        			mSleep(50)
-        			x,y = findMultiColorInRegionFuzzy(0xffffff, "191|-5|0xffffff,-192|-5|0x3bb3fa,86|-50|0x3bb3fa,111|43|0x3bb3fa,379|5|0x3bb3fa", 90, 0, 0, 750, 1334, { orient = 2 })
-                    if x ~= -1 then
-                        self:click(x,y)
-        				self:myToast("查看通讯录好友")
-                    end
-                    
-                    --取消屏蔽
-                    mSleep(50)
-                    x,y = findMultiColorInRegionFuzzy(0xffffff, "7|1|0xffffff,42|3|0xffffff,73|6|0xffffff,95|-8|0xffffff,-243|3|0x3bb3fa,54|-41|0x3bb3fa,64|43|0x3bb3fa,366|-4|0x3bb3fa", 90, 0, 0, 750, 1334, { orient = 2 })
-                    if x ~= -1 then
-                        self:click(x,y)
-        				self:myToast("取消屏蔽")
-                    end
-                    
-                    --是否取消屏蔽
-                    mSleep(50)
-                    x,y = findMultiColorInRegionFuzzy(0x007aff, "17|2|0x0a7fff,9|19|0x007aff,-261|8|0x007aff,-261|22|0x007aff,-155|-198|0x000000,-139|-208|0x000000,-109|-197|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
-                    if x ~= -1 then
-                        self:click(x,y)
-        				self:myToast("是否取消屏蔽")
-                    end
-                    
-                    --开启通讯录权限
-                    mSleep(50)
-                    x,y = findMultiColorInRegionFuzzy(0xffffff, "16|7|0xffffff,42|-2|0xffffff,171|-1|0xffffff,191|-4|0xffffff,-210|9|0x3bb3fa,112|-43|0x3bb3fa,115|45|0x3bb3fa,404|-3|0x3bb3fa", 90, 0, 0, 750, 1334, { orient = 2 })
-                    if x ~= -1 then
-                        self:click(x,y)
-        				self:myToast("开启通讯录权限")
-                    end
-                    
-                    --去开启通讯录权限请求
-                    mSleep(50)
-                    x,y = findMultiColorInRegionFuzzy(0x007aff, "22|7|0x007aff,41|21|0x007aff,70|5|0x007aff,73|21|0x007aff,-214|-167|0x000000,-200|-167|0x000000,-169|-167|0x000000,-135|-165|0x000000,25|-168|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
-                    if x ~= -1 then
-                        self:click(x,y)
-        				self:myToast("去开启通讯录权限请求")
-                    end
-                    
-                    --设置里面打开权限
-                    mSleep(50)
-                    x,y = findMultiColorInRegionFuzzy(0x000000, "5|6|0x000000,19|5|0x000000,27|2|0x000000,39|4|0x000000,49|4|0x000000,58|-1|0x000000,83|10|0x000000,78|0|0x000000,78|-11|0x000000", 90, 1, 129, 749, 578, { orient = 2 })
-                    if x ~= -1 then
-                        mSleep(200)
-                        if getColor(x + 525,y + 3) == 0xffffff then
-                            self:click(x + 525,y + 3)
-                            self:myToast("打开")
-                            break
-                        end
-                    end
-        			
-        	        self:timeOutRestart(t1)
-        	    end
-        	    
-        	    while (true) do
-        	        self:location_model()
-        	        
-        	        --更多
-        			mSleep(50)
-        			x,y = findMultiColorInRegionFuzzy( 0x323333, "6|0|0x323333,12|0|0x323333,-3|-26|0x565656,37|-26|0x565656,54|-20|0xfdfcfd,-32|-20|0xfdfcfd", 100, 0, 0, 749, 1333)
-        			if x~=-1 and y~=-1 then
-        				self:click(x + 10, y - 10)
-        			end
-        			
-        			mSleep(50)
-            		x,y = findMultiColorInRegionFuzzy(0x323333, "-1|-35|0x323333,-78|-28|0x4b4c4c,-77|0|0x4b4c4c,-97|-14|0x4b4c4c,-61|-13|0x4b4c4c,-67|-13|0x4b4c4c,-41|-16|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
-            		if x ~= -1 then
-            			self:click(x, y - 20)
-            			self:myToast("进入设置")
-            			break
-            		end
-                    
-        	        flag = isFrontApp(self.mm_bid)
-            		if flag == 0 then
-            			runApp(self.mm_bid)
-            			mSleep(3000)
-            		end
-        	    end
+				self:click(57, 84)
+
+				t1 = ts.ms()
+				while true do
+					self:bind_phone_model()
+
+					--更多
+					mSleep(50)
+					x,y = findMultiColorInRegionFuzzy( 0x323333, "6|0|0x323333,12|0|0x323333,-3|-26|0x565656,37|-26|0x565656,54|-20|0xfdfcfd,-32|-20|0xfdfcfd", 100, 0, 0, 749, 1333)
+					if x~=-1 and y~=-1 then
+						self:click(x + 10, y - 10)
+					end
+
+					--好友
+					mSleep(50)
+					x,y = findMultiColorInRegionFuzzy( 0xb0b0b0, "2|12|0xaaaaaa,23|2|0xaaaaaa,24|7|0xafafaf,83|3|0xffffff,205|8|0xaaaaaa,360|12|0xaaaaaa,556|7|0xaaaaaa,589|-15|0xffffff", 90, 0, 0, 749, 1333)
+					if x~=-1 and y~=-1 then
+						self:click(x,y)
+						self:myToast("好友")
+					end
+
+					--查看通讯录好友
+					mSleep(50)
+					x,y = findMultiColorInRegionFuzzy(0xffffff, "191|-5|0xffffff,-192|-5|0x3bb3fa,86|-50|0x3bb3fa,111|43|0x3bb3fa,379|5|0x3bb3fa", 90, 0, 0, 750, 1334, { orient = 2 })
+					if x ~= -1 then
+						self:click(x,y)
+						self:myToast("查看通讯录好友")
+					end
+
+					--取消屏蔽
+					mSleep(50)
+					x,y = findMultiColorInRegionFuzzy(0xffffff, "7|1|0xffffff,42|3|0xffffff,73|6|0xffffff,95|-8|0xffffff,-243|3|0x3bb3fa,54|-41|0x3bb3fa,64|43|0x3bb3fa,366|-4|0x3bb3fa", 90, 0, 0, 750, 1334, { orient = 2 })
+					if x ~= -1 then
+						self:click(x,y)
+						self:myToast("取消屏蔽")
+					end
+
+					--是否取消屏蔽
+					mSleep(50)
+					x,y = findMultiColorInRegionFuzzy(0x007aff, "17|2|0x0a7fff,9|19|0x007aff,-261|8|0x007aff,-261|22|0x007aff,-155|-198|0x000000,-139|-208|0x000000,-109|-197|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+					if x ~= -1 then
+						self:click(x,y)
+						self:myToast("是否取消屏蔽")
+					end
+
+					--开启通讯录权限
+					mSleep(50)
+					x,y = findMultiColorInRegionFuzzy(0xffffff, "16|7|0xffffff,42|-2|0xffffff,171|-1|0xffffff,191|-4|0xffffff,-210|9|0x3bb3fa,112|-43|0x3bb3fa,115|45|0x3bb3fa,404|-3|0x3bb3fa", 90, 0, 0, 750, 1334, { orient = 2 })
+					if x ~= -1 then
+						self:click(x,y)
+						self:myToast("开启通讯录权限")
+					end
+
+					--去开启通讯录权限请求
+					mSleep(50)
+					x,y = findMultiColorInRegionFuzzy(0x007aff, "22|7|0x007aff,41|21|0x007aff,70|5|0x007aff,73|21|0x007aff,-214|-167|0x000000,-200|-167|0x000000,-169|-167|0x000000,-135|-165|0x000000,25|-168|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+					if x ~= -1 then
+						self:click(x,y)
+						self:myToast("去开启通讯录权限请求")
+					end
+
+					--设置里面打开权限
+					mSleep(50)
+					x,y = findMultiColorInRegionFuzzy(0x000000, "5|6|0x000000,19|5|0x000000,27|2|0x000000,39|4|0x000000,49|4|0x000000,58|-1|0x000000,83|10|0x000000,78|0|0x000000,78|-11|0x000000", 90, 1, 129, 749, 578, { orient = 2 })
+					if x ~= -1 then
+						mSleep(200)
+						if getColor(x + 525,y + 3) == 0xffffff then
+							self:click(x + 525,y + 3)
+							self:myToast("打开")
+							break
+						end
+					end
+
+					self:timeOutRestart(t1)
+				end
+
+				while (true) do
+					self:location_model()
+
+					--更多
+					mSleep(50)
+					x,y = findMultiColorInRegionFuzzy( 0x323333, "6|0|0x323333,12|0|0x323333,-3|-26|0x565656,37|-26|0x565656,54|-20|0xfdfcfd,-32|-20|0xfdfcfd", 100, 0, 0, 749, 1333)
+					if x~=-1 and y~=-1 then
+						self:click(x + 10, y - 10)
+					end
+
+					mSleep(50)
+					x,y = findMultiColorInRegionFuzzy(0x323333, "-1|-35|0x323333,-78|-28|0x4b4c4c,-77|0|0x4b4c4c,-97|-14|0x4b4c4c,-61|-13|0x4b4c4c,-67|-13|0x4b4c4c,-41|-16|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+					if x ~= -1 then
+						self:click(x, y - 20)
+						self:myToast("进入设置")
+						break
+					end
+
+					flag = isFrontApp(self.mm_bid)
+					if flag == 0 then
+						runApp(self.mm_bid)
+						mSleep(3000)
+					end
+				end
 			end
-    	
+
 			while (true) do
 				mSleep(200)
 				x,y = findMultiColorInRegionFuzzy(0x1e1e1e, "4|0|0x1e1e1e,9|0|0x1e1e1e,14|0|0x1e1e1e,25|-2|0x1e1e1e,46|-2|0x1e1e1e,46|4|0x1e1e1e,75|4|0x1e1e1e,85|-10|0x1e1e1e,154|12|0x1e1e1e", 90, 0, 0, 750, 1334, { orient = 2 })
@@ -2025,6 +2033,7 @@ function model:mm()
 		if getColor(642,   87) == 0x3bb3fa and getColor(689, 87) == 0x3bb3fa then
 			self:click(396, 194)
 			self:myToast("重置密码")
+			t1 = ts.ms()
 			while true do
 				mSleep(400)
 				if getColor(712, 193) == 0xcccccc then
@@ -2039,6 +2048,7 @@ function model:mm()
 			end
 
 			self:click(396, 279)
+			t1 = ts.ms()
 			while true do
 				mSleep(400)
 				if getColor(712, 281) == 0xcccccc then
@@ -2056,6 +2066,26 @@ function model:mm()
 		end
 
 		self:timeOutRestart(t1)
+	end
+
+	if openBookWay == "0" then
+		mSleep(500)
+		runApp(self.root_setting)
+		mSleep(1000)
+		
+		--设置里面关闭权限
+		while (true) do
+			mSleep(50)
+			x,y = findMultiColorInRegionFuzzy(0x000000, "5|6|0x000000,19|5|0x000000,27|2|0x000000,39|4|0x000000,49|4|0x000000,58|-1|0x000000,83|10|0x000000,78|0|0x000000,78|-11|0x000000", 90, 1, 129, 749, 578, { orient = 2 })
+			if x ~= -1 then
+				mSleep(200)
+				if getColor(x + 525,y + 3) ~= 0xffffff then
+					self:click(x + 525,y + 3)
+					self:myToast("关闭")
+					break
+				end
+			end
+		end
 	end
 
 	::reName::
@@ -2089,6 +2119,8 @@ end
 
 function model:index()
 	while (true) do
+		closeApp(self.root_setting, 0)
+		mSleep(100)
 		closeApp(self.mm_bid, 0)
 		mSleep(500)
 		if self.subName ~= "密码错误" then
