@@ -652,6 +652,14 @@ function model:location_model()
 		self:click(x, y)
 		self:myToast("定位服务未开启2")
 	end
+	
+	--取消通讯录权限请求
+	mSleep(50)
+	x,y = findMultiColorInRegionFuzzy( 0x007aff, "9|0|0x007aff,19|-8|0x007aff,44|8|0x007aff,58|8|0x007aff,305|12|0x007aff,50|-172|0x000000,64|-170|0x000000,71|-160|0x000000,95|-163|0x000000", 90, 0, 0, 749, 1333)
+	if x ~= -1 then
+		self:click(x, y)
+		self:myToast("取消通讯录权限请求")
+	end
 end
 
 function model:bind_phone_model()
@@ -1824,6 +1832,10 @@ function model:mm()
 			self.subName = "绑定号码成功:" .. self.phone
 			self:remove_phone()
 		end
+
+		if self.subNameBool then
+			writeFileString(userPath().."/res/绑定手机号记录.txt", self.mm_accountId .. "----" .. self.phone .. "----" .. self.code_token,"a",1)
+		end
 	else
 		getCodeErr = getCodeErr + 1
 		if getCodeErr > 4 then
@@ -2072,7 +2084,7 @@ function model:mm()
 		mSleep(500)
 		runApp(self.root_setting)
 		mSleep(1000)
-		
+
 		--设置里面关闭权限
 		while (true) do
 			mSleep(50)
@@ -2105,11 +2117,7 @@ function model:mm()
 	--	    new_name = self.mm_accountId .. "----" .. self.subName
 	--	end
 
-
 	if AMG.Rename(old_name, new_name) == true then
-		if self.subNameBool then
-			writeFileString(userPath().."/res/绑定手机号记录.txt", self.mm_accountId .. "----" .. self.phone .. "----" .. self.code_token,"a",1)
-		end
 		self.subNameBool = true
 		self:myToast("重命名当前记录 " .. old_name .. " 为 " .. new_name)
 	end
