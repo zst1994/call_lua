@@ -2478,7 +2478,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 	get_ms_code = false
 	tiaoma_next = false
 	while true do
-		mSleep(200)
+		mSleep(50)
 		-- 		x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 90, 0, 0, 749, 1333)
 		x,y = findMultiColorInRegionFuzzy( 0x000000, "9|-11|0x000000,11|11|0x000000,59|-1|0x000000,76|3|0x000000,24|150|0x9ce6bf,649|157|0x9ce6bf,345|117|0x9ce6bf,321|153|0xd7f5e5,373|153|0xd7f5e5", 100, 0, 0, 749, 1333)
 		if x ~= -1 and y ~= -1 then
@@ -2605,7 +2605,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			break
 		end
 
-		mSleep(200)
+		mSleep(50)
 		if getColor(132,  963) == 0x000000 and getColor(159,  984) == 0x000000 then
 			if tmFailBack_bool then
 				if tmFailBack == "1" then
@@ -2624,24 +2624,24 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			end
 		end
 
-		mSleep(200)
+		mSleep(50)
 		x,y = findMultiColorInRegionFuzzy( 0x576b95, "18|-1|0x576b95,25|-1|0x576b95,-19|-184|0x000000,-5|-184|0x000000,42|-184|0x000000,-96|-140|0x000000,-11|-143|0x000000,57|-143|0x000000,123|-147|0x000000", 100, 0, 0, 749, 1333)
 		if x ~= -1 and y ~= -1 then
 			self:click(x,y)
 			self:myToast("连接失败，请检查你的网络设置")
 			tiaoma_next = true
-			goto kq
+			break
 		end
 
-		mSleep(200)
+		mSleep(50)
 		if getColor(390,822) == 0x576b95 and getColor(363,822) == 0x576b95 then
 			self:click(390,822)
 			self:myToast("拒收wc登录")
 			tiaoma_next = true
-			goto kq
+			break
 		end
 
-		mSleep(200)
+		mSleep(50)
 		x, y = findMultiColorInRegionFuzzy(0x576b95,"-38|1|0x576b95,-314|-9|0x181819,-356|-3|0x181819,-157|-155|0,24|-174|0",90, 0, 0, 749, 1333)
 		if x ~= -1 and y ~= -1 then
 			self:myToast("操作频繁")
@@ -2668,15 +2668,23 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			end
 		end
 
-		mSleep(200)
+		mSleep(50)
 		x, y = findMultiColorInRegionFuzzy(0x10aeff,"55|8|0x10aeff,-79|817|0x7c160,116|822|0x7c160", 100, 0, 0, 749, 1333)
 		if x ~= -1 and y ~= -1 then
 			self:click(372, 1105)
 			self:myToast("安全验证")
 		end
+		
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy(0xfa5151, "54|-4|0xfa5151,26|-13|0xffffff,-126|809|0x07c160,177|815|0x07c160,9|808|0xffffff,69|809|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+        if x ~= -1 then
+            self:myToast("System busy.Please try again")
+            tiaoma_next = true
+            break
+        end
 
 		--滑块失败重新刷新
-		mSleep(200)
+		mSleep(50)
 		if getColor(118,  948) == 0x007aff then
 			self:click(603, 1032, math.random(3000, 6000))
 			goto hk_again
