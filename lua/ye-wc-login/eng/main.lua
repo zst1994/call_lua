@@ -2128,6 +2128,15 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 					if x ~= -1 and y ~= -1 then
 						self:click(372, 1105)
 					end
+
+					mSleep(50)
+					x,y = findMultiColorInRegionFuzzy(0x576b95, "18|1|0x576b95,55|0|0x576b95,56|8|0x576b95,-27|-158|0x191919,-27|-139|0x191919,0|-145|0x191919,9|-144|0x191919,75|-145|0x191919,94|-142|0x191919", 90, 0, 0, 750, 1334, { orient = 2 })
+					if x ~= -1 then
+						self:click(x,y)
+						self:myToast("Can't find variable: Tencent-Captcha")
+						tiaoma_next = true
+						goto kq
+					end
 				end
 				self:myToast("跳马注册")
 				cheack_bool = false
@@ -2297,6 +2306,15 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				if x ~= -1 and y ~= -1 then
 					self:click(372, 1105)
 					self:myToast("安全验证")
+				end
+
+				mSleep(50)
+				x,y = findMultiColorInRegionFuzzy(0x576b95, "18|1|0x576b95,55|0|0x576b95,56|8|0x576b95,-27|-158|0x191919,-27|-139|0x191919,0|-145|0x191919,9|-144|0x191919,75|-145|0x191919,94|-142|0x191919", 90, 0, 0, 750, 1334, { orient = 2 })
+				if x ~= -1 then
+					self:click(x,y)
+					self:myToast("Can't find variable: Tencent-Captcha")
+					tiaoma_next = true
+					goto kq
 				end
 
 				mSleep(200)
@@ -2605,7 +2623,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				break
 			end
 		end
-		
+
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy( 0x576b95, "18|-1|0x576b95,25|-1|0x576b95,-19|-184|0x000000,-5|-184|0x000000,42|-184|0x000000,-96|-140|0x000000,-11|-143|0x000000,57|-143|0x000000,123|-147|0x000000", 100, 0, 0, 749, 1333)
 		if x ~= -1 and y ~= -1 then
@@ -4971,9 +4989,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			mSleep(200)
 			x,y = findMultiColorInRegionFuzzy( 0x1565fc, "16|-1|0x1565fc,24|-1|0x1565fc,-331|1|0x1565fc,-174|2|0x1565fc,-260|-335|0x000000,-61|-335|0x000000,-40|-326|0x000000,-20|-322|0x000000,17|-324|0x000000", 90, 0, 0, 749, 1333)
 			if x ~= -1 and y ~= -1 then
---				mSleep(math.random(500, 700))
---				randomsTap(x-250,y,8)
---				mSleep(math.random(500, 700))
+				--				mSleep(math.random(500, 700))
+				--				randomsTap(x-250,y,8)
+				--				mSleep(math.random(500, 700))
 				self:myToast("通讯录")
 				break
 			end
@@ -5044,9 +5062,9 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			mSleep(200)
 			x,y = findMultiColorInRegionFuzzy( 0x1565fc, "16|-1|0x1565fc,24|-1|0x1565fc,-331|1|0x1565fc,-174|2|0x1565fc,-260|-335|0x000000,-61|-335|0x000000,-40|-326|0x000000,-20|-322|0x000000,17|-324|0x000000", 90, 0, 0, 749, 1333)
 			if x ~= -1 and y ~= -1 then
---				mSleep(math.random(500, 700))
---				randomsTap(x-250,y,8)
---				mSleep(math.random(500, 700))
+				--				mSleep(math.random(500, 700))
+				--				randomsTap(x-250,y,8)
+				--				mSleep(math.random(500, 700))
 				self:myToast("10秒后通讯录")
 				data_six_two = true
 				break
