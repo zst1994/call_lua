@@ -2056,21 +2056,14 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			self:myToast("准备安全验证")
 			break
 		end
-
-		mSleep(200)
-		x, y = findMultiColorInRegionFuzzy(0x576b95,"-28|0|0x576b95,-41|-242|0,1|-228|0,35|-239|0,79|-83|0xf9f7fa", 90, 0, 0, 749, 1333)
+		
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy( 0x576b95, "19|0|0x576b95,26|0|0x576b95,68|-205|0x000000,84|-225|0x000000,105|-216|0x000000,125|-209|0x000000,144|-225|0x000000,178|-212|0x000000,186|-212|0x000000", 90, 0, 0, 749, 1333)
 		if x ~= -1 and y ~= -1 then
-			self:click(x,y)
-			self:myToast("手机号码错误")
-			closeApp(self.wc_bid, 0)
-			mSleep(1000)
-			runApp(self.wc_bid)
-			mSleep(2000)
-			if account_len ~= 0 then
-				tm_bool = true
-			end
-			getPhoneBool = true
-			goto reset
+			self:click(x, y - 104, math.random(3000, 5000))
+			self:myToast("Invalid Phone Number")
+			tiaoma_next = true
+			goto kq
 		end
 
 		mSleep(200)
@@ -4738,9 +4731,8 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 
 			mSleep(200)
-			x, y = findMultiColorInRegionFuzzy(0x576b95,"28|-1|0x576b95,-84|141|0x36030,164|141|0x36030,-208|-180|0,-121|-230|0", 90, 0, 0, 749,  1333)
+			x,y = findMultiColorInRegionFuzzy( 0x576b95, "19|0|0x576b95,26|0|0x576b95,-157|-266|0x000000,-146|-266|0x000000,-106|-285|0x000000,-76|-285|0x000000,-56|-271|0x000000,-72|-147|0x000000,89|-130|0x000000", 90, 0, 0, 749, 1333)
 			if x ~= -1 and y ~= -1 then
-				mSleep(math.random(500, 700))
 				self:myToast("手机号近期注册过wc")
 				break
 			end
@@ -4978,7 +4970,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			end
 
 			mSleep(200)
-			x, y = findMultiColorInRegionFuzzy(0x576b95,"28|-1|0x576b95,-84|141|0x36030,164|141|0x36030,-208|-180|0,-121|-230|0", 90, 0, 0, 749,  1333)
+			x,y = findMultiColorInRegionFuzzy( 0x576b95, "19|0|0x576b95,26|0|0x576b95,-157|-266|0x000000,-146|-266|0x000000,-106|-285|0x000000,-76|-285|0x000000,-56|-271|0x000000,-72|-147|0x000000,89|-130|0x000000", 90, 0, 0, 749, 1333)
 			if x ~= -1 and y ~= -1 then
 				self:click(x,y)
 				self:myToast("手机号近期注册过wc")

@@ -4255,6 +4255,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
             if x ~= -1 then
                 self:click(x,y)
                 self:myToast("Can't find variable: Tencent-Captcha")
+				goto gg
             end
 
 			if safe > 40 then
