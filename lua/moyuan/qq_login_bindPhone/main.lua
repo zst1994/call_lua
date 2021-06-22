@@ -825,7 +825,7 @@ function model:mm()
 				writePasteboard(self.qqAcount)
 				while (true) do
 					mSleep(50)
-					if getColor(676,  357) == 0xbbbbbb or getColor(599,354) == 0xffffff then
+					if getColor(676,  357) ~= 0xffffff then
 						self:click(447, 477)
 						break
 					else
@@ -842,7 +842,7 @@ function model:mm()
 				writePasteboard(self.qqPassword)
 				while (true) do
 					mSleep(50)
-					if getColor(677,  469) == 0xbbbbbb or getColor(163,471) == 0x000000 then
+					if getColor(677,  469) ~= 0xffffff then
 						self:click(239, 629)
 						break
 					else

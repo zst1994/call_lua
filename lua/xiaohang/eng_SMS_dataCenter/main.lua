@@ -683,7 +683,8 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 				mSleep(math.random(1200, 1700))
 			end
 
-			x,y = findMultiColorInRegionFuzzy( 0x353535, "134|0|0x353535,281|0|0x353535,52|63|0x353535,140|62|0x353535,-217|455|0x9ce6bf,312|443|0x9ce6bf,3|453|0xd7f5e5,56|455|0xd7f5e5", 90, 0, 0, 749, 1333)
+-- 			x,y = findMultiColorInRegionFuzzy( 0x353535, "134|0|0x353535,281|0|0x353535,52|63|0x353535,140|62|0x353535,-217|455|0x9ce6bf,312|443|0x9ce6bf,3|453|0xd7f5e5,56|455|0xd7f5e5", 90, 0, 0, 749, 1333)
+			x,y = findMultiColorInRegionFuzzy(0x000000, "59|4|0x000000,78|3|0x000000,33|156|0x9ce6bf,644|149|0x9ce6bf,311|155|0xd7f5e5,373|157|0xd7f5e5,316|-228|0x353535,340|-220|0x353535,434|-227|0x353535", 90, 0, 0, 750, 1334, { orient = 2 })
 			if x~=-1 and y~=-1 then
 				mSleep(math.random(1500, 2700))
 				if fz_type ~= "3" then
@@ -809,7 +810,11 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 								setVPNEnable(true)
 							end
 							mSleep(math.random(2000, 3000))
-							randomTap(372,  749, 3)
+							if getColor(280,642) == 0x9ce6bf then
+    							randomsTap(372,  749, 3)
+    						else
+    							randomsTap(372,  622, 3)
+    						end
 							mSleep(math.random(1000, 1500))
 							randomTap(368, 1039,5)
 							mSleep(math.random(3000, 5000))
@@ -984,7 +989,11 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 									setVPNEnable(true)
 								end
 								mSleep(math.random(2000, 3000))
-								randomTap(372,  749, 3)
+								if getColor(280,642) == 0x9ce6bf then
+        							randomsTap(372,  749, 3)
+        						else
+        							randomsTap(372,  622, 3)
+        						end
 								mSleep(math.random(1000, 1500))
 								randomTap(368, 1039,5)
 								mSleep(math.random(3000, 5000))
@@ -1061,7 +1070,11 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 									setVPNEnable(true)
 								end
 								mSleep(math.random(2000, 3000))
-								randomTap(372,  749, 3)
+								if getColor(280,642) == 0x9ce6bf then
+        							randomsTap(372,  749, 3)
+        						else
+        							randomsTap(372,  622, 3)
+        						end
 								mSleep(math.random(1000, 1500))
 								randomTap(368, 1039,5)
 								mSleep(math.random(3000, 5000))
@@ -1140,7 +1153,11 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 									setVPNEnable(true)
 								end
 								mSleep(math.random(2000, 3000))
-								randomTap(372,  749, 3)
+								if getColor(280,642) == 0x9ce6bf then
+        							randomsTap(372,  749, 3)
+        						else
+        							randomsTap(372,  622, 3)
+        						end
 								mSleep(math.random(1000, 1500))
 								randomTap(368, 1039,5)
 								mSleep(math.random(3000, 5000))
@@ -1215,7 +1232,11 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 									setVPNEnable(true)
 								end
 								mSleep(math.random(2000, 3000))
-								randomTap(372,  749, 3)
+								if getColor(280,642) == 0x9ce6bf then
+        							randomsTap(372,  749, 3)
+        						else
+        							randomsTap(372,  622, 3)
+        						end
 								mSleep(math.random(1000, 1500))
 								randomTap(368, 1039,5)
 								mSleep(math.random(3000, 5000))
@@ -1284,7 +1305,11 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 									setVPNEnable(true)
 								end
 								mSleep(math.random(2000, 3000))
-								randomTap(372,  749, 3)
+								if getColor(280,642) == 0x9ce6bf then
+        							randomsTap(372,  749, 3)
+        						else
+        							randomsTap(372,  622, 3)
+        						end
 								mSleep(math.random(1000, 1500))
 								randomTap(368, 1039,5)
 								mSleep(math.random(3000, 5000))
@@ -1354,7 +1379,11 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 							setVPNEnable(true)
 						end
 						mSleep(math.random(2000, 3000))
-						randomTap(372,  749, 3)
+						if getColor(280,642) == 0x9ce6bf then
+							randomsTap(372,  749, 3)
+						else
+							randomsTap(372,  622, 3)
+						end
 						mSleep(math.random(1000, 1500))
 						randomTap(368, 1039,5)
 						mSleep(math.random(3000, 5000))
@@ -1466,7 +1495,11 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 							setVPNEnable(true)
 						end
 						mSleep(math.random(2000, 3000))
-						randomTap(372,  749, 3)
+						if getColor(280,642) == 0x9ce6bf then
+							randomsTap(372,  749, 3)
+						else
+							randomsTap(372,  622, 3)
+						end
 						mSleep(math.random(1000, 1500))
 						randomTap(368, 1039,5)
 						mSleep(math.random(3000, 5000))
@@ -1659,7 +1692,11 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 										setVPNEnable(true)
 									end
 									mSleep(math.random(2000, 3000))
-									randomTap(372,  749, 3)
+									if getColor(280,642) == 0x9ce6bf then
+            							randomsTap(372,  749, 3)
+            						else
+            							randomsTap(372,  622, 3)
+            						end
 									mSleep(math.random(1000, 1500))
 									randomTap(368, 1039,5)
 									mSleep(math.random(3000, 5000))
@@ -1744,7 +1781,11 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 									setVPNEnable(true)
 								end
 								mSleep(math.random(2000, 3000))
-								randomTap(372,  749, 3)
+								if getColor(280,642) == 0x9ce6bf then
+        							randomsTap(372,  749, 3)
+        						else
+        							randomsTap(372,  622, 3)
+        						end
 								mSleep(math.random(1000, 1500))
 								randomTap(368, 1039,5)
 								mSleep(math.random(3000, 5000))
@@ -1817,7 +1858,11 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 							setVPNEnable(true)
 						end
 						mSleep(math.random(2000, 3000))
-						randomTap(372,  749, 3)
+						if getColor(280,642) == 0x9ce6bf then
+							randomsTap(372,  749, 3)
+						else
+							randomsTap(372,  622, 3)
+						end
 						mSleep(math.random(1000, 1500))
 						randomTap(368, 1039,5)
 						mSleep(math.random(3000, 5000))
@@ -1896,7 +1941,8 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 				end
 
 				while true do
-					x,y = findMultiColorInRegionFuzzy( 0x353535, "134|0|0x353535,281|0|0x353535,52|63|0x353535,140|62|0x353535,-217|455|0x9ce6bf,312|443|0x9ce6bf,3|453|0xd7f5e5,56|455|0xd7f5e5", 90, 0, 0, 749, 1333)
+				-- 	x,y = findMultiColorInRegionFuzzy( 0x353535, "134|0|0x353535,281|0|0x353535,52|63|0x353535,140|62|0x353535,-217|455|0x9ce6bf,312|443|0x9ce6bf,3|453|0xd7f5e5,56|455|0xd7f5e5", 90, 0, 0, 749, 1333)
+					x,y = findMultiColorInRegionFuzzy(0x000000, "59|4|0x000000,78|3|0x000000,33|156|0x9ce6bf,644|149|0x9ce6bf,311|155|0xd7f5e5,373|157|0xd7f5e5,316|-228|0x353535,340|-220|0x353535,434|-227|0x353535", 90, 0, 0, 750, 1334, { orient = 2 })
 					if x~=-1 and y~=-1 then
 						mSleep(math.random(500, 700))
 						randomTap(590,  482, 3)
@@ -1967,8 +2013,11 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 				end
 
 				mSleep(math.random(500, 700))
-				randomTap(546,  623,11)
-				mSleep(math.random(500, 700))
+				if getColor(280,642) == 0x9ce6bf or getColor(280,  642) == 0x07c160 then
+    				self:click(216,  623)
+    			else
+    				self:click(390,  511)
+    			end
 
 				login_error = false
 				--检查验证码是否正确
@@ -2692,12 +2741,24 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			self:myToast("切换语言")
 		end
 		
+		--高版本
 		if getColor(618,   80) == 0x9ce6bf then
 			self:click(327,  442)
 		end
 		
+		--高版本
 		if getColor(618,   80) == 0x07c160 then
 			self:click(618,   80, 4)
+		end
+		
+		--低版本
+		if getColor(583,   83) == 0x9ce6bf then
+			self:click(456,  312)
+		end
+		
+		--低版本
+		if getColor(583,   83) == 0x07c160 then
+			self:click(583,   83, 4)
 		end
 		
 		x,y = findMultiColorInRegionFuzzy( 0x07c160, "195|7|0x07c160,108|-3|0xffffff,133|4|0xffffff,-316|-1|0x06ae56,-263|3|0x06ae56,-244|3|0x06ae56,-225|8|0x06ae56", 90, 0, 0, 749, 1333)
@@ -4525,7 +4586,8 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				end
 			end
 
-			x,y = findMultiColorInRegionFuzzy( 0x353535, "134|0|0x353535,281|0|0x353535,52|63|0x353535,140|62|0x353535,-217|455|0x9ce6bf,312|443|0x9ce6bf,3|453|0xd7f5e5,56|455|0xd7f5e5", 90, 0, 0, 749, 1333)
+-- 			x,y = findMultiColorInRegionFuzzy( 0x353535, "134|0|0x353535,281|0|0x353535,52|63|0x353535,140|62|0x353535,-217|455|0x9ce6bf,312|443|0x9ce6bf,3|453|0xd7f5e5,56|455|0xd7f5e5", 90, 0, 0, 749, 1333)
+			x,y = findMultiColorInRegionFuzzy(0x000000, "59|4|0x000000,78|3|0x000000,33|156|0x9ce6bf,644|149|0x9ce6bf,311|155|0xd7f5e5,373|157|0xd7f5e5,316|-228|0x353535,340|-220|0x353535,434|-227|0x353535", 90, 0, 0, 750, 1334, { orient = 2 })
 			if x~=-1 and y~=-1 then
 				mSleep(200)
 				toast("短信界面",1)

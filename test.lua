@@ -2129,7 +2129,6 @@ end
 --mSleep(1000)
 
 
-
 --location_xy = location(userPath().."/res/微博.jpg")
 --xy = strSplit(location_xy,",")
 
@@ -2143,8 +2142,5 @@ end
 
 --nLog(x1 .. "===" .. y1 .. "===" .. x2 .. "===" .. y2)
 
-mSleep(50)
-mSleep(50)
-			x,y = findMultiColorInRegionFuzzy(0x576b95, "18|1|0x576b95,55|0|0x576b95,56|8|0x576b95,-27|-158|0x191919,-27|-139|0x191919,0|-145|0x191919,9|-144|0x191919,75|-145|0x191919,94|-142|0x191919", 90, 0, 0, 750, 1334, { orient = 2 })
-
-dialog(x .. "===" .. y,0)
+x,y = findMultiColorInRegionFuzzy( 0x353535, "134|0|0x353535,281|0|0x353535,52|63|0x353535,140|62|0x353535,-217|455|0x9ce6bf,312|443|0x9ce6bf,3|453|0xd7f5e5,56|455|0xd7f5e5", 90, 0, 0, 749, 1333)
+dialog(x .. "====" .. y, 0)
