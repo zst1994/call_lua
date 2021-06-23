@@ -2056,7 +2056,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			self:myToast("准备安全验证")
 			break
 		end
-		
+
 		mSleep(50)
 		x,y = findMultiColorInRegionFuzzy( 0x576b95, "19|0|0x576b95,26|0|0x576b95,68|-205|0x000000,84|-225|0x000000,105|-216|0x000000,125|-209|0x000000,144|-225|0x000000,178|-212|0x000000,186|-212|0x000000", 90, 0, 0, 749, 1333)
 		if x ~= -1 and y ~= -1 then
@@ -2667,14 +2667,14 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			self:click(372, 1105)
 			self:myToast("安全验证")
 		end
-		
+
 		mSleep(50)
 		x,y = findMultiColorInRegionFuzzy(0xfa5151, "54|-4|0xfa5151,26|-13|0xffffff,-126|809|0x07c160,177|815|0x07c160,9|808|0xffffff,69|809|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
-        if x ~= -1 then
-            self:myToast("System busy.Please try again")
-            tiaoma_next = true
-            break
-        end
+		if x ~= -1 then
+			self:myToast("System busy.Please try again")
+			tiaoma_next = true
+			break
+		end
 
 		--滑块失败重新刷新
 		mSleep(50)

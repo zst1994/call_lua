@@ -1994,9 +1994,10 @@ function model:mm()
 					end
 
 					mSleep(50)
-					x,y = findMultiColorInRegionFuzzy(0x323333, "-1|-35|0x323333,-78|-28|0x4b4c4c,-77|0|0x4b4c4c,-97|-14|0x4b4c4c,-61|-13|0x4b4c4c,-67|-13|0x4b4c4c,-41|-16|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+					--x,y = findMultiColorInRegionFuzzy(0x323333, "-1|-35|0x323333,-78|-28|0x4b4c4c,-77|0|0x4b4c4c,-97|-14|0x4b4c4c,-61|-13|0x4b4c4c,-67|-13|0x4b4c4c,-41|-16|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+					x,y = findMultiColorInRegionFuzzy( 0x323333, "0|11|0x323333,0|24|0x323333,0|17|0xffffff,0|5|0xffffff,0|-8|0xffffff,0|-13|0x323333,-20|5|0x323333,19|5|0x323333", 90, 0, 0, 749, 1333)
 					if x ~= -1 then
-						self:click(x, y - 20)
+						self:click(x, y)
 						self:myToast("进入设置",1500)
 						break
 					end
