@@ -736,7 +736,8 @@ function model:selectVpn()
 	while (true) do
 		mSleep(50)
 		if getColor(352,93) == 0x000000 and getColor(424,182) == 0xf2f2f7 then
-			self:click(370, 577, 1000)
+			mSleep(500)
+			self:click(390,  604, 1000)
 			self:vpn()
 			break
 		end
@@ -803,6 +804,10 @@ end
 
 function model:vpn()
 	::get_vpn::
+	if self.ajs_bid == "com.aijiasuinc.AiJiaSuClient" then
+		self:click(390,  604, 1000)
+	end
+
 	old_data = self:getIP() --获取IP
 	if old_data and old_data ~= "" then
 		toast(old_data, 1)
