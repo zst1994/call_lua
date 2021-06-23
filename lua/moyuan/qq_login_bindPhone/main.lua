@@ -2009,7 +2009,8 @@ function model:mm()
 					end
 				end
 			end
-
+            
+            ::to_again::
 			while (true) do
 			    mSleep(50)
 				x,y = findMultiColorInRegionFuzzy(0x323333, "-1|-35|0x323333,-78|-28|0x4b4c4c,-77|0|0x4b4c4c,-97|-14|0x4b4c4c,-61|-13|0x4b4c4c,-67|-13|0x4b4c4c,-41|-16|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
@@ -2028,6 +2029,18 @@ function model:mm()
 					moveTo(370,350,369,973,20,70)
 					mSleep(2000)
 				end
+			end
+			
+			while (true) do
+			    mSleep(50)
+			    if getColor(673,678) == 0xef7070 then
+			        self:click(62, 88)
+			        self:myToast("密码修改红色")
+			        goto to_again
+			    else 
+			        self:myToast("继续操作密码修改")
+			        break
+			    end
 			end
 		end
 

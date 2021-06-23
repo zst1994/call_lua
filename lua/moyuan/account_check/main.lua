@@ -183,16 +183,19 @@ function model:main()
 					self:click(108,  179)
 					toast("搜索",1)
 					mSleep(500)
+					break
 				end
-
+			end
+			
+            while (true) do
 				mSleep(200)
-				if getColor(77, 1243) ~= 0xffffff and getColor(52,  84) == 0xffffff then
+				if getColor(77, 1243) ~= 0xffffff and getColor(52,  84) == 0xffffff or getColor(77, 1243) ~= 0xffffff and getColor(52,132) == 0xffffff then
 					mSleep(200)
 					if getColor(362,798) == 0x3bb3fa then
 					    mSleep(200)
-					    if isColor(76,1056,0x6cdaed,90) then --90 为模糊值，值越大要求的精确度越高
+					    if isColor(76,1056,0x6cdaed,90) or isColor(76,1056,0xa0e6f3,90) then --90 为模糊值，值越大要求的精确度越高
                             self.sex = "男"
-                        elseif isColor(72,1027,0xfe81bc,90) then --90 为模糊值，值越大要求的精确度越高
+                        elseif isColor(72,1027,0xfe81bc,90) or isColor(72,1027,0xfca7d0,90) then --90 为模糊值，值越大要求的精确度越高
                             self.sex = "女"
                         end
 					
@@ -226,7 +229,11 @@ function model:main()
 						if getColor(55,  184) == 0xffaf1a and getColor(108,  179) == 0x000000 then
 							self:click(678,   78)
 						else
-							self:click(52,   84)
+						    if getColor(52,  84) == 0xffffff then
+							    self:click(52,   84)
+							else
+							    self:click(52, 132)
+						    end
 						end
 					end
 					break
