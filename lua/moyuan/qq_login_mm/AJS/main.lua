@@ -528,6 +528,7 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 	while true do
 		mSleep(500)
 		--一键新机
+		::newApp_again::
 		if AMG.New() == true then
 			while true do
 				mSleep(50)
@@ -543,6 +544,11 @@ function model:newMMApp(sysVersion, sysPhoneType, gpsAddress, editorWay)
 					toast("我知道了",1)
 					mSleep(500)
 				end
+				
+				mSleep(50)
+        		if isFrontApp(self.awz_bid) == 0 then
+        			goto newApp_again
+        		end
 
 				self:vpn_connection("0")
 			end
