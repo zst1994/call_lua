@@ -751,6 +751,7 @@ function model:ajs_vpn()
 	mSleep(1000)
 	
 	::ajs_again::
+	t1 = ts.ms()
 	while (true) do
 		mSleep(50)
 		if getColor(374,390) == 0x4580ff and getColor(374,438) == 0x4580ff then
@@ -761,14 +762,28 @@ function model:ajs_vpn()
 			setVPNEnable(false)
 			mSleep(2000)
 		end
+		
+		if self:timeOutRestart(t1) then
+			self:index()
+		end
 	end
-
+	
+	t1 = ts.ms()
 	while (true) do
+		mSleep(50)
+		if getColor(374,390) == 0x4580ff and getColor(374,438) == 0x4580ff then
+			self:click(469, 866)
+		end
+		
 		mSleep(50)
 		if getColor(646,344) == 0xf5f5f5 then
 			break
 		elseif getColor(216,181) == 0xf5f5f5 then
 			self:click(458, 271)
+		end
+		
+		if self:timeOutRestart(t1) then
+			self:index()
 		end
 	end
 
@@ -779,7 +794,8 @@ function model:ajs_vpn()
 		moveTowards(404,1194,90,100,10)
 		mSleep(1000)
 	end
-
+	
+	t1 = ts.ms()
 	while (true) do
 		mSleep(50)
 		if getColor(423,415) == 0x467dff and getColor(334,444) == 0x467dff then
@@ -798,6 +814,10 @@ function model:ajs_vpn()
 		if x ~= -1 then
 			self:myToast("网络未知，重新选择")
 			goto ajs_again
+		end
+		
+		if self:timeOutRestart(t1) then
+			self:index()
 		end
 	end
 end
@@ -3207,14 +3227,14 @@ function model:main()
 			{
 				["type"] = "Label",
 				["text"] = "照片文件夹路径是在触动res下，文件夹名字是picFile",
-				["size"] = 20,
+				["size"] = 15,
 				["align"] = "center",
 				["color"] = "255,0,0"
 			},
 			{
 				["type"] = "Label",
 				["text"] = "号码文件路径是在触动res下，文件名字是phoneNum.txt",
-				["size"] = 20,
+				["size"] = 15,
 				["align"] = "center",
 				["color"] = "255,0,0"
 			},

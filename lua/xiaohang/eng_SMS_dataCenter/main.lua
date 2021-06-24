@@ -144,7 +144,7 @@ end
 function model:changeGWIP(ip_userName,ip_country)
 	setVPNEnable(false)
 	self:myToast(ip_country)
-	
+
 	while true do
 		mSleep(200)
 		list = readFile(userPath().."/res/phone_num.txt")
@@ -811,16 +811,17 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 							end
 							mSleep(math.random(2000, 3000))
 							if getColor(280,642) == 0x9ce6bf then
-    							randomsTap(372,  749, 3)
-    						else
-    							randomsTap(372,  622, 3)
-    						end
+								randomsTap(372,  749, 3)
+							else
+								randomsTap(372,  622, 3)
+							end
 							mSleep(math.random(1000, 1500))
 							randomTap(368, 1039,5)
 							mSleep(math.random(3000, 5000))
 							while (true) do
 								mSleep(500)
-								if getColor(369,  614) == 0x9ce6bf and getColor(374,  668) == 0x9ce6bf then
+								if getColor(369,  614) == 0x9ce6bf and getColor(374,  668) == 0x9ce6bf 
+								or getColor(310,  480) == 0x9ce6bf and getColor(328,  545) == 0x9ce6bf then
 									break
 								else
 									toast("等待验证码重新发送",1)
@@ -990,16 +991,17 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 								end
 								mSleep(math.random(2000, 3000))
 								if getColor(280,642) == 0x9ce6bf then
-        							randomsTap(372,  749, 3)
-        						else
-        							randomsTap(372,  622, 3)
-        						end
+									randomsTap(372,  749, 3)
+								else
+									randomsTap(372,  622, 3)
+								end
 								mSleep(math.random(1000, 1500))
 								randomTap(368, 1039,5)
 								mSleep(math.random(3000, 5000))
 								while (true) do
 									mSleep(500)
-									if getColor(369,  614) == 0x9ce6bf and getColor(374,  668) == 0x9ce6bf then
+									if getColor(369,  614) == 0x9ce6bf and getColor(374,  668) == 0x9ce6bf 
+									or getColor(310,  480) == 0x9ce6bf and getColor(328,  545) == 0x9ce6bf then
 										break
 									else
 										toast("等待验证码重新发送",1)
@@ -1071,16 +1073,17 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 								end
 								mSleep(math.random(2000, 3000))
 								if getColor(280,642) == 0x9ce6bf then
-        							randomsTap(372,  749, 3)
-        						else
-        							randomsTap(372,  622, 3)
-        						end
+									randomsTap(372,  749, 3)
+								else
+									randomsTap(372,  622, 3)
+								end
 								mSleep(math.random(1000, 1500))
 								randomTap(368, 1039,5)
 								mSleep(math.random(3000, 5000))
 								while (true) do
 									mSleep(500)
-									if getColor(369,  614) == 0x9ce6bf and getColor(374,  668) == 0x9ce6bf then
+									if getColor(369,  614) == 0x9ce6bf and getColor(374,  668) == 0x9ce6bf 
+									or getColor(310,  480) == 0x9ce6bf and getColor(328,  545) == 0x9ce6bf then
 										break
 									else
 										toast("等待验证码重新发送",1)
@@ -1154,16 +1157,17 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 								end
 								mSleep(math.random(2000, 3000))
 								if getColor(280,642) == 0x9ce6bf then
-        							randomsTap(372,  749, 3)
-        						else
-        							randomsTap(372,  622, 3)
-        						end
+									randomsTap(372,  749, 3)
+								else
+									randomsTap(372,  622, 3)
+								end
 								mSleep(math.random(1000, 1500))
 								randomTap(368, 1039,5)
 								mSleep(math.random(3000, 5000))
 								while (true) do
 									mSleep(500)
-									if getColor(369,  614) == 0x9ce6bf and getColor(374,  668) == 0x9ce6bf then
+									if getColor(369,  614) == 0x9ce6bf and getColor(374,  668) == 0x9ce6bf 
+									or getColor(310,  480) == 0x9ce6bf and getColor(328,  545) == 0x9ce6bf then
 										break
 									else
 										toast("等待验证码重新发送",1)
@@ -1233,16 +1237,17 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 								end
 								mSleep(math.random(2000, 3000))
 								if getColor(280,642) == 0x9ce6bf then
-        							randomsTap(372,  749, 3)
-        						else
-        							randomsTap(372,  622, 3)
-        						end
+									randomsTap(372,  749, 3)
+								else
+									randomsTap(372,  622, 3)
+								end
 								mSleep(math.random(1000, 1500))
 								randomTap(368, 1039,5)
 								mSleep(math.random(3000, 5000))
 								while (true) do
 									mSleep(500)
-									if getColor(369,  614) == 0x9ce6bf and getColor(374,  668) == 0x9ce6bf then
+									if getColor(369,  614) == 0x9ce6bf and getColor(374,  668) == 0x9ce6bf 
+									or getColor(310,  480) == 0x9ce6bf and getColor(328,  545) == 0x9ce6bf then
 										break
 									else
 										toast("等待验证码重新发送",1)
@@ -1306,16 +1311,17 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 								end
 								mSleep(math.random(2000, 3000))
 								if getColor(280,642) == 0x9ce6bf then
-        							randomsTap(372,  749, 3)
-        						else
-        							randomsTap(372,  622, 3)
-        						end
+									randomsTap(372,  749, 3)
+								else
+									randomsTap(372,  622, 3)
+								end
 								mSleep(math.random(1000, 1500))
 								randomTap(368, 1039,5)
 								mSleep(math.random(3000, 5000))
 								while (true) do
 									mSleep(500)
-									if getColor(369,  614) == 0x9ce6bf and getColor(374,  668) == 0x9ce6bf then
+									if getColor(369,  614) == 0x9ce6bf and getColor(374,  668) == 0x9ce6bf 
+									or getColor(310,  480) == 0x9ce6bf and getColor(328,  545) == 0x9ce6bf then
 										break
 									else
 										toast("等待验证码重新发送",1)
@@ -1389,7 +1395,8 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 						mSleep(math.random(3000, 5000))
 						while (true) do
 							mSleep(500)
-							if getColor(369,  614) == 0x9ce6bf and getColor(374,  668) == 0x9ce6bf then
+							if getColor(369,  614) == 0x9ce6bf and getColor(374,  668) == 0x9ce6bf 
+							or getColor(310,  480) == 0x9ce6bf and getColor(328,  545) == 0x9ce6bf then
 								break
 							else
 								toast("等待验证码重新发送",1)
@@ -1505,7 +1512,8 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 						mSleep(math.random(3000, 5000))
 						while (true) do
 							mSleep(500)
-							if getColor(369,  614) == 0x9ce6bf and getColor(374,  668) == 0x9ce6bf then
+							if getColor(369,  614) == 0x9ce6bf and getColor(374,  668) == 0x9ce6bf 
+							or getColor(310,  480) == 0x9ce6bf and getColor(328,  545) == 0x9ce6bf then
 								break
 							else
 								toast("等待验证码重新发送",1)
@@ -1693,16 +1701,17 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 									end
 									mSleep(math.random(2000, 3000))
 									if getColor(280,642) == 0x9ce6bf then
-            							randomsTap(372,  749, 3)
-            						else
-            							randomsTap(372,  622, 3)
-            						end
+										randomsTap(372,  749, 3)
+									else
+										randomsTap(372,  622, 3)
+									end
 									mSleep(math.random(1000, 1500))
 									randomTap(368, 1039,5)
 									mSleep(math.random(3000, 5000))
 									while (true) do
 										mSleep(500)
-										if getColor(369,  614) == 0x9ce6bf and getColor(374,  668) == 0x9ce6bf then
+										if getColor(369,  614) == 0x9ce6bf and getColor(374,  668) == 0x9ce6bf 
+										or getColor(310,  480) == 0x9ce6bf and getColor(328,  545) == 0x9ce6bf then
 											break
 										else
 											toast("等待验证码重新发送",1)
@@ -1782,16 +1791,17 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 								end
 								mSleep(math.random(2000, 3000))
 								if getColor(280,642) == 0x9ce6bf then
-        							randomsTap(372,  749, 3)
-        						else
-        							randomsTap(372,  622, 3)
-        						end
+									randomsTap(372,  749, 3)
+								else
+									randomsTap(372,  622, 3)
+								end
 								mSleep(math.random(1000, 1500))
 								randomTap(368, 1039,5)
 								mSleep(math.random(3000, 5000))
 								while (true) do
 									mSleep(500)
-									if getColor(369,  614) == 0x9ce6bf and getColor(374,  668) == 0x9ce6bf then
+									if getColor(369,  614) == 0x9ce6bf and getColor(374,  668) == 0x9ce6bf 
+									or getColor(310,  480) == 0x9ce6bf and getColor(328,  545) == 0x9ce6bf then
 										break
 									else
 										toast("等待验证码重新发送",1)
@@ -1868,7 +1878,8 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 						mSleep(math.random(3000, 5000))
 						while (true) do
 							mSleep(500)
-							if getColor(369,  614) == 0x9ce6bf and getColor(374,  668) == 0x9ce6bf then
+							if getColor(369,  614) == 0x9ce6bf and getColor(374,  668) == 0x9ce6bf 
+							or getColor(310,  480) == 0x9ce6bf and getColor(328,  545) == 0x9ce6bf then
 								break
 							else
 								toast("等待验证码重新发送",1)
@@ -1927,7 +1938,7 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 				if login_times == "1" then
 					if gn and not tiaoma_bool then
 						mSleep(2000)
---						self:change_GNvpn()
+						--						self:change_GNvpn()
 						mSleep(1000)
 						gn = false
 					end
@@ -1941,7 +1952,7 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 				end
 
 				while true do
-				-- 	x,y = findMultiColorInRegionFuzzy( 0x353535, "134|0|0x353535,281|0|0x353535,52|63|0x353535,140|62|0x353535,-217|455|0x9ce6bf,312|443|0x9ce6bf,3|453|0xd7f5e5,56|455|0xd7f5e5", 90, 0, 0, 749, 1333)
+					-- 	x,y = findMultiColorInRegionFuzzy( 0x353535, "134|0|0x353535,281|0|0x353535,52|63|0x353535,140|62|0x353535,-217|455|0x9ce6bf,312|443|0x9ce6bf,3|453|0xd7f5e5,56|455|0xd7f5e5", 90, 0, 0, 749, 1333)
 					x,y = findMultiColorInRegionFuzzy(0x000000, "59|4|0x000000,78|3|0x000000,33|156|0x9ce6bf,644|149|0x9ce6bf,311|155|0xd7f5e5,373|157|0xd7f5e5,316|-228|0x353535,340|-220|0x353535,434|-227|0x353535", 90, 0, 0, 750, 1334, { orient = 2 })
 					if x~=-1 and y~=-1 then
 						mSleep(math.random(500, 700))
@@ -2014,10 +2025,10 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 
 				mSleep(math.random(500, 700))
 				if getColor(280,642) == 0x9ce6bf or getColor(280,  642) == 0x07c160 then
-    				self:click(216,  623)
-    			else
-    				self:click(390,  511)
-    			end
+					self:click(216,  623)
+				else
+					self:click(390,  511)
+				end
 
 				login_error = false
 				--检查验证码是否正确
@@ -2732,7 +2743,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 	mSleep(200)
 	runApp(self.wc_bid)
 	mSleep(500)
-	
+
 	--切换语言
 	while (true) do
 		x,y = findMultiColorInRegionFuzzy( 0xffffff, "42|1|0xffffff,-89|0|0x07c160,117|-3|0x07c160,9|-31|0x07c160,-1|33|0x07c160,-361|-4|0x06ae56,-324|3|0x06ae56,-325|-13|0x06ae56,-455|2|0xffffff", 90, 0, 0, 749, 1333)
@@ -2740,27 +2751,27 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			self:click(660, 87)
 			self:myToast("切换语言")
 		end
-		
+
 		--高版本
 		if getColor(618,   80) == 0x9ce6bf then
 			self:click(327,  442)
 		end
-		
+
 		--高版本
 		if getColor(618,   80) == 0x07c160 then
 			self:click(618,   80, 4)
 		end
-		
+
 		--低版本
 		if getColor(583,   83) == 0x9ce6bf then
 			self:click(456,  312)
 		end
-		
+
 		--低版本
 		if getColor(583,   83) == 0x07c160 then
 			self:click(583,   83, 4)
 		end
-		
+
 		x,y = findMultiColorInRegionFuzzy( 0x07c160, "195|7|0x07c160,108|-3|0xffffff,133|4|0xffffff,-316|-1|0x06ae56,-263|3|0x06ae56,-244|3|0x06ae56,-225|8|0x06ae56", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			self:click(x, y, 4)
@@ -2825,7 +2836,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				randomTap(328,1175,4)
 				mSleep(500)
 			end
-			
+
 			if getColor(258,84) == 0xefefef and getColor(249,199) == 0 then
 				mSleep(500)
 				randomTap(418,185,4)
@@ -3380,11 +3391,11 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		if nickName == "0" then  --英文
 			nickName = self:randomStr("`~#^&*-=!@$;/|QWERTYUIOPASDF`~#^&*-=!@$;/|GHJKLZXCVBNM`~#^&*-=!@$;/|qwertyuiopasd`~#^&*-=!@$;/|fghjklzxcvbnm`~#^&*-=!@$;/|", math.random(7, 10))
 		elseif nickName == "1" then  --特殊符号
---			inputStr("르㸏مฬ้๊سمرًς.έل")
+			--			inputStr("르㸏مฬ้๊سمرًς.έل")
 			nickName = "@"
 		end
 		writePasteboard(nickName)
-		
+
 		while true do
 			mSleep(200)
 			x,y = findMultiColorInRegionFuzzy( 0x000000, "0|12|0x000000,-9|23|0x000000,10|14|0x000000,22|14|0x000000,30|14|0x000000,39|14|0x000000,124|15|0x000000,136|15|0x000000,74|15|0x000000", 100, 0, 0, 749, 1333)
@@ -3402,14 +3413,14 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 
 	--国家／地区
 	while (true) do
--- 		--10
--- 		mSleep(200)
--- 		x, y = findMultiColorInRegionFuzzy(0x1a1a1a,"22|0|0x1a1a1a,27|27|0x1a1a1a,0|24|0x1a1a1a,14|12|0x1a1a1a,36|5|0x1a1a1a,64|4|0x1a1a1a", 90, 0, 0, 749, 431)
--- 		if x~=-1 and y~=-1 then
--- 			self:click(x + 120, y + 90)
--- 			break
--- 		end
-		
+		-- 		--10
+		-- 		mSleep(200)
+		-- 		x, y = findMultiColorInRegionFuzzy(0x1a1a1a,"22|0|0x1a1a1a,27|27|0x1a1a1a,0|24|0x1a1a1a,14|12|0x1a1a1a,36|5|0x1a1a1a,64|4|0x1a1a1a", 90, 0, 0, 749, 431)
+		-- 		if x~=-1 and y~=-1 then
+		-- 			self:click(x + 120, y + 90)
+		-- 			break
+		-- 		end
+
 		--11
 		mSleep(200)
 		x,y = findMultiColorInRegionFuzzy(0x000000, "4|-9|0x000000,5|-22|0x000000,28|-8|0x000000,54|-6|0x000000,62|-8|0x000000,91|-3|0x000000,103|-3|0x000000,0|172|0x000000,147|169|0x000000", 100, 0, 0, 750, 1334, { orient = 2 })
@@ -3587,11 +3598,11 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 
 	::change_again::
 	if localNetwork == "1" then
--- 		if vpn_country == "0" then
--- 			self:changeGNIP(ip_userName,place_id,iptimes)
--- 		elseif vpn_country == "1" then
--- 			self:changeGWIP(ip_userName,ip_country)
--- 		end
+		-- 		if vpn_country == "0" then
+		-- 			self:changeGNIP(ip_userName,place_id,iptimes)
+		-- 		elseif vpn_country == "1" then
+		-- 			self:changeGWIP(ip_userName,ip_country)
+		-- 		end
 
 		if fz_type ~= "3" then
 			ip = self:vpn()
@@ -3955,7 +3966,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 							end
 						end
 					end
-					
+
 					self:click(x, y - 117)
 					break
 				else
@@ -3979,7 +3990,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		if x~=-1 and y~=-1 then
 			self:click(x, y, math.random(3000, 5000))
 			self:myToast("手机号码错误")
-			
+
 			if api_change == "2" or api_change == "10" or api_change == "12" then
 				if api_change == "10" then
 					black_url = "http://web.jiemite.com/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..work_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
@@ -4083,13 +4094,13 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			ys_next = ys_next + 1
 		end
 
--- 		--欧盟国家
--- 		mSleep(200)
--- 		if getColor(289,1106) == 0x7c160 and getColor(372,1107) == 0xffffff then
--- 			self:click(289,1108)
--- 			self:myToast("下一步2")
--- 			ys_next = ys_next + 1
--- 		end
+		-- 		--欧盟国家
+		-- 		mSleep(200)
+		-- 		if getColor(289,1106) == 0x7c160 and getColor(372,1107) == 0xffffff then
+		-- 			self:click(289,1108)
+		-- 			self:myToast("下一步2")
+		-- 			ys_next = ys_next + 1
+		-- 		end
 
 		mSleep(200)
 		if getColor(353,  287) == 0x10aeff and getColor(304, 1105) == 0x07c160 then
@@ -4103,7 +4114,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		if x~=-1 and y~=-1 then
 			self:click(x, y, math.random(3000, 5000))
 			self:myToast("手机号码错误")
-			
+
 			if api_change == "2" or api_change == "10" or api_change == "12" then
 				if api_change == "10" then
 					black_url = "http://web.jiemite.com/yhapi.ashx?act=addBlack&token="..phone_token.."&iid="..work_id.."&mobile="..telphone.."&reason="..urlEncoder("获取失败")
@@ -4167,9 +4178,9 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		hk_url = self:get_hkUrl(country_num)
 		regid = string.match(hk_url, '%d+_%d+%d+%d+%d+%d+%d+%d+%d+%d+%d+%d+%d+%d+%d+%d+%d+%d+%d+%d+%d+')
 		hk_url = urlEncoder(hk_url)
-		
+
 		self:myToast(hk_url)
-		
+
 		::put_work::
 		header_send = {
 		}
@@ -4191,9 +4202,9 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 	elseif fz_type == "6" then
 		hk_url = self:get_hkUrl(country_num)
 		hk_url = urlEncoder(hk_url)
-		
+
 		self:myToast(hk_url)
-		
+
 		::put_work::
 		header_send = {
 		}
@@ -4310,14 +4321,14 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				self:myToast("安全验证")
 				safe = safe + 1
 			end
-			
+
 			mSleep(50)
 			x,y = findMultiColorInRegionFuzzy(0x576b95, "18|1|0x576b95,55|0|0x576b95,56|8|0x576b95,-27|-158|0x191919,-27|-139|0x191919,0|-145|0x191919,9|-144|0x191919,75|-145|0x191919,94|-142|0x191919", 90, 0, 0, 750, 1334, { orient = 2 })
-            if x ~= -1 then
-                self:click(x,y)
-                self:myToast("Can't find variable: Tencent-Captcha")
+			if x ~= -1 then
+				self:click(x,y)
+				self:myToast("Can't find variable: Tencent-Captcha")
 				goto gg
-            end
+			end
 
 			if safe > 40 then
 				self:click(56, 81)
@@ -4586,7 +4597,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				end
 			end
 
--- 			x,y = findMultiColorInRegionFuzzy( 0x353535, "134|0|0x353535,281|0|0x353535,52|63|0x353535,140|62|0x353535,-217|455|0x9ce6bf,312|443|0x9ce6bf,3|453|0xd7f5e5,56|455|0xd7f5e5", 90, 0, 0, 749, 1333)
+			-- 			x,y = findMultiColorInRegionFuzzy( 0x353535, "134|0|0x353535,281|0|0x353535,52|63|0x353535,140|62|0x353535,-217|455|0x9ce6bf,312|443|0x9ce6bf,3|453|0xd7f5e5,56|455|0xd7f5e5", 90, 0, 0, 749, 1333)
 			x,y = findMultiColorInRegionFuzzy(0x000000, "59|4|0x000000,78|3|0x000000,33|156|0x9ce6bf,644|149|0x9ce6bf,311|155|0xd7f5e5,373|157|0xd7f5e5,316|-228|0x353535,340|-220|0x353535,434|-227|0x353535", 90, 0, 0, 750, 1334, { orient = 2 })
 			if x~=-1 and y~=-1 then
 				mSleep(200)
@@ -5440,7 +5451,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 				end
 			end
 		elseif nickName == "1" then  --特殊符号
--- 			inputStr("르㸏مฬ้๊سمرًς.έل")
+			-- 			inputStr("르㸏مฬ้๊سمرًς.έل")
 			--检测是否有删除按钮
 			while (true) do
 				mSleep(200)
@@ -5526,14 +5537,14 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			break
 		end
 
--- 		mSleep(200)
--- 		x, y = findMultiColorInRegionFuzzy(0x1565fc,"1|14|0x1565fc,12|-4|0x1565fc,16|6|0x1565fc,12|21|0x1565fc,-174|-247|0", 90, 0, 0, 645,  845)
--- 		if x~=-1 and y~=-1 then
--- 			mSleep(500)
--- 			toast("通讯录匹配,等待8秒",1)
--- 			setVPNEnable(false)
--- 			break
--- 		end
+		-- 		mSleep(200)
+		-- 		x, y = findMultiColorInRegionFuzzy(0x1565fc,"1|14|0x1565fc,12|-4|0x1565fc,16|6|0x1565fc,12|21|0x1565fc,-174|-247|0", 90, 0, 0, 645,  845)
+		-- 		if x~=-1 and y~=-1 then
+		-- 			mSleep(500)
+		-- 			toast("通讯录匹配,等待8秒",1)
+		-- 			setVPNEnable(false)
+		-- 			break
+		-- 		end
 
 		--不是我的，继续注册
 		mSleep(50)
@@ -5632,15 +5643,15 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			end
 
 			goto gg
--- 			mSleep(500)
--- 			if fz_type == "3" then
--- 				goto run_app
--- 			else
--- 				goto over
--- 			end
+			-- 			mSleep(500)
+			-- 			if fz_type == "3" then
+			-- 				goto run_app
+			-- 			else
+			-- 				goto over
+			-- 			end
 		end
 	end
-	
+
 	mSleep(12000)
 	error_bool = false
 	get_wechatError_six = false
@@ -5654,13 +5665,13 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			break
 		end
 
--- 		mSleep(200)
--- 		x, y = findMultiColorInRegionFuzzy(0x1565fc,"1|14|0x1565fc,12|-4|0x1565fc,16|6|0x1565fc,12|21|0x1565fc,-174|-247|0", 90, 0, 0, 645,  845)
--- 		if x~=-1 and y~=-1 then
--- 			get_six_two = true
--- 			self:myToast("账号存活")
--- 			break
--- 		end
+		-- 		mSleep(200)
+		-- 		x, y = findMultiColorInRegionFuzzy(0x1565fc,"1|14|0x1565fc,12|-4|0x1565fc,16|6|0x1565fc,12|21|0x1565fc,-174|-247|0", 90, 0, 0, 645,  845)
+		-- 		if x~=-1 and y~=-1 then
+		-- 			get_six_two = true
+		-- 			self:myToast("账号存活")
+		-- 			break
+		-- 		end
 
 		mSleep(200)
 		if getColor(492, 1266) == 0x576b95 and getColor(561, 1262) == 0x576b95 then
