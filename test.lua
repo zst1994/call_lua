@@ -1,4 +1,5 @@
 local ts = require("ts")
+local plist 			= ts.plist
 local json = ts.json --使用 JSON 模組前必須插入這一句
 local sz = require("sz")
 local socket = require("socket")
@@ -2142,65 +2143,49 @@ end
 
 --nLog(x1 .. "===" .. y1 .. "===" .. x2 .. "===" .. y2)
 
-API               = "CkjuQGtZUNumzQvjgTQ082Ih"
-Secret            = "XsYel9kpUUhG3OwFHfu9h2cKbXlhPpzj"
-tab_CHN_ENG       = {
-	language_type = "CHN_ENG",
-	detect_direction = "true",
-	detect_language = "true",
-	ocrType = 1
-}
+function getData() --获取six-two-data (可以用的)
+				local getList = function(path) 
+					local a = io.popen("ls "..path) 
+					local f = {}; 
+					for l in a:lines() do 
+						table.insert(f,l) 
+					end 
+					return f 
+				end 
+				local Wildcard = getList("/var/mobile/Containers/Data/Application") 
+				for var = 1,#Wildcard do 
+					local file = io.open("/var/mobile/Containers/Data/Application/"..Wildcard[var].."/Library/WechatPrivate/wx.dat","rb") 
+					if file then 
+						local plfilename = "/var/mobile/Containers/Data/Application/"..Wildcard[var].."/Library/LocalInfo.lst" --设置plist路径
+						local tmp2 = plist.read(plfilename)                --读取 PLIST 文件内容并返回一个 TABLE
+						for k, v in pairs(tmp2) do
+							if k == "$objects" then
+								--在配置文件获取
+								--								for k1, v1 in pairs(v) do
+								--									if string.sub(tostring(v1), 1, 4) == "" then
+								--										wcid = v1
+								--										wc = v[k1 + 1]
+								--									end
+								--								end
+								for i = 3 ,5 do
+									if tonumber(v[i]) then
+										wc = v[i]
+										wcid = v[i-1]
+										break
+									end	
+								end	
+							end	
+						end
+						local str = file:read("*a") 
+						file:close() 
+						require"sz" 
+						local str = string.tohex(str) --16进制编码 
+						return str 
+					end 
+				end 
+			end 
 
 
-mSleep(200)
-    x,y = findMultiColorInRegionFuzzy(0x323333, "0|9|0x323333,0|18|0x323333,8|6|0x323333,8|18|0x323333,15|15|0x323333,24|15|0x323333,33|15|0x323333", 100, 11, 835, 445, 1036, { orient = 2 })
-    if x ~= -1 then
-        left_x = x + 57
-        left_y = y - 20
-        right_x = x + 183
-        right_y = y + 40
-    else
-        mSleep(200)
-        x,y = findMultiColorInRegionFuzzy(0x323333, "0|11|0x323333,0|18|0x323333,8|17|0x323333,7|8|0x323333,16|16|0x323333,24|16|0x323333,33|17|0x323333", 100, 11, 835, 445, 1036, { orient = 2 })
-        if x ~= -1 then
-            left_x = x + 57
-            left_y = y - 20
-            right_x = x + 183
-            right_y = y + 40
-        else
-            left_x = 0
-        end
-    end
-    
-    if left_x > 0 then
-        ::getBaiDuToken1::
-    	local code,access_token = getAccessToken(API,Secret)
-    	if code then
-    		::snap1::
-    		local content_name = userPath() .. "/res/baiduAI_content_name1.jpg"
-    
-    		--内容
-    		snapshot(content_name, left_x, left_y, right_x, right_y) 
-    		mSleep(500)
-    		local code, body = baiduAI(access_token,content_name,tab_CHN_ENG)
-    		if code then
-    			local tmp = json.decode(body)
-    			if #tmp.words_result > 0 then
-    				beforDay = string.lower(tmp.words_result[1].words)
-    			end
-    		else
-    			toast("识别失败\n" .. tostring(body),1)
-    			mSleep(1000)
-    			goto snap1
-    		end
-    
-    		if beforDay ~= nil and #beforDay >= 1 then
-    			toast("识别内容：\r\n" .. beforDay,1)
-    			mSleep(1000)
-    		end
-    	else
-    		toast("获取token失败",1)
-    		mSleep(1000)
-    		goto getBaiDuToken1
-    	end
-	end
+
+		nLog("62706c6973743030d4010203040506090a582476657273696f6e58246f626a65637473592461726368697665725424746f7012000186a0a2070855246e756c6c5f102031366161343638393563613434626537336266306237666662623531306636325f100f4e534b657965644172636869766572d10b0c54726f6f74800108111a232d32373a406375787d0000000000000101000000000000000d0000000000000000000000000000007f")
+	

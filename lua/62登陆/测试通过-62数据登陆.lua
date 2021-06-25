@@ -51,11 +51,14 @@ function _hexStringToFile(hex,file)
 		toast('error',1)
 		return
 	end
+	dialog(#hex, 0)
 	hex = string.match(hex,"(%w+)");
+	dialog(string.len(hex), 0)
 	for i = 1, string.len(hex),2 do
 		local code = string.sub(hex, i, i+1);
 		data =data..string.char(tonumber(code,16));
 	end
+	nLog(data)
 	local file = io.open(file, 'wb');
 	file:write(data);
 	file:close();
