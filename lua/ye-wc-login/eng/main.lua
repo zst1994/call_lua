@@ -16,6 +16,7 @@ model.awz_bid 			= ""
 model.axj_bid			= ""
 model.awz_newUrl        = ""
 model.awz_getparam      = ""
+model.awz_deleterec     = ""
 
 model.newIndex          = "0"
 
@@ -273,6 +274,21 @@ function model:clear_App()
 			goto run_again
 		end
 	end
+	
+	::deleteallrecords::
+	local sz = require("sz");
+	local http = require("szocket.http")
+	local res, code = http.request(self.awz_deleterec)
+	if code == 200 then
+		local resJson = sz.json.decode(res)
+		local result = resJson.result
+		if result == 1 then
+			self:myToast("备份清除成功")
+		else 
+			self:myToast("失败，请手动查看问题：" .. res, 4000)
+			goto deleteallrecords
+		end
+	end
 
 	if self.newIndex == "0" then
 		::new_phone::
@@ -353,6 +369,7 @@ function model:getConfig()
 		else
 			self.axj_bid = self.awz_bid
 		end
+		self.awz_deleterec = string.gsub(tab[8],"%s+","")
 		self:myToast("获取配置信息成功")
 	else
 		dialog("文件不存在,请检查配置文件路径",5)
@@ -3001,6 +3018,11 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			first_time = os.time()
 
 			::caozuo_more::
+			if content_type == "3" then
+		        setVPNEnable(false)
+		        mSleep(3000)
+			end
+	    
 			if caozuo_more then
 				mSleep(200)
 				if  getColor(522,770) == 0x576b95 then
@@ -4599,6 +4621,10 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			end
 
 			if tonumber(mess_yzm) ~= tonumber(old_mess_yzm) then
+			    if content_type == "3" then
+			        self:vpn()
+			    end
+		        
 				self:myToast(mess_yzm, math.random(1000, 1700))
 
 				if getColor(280,642) == 0x9ce6bf then

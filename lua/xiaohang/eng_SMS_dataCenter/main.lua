@@ -700,7 +700,11 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 				end
 				setVPNEnable(false)
 				mSleep(5000)
-				randomTap(412, 489,5)
+				if getColor(280,642) == 0x9ce6bf then
+					randomTap(412, 489, 5)
+				else
+					randomsTap(426,  362, 3)
+				end
 				mSleep(math.random(500, 700))
 				toast("接收短信中",1)
 				break
@@ -1938,7 +1942,7 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 				if login_times == "1" then
 					if gn and not tiaoma_bool then
 						mSleep(2000)
-						--						self:change_GNvpn()
+--						self:change_GNvpn()
 						mSleep(1000)
 						gn = false
 					end
@@ -1956,15 +1960,24 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 					x,y = findMultiColorInRegionFuzzy(0x000000, "59|4|0x000000,78|3|0x000000,33|156|0x9ce6bf,644|149|0x9ce6bf,311|155|0xd7f5e5,373|157|0xd7f5e5,316|-228|0x353535,340|-220|0x353535,434|-227|0x353535", 90, 0, 0, 750, 1334, { orient = 2 })
 					if x~=-1 and y~=-1 then
 						mSleep(math.random(500, 700))
-						randomTap(590,  482, 3)
-						mSleep(math.random(1000, 1500))
+						if getColor(280,642) == 0x9ce6bf then
+						    self:click(590,  482, 1000)
+        				else
+        				    self:click(590,  362, 1000)
+        				end
 						break
 					end
 
 					if getColor(260,641) == 0x07c160 then
-						mSleep(500)
-						randomTap(590,  482, 3)
-						mSleep(1000)
+					    self:click(590,  482, 1000)
+						for var= 1, 10 do
+							mSleep(50)
+							keyDown("DeleteOrBackspace")
+							mSleep(50)
+							keyUp("DeleteOrBackspace")
+						end
+					elseif getColor(260,508) == 0x07c160 then
+					    self:click(590,  362, 1000)
 						for var= 1, 10 do
 							mSleep(50)
 							keyDown("DeleteOrBackspace")
@@ -2056,8 +2069,10 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 						aodi_bool = true
 						goto reset_codes
 					end
-
-					x,y = findMultiColorInRegionFuzzy( 0x576b95, "-28|3|0x576b95,-136|-177|0x000000,-66|-179|0x000000,54|-175|0x000000,199|-180|0x000000", 90, 0, 0, 749, 1333)
+                    
+                    --环境异常
+				    -- 	x,y = findMultiColorInRegionFuzzy( 0x576b95, "-28|3|0x576b95,-136|-177|0x000000,-66|-179|0x000000,54|-175|0x000000,199|-180|0x000000", 90, 0, 0, 749, 1333)
+					x,y = findMultiColorInRegionFuzzy(0x576b95, "18|-1|0x576b95,25|0|0x576b95,189|-198|0x000000,197|-176|0x000000,204|-198|0x000000,210|-182|0x000000,25|-144|0x000000,46|-138|0x000000,87|-137|0x000000,-172|-183|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
 					if x~=-1 and y~=-1 then
 						setVPNEnable(false)
 						mSleep(3000)
@@ -5418,7 +5433,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			x, y = findMultiColorInRegionFuzzy(0x6ae56,"47|-11|0x6ae56,-98|-24|0x6ae56,-223|-18|0xededed,285|-15|0xededed", 90, 0, 0, 749,  1333)
 			if x~=-1 and y~=-1 then
 				mSleep(math.random(500, 700))
-				randomTap(375,782,8)
+				randomTap(x, y, 8)
 				mSleep(math.random(500, 700))
 				toast("不是我的，继续注册2",1)
 			end
@@ -5557,7 +5572,7 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 		mSleep(50)
 		x, y = findMultiColorInRegionFuzzy(0x6ae56,"47|-11|0x6ae56,-98|-24|0x6ae56,-223|-18|0xededed,285|-15|0xededed", 90, 0, 0, 749,  1333)
 		if x~=-1 and y~=-1 then
-			self:click(375,782)
+			self:click(x, y)
 			self:myToast("不是我的，继续注册2")
 		end
 
@@ -5600,9 +5615,10 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			end
 		end
 
-		--注册异常
+		--环境异常
 		mSleep(50)
-		x,y = findMultiColorInRegionFuzzy( 0x576b95, "-28|3|0x576b95,-136|-177|0x000000,-66|-179|0x000000,54|-175|0x000000,199|-180|0x000000", 90, 0, 0, 749, 1333)
+-- 		x,y = findMultiColorInRegionFuzzy( 0x576b95, "-28|3|0x576b95,-136|-177|0x000000,-66|-179|0x000000,54|-175|0x000000,199|-180|0x000000", 90, 0, 0, 749, 1333)
+		x,y = findMultiColorInRegionFuzzy(0x576b95, "18|-1|0x576b95,25|0|0x576b95,189|-198|0x000000,197|-176|0x000000,204|-198|0x000000,210|-182|0x000000,25|-144|0x000000,46|-138|0x000000,87|-137|0x000000,-172|-183|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
 		if x~=-1 and y~=-1 then
 			setVPNEnable(false)
 			mSleep(3000)

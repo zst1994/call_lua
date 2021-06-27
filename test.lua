@@ -1,12 +1,12 @@
-local ts = require("ts")
-local plist 			= ts.plist
-local json = ts.json --使用 JSON 模組前必須插入這一句
-local sz = require("sz")
-local socket = require("socket")
-local http = require("szocket.http")
-require("TSLib")
-local sqlite3 = sz.sqlite3
-local http              = sz.i82.http
+-- local ts = require("ts")
+-- local plist 			= ts.plist
+-- local json = ts.json --使用 JSON 模組前必須插入這一句
+-- local sz = require("sz")
+-- local socket = require("socket")
+-- local http = require("szocket.http")
+-- require("TSLib")
+-- local sqlite3 = sz.sqlite3
+-- local http              = sz.i82.http
 
 --local sz = require("sz")
 --local cjson = sz.json
@@ -2143,49 +2143,177 @@ end
 
 --nLog(x1 .. "===" .. y1 .. "===" .. x2 .. "===" .. y2)
 
-function getData() --获取six-two-data (可以用的)
-				local getList = function(path) 
-					local a = io.popen("ls "..path) 
-					local f = {}; 
-					for l in a:lines() do 
-						table.insert(f,l) 
-					end 
-					return f 
-				end 
-				local Wildcard = getList("/var/mobile/Containers/Data/Application") 
-				for var = 1,#Wildcard do 
-					local file = io.open("/var/mobile/Containers/Data/Application/"..Wildcard[var].."/Library/WechatPrivate/wx.dat","rb") 
-					if file then 
-						local plfilename = "/var/mobile/Containers/Data/Application/"..Wildcard[var].."/Library/LocalInfo.lst" --设置plist路径
-						local tmp2 = plist.read(plfilename)                --读取 PLIST 文件内容并返回一个 TABLE
-						for k, v in pairs(tmp2) do
-							if k == "$objects" then
-								--在配置文件获取
-								--								for k1, v1 in pairs(v) do
-								--									if string.sub(tostring(v1), 1, 4) == "" then
-								--										wcid = v1
-								--										wc = v[k1 + 1]
-								--									end
-								--								end
-								for i = 3 ,5 do
-									if tonumber(v[i]) then
-										wc = v[i]
-										wcid = v[i-1]
-										break
-									end	
-								end	
-							end	
-						end
-						local str = file:read("*a") 
-						file:close() 
-						require"sz" 
-						local str = string.tohex(str) --16进制编码 
-						return str 
-					end 
-				end 
-			end 
+local t,sz = pcall(require,"sz")
+local http,ltn12
+local username,password,yzmId,token
+token=""
+if t then
+	http = require"szocket.http"
+	ltn12 = require"ltn12"
+	else
+	http = require"socket.http"
+	ltn12 = require"ltn12"
+end
+http.TIMEOUT=60
+
+function lzPoint(user, pwd)
+	local response_body = {}
+	local post_data = string.format("user_name=%s&user_pw=%s", user, pwd);  
+	res, code = http.request{  
+		url = "http://v1-http-api.jsdama.com/api.php?mod=php&act=point",  
+		method = "POST",  
+		headers =   
+		{  
+			["Content-Type"] = "application/x-www-form-urlencoded",  
+			["Content-Length"] = #post_data,  
+		},  
+		source = ltn12.source.string(post_data),  
+		sink = ltn12.sink.table(response_body)  
+	}
+	--解析返回结果
+	local strExp = "data\":(.*)}";
+	local strBody = table.concat(response_body);
+	local strResult = string.match(strBody, strExp);
+	return strResult;
+end
+
+--图片识别
+local function lzRecoginze(user, pwd, imagefile, yzmtype)
+	local pBuffer = lzReadFileByte(imagefile);
+	local rq = {
+		user_name = user,
+		user_pw = pwd,
+		yzm_minlen = "0",
+		yzm_maxlen = "0",
+		yzmtype_mark = tostring(yzmtype),
+		zztool_token = token,
+		upload = { filename = "yzm.jpg", content_type = "image/jpeg", data = pBuffer }
+	};
+	local response_body = {};
+	local boundary = gen_boundary();
+	local post_data, bb = encode(rq, boundary);
+	res, code = http.request{  
+		url = "http://v1-http-api.jsdama.com/api.php?mod=php&act=upload",  
+		method = "POST",  
+		headers =   
+		{  
+			["Content-Type"] = fmt("multipart/form-data; boundary=%s", boundary),  
+			["Content-Length"] = #post_data,  
+		},  
+		source = ltn12.source.string(post_data),  
+		sink = ltn12.sink.table(response_body)
+	}	
+	--解析返回结果
+	local strBody = table.concat(response_body);
+	local bl,tbody=pcall(sz.json.decode,strBody)
+	if bl then
+		if tbody.result==true then
+			local id, vcode = tbody.data.id,tbody.data.val
+			if (id == nil or vcode == nil) then
+				return false, id, vcode;
+			else
+				return true, id, vcode;
+			end
+		else 
+			return false,nil,nil,tbody.data
+		end
+	else 
+		return bl,nil,nil,"服务器返回json错误"
+	end
+end
+
+
+function info(user,pwd,tk)
+	username=user;password=pwd;token=tk or token
+end
+
+
+function lzBalance()
+	return lzPoint(username, password)
+end
+
+function lzReadFileByte(file)
+	local f = io.open(file,"rb")
+	local retbyte = f:read("*all")
+	f:close()
+	return retbyte
+end
+
+function gen_boundary()
+	local t = {"BOUNDARY-"}
+	for i=2,17 do t[i] = string.char(math.random(65, 90)) end
+	t[18] = "-BOUNDARY"
+	return table.concat(t)
+end
+
+function lzRecoginze(user, pwd, imagefile, yzmtype)
+	local pBuffer = lzReadFileByte(imagefile);
+	local rq = {
+		user_name = user,
+		user_pw = pwd,
+		yzm_minlen = "0",
+		yzm_maxlen = "0",
+		yzmtype_mark = tostring(yzmtype),
+		zztool_token = token,
+		upload = { filename = "yzm.jpg", content_type = "image/jpeg", data = pBuffer }
+	};
+	local response_body = {};
+	local boundary = gen_boundary();
+	local post_data, bb = encode(rq, boundary);
+	res, code = http.request{  
+		url = "http://v1-http-api.jsdama.com/api.php?mod=php&act=upload",  
+		method = "POST",  
+		headers =   
+		{  
+			["Content-Type"] = fmt("multipart/form-data; boundary=%s", boundary),  
+			["Content-Length"] = #post_data,  
+		},  
+		source = ltn12.source.string(post_data),  
+		sink = ltn12.sink.table(response_body)
+	}	
+	--解析返回结果
+	local strBody = table.concat(response_body);
+	local bl,tbody=pcall(sz.json.decode,strBody)
+	if bl then
+		if tbody.result==true then
+			local id, vcode = tbody.data.id,tbody.data.val
+			if (id == nil or vcode == nil) then
+				return false, id, vcode;
+			else
+				return true, id, vcode;
+			end
+		else 
+			return false,nil,nil,tbody.data
+		end
+	else 
+		return bl,nil,nil,"服务器返回json错误"
+	end
+end
+
+function ocrImage(path,type,timeout)
+	http.TIMEOUT = timeout or 30
+	local lzRe, yzmid, jieguo,err=lzRecoginze(username, password, path,type)
+	if lzRe then yzmId=yzmid return jieguo,yzmid else return nil,err end
+end
+
+function lzScreen(x1,y1,x2,y2,type,timeout,scale)
+	scale=scale or 1
+	local path=userPath().."/res/lztmp.png"
+	snapshot("lztmp.png",x1,y1,x2,y2,scale)
+	local ret1,ret2=ocrImage(path,type,timeout)
+	os.remove(path)
+	return ret1,ret2
+end
+
+-- info("cx3881156cx", "Cx940912.")
+
+-- nLog(lzBalance())
+-- a,b = lzScreen(40,312,696,1060,"1303",60)
+-- nLog(a)
+-- nLog(b)
 
 
 
-		nLog("62706c6973743030d4010203040506090a582476657273696f6e58246f626a65637473592461726368697665725424746f7012000186a0a2070855246e756c6c5f102031366161343638393563613434626537336266306237666662623531306636325f100f4e534b657965644172636869766572d10b0c54726f6f74800108111a232d32373a406375787d0000000000000101000000000000000d0000000000000000000000000000007f")
-	
+
+-- dialog(lz.ocrImage(imagefile,yzmtype,timeout),0)
+-- dialog(lz.ocrReportError())

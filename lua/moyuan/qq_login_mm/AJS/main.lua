@@ -1463,62 +1463,62 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				goto sy
 			end
 
---			mSleep(100)
---			if getColor(74,  464) == 0x000000 and getColor(676, 258) ~= 0xffffff then
---				-- if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) == 0x808080 or getColor(676,258) == 0x818181 or getColor(78,468) == 0x000000 
---				-- or getColor(676,  257) == 0x7f7f7f or getColor(78,468) == 0x000000 then
---				if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) ~= 0xffffff then
---					-- 你的账号暂时无法登陆，请点击这里恢复正常使用
---					if getColor(655,211) == 0xffffff then
---						toast("你的账号暂时无法登陆，请点击这里恢复正常使用", 1)
---						mSleep(500)
---						table.remove(self.qqList, 1)
---						writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
---						-- writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
---						self:getAccount()
---						self:clear_input()
---						inputAgain = true
---						-- 		goto hk
---						--					goto over
---						--当前网络环境存在风险
---					elseif getColor(683,209) == 0xffffff then
---						if selectWay == "0" then
---							toast("当前网络环境存在风险", 1)
---							mSleep(500)
---							writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
---							table.remove(self.qqList, 1)
---							writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
---							goto over
---							-- 			setVPNEnable(false)
---							-- 			mSleep(2000)
---							-- 			self:vpn()
+			mSleep(100)
+			if getColor(74,  464) == 0x000000 and getColor(676, 258) ~= 0xffffff then
+				-- if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) == 0x808080 or getColor(676,258) == 0x818181 or getColor(78,468) == 0x000000 
+				-- or getColor(676,  257) == 0x7f7f7f or getColor(78,468) == 0x000000 then
+				if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) ~= 0xffffff then
+					-- 你的账号暂时无法登陆，请点击这里恢复正常使用
+					if getColor(655,211) == 0xffffff then
+						toast("你的账号暂时无法登陆，请点击这里恢复正常使用", 1)
+						mSleep(500)
+						table.remove(self.qqList, 1)
+						writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+						-- writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
+						self:getAccount()
+						self:clear_input()
+						inputAgain = true
+						-- 		goto hk
+						--					goto over
+						--该帐号密码已泄漏
+					elseif getColor(681,246) == 0x4d94ff then
+						if selectWay == "0" then
+							toast("该帐号密码已泄漏", 1)
+							mSleep(500)
+							writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
+							table.remove(self.qqList, 1)
+							writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+							goto over
+							-- 			setVPNEnable(false)
+							-- 			mSleep(2000)
+							-- 			self:vpn()
 
---							-- 			huanjing_error = huanjing_error + 1
---							-- 			if huanjing_error > 3 then
---							-- 				writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
---							-- 				self:getAccount()
---							-- 				inputAgain = true
---							-- 				huanjing_error = 0
---							-- 			end
---							-- 			goto hk
---						else
---							table.remove(self.qqList, 1)
---							writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
---							goto over
---						end
---					else
---						toast("切换下一个账号2", 1)
---						mSleep(500)
---						table.remove(self.qqList, 1)
---						writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
---						-- writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
---						-- self:getAccount()
---						-- inputAgain = true
---						-- goto hk
---						goto over
---					end
---				end
---			end
+							-- 			huanjing_error = huanjing_error + 1
+							-- 			if huanjing_error > 3 then
+							-- 				writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
+							-- 				self:getAccount()
+							-- 				inputAgain = true
+							-- 				huanjing_error = 0
+							-- 			end
+							-- 			goto hk
+						else
+				-- 			table.remove(self.qqList, 1)
+				-- 			writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+							goto over
+						end
+					else
+						toast("切换下一个账号2", 1)
+						mSleep(500)
+						table.remove(self.qqList, 1)
+						writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+						-- writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
+						-- self:getAccount()
+						-- inputAgain = true
+						-- goto hk
+						goto over
+					end
+				end
+			end
 
 			if self:timeOutRestart(t1) then
 				goto over
@@ -1984,64 +1984,64 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 			end
 		end
 
---		mSleep(50)
---		if getColor(74,  464) == 0x000000 and getColor(676, 258) ~= 0xffffff then
---			-- if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) == 0x808080 or getColor(676,258) == 0x818181 or getColor(78,468) == 0x000000 
---			-- or getColor(676,  257) == 0x7f7f7f or getColor(78,468) == 0x000000 then
---			if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) ~= 0xffffff then
---				if getColor(655,211) == 0xffffff then
---					toast("你的账号暂时无法登陆，请点击这里恢复正常使用", 1)
---					mSleep(500)
---					table.remove(self.qqList, 1)
---					writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
---					-- writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
---					self:getAccount()
---					self:clear_input()
---					inputAgain = true
---					goto hk
---					-- 	goto over
---				elseif getColor(683,209) == 0xffffff then
---					if selectWay == "0" then
---						toast("当前网络环境存在风险", 1)
---						mSleep(500)
---						writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
---						table.remove(self.qqList, 1)
---						writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
---						goto over
---						-- 		setVPNEnable(false)
---						-- 		mSleep(2000)
---						-- 		self:vpn()
+		mSleep(50)
+		if getColor(74,  464) == 0x000000 and getColor(676, 258) ~= 0xffffff then
+			-- if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) == 0x808080 or getColor(676,258) == 0x818181 or getColor(78,468) == 0x000000 
+			-- or getColor(676,  257) == 0x7f7f7f or getColor(78,468) == 0x000000 then
+			if getColor(239, 629) == 0x12b7f5 and getColor(676, 258) ~= 0xffffff then
+				if getColor(655,211) == 0xffffff then
+					toast("你的账号暂时无法登陆，请点击这里恢复正常使用", 1)
+					mSleep(500)
+					table.remove(self.qqList, 1)
+					writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+					-- writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
+					self:getAccount()
+					self:clear_input()
+					inputAgain = true
+					goto hk
+					-- 	goto over
+				elseif getColor(681,246) == 0x4d94ff then
+					if selectWay == "0" then
+						toast("该帐号密码已泄漏", 1)
+						mSleep(500)
+						writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
+						table.remove(self.qqList, 1)
+						writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+						goto over
+						-- 		setVPNEnable(false)
+						-- 		mSleep(2000)
+						-- 		self:vpn()
 
---						-- 		huanjing_error = huanjing_error + 1
---						-- 		if huanjing_error > 3 then
-----							writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
-----							self:getAccount()
-----							inputAgain = true
-----							huanjing_error = 0
---						-- 			table.remove(self.qqList, 1)
---						-- 			writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
---						-- 			goto over
---						-- 		else
---						-- 			goto hk
---						-- 		end
---					else
---						table.remove(self.qqList, 1)
---						writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
---						goto over
---					end
---				else
---					toast("切换下一个账号2", 1)
---					mSleep(500)
---					table.remove(self.qqList, 1)
---					writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
---					-- writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
---					-- self:getAccount()
---					-- inputAgain = true
---					-- goto hk
---					goto over
---				end
---			end
---		end
+						-- 		huanjing_error = huanjing_error + 1
+						-- 		if huanjing_error > 3 then
+--							writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
+--							self:getAccount()
+--							inputAgain = true
+--							huanjing_error = 0
+						-- 			table.remove(self.qqList, 1)
+						-- 			writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+						-- 			goto over
+						-- 		else
+						-- 			goto hk
+						-- 		end
+					else
+				-- 		table.remove(self.qqList, 1)
+				-- 		writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+						goto over
+					end
+				else
+					toast("切换下一个账号2", 1)
+					mSleep(500)
+					table.remove(self.qqList, 1)
+					writeFile(userPath() .. "/res/qq.txt", self.qqList, "w", 1)
+					-- writeFileString(userPath().."/res/qq_loginError.txt",self.qqAcount .. "----" .. self.qqPassword,"a",1)
+					-- self:getAccount()
+					-- inputAgain = true
+					-- goto hk
+					goto over
+				end
+			end
+		end
 
 		if self:vpn_connection("2") then
 			goto over

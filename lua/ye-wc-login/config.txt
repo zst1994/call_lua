@@ -1,8 +1,8 @@
 com.tencent.xin
-wechat
+we-chat
 /Library/WechatPrivate/wx.dat
 AWZ
 http://127.0.0.1:1688/cmd?fun=newrecord
 http://127.0.0.1:1688/cmd?fun=getcurrentrecordparam
 YOY
-wxid
+http://127.0.0.1:1688/cmd?fun=deleteallrecords
