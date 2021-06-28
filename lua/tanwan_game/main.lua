@@ -25,7 +25,7 @@ function model:index()
 		index = readFileString(userPath() .. "/res/index.txt")
 		account = keyWork .. index
 		if tonumber(index) + 1 > tonumber(endCount) then
-			dialog("测试范围超过100000000", 0)
+			dialog("测试范围超过" .. endCount, 0)
 			luaExit()
 		else
 			writeFileString(userPath() .. "/res/index.txt", tostring(tonumber(index) + 1), "w")
