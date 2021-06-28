@@ -24,7 +24,7 @@ function model:index()
 	if bool then
 		index = readFileString(userPath() .. "/res/index.txt")
 		account = keyWork .. index
-		if tonumber(index) + 1 > 100000000 then
+		if tonumber(index) + 1 > tonumber(endCount) then
 			dialog("测试范围超过100000000", 0)
 			luaExit()
 		else
@@ -32,7 +32,7 @@ function model:index()
 		end
 	else
 		::save::
-		bool = writeFileString(userPath() .. "/res/index.txt", "10000000", "w") --将 string 内容存入文件，成功返回 true
+		bool = writeFileString(userPath() .. "/res/index.txt", beginCount, "w") --将 string 内容存入文件，成功返回 true
 		if bool then
 			self:myToast("保存初始值成功")
 			goto read_again
@@ -194,11 +194,35 @@ function model:main()
 				["type"] = "Edit",        
 				["prompt"] = "请输入密码",
 				["text"] = "123456",       
+			},
+			{
+				["type"] = "Label",
+				["text"] = "开始的值",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255",
+			},
+			{
+				["type"] = "Edit",        
+				["prompt"] = "请输入开始的值",
+				["text"] = "123456",       
+			},
+			{
+				["type"] = "Label",
+				["text"] = "结束的值",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255",
+			},
+			{
+				["type"] = "Edit",        
+				["prompt"] = "请输入结束的值",
+				["text"] = "123456",       
 			}
 		}
 	}
 	local MyJsonString = json.encode(MyTable)
-	ret, keyWork, keyPass = showUI(MyJsonString)
+	ret, keyWork, keyPass, beginCount, endCount = showUI(MyJsonString)
 	if ret == 0 then
 		dialog("取消运行脚本", 3)
 		luaExit()
