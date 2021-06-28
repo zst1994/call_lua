@@ -516,7 +516,7 @@ function model:ewm(phone,country_id,ewm_url,fz_terrace,load_ewm_bool,base_six_fo
 
 		mSleep(200)
 -- 		x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 100, 0, 0, 749, 1333)
-		x,y = findMultiColorInRegionFuzzy( 0x000000, "9|-11|0x000000,11|11|0x000000,59|-1|0x000000,76|3|0x000000,24|150|0x9ce6bf,649|157|0x9ce6bf,345|117|0x9ce6bf,321|153|0xd7f5e5,373|153|0xd7f5e5", 100, 0, 0, 749, 1333)
+		x,y = findMultiColorInRegionFuzzy(0x000000, "59|4|0x000000,78|3|0x000000,33|156|0x9ce6bf,644|149|0x9ce6bf,311|155|0xd7f5e5,373|157|0xd7f5e5,316|-228|0x353535,340|-220|0x353535,434|-227|0x353535", 100, 0, 0, 750, 1334, { orient = 2 })
 		if x ~= -1 and y ~= -1 then
 			setVPNEnable(false)
 			mSleep(4000)
@@ -1992,6 +1992,13 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				end
 			end
 		end
+		
+		--协议后下一步
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy( 0xffffff, "-63|12|0x07c160,128|13|0x07c160,54|13|0xffffff,295|-2|0x07c160,-262|6|0x07c160", 90, 0, 0, 749, 1333)
+		if x ~= -1 and y ~= -1 then
+			self:click(x, y)
+		end
 
 		mSleep(50)
 		x,y = findMultiColorInRegionFuzzy( 0x576b95, "18|0|0x576b95,25|2|0x576b95,-177|-176|0x000000,-165|-176|0x000000,-157|-177|0x000000,-145|-176|0x000000,-19|-183|0x000000,-5|-175|0x000000,152|-132|0x000000", 90, 0, 0, 749, 1333)
@@ -2187,7 +2194,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 					mSleep(200)
 					-- 	x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 100, 0, 0, 749, 1333)
-					x,y = findMultiColorInRegionFuzzy( 0x000000, "9|-11|0x000000,11|11|0x000000,59|-1|0x000000,76|3|0x000000,24|150|0x9ce6bf,649|157|0x9ce6bf,345|117|0x9ce6bf,321|153|0xd7f5e5,373|153|0xd7f5e5", 100, 0, 0, 749, 1333)
+					x,y = findMultiColorInRegionFuzzy(0x000000, "59|4|0x000000,78|3|0x000000,33|156|0x9ce6bf,644|149|0x9ce6bf,311|155|0xd7f5e5,373|157|0xd7f5e5,316|-228|0x353535,340|-220|0x353535,434|-227|0x353535", 100, 0, 0, 750, 1334, { orient = 2 })
 					if x ~= -1 and y ~= -1 then
 						toast("跳过滑块，短信界面",1)
 						mSleep(1000)
@@ -2329,7 +2336,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 				mSleep(200)
 				-- x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 100, 0, 0, 749, 1333)
-				x,y = findMultiColorInRegionFuzzy( 0x000000, "9|-11|0x000000,11|11|0x000000,59|-1|0x000000,76|3|0x000000,24|150|0x9ce6bf,649|157|0x9ce6bf,345|117|0x9ce6bf,321|153|0xd7f5e5,373|153|0xd7f5e5", 100, 0, 0, 749, 1333)
+				x,y = findMultiColorInRegionFuzzy(0x000000, "59|4|0x000000,78|3|0x000000,33|156|0x9ce6bf,644|149|0x9ce6bf,311|155|0xd7f5e5,373|157|0xd7f5e5,316|-228|0x353535,340|-220|0x353535,434|-227|0x353535", 100, 0, 0, 750, 1334, { orient = 2 })
 				if x ~= -1 and y ~= -1 then
 					self:myToast("跳过滑块，短信界面")
 					break
@@ -2475,7 +2482,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 			mSleep(200)
 			-- 			x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 100, 0, 0, 749, 1333)
-			x,y = findMultiColorInRegionFuzzy( 0x000000, "9|-11|0x000000,11|11|0x000000,59|-1|0x000000,76|3|0x000000,24|150|0x9ce6bf,649|157|0x9ce6bf,345|117|0x9ce6bf,321|153|0xd7f5e5,373|153|0xd7f5e5", 100, 0, 0, 749, 1333)
+			x,y = findMultiColorInRegionFuzzy(0x000000, "59|4|0x000000,78|3|0x000000,33|156|0x9ce6bf,644|149|0x9ce6bf,311|155|0xd7f5e5,373|157|0xd7f5e5,316|-228|0x353535,340|-220|0x353535,434|-227|0x353535", 100, 0, 0, 750, 1334, { orient = 2 })
 			if x ~= -1 and y ~= -1 then
 				toast("辅助成功，短信界面",1)
 				mSleep(1000)
@@ -2490,7 +2497,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 	while true do
 		mSleep(50)
 		-- 		x, y = findMultiColorInRegionFuzzy(0x353535,"44|23|0x353535,67|20|0x353535,-6|331|0,30|317|0,67|317|0,105|455|0x9ce6bf,486|480|0x9ce6bf", 90, 0, 0, 749, 1333)
-		x,y = findMultiColorInRegionFuzzy( 0x000000, "9|-11|0x000000,11|11|0x000000,59|-1|0x000000,76|3|0x000000,24|150|0x9ce6bf,649|157|0x9ce6bf,345|117|0x9ce6bf,321|153|0xd7f5e5,373|153|0xd7f5e5", 100, 0, 0, 749, 1333)
+		x,y = findMultiColorInRegionFuzzy(0x000000, "59|4|0x000000,78|3|0x000000,33|156|0x9ce6bf,644|149|0x9ce6bf,311|155|0xd7f5e5,373|157|0xd7f5e5,316|-228|0x353535,340|-220|0x353535,434|-227|0x353535", 100, 0, 0, 750, 1334, { orient = 2 })
 		if x ~= -1 and y ~= -1 then
 			if vpn_stauts == "21" then
 				dialog("测试平台跳码成功", 0)

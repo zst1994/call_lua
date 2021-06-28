@@ -1,0 +1,69 @@
+Import "sqlite3.lua"
+Import "ShanHai.lua"
+Import "zm.luae" //导入插件,只需执行一次
+Import "ttt.lua"
+zm.Init  //初始化插件,只需执行一次
+
+Function delFileEx(path)
+    zm.Execute("rm -rf " & path)
+End Function
+
+Function newfolder(path)
+    zm.Execute("mkdir " & path)
+End Function
+
+Dim wc_bid 		= "com.tencent.xin"
+Dim dir_name 	= "/Library/WechatPrivate/"
+Dim file_name 	= "/Library/WechatPrivate/wx.dat"
+Dim db_path		= "/private/var/Keychains/keychain-2.db"
+
+Dim dataPath
+
+KillApp wc_bid
+
+TracePrint "清理中,请勿中止"
+
+dataPath = GetAppDataPath(wc_bid)
+TracePrint dataPath
+
+delFileEx(dataPath & "/Documents") 
+delFileEx(dataPath & "/tmp")
+delFileEx(dataPath & "/Library/APCfgInfo.plist") 
+delFileEx(dataPath & "/Library/APWsjGameConfInfo.plist") 
+delFileEx(dataPath & "/Library/Preferences/*")
+delFileEx(dataPath & dir_name & "*")
+
+newfolder(dataPath & "/Documents") 
+newfolder(dataPath & "/tmp")
+
+zm.Execute ("chmod -R 777 /private/var/Keychains")
+
+sqlite3.SQLDelete(db_path, "genp", "WHERE agrp NOT LIKE '%apple%'")
+sqlite3.SQLDelete(db_path, "cert")
+sqlite3.SQLDelete(db_path, "keys")
+sqlite3.SQLDelete(db_path, "inet")
+sqlite3.SQLDelete(db_path, "sqlite_sequence")
+
+
+ClearKeyChain (wc_bid)
+
+zm.Execute("chmod -R 777 " & dataPath & "/Documents")
+zm.Execute("chmod -R 777 " & dataPath & "/tmp")
+zm.Execute("chmod -R 777 " & dataPath & "/Library")
+zm.Execute("chmod -R 777 " & dataPath & "/Library/Preferences")
+
+zm.Execute("su mobile -c uicache")
+
+Dim sixData = "0013659188234----wmro9576----62706c6973743030d4010203040506090a582476657273696f6e58246f626a65637473592461726368697665725424746f7012000186a0a2070855246e756c6c5f102034313231323564336462643939633263363636353833323630376138633236655f100f4e534b657965644172636869766572d10b0c54726f6f74800108111a232d32373a406375787d0000000000000101000000000000000d0000000000000000000000000000007f----新号"
+Dim data = Split(sixData,"----")
+TracePrint data(2)   
+newfolder(dataPath & dir_name)
+zm.Execute("chown mobile " & dataPath & dir_name)
+If ttt.writeFileByte(dataPath & file_name, data(2)) Then 
+	Dialog.MsgBox("写入成功", 0)
+Else 
+	Dialog.MsgBox("写入错误", 0)
+End If
+
+
+
