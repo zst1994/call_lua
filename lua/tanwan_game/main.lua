@@ -5,7 +5,8 @@ local json 				= ts.json
 local model 			= {}
 
 model.game_id           = "com.lyflb.h5.jywtf"
-model.proxy_id 			= "com.xiaoyu.whale"
+model.proxy_id 			= "com.wanchen.blackhole"
+-- model.proxy_id 			= "com.xiaoyu.whale"
 
 model.changeIpCount     = 0
 
@@ -27,70 +28,112 @@ function model:changeIp()
 	mSleep(500)
 	runApp(self.proxy_id)
 	mSleep(1000)
-
+	
 	while (true) do
-		--确定
-		mSleep(50)
-		x,y = findMultiColorInRegionFuzzy( 0x3699ff, "33|3|0x3699ff,7|3|0x3699ff,-16|3|0x3699ff,255|-3|0x808080,262|-3|0x808080,272|-10|0x808080,295|0|0x808080,309|0|0x808080", 90, 0, 0, 719, 1279)
-		if x ~= -1 and y ~= -1 then
-			self:click(x,  y)
-			self:myToast("确定")
-		end
-
-		--下次再说
-		mSleep(50)
-		x,y = findMultiColorInRegionFuzzy( 0x3699ff, "13|-16|0x3699ff,40|-13|0x3699ff,55|-6|0x3699ff,64|-6|0x3699ff,74|-6|0x3699ff,103|0|0x3699ff,270|7|0xacb2b5,270|-13|0xacb2b5,342|-13|0xacb2b5", 90, 0, 0, 719, 1279)
-		if x ~= -1 and y ~= -1 then
-			self:click(x,  y)
-			self:myToast("下次再说")
-		end
-
-		mSleep(50)
-		if getColor(355,  480) == 0x5072fe then
---			self:click(660,  106)
---			while (true) do
---				mSleep(50)
---				if getColor(383,   93) == 0x3c3c3c and getColor(403,  100) == 0x3c3c3c then
---					if proxy_status == "0" then
---						self:click(174, 200)
---					elseif proxy_status == "1" then
---						self:click(541, 196)
---					end
---					mSleep(1000)
---					self:click(333, 290)
---					self:click(361, 1208)
---					break
---				end
---			end
---			mSleep(1000)
-			self:click(362, 1026)
-		end
-
-		--网络连接请求确定
-		mSleep(50)
-		x,y = findMultiColorInRegionFuzzy( 0x009688, "-6|8|0x009688,-11|2|0x009688,-20|2|0x009688,23|3|0x009688,22|-3|0x009688,22|-9|0x009688,-113|0|0x009688,-101|2|0x009688,-142|2|0x009688", 90, 0, 0, 719, 1279)
-		if x ~= -1 and y ~= -1 then
-			self:click(x,  y)
-			self:myToast("网络连接请求确定")
-			break
-		end
+	    mSleep(50)
+	    x,y = findMultiColorInRegionFuzzy(0xffffff, "-80|2|0xaedef4,7|-24|0xaedef4,86|-2|0xaedef4,7|22|0xaedef4,-129|1|0xd0d0d0,-289|-1|0xd0d0d0,-206|-24|0xd0d0d0", 90, 0, 0, 720, 1280, { orient = 2 })
+        if x ~= -1 then
+            self:click(x, y)
+            self:myToast("强制登录")
+        end
+        
+        mSleep(50)
+        x,y = findMultiColorInRegionFuzzy(0xffffff, "76|14|0xffffff,-96|1|0x26a6ab,175|2|0x26a6ab,46|-36|0x26a6ab,39|38|0x26a6ab,-141|3|0x26a6ab,-420|-8|0x26a6ab,-328|-3|0xffffff,-243|7|0xffffff", 90, 0, 0, 720, 1280, { orient = 2 })
+        if x ~= -1 then
+            self:click(x, y)
+            self:myToast("同意")
+        end
+        
+	    mSleep(50)
+	    if getColor(177,274) == 0x6c747f and getColor(366,217) == 0xfcfcfc then
+	        self:click(611, 128)
+	    end
+	    
+	    mSleep(50)
+	    if getColor(114,231) == 0xe0c450 then
+	        self:click(312, 200)
+	    end
+	    
+	    mSleep(50)
+	    if getColor(671,321) == 0x39cfcc then
+	        self:click(312, 505)
+	        break
+	    end
+	end
+	
+	while (true) do
+	    mSleep(50)
+	    if getColor(326,763) == 0xffffff and getColor(406,783) == 0xffffff then
+	        self:myToast("链接成功")
+	        break
+	    else
+	        self:myToast("vpn链接中，请等候", 2000)
+	    end
 	end
 
-	while (true) do
-		--网络连接请求确定
-		mSleep(50)
-		x,y = findMultiColorInRegionFuzzy( 0x009688, "-6|8|0x009688,-11|2|0x009688,-20|2|0x009688,23|3|0x009688,22|-3|0x009688,22|-9|0x009688,-113|0|0x009688,-101|2|0x009688,-142|2|0x009688", 90, 0, 0, 719, 1279)
-		if x ~= -1 and y ~= -1 then
-			self:click(x,  y)
-			self:myToast("网络连接请求确定")
-		end
+-- 	while (true) do
+-- 		--确定
+-- 		mSleep(50)
+-- 		x,y = findMultiColorInRegionFuzzy( 0x3699ff, "33|3|0x3699ff,7|3|0x3699ff,-16|3|0x3699ff,255|-3|0x808080,262|-3|0x808080,272|-10|0x808080,295|0|0x808080,309|0|0x808080", 90, 0, 0, 719, 1279)
+-- 		if x ~= -1 and y ~= -1 then
+-- 			self:click(x,  y)
+-- 			self:myToast("确定")
+-- 		end
 
-		mSleep(50)
-		if getColor(359, 1036) == 0xf9fafe then
-			self:myToast("连接成功")
-			break
-		end
-	end
+-- 		--下次再说
+-- 		mSleep(50)
+-- 		x,y = findMultiColorInRegionFuzzy( 0x3699ff, "13|-16|0x3699ff,40|-13|0x3699ff,55|-6|0x3699ff,64|-6|0x3699ff,74|-6|0x3699ff,103|0|0x3699ff,270|7|0xacb2b5,270|-13|0xacb2b5,342|-13|0xacb2b5", 90, 0, 0, 719, 1279)
+-- 		if x ~= -1 and y ~= -1 then
+-- 			self:click(x,  y)
+-- 			self:myToast("下次再说")
+-- 		end
+
+-- 		mSleep(50)
+-- 		if getColor(355,  480) == 0x5072fe then
+-- --			self:click(660,  106)
+-- --			while (true) do
+-- --				mSleep(50)
+-- --				if getColor(383,   93) == 0x3c3c3c and getColor(403,  100) == 0x3c3c3c then
+-- --					if proxy_status == "0" then
+-- --						self:click(174, 200)
+-- --					elseif proxy_status == "1" then
+-- --						self:click(541, 196)
+-- --					end
+-- --					mSleep(1000)
+-- --					self:click(333, 290)
+-- --					self:click(361, 1208)
+-- --					break
+-- --				end
+-- --			end
+-- --			mSleep(1000)
+-- 			self:click(362, 1026)
+-- 		end
+
+-- 		--网络连接请求确定
+-- 		mSleep(50)
+-- 		x,y = findMultiColorInRegionFuzzy( 0x009688, "-6|8|0x009688,-11|2|0x009688,-20|2|0x009688,23|3|0x009688,22|-3|0x009688,22|-9|0x009688,-113|0|0x009688,-101|2|0x009688,-142|2|0x009688", 90, 0, 0, 719, 1279)
+-- 		if x ~= -1 and y ~= -1 then
+-- 			self:click(x,  y)
+-- 			self:myToast("网络连接请求确定")
+-- 			break
+-- 		end
+-- 	end
+
+-- 	while (true) do
+-- 		--网络连接请求确定
+-- 		mSleep(50)
+-- 		x,y = findMultiColorInRegionFuzzy( 0x009688, "-6|8|0x009688,-11|2|0x009688,-20|2|0x009688,23|3|0x009688,22|-3|0x009688,22|-9|0x009688,-113|0|0x009688,-101|2|0x009688,-142|2|0x009688", 90, 0, 0, 719, 1279)
+-- 		if x ~= -1 and y ~= -1 then
+-- 			self:click(x,  y)
+-- 			self:myToast("网络连接请求确定")
+-- 		end
+
+-- 		mSleep(50)
+-- 		if getColor(359, 1036) == 0xf9fafe then
+-- 			self:myToast("连接成功")
+-- 			break
+-- 		end
+-- 	end
 end
 
 function model:index()
@@ -137,6 +180,12 @@ function model:index()
 			self:click(x, y)
 			break
 		end
+		
+		flag = isFrontApp(self.game_id)
+    	if  flag == 0 then
+    		runApp(self.game_id)
+    		mSleep(2000)
+    	end
 	end
 
 	while (true) do
