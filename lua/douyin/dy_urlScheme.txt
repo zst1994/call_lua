@@ -1,0 +1,4 @@
+--回到首页：snssdk1128://feed?refer=web&gd_label=click_wap_profile_follow
+--跳转自己个人主页：snssdk1128://user/profile/id?refer=web&gd_label=click_wap_profile_follow&type=need_follow&needlaunchlog=1
+--用户个人主页1：snssdk1128://user/profile/{{uid}}?refer=web&gd_label=click_wap_download_follow&type=need_follow&needlaunchlog=1
+--用户个人主页2：snssdk1128://user/profile/{uid{}}?refer=web&gd_label=click_wap_profile_bottom&type=need_follow&needlaunchlog=1

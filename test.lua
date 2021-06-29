@@ -2317,5 +2317,4 @@ end
 
 -- dialog(lz.ocrImage(imagefile,yzmtype,timeout),0)
 -- dialog(lz.ocrReportError())
-x,y = findMultiColorInRegionFuzzy( 0xffffff, "108|6|0xffffff,-152|3|0xffcb1a,55|-22|0xffcb1a,251|-11|0xffcb1a,65|27|0xffcb1a,-141|100|0x0077dd,213|101|0x0077dd", 90, 0, 0, 719, 1279)
-dialog(x .. "===" .. y, time)
+openURL("snssdk1128://feed?refer=web&gd_label=click_wap_profile_follow")

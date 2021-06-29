@@ -4,6 +4,7 @@ local ts 				= require('ts')
 local model 			= {}
 
 model.game_id           = "com.lyflb.h5.jywtf"
+model.proxy_id 			= "com.xiaoyu.whale"
 
 math.randomseed(getRndNum()) -- 随机种子初始化真随机数
 
@@ -65,14 +66,14 @@ function model:index()
 	end
 
 	while (true) do
-	    --登录入口
+		--登录入口
 		mSleep(50)
 		x,y = findMultiColorInRegionFuzzy( 0xffffff, "108|6|0xffffff,-152|3|0xffcb1a,55|-22|0xffcb1a,251|-11|0xffcb1a,65|27|0xffcb1a,-141|100|0x0077dd,213|101|0x0077dd", 100, 0, 0, 719, 1279)
 		if x ~= -1 and y ~= -1 then
 			self:myToast("登陆失败，继续下一个")
 			break
 		end
-		
+
 		--取消
 		mSleep(50)
 		x,y = findMultiColorInRegionFuzzy( 0x363636, "6|0|0x363636,15|-8|0x363636,35|4|0x363636,41|2|0x363636,47|2|0x363636,41|-7|0x363636,41|7|0x363636", 100, 0, 0, 719, 1279)
@@ -80,48 +81,48 @@ function model:index()
 			self:click(x, y)
 			self:myToast("取消")
 		end
-		
+
 		--快速找回账号密码
 		mSleep(50)
 		x,y = findMultiColorInRegionFuzzy(0xffcc00, "-2|48|0xffcc00,-1|92|0xffcc00,29|1|0xcc6666,29|45|0xcc6666,29|95|0xcc6666,236|6|0xcc6666,236|52|0xcc6666,239|98|0xcc6666", 100, 0, 0, 720, 1280, { orient = 2 })
-        if x ~= -1 then
-            closeApp(self.game_id)
-            mSleep(500)
-            cleanApp(self.game_id)
-            mSleep(1000)
-            while (true) do
-                mSleep(50)
-                x,y = findMultiColorInRegionFuzzy(0x009688, "18|0|0x009688,30|-1|0x009688,-138|-5|0x009688,-132|-5|0x009688,-121|-4|0x009688,-103|-4|0x009688,-98|-4|0x009688,-98|7|0x009688", 90, 0, 0, 720, 1280, { orient = 2 })
-                if x ~= -1 then
-                    self:click(x, y)
-                    self:myToast("允许")
-                end
-                
-                --注册入口
-                mSleep(50)
-        		x,y = findMultiColorInRegionFuzzy( 0xffffff, "106|6|0xffffff,-165|5|0xffcb1a,47|-21|0xffcb1a,60|36|0xffcb1a,265|13|0xffcb1a,-146|104|0x0077dd,210|106|0x0077dd", 100, 0, 0, 719, 1279)
-        		if x ~= -1 and y ~= -1 then
-        			self:click(356,  891)
-        			break
-        		end
-        		
-        		--登录入口
-        		mSleep(50)
-        		x,y = findMultiColorInRegionFuzzy( 0xffffff, "108|6|0xffffff,-152|3|0xffcb1a,55|-22|0xffcb1a,251|-11|0xffcb1a,65|27|0xffcb1a,-141|100|0x0077dd,213|101|0x0077dd", 100, 0, 0, 719, 1279)
-        		if x ~= -1 and y ~= -1 then
-        			break
-        		end
-                
-                flag = isFrontApp(self.game_id)
-                if  flag == 0 then
-                    runApp(self.game_id)
-                    mSleep(2000)
-                end
-            end
-            break
-        end
-        
-        --成功登录
+		if x ~= -1 then
+			closeApp(self.game_id)
+			mSleep(500)
+			cleanApp(self.game_id)
+			mSleep(1000)
+			while (true) do
+				mSleep(50)
+				x,y = findMultiColorInRegionFuzzy(0x009688, "18|0|0x009688,30|-1|0x009688,-138|-5|0x009688,-132|-5|0x009688,-121|-4|0x009688,-103|-4|0x009688,-98|-4|0x009688,-98|7|0x009688", 90, 0, 0, 720, 1280, { orient = 2 })
+				if x ~= -1 then
+					self:click(x, y)
+					self:myToast("允许")
+				end
+
+				--注册入口
+				mSleep(50)
+				x,y = findMultiColorInRegionFuzzy( 0xffffff, "106|6|0xffffff,-165|5|0xffcb1a,47|-21|0xffcb1a,60|36|0xffcb1a,265|13|0xffcb1a,-146|104|0x0077dd,210|106|0x0077dd", 100, 0, 0, 719, 1279)
+				if x ~= -1 and y ~= -1 then
+					self:click(356,  891)
+					break
+				end
+
+				--登录入口
+				mSleep(50)
+				x,y = findMultiColorInRegionFuzzy( 0xffffff, "108|6|0xffffff,-152|3|0xffcb1a,55|-22|0xffcb1a,251|-11|0xffcb1a,65|27|0xffcb1a,-141|100|0x0077dd,213|101|0x0077dd", 100, 0, 0, 719, 1279)
+				if x ~= -1 and y ~= -1 then
+					break
+				end
+
+				flag = isFrontApp(self.game_id)
+				if  flag == 0 then
+					runApp(self.game_id)
+					mSleep(2000)
+				end
+			end
+			break
+		end
+
+		--成功登录
 		mSleep(50)
 		x,y = findMultiColorInRegionFuzzy( 0x7fff00, "15|-12|0x7fff00,17|17|0x7fff00,-18|-6|0x7fff00,-18|18|0x7fff00", 100, 0, 0, 719, 1279)
 		if x ~= -1 and y ~= -1 then
@@ -135,13 +136,22 @@ function model:index()
 					self:click(25,  704)
 				end
 			end
-			
+
 			while (true) do
 				mSleep(50)
 				if getColor(403,  685) == 0xffffff and getColor(238,  851) == 0x363636 then
 					self:click(238,  851)
 					break
 				end
+			end
+
+			::save_account::
+			bool = writeFileString(userPath() .. "/res/success.txt", account .. "----" .. keyPass, "a", 1) --将 string 内容存入文件，成功返回 true
+			if bool then
+				self:myToast("保存账号成功")
+			else
+				self:myToast("保存账号失败,重新保存")
+				goto save_account
 			end
 			break
 		end
