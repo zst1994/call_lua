@@ -1,10 +1,13 @@
 require "TSLib"
 local ts 				= require('ts')
+local json 				= ts.json
 
 local model 			= {}
 
 model.game_id           = "com.lyflb.h5.jywtf"
 model.proxy_id 			= "com.xiaoyu.whale"
+
+model.changeIpCount     = 0
 
 math.randomseed(getRndNum()) -- 随机种子初始化真随机数
 
@@ -17,6 +20,77 @@ end
 function model:myToast(str,ms)
 	toast(str,1)
 	mSleep(ms and ms or math.random(500, 600))
+end
+
+function model:changeIp()
+	closeApp(self.proxy_id)
+	mSleep(500)
+	runApp(self.proxy_id)
+	mSleep(1000)
+
+	while (true) do
+		--确定
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy( 0x3699ff, "33|3|0x3699ff,7|3|0x3699ff,-16|3|0x3699ff,255|-3|0x808080,262|-3|0x808080,272|-10|0x808080,295|0|0x808080,309|0|0x808080", 90, 0, 0, 719, 1279)
+		if x ~= -1 and y ~= -1 then
+			self:click(x,  y)
+			self:myToast("确定")
+		end
+
+		--下次再说
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy( 0x3699ff, "13|-16|0x3699ff,40|-13|0x3699ff,55|-6|0x3699ff,64|-6|0x3699ff,74|-6|0x3699ff,103|0|0x3699ff,270|7|0xacb2b5,270|-13|0xacb2b5,342|-13|0xacb2b5", 90, 0, 0, 719, 1279)
+		if x ~= -1 and y ~= -1 then
+			self:click(x,  y)
+			self:myToast("下次再说")
+		end
+
+		mSleep(50)
+		if getColor(355,  480) == 0x5072fe then
+--			self:click(660,  106)
+--			while (true) do
+--				mSleep(50)
+--				if getColor(383,   93) == 0x3c3c3c and getColor(403,  100) == 0x3c3c3c then
+--					if proxy_status == "0" then
+--						self:click(174, 200)
+--					elseif proxy_status == "1" then
+--						self:click(541, 196)
+--					end
+--					mSleep(1000)
+--					self:click(333, 290)
+--					self:click(361, 1208)
+--					break
+--				end
+--			end
+--			mSleep(1000)
+			self:click(362, 1026)
+		end
+
+		--网络连接请求确定
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy( 0x009688, "-6|8|0x009688,-11|2|0x009688,-20|2|0x009688,23|3|0x009688,22|-3|0x009688,22|-9|0x009688,-113|0|0x009688,-101|2|0x009688,-142|2|0x009688", 90, 0, 0, 719, 1279)
+		if x ~= -1 and y ~= -1 then
+			self:click(x,  y)
+			self:myToast("网络连接请求确定")
+			break
+		end
+	end
+
+	while (true) do
+		--网络连接请求确定
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy( 0x009688, "-6|8|0x009688,-11|2|0x009688,-20|2|0x009688,23|3|0x009688,22|-3|0x009688,22|-9|0x009688,-113|0|0x009688,-101|2|0x009688,-142|2|0x009688", 90, 0, 0, 719, 1279)
+		if x ~= -1 and y ~= -1 then
+			self:click(x,  y)
+			self:myToast("网络连接请求确定")
+		end
+
+		mSleep(50)
+		if getColor(359, 1036) == 0xf9fafe then
+			self:myToast("连接成功")
+			break
+		end
+	end
 end
 
 function model:index()
@@ -145,16 +219,25 @@ function model:index()
 				end
 			end
 
-			::save_account::
-			bool = writeFileString(userPath() .. "/res/success.txt", account .. "----" .. keyPass, "a", 1) --将 string 内容存入文件，成功返回 true
-			if bool then
-				self:myToast("保存账号成功")
-			else
-				self:myToast("保存账号失败,重新保存")
-				goto save_account
-			end
+			--			::save_account::
+			--			bool = writeFileString(userPath() .. "/res/success.txt", account .. "----" .. keyPass, "a", 1) --将 string 内容存入文件，成功返回 true
+			--			if bool then
+			--				self:myToast("保存账号成功")
+			--			else
+			--				self:myToast("保存账号失败,重新保存")
+			--				goto save_account
+			--			end
 			break
 		end
+	end
+
+	self.changeIpCount = self.changeIpCount + 1
+	if self.changeIpCount >= 7 then
+		self:myToast("准备切换ip")
+		self:changeIp()
+		self.changeIpCount = 0
+	else
+		self:myToast("当前数量:" .. self.changeIpCount)
 	end
 end
 
@@ -228,11 +311,24 @@ function model:main()
 				["type"] = "Edit",        
 				["prompt"] = "请输入结束的值",
 				["text"] = "123456",       
-			}
+			},
+--			{
+--				["type"] = "Label",
+--				["text"] = "选择代理ip",
+--				["size"] = 15,
+--				["align"] = "center",
+--				["color"] = "0,0,255"
+--			},
+--			{
+--				["type"] = "RadioGroup",
+--				["list"] = "动态,静态",
+--				["select"] = "0",
+--				["countperline"] = "4"
+--			},
 		}
 	}
 	local MyJsonString = json.encode(MyTable)
-	ret, keyWork, keyPass, beginCount, endCount = showUI(MyJsonString)
+	ret, keyWork, keyPass, beginCount, endCount, proxy_status = showUI(MyJsonString)
 	if ret == 0 then
 		dialog("取消运行脚本", 3)
 		luaExit()
