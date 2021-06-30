@@ -2150,7 +2150,7 @@ token=""
 if t then
 	http = require"szocket.http"
 	ltn12 = require"ltn12"
-	else
+else
 	http = require"socket.http"
 	ltn12 = require"ltn12"
 end
@@ -2317,20 +2317,9 @@ end
 
 -- dialog(lz.ocrImage(imagefile,yzmtype,timeout),0)
 -- dialog(lz.ocrReportError())
-mSleep(math.random(200, 500))
-		x,y = findMultiColorInRegionFuzzy( 0x007aff, "3|15|0x007aff,19|10|0x007aff,-50|-128|0x000000,-34|-147|0x000000,3|-127|0x000000,37|-132|0x000000,59|-135|0x000000", 90, 0, 0, 749, 1333)
-		if x ~= -1 and y ~= -1 then
-			mSleep(math.random(200, 500))
-			randomsTap(x,y,10)
-			mSleep(math.random(200, 500))
-			toast("11",1)
-		end
-
-		--好
-		x,y = findMultiColorInRegionFuzzy( 0x007aff, "1|20|0x007aff,11|0|0x007aff,18|17|0x007aff,14|27|0x007aff", 90, 0, 0, 749, 1133)
-		if x ~= -1 and y ~= -1 then
-			mSleep(math.random(200, 500))
-			randomsTap(x,y,10)
-			mSleep(math.random(200, 500))
-			toast("11222",1)
-		end
+mSleep(50)
+mSleep(math.random(300, 400))
+randomTap( 72, 1285, 5)
+mSleep(100)
+randomTap( 72, 1285, 5)
+mSleep(ms and ms or math.random(500, 600))

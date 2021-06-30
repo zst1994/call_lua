@@ -250,23 +250,24 @@ function model:index()
 		x,y = findMultiColorInRegionFuzzy( 0x7fff00, "15|-12|0x7fff00,17|17|0x7fff00,-18|-6|0x7fff00,-18|18|0x7fff00", 100, 0, 0, 719, 1279)
 		if x ~= -1 and y ~= -1 then
 			self:myToast("成功登陆")
-			while (true) do
-				mSleep(50)
-				if getColor(403,  685) == 0xffffff and getColor(308,  456) == 0xf5f0ea then
-					self:click(180,  619)
-					break
-				else
-					self:click(25,  704)
-				end
-			end
+			luaExit()
+--			while (true) do
+--				mSleep(50)
+--				if getColor(403,  685) == 0xffffff and getColor(308,  456) == 0xf5f0ea then
+--					self:click(180,  619)
+--					break
+--				else
+--					self:click(25,  704)
+--				end
+--			end
 
-			while (true) do
-				mSleep(50)
-				if getColor(403,  685) == 0xffffff and getColor(238,  851) == 0x363636 then
-					self:click(238,  851)
-					break
-				end
-			end
+--			while (true) do
+--				mSleep(50)
+--				if getColor(403,  685) == 0xffffff and getColor(238,  851) == 0x363636 then
+--					self:click(238,  851)
+--					break
+--				end
+--			end
 
 			--			::save_account::
 			--			bool = writeFileString(userPath() .. "/res/success.txt", account .. "----" .. keyPass, "a", 1) --将 string 内容存入文件，成功返回 true
