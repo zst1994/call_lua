@@ -242,7 +242,7 @@ function model:vpn()
 		end
 
 		--好
-		x,y = findMultiColorInRegionFuzzy( 0x007aff, "1|20|0x007aff,11|0|0x007aff,18|17|0x007aff,14|27|0x007aff", 90, 0, 0, 749, 1333)
+		x,y = findMultiColorInRegionFuzzy( 0x007aff, "1|20|0x007aff,11|0|0x007aff,18|17|0x007aff,14|27|0x007aff", 90, 0, 0, 749, 1133)
 		if x ~= -1 and y ~= -1 then
 			mSleep(math.random(200, 500))
 			randomsTap(x,y,10)

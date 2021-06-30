@@ -709,10 +709,11 @@ function model:ewm(ip_userName,ip_country,login_times,phone_help,skey,tiaoma_boo
 				toast("接收短信中",1)
 				break
 			end
-
-			if getColor(390,822) == 0x576b95 and getColor(363,822) == 0x576b95 then
+			
+			mSleep(50)
+			if getColor(355,  840) == 0x576b95 and getColor(380,  848) == 0x576b95 then
 				mSleep(500)
-				randomTap(390,822,5)
+				randomTap(380,  848,5)
 				mSleep(500)
 				toast("拒收微信登录",1)
 				yzm_error = true
@@ -4665,9 +4666,9 @@ function model:wechat(fz_error_times,iptimes,ip_userName,ip_country,place_id,dat
 			end
 
 			mSleep(200)
-			if getColor(390,822) == 0x576b95 and getColor(363,822) == 0x576b95 then
+			if getColor(355,  840) == 0x576b95 and getColor(380,  848) == 0x576b95 then
 				mSleep(500)
-				randomTap(390,822,5)
+				randomTap(380,  848,5)
 				mSleep(500)
 				toast("拒收微信登录",1)
 				goto next_again
