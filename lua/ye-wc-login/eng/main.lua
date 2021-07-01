@@ -274,7 +274,7 @@ function model:clear_App()
 			goto run_again
 		end
 	end
-	
+
 	::deleteallrecords::
 	local sz = require("sz");
 	local http = require("szocket.http")
@@ -1607,6 +1607,12 @@ function model:getPhoneNum(ksUrl,phone_token)
 end
 
 function model:wc(ksUrl,move_type,operator,login_times,content_user,content_country,content_type,vpn_stauts,phone_token,kn_country,kn_id,countryId,nickName,password,country_len,login_type,addBlack,diff_user,ran_pass,ddwGet,airplaneStatus,connect_vpn,EU_countries,tmFailBack)
+	if connect_vpn == "1" then
+		if content_type == "3" then
+			self:vpn()
+		end
+	end
+
 	account_len = 0
 	old_mess_yzm = ""
 	login_diff_bool = false
@@ -1915,8 +1921,8 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			if set_vpn then
 				self:vpn()
 			end
-		elseif content_type == "3" then
-			self:vpn()
+--		elseif content_type == "3" then
+--			self:vpn()
 		end
 	end
 
@@ -1992,7 +1998,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				end
 			end
 		end
-		
+
 		--协议后下一步
 		mSleep(50)
 		x,y = findMultiColorInRegionFuzzy( 0xffffff, "-63|12|0x07c160,128|13|0x07c160,54|13|0xffffff,295|-2|0x07c160,-262|6|0x07c160", 90, 0, 0, 749, 1333)
@@ -3026,10 +3032,10 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 
 			::caozuo_more::
 			if content_type == "3" then
-		        setVPNEnable(false)
-		        mSleep(3000)
+				setVPNEnable(false)
+				mSleep(3000)
 			end
-	    
+
 			if caozuo_more then
 				mSleep(200)
 				if  getColor(522,770) == 0x576b95 then
@@ -4628,10 +4634,10 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			end
 
 			if tonumber(mess_yzm) ~= tonumber(old_mess_yzm) then
-			    if content_type == "3" then
-			        self:vpn()
-			    end
-		        
+				if content_type == "3" then
+					self:vpn()
+				end
+
 				self:myToast(mess_yzm, math.random(1000, 1700))
 
 				if getColor(280,642) == 0x9ce6bf then
@@ -5411,10 +5417,6 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				goto send
 			end
 
-			if content_type == "3" then
-				setVPNEnable(false)
-			end
-
 			fh_bool = false
 			if login_type == "0" then
 				if login_times == "1" then
@@ -5626,6 +5628,10 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 		goto reset
 	end
 	data_six_two = false
+
+	if content_type == "3" then
+		setVPNEnable(false)
+	end
 end
 
 function model:main()
