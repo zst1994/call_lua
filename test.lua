@@ -2318,18 +2318,5 @@ end
 -- dialog(lz.ocrImage(imagefile,yzmtype,timeout),0)
 -- dialog(lz.ocrReportError())
 mSleep(50)
-::login::
-header_send = {}
-body_send = {}
-ts.setHttpsTimeOut(60)
-status_resp, header_resp,body_resp = ts.httpGet("http://www.liuxing985.com:81/sms/api/login?username=api-M2WfbUgc&password=zz123123", header_send, body_send)
-if status_resp == 200 then
-	local tmp = json.decode(body_resp)
-	if tmp.code == 0 then
-		token = tmp.token
-		nLog(token)
-	else
-		goto login
-	end
-end
-
+x,y = findMultiColorInRegionFuzzy( 0x323333, "55|-16|0x323333,50|-25|0x323333,89|-20|0x323333,124|-19|0x323333,149|-20|0x323333,184|-13|0x323333,31|431|0xebebeb,517|422|0xebebeb,409|238|0xebebeb", 90, 0, 0, 749, 1333)
+dialog(x .. y, time)

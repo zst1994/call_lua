@@ -1748,89 +1748,91 @@ function model:mm()
 		self:getPhoneAndToken()
 	end
 
-	if unmatching == "0" then
-		t1 = ts.ms()
-		while (true) do
-			-- 		mSleep(200)
-			-- 		x,y = findMultiColorInRegionFuzzy( 0x3bb3fa, "135|-29|0x3bb3fa,136|43|0x3bb3fa,356|-5|0x3bb3fa,85|3|0xffffff,115|8|0xffffff,198|4|0xffffff,91|-1016|0x000000,114|-1007|0x000000,200|-1009|0x000000", 90, 0, 0, 749, 1333)
-			-- 		if x~=-1 and y~=-1 then
-			-- 			mSleep(500)
-			-- 			tap(x, y)
-			-- 			mSleep(500)
-			-- 			self:myToast("绑定手机号")
-			-- 		end
 
-			mSleep(50)
-			x,y = findMultiColorInRegionFuzzy(0xffffff, "-274|-1|0x3bb3fa,26|-37|0x3bb3fa,331|-8|0x3bb3fa,-115|-492|0xff682c,-120|-569|0xf3d339,4|-685|0xfc7ef3,137|-626|0xff682c", 90, 0, 0, 750, 1334, { orient = 2 })
-			if x~=-1 and y~=-1 then
-				self:click(x, y)
-				self:myToast("绑定手机号")
-			end
+	t1 = ts.ms()
+	while (true) do
+		-- 		mSleep(200)
+		-- 		x,y = findMultiColorInRegionFuzzy( 0x3bb3fa, "135|-29|0x3bb3fa,136|43|0x3bb3fa,356|-5|0x3bb3fa,85|3|0xffffff,115|8|0xffffff,198|4|0xffffff,91|-1016|0x000000,114|-1007|0x000000,200|-1009|0x000000", 90, 0, 0, 749, 1333)
+		-- 		if x~=-1 and y~=-1 then
+		-- 			mSleep(500)
+		-- 			tap(x, y)
+		-- 			mSleep(500)
+		-- 			self:myToast("绑定手机号")
+		-- 		end
 
-			-- 		mSleep(200)
-			-- 		x,y = findMultiColorInRegionFuzzy( 0xcdcdcd, "3|15|0xcdcdcd,11|1|0xcdcdcd,19|12|0xcdcdcd,42|-2|0xcdcdcd,-250|-25|0xf3f3f3,-251|33|0xf3f3f3,312|-24|0xf3f3f3,301|38|0xf3f3f3,-58|-385|0x000000", 90, 0, 0, 749, 1333)
-			-- 		if x~=-1 and y~=-1 then
-			-- 			mSleep(500)
-			-- 			tap(x - 227, y - 268)
-			-- 			mSleep(500)
-			-- 			self:myToast("选择区号")
-			-- 		end
-
-			mSleep(50)
-			x,y = findMultiColorInRegionFuzzy(0x323333, "53|-15|0x323333,87|-16|0x323333,124|-16|0x323333,148|-22|0x323333,184|-22|0x323333,51|430|0xebebeb,566|431|0xebebeb,276|380|0xebebeb,249|423|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
-			if x ~= -1 then
-				self:click(x + 30, y + 109)
-				self:myToast("选择区号")
-			end
-
-			--14系统
-			mSleep(50)
-			x,y = findMultiColorInRegionFuzzy(0xeeeef0, "351|-1|0xffffff,-92|-84|0x000000,-59|-86|0x000000,-29|-85|0x000000,5|-103|0x000000,37|-95|0x000000,-96|2|0xeeeef0", 100, 0, 0, 750, 334, { orient = 2 })
-			if x~=-1 and y~=-1 then
-				self:click(x + 100, y)
-				inputStr("美国")
-				mSleep(1000)
-				key = "ReturnOrEnter"
-				keyDown(key)
-				keyUp(key)
-				mSleep(1000)
-				self:click(x + 100, y + 10)
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy(0xffffff, "-274|-1|0x3bb3fa,26|-37|0x3bb3fa,331|-8|0x3bb3fa,-115|-492|0xff682c,-120|-569|0xf3d339,4|-685|0xfc7ef3,137|-626|0xff682c", 90, 0, 0, 750, 1334, { orient = 2 })
+		if x~=-1 and y~=-1 then
+			self:click(x, y)
+			self:myToast("绑定手机号")
+			if selectPlatform == "1" then
 				break
 			end
-
-			--12系统
-			mSleep(50)
-			x,y = findMultiColorInRegionFuzzy(0x8e8e93, "14|-8|0x8e8e93,43|7|0x8e8e93,639|8|0xc9c9ce,331|-44|0xc9c9ce,281|46|0xc9c9ce,-73|12|0xc9c9ce", 100, 1, 109, 749, 246, { orient = 2 })
-			if x~=-1 and y~=-1 then
-				self:click(x + 100, y)
-				inputStr("美国")
-				mSleep(1000)
-				key = "ReturnOrEnter"
-				keyDown(key)
-				keyUp(key)
-				mSleep(1000)
-				self:click(x + 100, y + 10)
-				break
-			end
-
-			-- 		mSleep(200)
-			-- 		x,y = findMultiColorInRegionFuzzy( 0xf3f3f3, "-132|-149|0x000000,-119|-158|0x000000,-112|-147|0x000000,-84|-158|0x000000,-49|-145|0x000000,-33|-150|0x000000,-8|-151|0x000000,82|-154|0x000000,122|-151|0x000000", 90, 0, 0, 749, 1333)
-			-- 		if x~=-1 and y~=-1 then
-			-- 			mSleep(500)
-			-- 			tap(x, y)
-			-- 			mSleep(500)
-			-- 			inputStr("美国")
-			-- 			mSleep(1000)
-			-- 			key = "ReturnOrEnter"
-			-- 			keyDown(key)
-			-- 			keyUp(key)
-			-- 			mSleep(500)
-			-- 			tap(x, y + 100)
-			-- 			break
-			-- 		end
-
-			self:timeOutRestart(t1)
 		end
+
+		-- 		mSleep(200)
+		-- 		x,y = findMultiColorInRegionFuzzy( 0xcdcdcd, "3|15|0xcdcdcd,11|1|0xcdcdcd,19|12|0xcdcdcd,42|-2|0xcdcdcd,-250|-25|0xf3f3f3,-251|33|0xf3f3f3,312|-24|0xf3f3f3,301|38|0xf3f3f3,-58|-385|0x000000", 90, 0, 0, 749, 1333)
+		-- 		if x~=-1 and y~=-1 then
+		-- 			mSleep(500)
+		-- 			tap(x - 227, y - 268)
+		-- 			mSleep(500)
+		-- 			self:myToast("选择区号")
+		-- 		end
+
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy(0x323333, "53|-15|0x323333,87|-16|0x323333,124|-16|0x323333,148|-22|0x323333,184|-22|0x323333,51|430|0xebebeb,566|431|0xebebeb,276|380|0xebebeb,249|423|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
+		if x ~= -1 then
+			self:click(x + 30, y + 109)
+			self:myToast("选择区号")
+		end
+
+		--14系统
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy(0xeeeef0, "351|-1|0xffffff,-92|-84|0x000000,-59|-86|0x000000,-29|-85|0x000000,5|-103|0x000000,37|-95|0x000000,-96|2|0xeeeef0", 100, 0, 0, 750, 334, { orient = 2 })
+		if x~=-1 and y~=-1 then
+			self:click(x + 100, y)
+			inputStr("美国")
+			mSleep(1000)
+			key = "ReturnOrEnter"
+			keyDown(key)
+			keyUp(key)
+			mSleep(1000)
+			self:click(x + 100, y + 10)
+			break
+		end
+
+		--12系统
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy(0x8e8e93, "14|-8|0x8e8e93,43|7|0x8e8e93,639|8|0xc9c9ce,331|-44|0xc9c9ce,281|46|0xc9c9ce,-73|12|0xc9c9ce", 100, 1, 109, 749, 246, { orient = 2 })
+		if x~=-1 and y~=-1 then
+			self:click(x + 100, y)
+			inputStr("美国")
+			mSleep(1000)
+			key = "ReturnOrEnter"
+			keyDown(key)
+			keyUp(key)
+			mSleep(1000)
+			self:click(x + 100, y + 10)
+			break
+		end
+
+		-- 		mSleep(200)
+		-- 		x,y = findMultiColorInRegionFuzzy( 0xf3f3f3, "-132|-149|0x000000,-119|-158|0x000000,-112|-147|0x000000,-84|-158|0x000000,-49|-145|0x000000,-33|-150|0x000000,-8|-151|0x000000,82|-154|0x000000,122|-151|0x000000", 90, 0, 0, 749, 1333)
+		-- 		if x~=-1 and y~=-1 then
+		-- 			mSleep(500)
+		-- 			tap(x, y)
+		-- 			mSleep(500)
+		-- 			inputStr("美国")
+		-- 			mSleep(1000)
+		-- 			key = "ReturnOrEnter"
+		-- 			keyDown(key)
+		-- 			keyUp(key)
+		-- 			mSleep(500)
+		-- 			tap(x, y + 100)
+		-- 			break
+		-- 		end
+
+		self:timeOutRestart(t1)
 	end
 
 	t1 = ts.ms()
@@ -1844,7 +1846,7 @@ function model:mm()
 		-- 		end
 
 		mSleep(50)
-		x,y = findMultiColorInRegionFuzzy(0x323333, "51|-16|0x323333,88|-14|0x323333,148|-18|0x323333,194|-22|0x323333,64|112|0xc7c7cc,164|106|0xc7c7cc,232|107|0xc7c7cc,77|432|0xebebeb,433|427|0xebebeb", 90, 0, 0, 750, 1334, { orient = 2 })
+		x,y = findMultiColorInRegionFuzzy( 0x323333, "55|-16|0x323333,50|-25|0x323333,89|-20|0x323333,124|-19|0x323333,149|-20|0x323333,184|-13|0x323333,31|431|0xebebeb,517|422|0xebebeb,409|238|0xebebeb", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			self:click(x + 270, y + 100, 1500)
 			inputStr(self.phone)
@@ -1934,7 +1936,9 @@ function model:mm()
 			end
 			self:click(370,  671, 5000)
 			self.subName = "绑定号码成功:" .. self.phone
-			self:remove_phone()
+			if selectPlatform == "0" then
+				self:remove_phone()
+			end
 		end
 
 		if self.subNameBool then
