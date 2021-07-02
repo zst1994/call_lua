@@ -275,20 +275,20 @@ function model:clear_App()
 		end
 	end
 
-	::deleteallrecords::
-	local sz = require("sz");
-	local http = require("szocket.http")
-	local res, code = http.request(self.awz_deleterec)
-	if code == 200 then
-		local resJson = sz.json.decode(res)
-		local result = resJson.result
-		if result == 1 then
-			self:myToast("备份清除成功")
-		else 
-			self:myToast("失败，请手动查看问题：" .. res, 4000)
-			goto deleteallrecords
-		end
-	end
+--	::deleteallrecords::
+--	local sz = require("sz");
+--	local http = require("szocket.http")
+--	local res, code = http.request(self.awz_deleterec)
+--	if code == 200 then
+--		local resJson = sz.json.decode(res)
+--		local result = resJson.result
+--		if result == 1 then
+--			self:myToast("备份清除成功")
+--		else 
+--			self:myToast("失败，请手动查看问题：" .. res, 4000)
+--			goto deleteallrecords
+--		end
+--	end
 
 	if self.newIndex == "0" then
 		::new_phone::
@@ -369,7 +369,7 @@ function model:getConfig()
 		else
 			self.axj_bid = self.awz_bid
 		end
-		self.awz_deleterec = string.gsub(tab[8],"%s+","")
+--		self.awz_deleterec = string.gsub(tab[8],"%s+","")
 		self:myToast("获取配置信息成功")
 	else
 		dialog("文件不存在,请检查配置文件路径",5)
@@ -1607,12 +1607,6 @@ function model:getPhoneNum(ksUrl,phone_token)
 end
 
 function model:wc(ksUrl,move_type,operator,login_times,content_user,content_country,content_type,vpn_stauts,phone_token,kn_country,kn_id,countryId,nickName,password,country_len,login_type,addBlack,diff_user,ran_pass,ddwGet,airplaneStatus,connect_vpn,EU_countries,tmFailBack)
-	if connect_vpn == "1" then
-		if content_type == "3" then
-			self:vpn()
-		end
-	end
-
 	account_len = 0
 	old_mess_yzm = ""
 	login_diff_bool = false
@@ -1921,8 +1915,8 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 			if set_vpn then
 				self:vpn()
 			end
---		elseif content_type == "3" then
---			self:vpn()
+		elseif content_type == "3" then
+			self:vpn()
 		end
 	end
 
