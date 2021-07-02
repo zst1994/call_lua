@@ -2318,7 +2318,18 @@ end
 -- dialog(lz.ocrImage(imagefile,yzmtype,timeout),0)
 -- dialog(lz.ocrReportError())
 mSleep(50)
-mSleep(50)
-mSleep(500)
-				moveTowards(404,994,90,900,50)
-				mSleep(2500)
+::login::
+header_send = {}
+body_send = {}
+ts.setHttpsTimeOut(60)
+status_resp, header_resp,body_resp = ts.httpGet("http://www.liuxing985.com:81/sms/api/login?username=api-M2WfbUgc&password=zz123123", header_send, body_send)
+if status_resp == 200 then
+	local tmp = json.decode(body_resp)
+	if tmp.code == 0 then
+		token = tmp.token
+		nLog(token)
+	else
+		goto login
+	end
+end
+

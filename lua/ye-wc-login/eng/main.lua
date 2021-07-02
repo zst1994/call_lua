@@ -5624,6 +5624,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 	data_six_two = false
 
 	if content_type == "3" then
+		mSleep(3000)
 		setVPNEnable(false)
 	end
 end

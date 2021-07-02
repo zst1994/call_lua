@@ -354,27 +354,83 @@ function model:timeOutRestart(t1)
 	end
 end
 
+function model:lxy_token()
+	::login::
+	header_send = {}
+	body_send = {}
+	ts.setHttpsTimeOut(60)
+	status_resp, header_resp,body_resp = ts.httpGet("http://www.liuxing985.com:81/sms/api/login?username=api-M2WfbUgc&password=zz123123", header_send, body_send)
+	if status_resp == 200 then
+		local tmp = json.decode(body_resp)
+		if tmp.code == 0 then
+			token = tmp.token
+			self:myToast(token)
+		else
+			self:myToast("流星云获取token失败，重新获取：" .. tmp.msg, 3000)
+			goto login
+		end
+	end
+end
+
 function model:getPhoneAndToken()
-	self.phone_table = readFile(userPath() .. "/res/phoneNum.txt")
-	if self.phone_table then
-		if #self.phone_table > 0 then
-			if #(self.phone_table[1]:atrim()) < 130 and #(self.phone_table[1]:atrim()) > 0 then
-				phone_mess = strSplit(self.phone_table[1]:atrim(), "|")
-				self.phone = phone_mess[1]
-				self.code_token = phone_mess[2]
-				self:myToast(self.phone .. "\r\n" .. self.code_token)
-				mSleep(1000)
+	if selectPlatform == "0" then
+		self.phone_table = readFile(userPath() .. "/res/phoneNum.txt")
+		if self.phone_table then
+			if #self.phone_table > 0 then
+				if #(self.phone_table[1]:atrim()) < 130 and #(self.phone_table[1]:atrim()) > 0 then
+					phone_mess = strSplit(self.phone_table[1]:atrim(), "|")
+					self.phone = phone_mess[1]
+					self.code_token = phone_mess[2]
+					self:myToast(self.phone .. "\r\n" .. self.code_token)
+				else
+					dialog("号码文件为空或者格式有问题，需要一条数据一行，可能数据没有换行", 0)
+					lua_exit()
+				end
 			else
-				dialog("号码文件为空或者格式有问题，需要一条数据一行，可能数据没有换行", 0)
+				dialog("号码文件没号码了", 0)
 				lua_exit()
 			end
 		else
-			dialog("号码文件没号码了", 0)
+			dialog("号码文件不存在，请检查该文件是否有误", 0)
 			lua_exit()
 		end
-	else
-		dialog("号码文件不存在，请检查该文件是否有误", 0)
-		lua_exit()
+	elseif selectPlatform == "1" then
+		self:lxy_token()
+
+		::get_phone::
+		header_send = {}
+		body_send = {}
+		ts.setHttpsTimeOut(60)
+		status_resp, header_resp,body_resp = ts.httpGet("http://www.liuxing985.com:81/sms/api/getPhone?token=" .. token .. "&sid=" .. work_id, header_send, body_send)
+		if status_resp == 200 then
+			local tmp = json.decode(body_resp)
+			if tmp.code == 0 then
+				self.phone = tmp.phone
+				self:myToast(self.phone)
+			elseif tmp.code == -1 then
+				self:myToast("暂无号码", 10000)
+				goto get_phone
+			elseif tmp.code == -2 then
+				self:myToast("项目已禁用", 3000)
+				goto get_phone
+			elseif tmp.code == -3 then
+				self:myToast("余额不足,请充值/金额不足", 3000)
+				goto get_phone
+			elseif tmp.code == -4 then
+				self:myToast("您的状态异常无法取号请联系客服", 3000)
+				goto get_phone
+			elseif tmp.code == -5 then
+				self:myToast("上次获取失败,5秒后重试", 5000)
+				goto get_phone
+			elseif tmp.code == 401 then
+				self:lxy_token()
+				self:myToast("token失效,重新获取", 3000)
+				goto get_phone
+			else
+				self:myToast("流星云获取号码失败:" .. tmp.msg, 3000)
+				goto get_phone
+			end
+		end
 	end
 end
 
@@ -401,27 +457,38 @@ function model:remove_phone()
 end
 
 function model:get_mess()
-	get_code_num = 0
+	if selectPlatform == "0" then
+		::get_yzm_restart::
+		yzm_time1 = ts.ms()
 
-	::get_yzm_restart::
-	yzm_time1 = ts.ms()
-
-	::get_yzm::
-	header_send = {}
-	body_send = {}
-	ts.setHttpsTimeOut(60)
-	status_resp, header_resp, body_resp = ts.httpGet(self.code_token, header_send, body_send)
-	if status_resp == 200 then
-		if type(string.find(body_resp, "%d+%d+%d+%d+%d+%d+")) == "number" then
-			-- local i, j = string.find(body_resp, "%d+%d+%d+%d+%d+%d+")
-			self.mm_yzm = string.match(body_resp,"%d+")
-			self:myToast(self.mm_yzm)
-			mSleep(2000)
-			return true
+		::get_yzm::
+		header_send = {}
+		body_send = {}
+		ts.setHttpsTimeOut(60)
+		status_resp, header_resp, body_resp = ts.httpGet(self.code_token, header_send, body_send)
+		if status_resp == 200 then
+			if type(string.find(body_resp, "%d+%d+%d+%d+%d+%d+")) == "number" then
+				-- local i, j = string.find(body_resp, "%d+%d+%d+%d+%d+%d+")
+				self.mm_yzm = string.match(body_resp,"%d+")
+				self:myToast(self.mm_yzm)
+				mSleep(2000)
+				return true
+			else
+				yzm_time2 = ts.ms()
+				if os.difftime(yzm_time2, yzm_time1) > 65 then
+					self:myToast("验证码获取失败，结束下一个")
+					mSleep(3000)
+					return false
+				else
+					self:myToast(tostring(body_resp))
+					mSleep(3000)
+					goto get_yzm
+				end
+			end
 		else
 			yzm_time2 = ts.ms()
 			if os.difftime(yzm_time2, yzm_time1) > 65 then
-				self:myToast("验证码获取失败，结束下一个")
+				self:myToast("验证码获取失败，结束下一个:"..tostring(body_resp))
 				mSleep(3000)
 				return false
 			else
@@ -430,16 +497,48 @@ function model:get_mess()
 				goto get_yzm
 			end
 		end
-	else
-		yzm_time2 = ts.ms()
-		if os.difftime(yzm_time2, yzm_time1) > 65 then
-			self:myToast("验证码获取失败，结束下一个:"..tostring(body_resp))
-			mSleep(3000)
+	elseif selectPlatform == "1" then
+		t1 = ts.ms()
+		::get_code::
+		t2 = ts.ms()
+		if os.difftime(t2, t1) > 70 then
+			self:myToast("超过70秒获取不到验证码，拉黑获取下一个")
 			return false
-		else
-			self:myToast(tostring(body_resp))
-			mSleep(3000)
-			goto get_yzm
+		end
+
+		header_send = {}
+		body_send = {}
+		ts.setHttpsTimeOut(60)
+		status_resp, header_resp,body_resp = ts.httpGet("http://www.liuxing985.com:81/sms/api/getMessage?token=" .. token .. "&sid=" .. work_id .. "&phone=" .. self.phone, header_send, body_send)
+		if status_resp == 200 then
+			local tmp = json.decode(body_resp)
+			if tmp.code == 0 then
+				self.mm_yzm = string.match(tmp.sms,"%d+")
+				self:myToast(self.mm_yzm, 2000)
+				return true
+			elseif tmp.code == -1 then
+				self:myToast("暂无短信,延迟10秒后再次请求", 10000)
+				goto get_code
+			elseif tmp.code == -2 then
+				self:myToast("项目已禁用", 3000)
+				goto get_code
+			elseif tmp.code == -3 then
+				self:myToast("余额不足,请充值/金额不足", 3000)
+				goto get_code
+			elseif tmp.code == -4 then
+				self:myToast("您的状态异常无法取号请联系客服", 3000)
+				goto get_code
+			elseif tmp.code == -5 then
+				self:myToast("上次获取失败,5秒后重试", 5000)
+				goto get_code
+			elseif tmp.code == 401 then
+				self:lxy_token()
+				self:myToast("token失效,重新获取", 3000)
+				goto get_code
+			else
+				self:myToast("流星云获取验证码失败:" .. tmp.msg, 3000)
+				goto get_code
+			end
 		end
 	end
 end
@@ -652,7 +751,7 @@ function model:location_model()
 		self:click(x, y)
 		self:myToast("定位服务未开启2")
 	end
-	
+
 	--取消通讯录权限请求
 	mSleep(50)
 	x,y = findMultiColorInRegionFuzzy( 0x007aff, "9|0|0x007aff,19|-8|0x007aff,44|8|0x007aff,58|8|0x007aff,305|12|0x007aff,50|-172|0x000000,64|-170|0x000000,71|-160|0x000000,95|-163|0x000000", 90, 0, 0, 749, 1333)
@@ -741,7 +840,7 @@ function model:done()
 end
 
 function model:TYNow()
-    mSleep(50)
+	mSleep(50)
 	x,y = findMultiColorInRegionFuzzy( 0xaaaaaa, "27|0|0xaaaaaa,-161|-95|0x3bb3fa,199|-91|0x3bb3fa,3|-94|0xffffff,31|-94|0xffffff,-215|-91|0xffffff,240|-91|0xffffff", 90, 0, 0, 749, 1333)
 	if x ~= -1 then
 		self:click(x, y - 20)
@@ -1837,7 +1936,7 @@ function model:mm()
 		end
 
 		if self.subNameBool then
-		    self.mm_accountId = self:getMMId(appDataPath(self.mm_bid) .. "/Documents")
+			self.mm_accountId = self:getMMId(appDataPath(self.mm_bid) .. "/Documents")
 			writeFileString(userPath().."/res/绑定手机号记录.txt", self.mm_accountId .. "----" .. self.phone .. "----" .. self.code_token,"a",1)
 		end
 	else
@@ -1846,17 +1945,39 @@ function model:mm()
 			self:myToast("换号四次都获取不到验证码，切换下一个备份")
 			goto over
 		else
-			self:myToast("获取验证码失败，保存号码到失败文件:" .. getCodeErr)
-			::saveAgain::
-			bool = writeFileString(userPath().."/res/phoneError.txt",self.phone .. "----" .. self.code_token,"a",1) --将 string 内容存入文件，成功返回 true
-			if bool then
-				self:myToast("保存号码到失败文件成功")
+			if selectPlatform == "0" then
+				self:myToast("获取验证码失败，保存号码到失败文件:" .. getCodeErr)
+				::saveAgain::
+				bool = writeFileString(userPath().."/res/phoneError.txt",self.phone .. "----" .. self.code_token,"a",1) --将 string 内容存入文件，成功返回 true
+				if bool then
+					self:myToast("保存号码到失败文件成功")
+				else
+					self:myToast("保存号码到失败文件失败")
+					goto saveAgain
+				end
+				mSleep(1000)
+				self:remove_phone()
 			else
-				self:myToast("保存号码到失败文件失败")
-				goto saveAgain
+				::addBlack::
+				header_send = {}
+				body_send = {}
+				ts.setHttpsTimeOut(60)
+				status_resp, header_resp,body_resp = ts.httpGet("http://www.liuxing985.com:81/sms/api/addBlacklist?token=" .. token .. "&sid=" .. work_id .. "&phone=" .. self.phone, header_send, body_send)
+				if status_resp == 200 then
+					local tmp = json.decode(body_resp)
+					if tmp.code == 0 then
+						self:myToast("拉黑成功")
+					elseif tmp.code == 401 then
+						self:lxy_token()
+						self:myToast("token失效,重新获取", 3000)
+						goto addBlack
+					else
+						self:myToast("流星云拉黑失败:" .. tmp.msg, 3000)
+						goto addBlack
+					end
+				end
 			end
-			mSleep(1000)
-			self:remove_phone()
+
 			self:click(60, 84, 2000)
 			back_again = 0
 			getPhoneAgain =true
@@ -1927,11 +2048,11 @@ function model:mm()
 					mSleep(50)
 					x,y = findMultiColorInRegionFuzzy(0xffffff, "191|-5|0xffffff,-192|-5|0x3bb3fa,86|-50|0x3bb3fa,111|43|0x3bb3fa,379|5|0x3bb3fa", 90, 0, 0, 750, 1334, { orient = 2 })
 					if x ~= -1 then
-					    mSleep(500)
-					    if getColor(x + 300, y) == 0x3bb3fa then
-    						self:click(x,y)
-    						self:myToast("查看通讯录好友")
-					    end
+						mSleep(500)
+						if getColor(x + 300, y) == 0x3bb3fa then
+							self:click(x,y)
+							self:myToast("查看通讯录好友")
+						end
 					end
 
 					--取消屏蔽
@@ -1982,8 +2103,8 @@ function model:mm()
 				end
 
 				while (true) do
-				    self:TYNow()
-				    
+					self:TYNow()
+
 					self:location_model()
 
 					--更多
@@ -2009,21 +2130,21 @@ function model:mm()
 					end
 				end
 			end
-            
-            ::to_again::
+
+			::to_again::
 			while (true) do
 				mSleep(50)
-			    if getColor(673,678) == 0xef7070 then
-			        self:click(62, 88)
-			    end
-				
-			    mSleep(50)
+				if getColor(673,678) == 0xef7070 then
+					self:click(62, 88)
+				end
+
+				mSleep(50)
 				x,y = findMultiColorInRegionFuzzy(0x323333, "-1|-35|0x323333,-78|-28|0x4b4c4c,-77|0|0x4b4c4c,-97|-14|0x4b4c4c,-61|-13|0x4b4c4c,-67|-13|0x4b4c4c,-41|-16|0xffffff", 90, 0, 0, 750, 1334, { orient = 2 })
 				if x ~= -1 then
 					self:click(x, y - 20)
 					self:myToast("进入设置",1500)
 				end
-					
+
 				mSleep(50)
 				x,y = findMultiColorInRegionFuzzy(0x1e1e1e, "4|0|0x1e1e1e,9|0|0x1e1e1e,14|0|0x1e1e1e,25|-2|0x1e1e1e,46|-2|0x1e1e1e,46|4|0x1e1e1e,75|4|0x1e1e1e,85|-10|0x1e1e1e,154|12|0x1e1e1e", 90, 0, 0, 750, 1334, { orient = 2 })
 				if x ~= -1 then
@@ -2034,7 +2155,7 @@ function model:mm()
 					moveTo(370,350,369,973,20,70)
 					mSleep(2000)
 				end
-				
+
 				mSleep(50)
 				x,y = findMultiColorInRegionFuzzy( 0x323333, "12|16|0x323333,2|16|0x323333,23|16|0x323333,35|17|0x323333,40|13|0x323333,58|11|0x323333,68|11|0x323333,99|10|0x323333,128|10|0xffffff", 90, 0, 0, 749, 1333)
 				if x~=-1 and y~=-1 then
@@ -2042,17 +2163,17 @@ function model:mm()
 					break
 				end
 			end
-			
+
 			while (true) do
-			    mSleep(50)
-			    if getColor(673,678) == 0xef7070 then
-			        self:click(62, 88)
-			        self:myToast("密码修改红色")
-			        goto to_again
-			    else 
-			        self:myToast("继续操作密码修改")
-			        break
-			    end
+				mSleep(50)
+				if getColor(673,678) == 0xef7070 then
+					self:click(62, 88)
+					self:myToast("密码修改红色")
+					goto to_again
+				else 
+					self:myToast("继续操作密码修改")
+					break
+				end
 			end
 		end
 
@@ -2122,25 +2243,25 @@ function model:mm()
 		self:timeOutRestart(t1)
 	end
 
--- 	if openBookWay == "0" then
--- 		mSleep(500)
--- 		runApp(self.root_setting)
--- 		mSleep(1000)
+	-- 	if openBookWay == "0" then
+	-- 		mSleep(500)
+	-- 		runApp(self.root_setting)
+	-- 		mSleep(1000)
 
--- 		--设置里面关闭权限
--- 		while (true) do
--- 			mSleep(50)
--- 			x,y = findMultiColorInRegionFuzzy(0x000000, "5|6|0x000000,19|5|0x000000,27|2|0x000000,39|4|0x000000,49|4|0x000000,58|-1|0x000000,83|10|0x000000,78|0|0x000000,78|-11|0x000000", 90, 1, 129, 749, 578, { orient = 2 })
--- 			if x ~= -1 then
--- 				mSleep(200)
--- 				if getColor(x + 525,y + 3) ~= 0xffffff then
--- 					self:click(x + 525,y + 3)
--- 					self:myToast("关闭")
--- 					break
--- 				end
--- 			end
--- 		end
--- 	end
+	-- 		--设置里面关闭权限
+	-- 		while (true) do
+	-- 			mSleep(50)
+	-- 			x,y = findMultiColorInRegionFuzzy(0x000000, "5|6|0x000000,19|5|0x000000,27|2|0x000000,39|4|0x000000,49|4|0x000000,58|-1|0x000000,83|10|0x000000,78|0|0x000000,78|-11|0x000000", 90, 1, 129, 749, 578, { orient = 2 })
+	-- 			if x ~= -1 then
+	-- 				mSleep(200)
+	-- 				if getColor(x + 525,y + 3) ~= 0xffffff then
+	-- 					self:click(x + 525,y + 3)
+	-- 					self:myToast("关闭")
+	-- 					break
+	-- 				end
+	-- 			end
+	-- 		end
+	-- 	end
 
 	::reName::
 	self.mm_accountId = self:getMMId(appDataPath(self.mm_bid) .. "/Documents")
@@ -2173,59 +2294,59 @@ function model:index()
 		mSleep(100)
 		closeApp(self.mm_bid, 0)
 		mSleep(500)
-		
+
 		if openBookWay == "0" then
-    		mSleep(500)
-    		runApp(self.root_setting)
-    		mSleep(1000)
-    		t1 = ts.ms()
-    		while (true) do
-    		    mSleep(50)
-    		    x,y = findMultiColorInRegionFuzzy(0x000000, "10|3|0x000000,21|3|0x000000,54|2|0x000000,64|2|0x000000,75|2|0x000000,112|-6|0x000000,130|-4|0x000000,146|-5|0x000000,166|-4|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
-                if x ~= -1 then
-                    self:click(x + 300,y + 3)
+			mSleep(500)
+			runApp(self.root_setting)
+			mSleep(1000)
+			t1 = ts.ms()
+			while (true) do
+				mSleep(50)
+				x,y = findMultiColorInRegionFuzzy(0x000000, "10|3|0x000000,21|3|0x000000,54|2|0x000000,64|2|0x000000,75|2|0x000000,112|-6|0x000000,130|-4|0x000000,146|-5|0x000000,166|-4|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+				if x ~= -1 then
+					self:click(x + 300,y + 3)
 					self:myToast("进入设置陌陌")
 					break
 				else
-				    for var=1, 3 do
-    				    mSleep(500)
-    					moveTowards(341,1031, 85, 900, 50)
-				    end
-				    mSleep(1000)
-                end
-                
-                self:timeOutRestart(t1)
-                mSleep(1000)
-    		end
-            
-            t1 = ts.ms()
-    		--设置里面关闭权限
-    		while (true) do
-    		    mSleep(50)
-    		    x,y = findMultiColorInRegionFuzzy(0x000000, "10|3|0x000000,21|3|0x000000,54|2|0x000000,64|2|0x000000,75|2|0x000000,112|-6|0x000000,130|-4|0x000000,146|-5|0x000000,166|-4|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
-                if x ~= -1 then
-                    self:click(x + 300,y + 3)
+					for var=1, 3 do
+						mSleep(500)
+						moveTowards(341,1031, 85, 900, 50)
+					end
+					mSleep(1000)
+				end
+
+				self:timeOutRestart(t1)
+				mSleep(1000)
+			end
+
+			t1 = ts.ms()
+			--设置里面关闭权限
+			while (true) do
+				mSleep(50)
+				x,y = findMultiColorInRegionFuzzy(0x000000, "10|3|0x000000,21|3|0x000000,54|2|0x000000,64|2|0x000000,75|2|0x000000,112|-6|0x000000,130|-4|0x000000,146|-5|0x000000,166|-4|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+				if x ~= -1 then
+					self:click(x + 300,y + 3)
 					self:myToast("进入设置陌陌")
 				end
-				    
-    			mSleep(50)
-    			x,y = findMultiColorInRegionFuzzy(0x000000, "5|6|0x000000,19|5|0x000000,27|2|0x000000,39|4|0x000000,49|4|0x000000,58|-1|0x000000,83|10|0x000000,78|0|0x000000,78|-11|0x000000", 90, 1, 129, 749, 578, { orient = 2 })
-    			if x ~= -1 then
-    				mSleep(200)
-    				if getColor(x + 525,y + 3) == 0xffffff then
-    				    self:myToast("当前通讯录是关闭状态")
-    				    break    				
-                    else
-    					self:click(x + 525,y + 3)
-    					self:myToast("关闭")
-    				end
-    			end
-    			
-    			self:timeOutRestart(t1)
-    			mSleep(1000)
-    		end
+
+				mSleep(50)
+				x,y = findMultiColorInRegionFuzzy(0x000000, "5|6|0x000000,19|5|0x000000,27|2|0x000000,39|4|0x000000,49|4|0x000000,58|-1|0x000000,83|10|0x000000,78|0|0x000000,78|-11|0x000000", 90, 1, 129, 749, 578, { orient = 2 })
+				if x ~= -1 then
+					mSleep(200)
+					if getColor(x + 525,y + 3) == 0xffffff then
+						self:myToast("当前通讯录是关闭状态")
+						break    				
+					else
+						self:click(x + 525,y + 3)
+						self:myToast("关闭")
+					end
+				end
+
+				self:timeOutRestart(t1)
+				mSleep(1000)
+			end
 		end
-	    
+
 		if self.subName ~= "密码错误" then
 			setVPNEnable(false)
 			mSleep(1000)
@@ -2280,7 +2401,7 @@ function model:main()
 		["width"] = w,
 		["height"] = h,
 		["config"] = "save_001.dat",
-		["timer"] = 30,
+		["timer"] = 40,
 		views = {
 			{
 				["type"] = "Label",
@@ -2467,13 +2588,38 @@ function model:main()
 				["list"] = "打开,不打开",
 				["select"] = "0",
 				["countperline"] = "4"
-			}
+			},
+			{
+				["type"] = "Label",
+				["text"] = "选择接码平台",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255"
+			},
+			{
+				["type"] = "RadioGroup",
+				["list"] = "以前,流星云",
+				["select"] = "0",
+				["countperline"] = "4"
+			},
+			{
+				["type"] = "Label",
+				["text"] = "设置接码平台项目id",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255"
+			},
+			{
+				["type"] = "Edit",
+				["prompt"] = "输入项目id",
+				["text"] = "默认值"
+			},
 		}
 	}
 
 	local MyJsonString = json.encode(MyTable)
 
-	ret, old_pass, password, searchFriend, searchAccount, changeHeader, inputPhoneAgain, networkMode, restoreBackup, vpnPass, vpnSecretKey, selectPassWay, openBookWay = showUI(MyJsonString)
+	ret, old_pass, password, searchFriend, searchAccount, changeHeader, inputPhoneAgain, networkMode, restoreBackup, vpnPass, vpnSecretKey, selectPassWay, openBookWay, selectPlatform, work_id = showUI(MyJsonString)
 	if ret == 0 then
 		dialog("取消运行脚本", 3)
 		luaExit()

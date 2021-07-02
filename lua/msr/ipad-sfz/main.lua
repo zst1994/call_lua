@@ -5,16 +5,25 @@ local ts_enterprise_lib = require("ts_enterprise_lib")
 
 local model 			= {}
 
-model.wc_bid = ""
-model.awz_bid = ""
-model.awz_url = ""
+model.wc_bid 			= ""
+model.awz_bid 			= ""
+model.awz_url 			= ""
 
-model.idCard_user = ""
-model.idCard_numCode = ""
+model.idCard_user 		= ""
+model.idCard_numCode 	= ""
+
+model.pushCategory 		= ""
+model.pushData       	= ""
+
+function model:myToast(str,ms)
+	toast(str,1)
+	mSleep(ms and ms or math.random(500, 600))
+end
 
 function model:clear_App()
+	closeApp(self.wc_bid)
+	mSleep(2000)
 	::run_again::
-	mSleep(500)
 	closeApp(self.awz_bid) 
 	mSleep(math.random(1000, 1500))
 	runApp(self.awz_bid)
@@ -26,7 +35,7 @@ function model:clear_App()
 		flag = isFrontApp(self.awz_bid)
 		if flag == 1 then
 			if getColor(657,1307) == 0x0950d0 or getColor(652,1198) == 0x0950d0 then
-				toast("准备newApp",1)
+				self:myToast("准备newApp")
 				break
 			end
 		else
@@ -41,7 +50,7 @@ function model:clear_App()
 		mSleep(math.random(500, 1000))
 		while true do
 			if getColor(376, 735) == 0xffffff or getColor(379, 562) == 0xffffff then
-				toast("newApp成功",1)
+				self:myToast("newApp成功")
 				break
 			end
 		end
@@ -54,12 +63,11 @@ function model:clear_App()
 			local resJson = sz.json.decode(res)
 			local result = resJson.result
 			if result == 3 then
-				toast("新机成功，但是ip重复了",1)
+				self:myToast("新机成功，但是ip重复了")
 			elseif result == 1 then
-				toast("新机成功",1)
+				self:myToast("新机成功")
 			else 
-				toast("失败，请手动查看问题："..tostring(res), 1)
-				mSleep(3000)
+				self:myToast("失败，请手动查看问题："..tostring(res), 3000)
 				goto run_again
 			end
 		end 
@@ -73,19 +81,11 @@ function model:getConfig()
 		self.wc_bid = string.gsub(tab[1],"%s+","")
 		self.awz_bid = string.gsub(tab[4],"%s+","")
 		self.awz_url = string.gsub(tab[5],"%s+","")
-		toast("获取配置信息成功",1)
-		mSleep(1000)
+		self:myToast("获取配置信息成功")
 	else
 		dialog("文件不存在,请检测配置文件")
 		goto configFile
 	end
-end
-
-function model:run()
-	mSleep(1000)
-	closeApp(self.wc_bid)
-	mSleep(2000)
-	self:clear_App()
 end
 
 function model:loginAccount()
@@ -100,8 +100,7 @@ function model:loginAccount()
 			mSleep(math.random(500, 700))
 			tap(x + 50, y)
 			mSleep(math.random(500, 700))
-			toast("ipad使用",1)
-			mSleep(500)
+			self:myToast("ipad使用")
 		end
 
 		mSleep(50)
@@ -127,23 +126,21 @@ function model:loginAccount()
 			mSleep(math.random(500, 700))
 			tap(x, y)
 			mSleep(math.random(500, 700))
-			toast("匹配通讯录",1)
-			mSleep(500)
+			self:myToast("匹配通讯录")
 		end
 
 		mSleep(50)
 		x,y = findMultiColorInRegionFuzzy( 0x07c160, "181|29|0x191919,566|29|0x191919,108|31|0xf9f9f9,607|18|0xf9f9f9", 90, 0, 1013, 749,  1333)
 		if x~=-1 and y~=-1 then
 			mSleep(math.random(500, 700))
-			toast("微信界面",1)
+			self:myToast("微信界面")
 			break
 		end
 
 		mSleep(50)
 		if getColor(232,  430) ==  0x000000 then
 			mSleep(500)
-			toast("等待扫码",1)
-			mSleep(5000)
+			self:myToast("等待扫码",5000)
 		end
 
 		mSleep(50)
@@ -151,8 +148,7 @@ function model:loginAccount()
 			mSleep(500)
 			tap(385,  463)
 			mSleep(2000)
-			toast("二维码失效",1)
-			mSleep(5000)
+			self:myToast("二维码失效",5000)
 		end
 
 		mSleep(50)
@@ -167,8 +163,7 @@ function model:loginAccount()
 		mSleep(50)
 		x,y = findMultiColorInRegionFuzzy( 0x07c160, "-4|-26|0x07c160,-569|-17|0xf5f5f5,-54|6|0xf5f5f5", 90, 0, 1190, 749, 1333)
 		if x~=-1 and y~=-1 then
-			toast("我",1)
-			mSleep(1000)
+			self:myToast("我")
 			break
 		else
 			mSleep(math.random(500, 700))
@@ -182,8 +177,7 @@ function model:loginAccount()
 			mSleep(math.random(500, 700))
 			tap(x, y)
 			mSleep(math.random(500, 700))
-			toast("匹配通讯录",1)
-			mSleep(500)
+			self:myToast("匹配通讯录")
 		end
 
 		mSleep(50)
@@ -202,8 +196,7 @@ function model:loginAccount()
 			mSleep(math.random(500, 700))
 			tap(x + 200, y + 20)
 			mSleep(math.random(500, 700))
-			toast("支付",1)
-			mSleep(500)
+			self:myToast("支付")
 		end
 
 		--三个点
@@ -213,8 +206,7 @@ function model:loginAccount()
 			mSleep(math.random(500, 700))
 			tap(x, y)
 			mSleep(math.random(500, 700))
-			toast("三个点",1)
-			mSleep(500)
+			self:myToast("三个点")
 		end
 
 		--实名认证
@@ -224,8 +216,7 @@ function model:loginAccount()
 			mSleep(math.random(500, 700))
 			tap(379,  192)
 			mSleep(math.random(500, 700))
-			toast("实名认证",1)
-			mSleep(500)
+			self:myToast("实名认证")
 			break
 		end
 	end
@@ -248,8 +239,7 @@ function model:loginAccount()
 			mSleep(math.random(500, 700))
 			tap(x, y)
 			mSleep(math.random(500, 700))
-			toast("立即认证",1)
-			mSleep(500)
+			self:myToast("立即认证")
 		end
 
 		--同意
@@ -259,19 +249,29 @@ function model:loginAccount()
 			mSleep(math.random(500, 700))
 			tap(x, y)
 			mSleep(math.random(500, 700))
-			toast("同意",1)
-			mSleep(1000)
+			self:myToast("同意")
 			break
 		end
 	end
 
-	mSleep(500)
+	unmatching = false
 	::getIdCard::
+	if unmatching then
+		::pushData::
+		local plugin_ok,api_ok,data = ts_enterprise_lib:plugin_api_call("DataCenter", "insert_data", self.pushCategory, self.pushData)
+		if plugin_ok and api_ok then
+			self:myToast("插入数据成功")
+		else
+			self:myToast("插入数据失败，重新插入:"..tostring(plugin_ok).."----"..tostring(api_ok), 3000)
+			goto pushData
+		end
+	end
+
 	local category = "idCard-data"
-	local plugin_ok,api_ok,data = ts_enterprise_lib:plugin_api_call("DataCenter","get_data",category)
+	local plugin_ok,api_ok,data = ts_enterprise_lib:plugin_api_call("DataCenter","get_data", category)
 	if plugin_ok and api_ok then
-		toast(data, 1)
-		mSleep(1000)
+		self:myToast(data)
+
 		local data = strSplit(data,"----")
 		if #data > 0 then
 			self.idCard_user = data[1]
@@ -284,16 +284,25 @@ function model:loginAccount()
 
 	while (true) do
 		mSleep(50)
-		if getColor(249,  270) == 0x1a1a1a  and getColor(498,  266) == 0x1a1a1a then
-			toast("准备输入信息",1)
-			mSleep(1000)
+		if getColor(249,  270) == 0x1a1a1a  and getColor(498,  266) == 0x1a1a1a or getColor(274, 1272) == 0x07c160 then
+			self:myToast("准备输入信息",1000)
+
 			while (true) do
 				mSleep(50)
 				x,y = findMultiColorInRegionFuzzy( 0x1a1a1a, "16|0|0x1a1a1a,49|0|0x1a1a1a,77|-16|0x1a1a1a,77|-9|0x1a1a1a,77|-4|0x1a1a1a,77|3|0x1a1a1a,80|12|0x1a1a1a", 90, 0, 0, 749, 1333)
 				if x~=-1 and y~=-1 then
 					mSleep(500)
-					tap(x + 320, y - 340)
+					tap(x + 500, y - 340)
 					mSleep(1000)
+					if unmatching then
+						for var= 1, 10 do
+							keyDown("DeleteOrBackspace")
+							mSleep(20)
+							keyUp("DeleteOrBackspace")
+							mSleep(30)
+						end
+						mSleep(500)
+					end
 					inputStr(self.idCard_user)
 					mSleep(500)
 					key = "ReturnOrEnter"
@@ -309,11 +318,19 @@ function model:loginAccount()
 				x,y = findMultiColorInRegionFuzzy( 0x1a1a1a, "16|0|0x1a1a1a,49|0|0x1a1a1a,77|-16|0x1a1a1a,77|-9|0x1a1a1a,77|-4|0x1a1a1a,77|3|0x1a1a1a,80|12|0x1a1a1a", 90, 0, 0, 749, 1333)
 				if x~=-1 and y~=-1 then
 					mSleep(500)
-					tap(x + 320, y)
+					tap(x + 551, y)
 					mSleep(1000)
+					if unmatching then
+						for var= 1, 40 do
+							keyDown("DeleteOrBackspace")
+							mSleep(20)
+							keyUp("DeleteOrBackspace")
+							mSleep(30)
+						end
+						mSleep(500)
+					end
 					inputKey(self.idCard_numCode)
-					toast("输入姓名和id号",1)
-					mSleep(1000)
+					self:myToast("输入姓名和id号")
 					break
 				end
 			end
@@ -341,10 +358,14 @@ function model:loginAccount()
 			mSleep(500)
 			tap(492, 1165)
 			mSleep(500)
-			toast("性别",1)
-			mSleep(1000)
+			self:myToast("性别")
 			break
 		end
+	end
+
+	if unmatching then
+		unmatching = false
+		goto next
 	end
 
 	--证件生效期
@@ -362,8 +383,7 @@ function model:loginAccount()
 			mSleep(500)
 			tap(488, 1239)
 			mSleep(500)
-			toast("证件生效期",1)
-			mSleep(1000)
+			self:myToast("证件生效期")
 			break
 		end
 	end
@@ -383,8 +403,7 @@ function model:loginAccount()
 			mSleep(500)
 			tap(488, 1239)
 			mSleep(500)
-			toast("证件失效期",1)
-			mSleep(1000)
+			self:myToast("证件失效期")
 			break
 		end
 	end
@@ -404,12 +423,12 @@ function model:loginAccount()
 			mSleep(500)
 			tap(314, 1075)
 			mSleep(500)
-			toast("职业",1)
-			mSleep(1000)
+			self:myToast("职业")
 			break
 		end
 	end
 
+	::next::
 	while (true) do
 		mSleep(50)
 		x,y = findMultiColorInRegionFuzzy( 0xffffff, "35|1|0xffffff,71|-4|0xffffff,-137|10|0x07c160,36|-28|0x07c160,202|5|0x07c160,31|21|0x07c160", 90, 0, 0, 749, 1333)
@@ -417,8 +436,7 @@ function model:loginAccount()
 			mSleep(500)
 			tap(x, y)
 			mSleep(500)
-			toast("下一步",1)
-			mSleep(1000)
+			self:myToast("下一步")
 			break
 		else
 			moveTowards(404,1094,90,300,10)
@@ -426,6 +444,19 @@ function model:loginAccount()
 	end
 
 	while (true) do
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy( 0x1a1a1a, "16|-1|0x1a1a1a,52|-1|0x1a1a1a,262|-15|0x576b95,438|-12|0x576b95,182|-215|0x1a1a1a,182|-185|0x1a1a1a,168|-202|0x1a1a1a,234|-202|0x1a1a1a,234|-184|0x1a1a1a", 90, 0, 0, 749, 1333)
+		if x~=-1 and y~=-1 then
+			mSleep(math.random(500, 700))
+			tap(x,   y)
+			mSleep(math.random(500, 700))
+			self:myToast("证件与姓名不匹配")
+			unmatching = true
+			self.pushCategory = "error-data"
+			self.pushData = self.idCard_user .. "----" .. self.idCard_numCode .. "----证件与姓名不匹配"
+			goto getIdCard
+		end
+
 		--已征得同意
 		mSleep(50)
 		x,y = findMultiColorInRegionFuzzy( 0x576b95, "25|6|0x576b95,41|3|0x576b95,79|3|0x576b95,104|0|0x576b95,137|2|0x576b95,-279|-4|0x1a1a1a,-260|-10|0x1a1a1a,-236|4|0x1a1a1a", 90, 0, 0, 749, 1333)
@@ -433,8 +464,7 @@ function model:loginAccount()
 			mSleep(500)
 			tap(x, y)
 			mSleep(500)
-			toast("已征得同意",1)
-			mSleep(1000)
+			self:myToast("已征得同意")
 		end
 
 		--添加银行卡
@@ -444,8 +474,7 @@ function model:loginAccount()
 			mSleep(math.random(500, 700))
 			tap(x,   y)
 			mSleep(math.random(500, 700))
-			toast("暂不绑卡",1)
-			mSleep(1000)
+			self:myToast("暂不绑卡")
 		end
 
 		mSleep(50)
@@ -458,14 +487,12 @@ function model:loginAccount()
 			mSleep(1000)
 			tap(x,   y)
 			mSleep(500)
-			toast("输入手机号码",1)
-			mSleep(1000)
+			self:myToast("输入手机号码")
 		end
 
 		mSleep(50)
 		if getColor(614, 1256) == 0x181818 and getColor(674, 1260) == 0xededed then
-			toast("准备设置密码",1)
-			mSleep(1500)
+			self:myToast("准备设置密码", 1000)
 			break
 		end
 	end
@@ -473,8 +500,11 @@ function model:loginAccount()
 	while (true) do
 		mSleep(50)
 		if getColor(614, 1256) == 0x181818 and getColor(674, 1260) == 0xededed then
+			mSleep(500)
 			for i = 1, #(pwd) do
+				mSleep(200)
 				num = string.sub(pwd,i,i)
+				mSleep(300)
 				if num == "0" then
 					mSleep(500)
 					tap(374, 1262)
@@ -506,7 +536,7 @@ function model:loginAccount()
 					mSleep(500)
 					tap(621, 1107)
 				end
-				mSleep(100)
+				mSleep(500)
 			end
 			mSleep(2000)
 		end
@@ -516,7 +546,60 @@ function model:loginAccount()
 			mSleep(math.random(500, 700))
 			tap(368,  676)
 			mSleep(math.random(500, 700))
-			toast("下一步",1)
+			self:myToast("下一步", 3000)
+			break
+		end
+	end
+
+	while (true) do
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy( 0x06ae56, "4|16|0x06ae56,43|-5|0x06ae56,19|-836|0x07c160,25|-775|0x07c160,-100|6|0xf2f2f2,151|11|0xf2f2f2", 90, 0, 0, 749, 1333)
+		if x~=-1 and y~=-1 then
+			mSleep(math.random(500, 700))
+			tap(x, y)
+			mSleep(math.random(500, 700))
+			self:myToast("完成")
+		end
+
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy(0x00c777, "-16|-1|0x00c777,29|-1|0x00c777,77|-13|0x1a1a1a,108|-13|0x1a1a1a,96|-4|0x1a1a1a,121|4|0x1a1a1a,144|3|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
+		if x~=-1 and y~=-1 then
+			mSleep(math.random(500, 700))
+			tap(x + 200, y + 130)
+			mSleep(math.random(500, 700))
+			break
+		else
+			mSleep(math.random(500, 700))
+			tap(54, 81)
+			mSleep(math.random(500, 700))
+		end
+	end
+
+	while (true) do
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy(0x00c777, "-16|-1|0x00c777,29|-1|0x00c777,77|-13|0x1a1a1a,108|-13|0x1a1a1a,96|-4|0x1a1a1a,121|4|0x1a1a1a,144|3|0x1a1a1a", 90, 0, 0, 750, 1334, { orient = 2 })
+		if x~=-1 and y~=-1 then
+			mSleep(math.random(500, 700))
+			tap(x + 200, y + 130)
+			mSleep(math.random(500, 700))
+		end
+		
+		mSleep(50)
+		if getColor(693,   83) == 0x181818 and getColor(604,   85) == 0xededed then
+			mSleep(math.random(500, 700))
+			tap(693,   83)
+			mSleep(math.random(500, 700))
+		end
+		
+		mSleep(50)
+		if getColor(694,   83) == 0x757575 then
+			mSleep(math.random(500, 700))
+			tap(313,   283)
+			mSleep(math.random(500, 700))
+			inputStr(self.idCard_user .. "----" .. self.idCard_numCode)
+			mSleep(1000)
+			tap(54, 81)
+			mSleep(math.random(500, 700))
 			break
 		end
 	end
@@ -525,10 +608,9 @@ end
 function model:main()
 	self:getConfig()
 	while (true) do
-		self:run()
+		self:clear_App()
 		self:loginAccount()
-		toast('一个流程结束，进行下一个',1)
-		mSleep(5000)
+		self:myToast('一个流程结束，进行下一个', 5000)
 	end
 end
 
