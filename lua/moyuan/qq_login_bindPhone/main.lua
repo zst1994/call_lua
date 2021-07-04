@@ -9,6 +9,7 @@ local model           = {}
 
 model.awz_bid         = "com.superdev.AMG"
 model.mm_bid          = "com.wemomo.momoappdemo1"
+model.ajs_bid         = "com.aijiasuinc.AiJiaSuClient"
 model.root_setting    = "com.apple.Preferences"
 
 model.qqAcount        = ""
@@ -74,15 +75,20 @@ local AMG = {
 					end
 				end
 			end
-
+            
+            checkVPNWayBool = true
 			::toNext::
 			model:Check_AMG()
 			while (true) do
 				mSleep(50)
 				x,y = findMultiColorInRegionFuzzy(0x000000, "44|-1|0x000000,79|0|0x000000,-25|154|0x007aff,0|155|0x007aff,17|155|0x007aff,56|161|0x007aff,-22|253|0x007aff,35|251|0x097fff,81|243|0x007aff", 100, 0, 0, 750, 1334, { orient = 2 })
 				if x ~= -1 then
-					if model.subName ~= "密码错误" then
+					if model.subName ~= "密码错误" and checkVPNWayBool then
 						model:vpn(true)
+						if selectVPNWay == "1" then
+						    checkVPNWayBool = false
+						    goto toNext
+						end
 					end
 					model:click(x,y)
 				end
@@ -202,144 +208,226 @@ function model:getNetIP()
 	end
 end
 
-function model:vpn(start)
-	::get_vpn::
-	old_data = self:getNetIP() --获取IP
-	if old_data then
-		self:myToast(old_data)
-	else
-		goto get_vpn
-	end
-
-	if networkMode == "0" then
-		mSleep(math.random(500, 1500))
-		flag = getVPNStatus()
-		if flag.active then
-			self:myToast("打开状态")
-			setVPNEnable(false)
-			setVPNEnable(false)
-			for var = 1, 10 do
-				mSleep(math.random(200, 500))
-				self:myToast("等待vpn切换" .. var)
-				mSleep(math.random(200, 500))
-			end
-			goto get_vpn
-		else
-			self:myToast("关闭状态")
-		end
-
-		setVPNEnable(true)
-		mSleep(1000 * math.random(2, 4))
-	elseif networkMode == "1" then
-		mSleep(math.random(500, 1500))
-		setAirplaneMode(true)
-		mSleep(1000 * math.random(10, 14))
-		setAirplaneMode(false)
-		mSleep(4000)
-	end
-
+function model:ajs_vpn()
+	closeApp(self.ajs_bid)
+	mSleep(500)
+	runApp(self.ajs_bid)
+	mSleep(1000)
+	
+	::ajs_again::
 	t1 = ts.ms()
-	while true do
-		new_data = self:getNetIP() --获取IP
-		if new_data then
-			self:myToast(new_data)
-			if new_data ~= old_data then
-				mSleep(1000)
-				if networkMode == "0" then
-					self:myToast("vpn链接成功")
-				elseif networkMode == "1" then
-					self:myToast("wifi链接成功")
-				end
-
-				if start then
-					mSleep(1000)
-					self:Check_AMG()
-					while (true) do
-						mSleep(200)
-						x,y = findMultiColorInRegionFuzzy(0x000000, "44|-1|0x000000,79|0|0x000000,-25|154|0x007aff,0|155|0x007aff,17|155|0x007aff,56|161|0x007aff,-22|253|0x007aff,35|251|0x097fff,81|243|0x007aff", 90, 0, 0, 750, 1334, { orient = 2 })
-						if x ~= -1 then
-							break
-						end
-					end
-				end
-				break
-			else
-				--vpn连接：需要输入帐号密码重新连接vpn
-				mSleep(200)
-				x,y = findMultiColorInRegionFuzzy(0x007aff, "9|0|0x007aff,20|-10|0x007aff,43|7|0x007aff,58|6|0x007aff,307|5|0x007aff,97|-261|0x000000,112|-260|0x000000,121|-253|0x000000,158|-242|0x000000", 100, 0, 0, 750, 1334, { orient = 2 })
-				if x ~= -1 then
-					self:click(x,y)
-					self:myToast("取消")
-					mSleep(500)
-					openURL("prefs:root=General&path=VPN")
-
-					while (true) do
-						mSleep(200)
-						x,y = findMultiColorInRegionFuzzy(0x007aff, "9|-1|0x007aff,51|2|0x077dff,288|-7|0x007aff,307|6|0x007aff,95|-239|0x000000,103|-217|0x000000,111|-239|0x000000,119|-224|0x000000,231|-232|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
-						if x ~= -1 then
-							self:click(x,y)
-							self:myToast("取消")
-						end
-
-						mSleep(200)
-						x,y = findMultiColorInRegionFuzzy(0x007aff, "-1|-12|0x007aff,-661|5|0x007aff,-650|169|0x007aff,-564|160|0x007aff,-543|164|0x007aff,-489|161|0x007aff,-473|171|0x007aff,-455|169|0x007aff,-330|-360|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
-						if x ~= -1 then
-							self:click(x,y)
-						end
-
-						mSleep(200)
-						if getColor(691,89) == 0x007aff then
-							self:click(691,89)
-						end
-
-						mSleep(200)
-						x,y = findMultiColorInRegionFuzzy(0x000000, "27|0|0x000000,14|18|0x000000,3|18|0x000000,20|21|0x000000,53|15|0x000000,53|9|0x000000,42|11|0x000000,60|97|0x000000,14|108|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
-						if x ~= -1 then
-							self:click(x + 340, y + 10)
-							writePasteboard(vpnPass)
-							mSleep(200)
-							keyDown("RightGUI")
-							keyDown("v")
-							keyUp("v")
-							keyUp("RightGUI")
-							mSleep(200)
-							key = "ReturnOrEnter"
-							keyDown(key)
-							keyUp(key)
-							mSleep(200)
-							writePasteboard(vpnSecretKey)
-							mSleep(200)
-							keyDown("RightGUI")
-							keyDown("v")
-							keyUp("v")
-							keyUp("RightGUI")
-							mSleep(200)
-							key = "ReturnOrEnter"
-							keyDown(key)
-							keyUp(key)
-							break
-						end
-					end
-					setVPNEnable(false)
-					goto get_vpn
-				end
-			end
+	while (true) do
+		mSleep(50)
+		if getColor(374,390) == 0x4580ff and getColor(374,438) == 0x4580ff then
+			self:click(469, 866)
+			self:myToast("准备切换线路")
+			break
+		else
+			setVPNEnable(false)
+			mSleep(2000)
 		end
-
-		t2 = ts.ms()
-
-		if os.difftime(t2, t1) > 10 then
-			if networkMode == "0" then
-				setVPNEnable(false)
-				setVPNEnable(false)
-				setVPNEnable(false)
-			end
-			mSleep(2000)
-			self:myToast("ip地址一样，重新打开")
-			mSleep(2000)
-			goto get_vpn
+		
+		if self:timeOutRestart(t1) then
+			self:index()
 		end
 	end
+	
+	t1 = ts.ms()
+	while (true) do
+		mSleep(50)
+		if getColor(374,390) == 0x4580ff and getColor(374,438) == 0x4580ff then
+			self:click(469, 866)
+		end
+		
+		mSleep(50)
+		if getColor(646,344) == 0xf5f5f5 then
+			break
+		elseif getColor(216,181) == 0xf5f5f5 then
+			self:click(458, 271)
+		end
+		
+		if self:timeOutRestart(t1) then
+			self:index()
+		end
+	end
+
+	count = math.random(1, 6)
+
+	for var = 1, count do
+		mSleep(500)
+		moveTowards(404,1194,90,100,10)
+		mSleep(1000)
+	end
+	
+	t1 = ts.ms()
+	while (true) do
+		mSleep(50)
+		if getColor(423,415) == 0x467dff and getColor(334,444) == 0x467dff then
+			self:myToast("AJS——vpn连接成功")
+			break
+		end
+
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy(0x8f9ab3, "15|0|0x8f9ab3,29|0|0x8f9ab3,-46|12|0xd6d6d6,-47|-13|0xd6d6d6,-25|0|0xffffff,45|-1|0xffffff", 100, 0, math.random(130, 1000), 750, 1334, { orient = 2 })
+		if x ~= -1 then
+			self:click(x - 300, y)
+		end
+		
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy( 0x808080, "18|8|0x808080,9|21|0x808080,38|8|0x808080,38|0|0x808080,48|-1|0x808080,48|18|0x808080,51|9|0x808080,43|9|0x808080", 90, 0, 0, 749, 1333)
+		if x ~= -1 then
+			self:myToast("网络未知，重新选择")
+			goto ajs_again
+		end
+		
+		if self:timeOutRestart(t1) then
+			self:index()
+		end
+	end
+end
+
+function model:vpn(start)
+    if selectVPNWay == "0" then
+    	::get_vpn::
+    	old_data = self:getNetIP() --获取IP
+    	if old_data then
+    		self:myToast(old_data)
+    	else
+    		goto get_vpn
+    	end
+    
+    	if networkMode == "0" then
+    		mSleep(math.random(500, 1500))
+    		flag = getVPNStatus()
+    		if flag.active then
+    			self:myToast("打开状态")
+    			setVPNEnable(false)
+    			setVPNEnable(false)
+    			for var = 1, 10 do
+    				mSleep(math.random(200, 500))
+    				self:myToast("等待vpn切换" .. var)
+    				mSleep(math.random(200, 500))
+    			end
+    			goto get_vpn
+    		else
+    			self:myToast("关闭状态")
+    		end
+    
+    		setVPNEnable(true)
+    		mSleep(1000 * math.random(2, 4))
+    	elseif networkMode == "1" then
+    		mSleep(math.random(500, 1500))
+    		setAirplaneMode(true)
+    		mSleep(1000 * math.random(10, 14))
+    		setAirplaneMode(false)
+    		mSleep(4000)
+    	end
+    
+    	t1 = ts.ms()
+    	while true do
+    		new_data = self:getNetIP() --获取IP
+    		if new_data then
+    			self:myToast(new_data)
+    			if new_data ~= old_data then
+    				mSleep(1000)
+    				if networkMode == "0" then
+    					self:myToast("vpn链接成功")
+    				elseif networkMode == "1" then
+    					self:myToast("wifi链接成功")
+    				end
+    
+    				if start then
+    					mSleep(1000)
+    					self:Check_AMG()
+    					while (true) do
+    						mSleep(200)
+    						x,y = findMultiColorInRegionFuzzy(0x000000, "44|-1|0x000000,79|0|0x000000,-25|154|0x007aff,0|155|0x007aff,17|155|0x007aff,56|161|0x007aff,-22|253|0x007aff,35|251|0x097fff,81|243|0x007aff", 90, 0, 0, 750, 1334, { orient = 2 })
+    						if x ~= -1 then
+    							break
+    						end
+    					end
+    				end
+    				break
+    			else
+    				--vpn连接：需要输入帐号密码重新连接vpn
+    				mSleep(200)
+    				x,y = findMultiColorInRegionFuzzy(0x007aff, "9|0|0x007aff,20|-10|0x007aff,43|7|0x007aff,58|6|0x007aff,307|5|0x007aff,97|-261|0x000000,112|-260|0x000000,121|-253|0x000000,158|-242|0x000000", 100, 0, 0, 750, 1334, { orient = 2 })
+    				if x ~= -1 then
+    					self:click(x,y)
+    					self:myToast("取消")
+    					mSleep(500)
+    					openURL("prefs:root=General&path=VPN")
+    
+    					while (true) do
+    						mSleep(200)
+    						x,y = findMultiColorInRegionFuzzy(0x007aff, "9|-1|0x007aff,51|2|0x077dff,288|-7|0x007aff,307|6|0x007aff,95|-239|0x000000,103|-217|0x000000,111|-239|0x000000,119|-224|0x000000,231|-232|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+    						if x ~= -1 then
+    							self:click(x,y)
+    							self:myToast("取消")
+    						end
+    
+    						mSleep(200)
+    						x,y = findMultiColorInRegionFuzzy(0x007aff, "-1|-12|0x007aff,-661|5|0x007aff,-650|169|0x007aff,-564|160|0x007aff,-543|164|0x007aff,-489|161|0x007aff,-473|171|0x007aff,-455|169|0x007aff,-330|-360|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+    						if x ~= -1 then
+    							self:click(x,y)
+    						end
+    
+    						mSleep(200)
+    						if getColor(691,89) == 0x007aff then
+    							self:click(691,89)
+    						end
+    
+    						mSleep(200)
+    						x,y = findMultiColorInRegionFuzzy(0x000000, "27|0|0x000000,14|18|0x000000,3|18|0x000000,20|21|0x000000,53|15|0x000000,53|9|0x000000,42|11|0x000000,60|97|0x000000,14|108|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+    						if x ~= -1 then
+    							self:click(x + 340, y + 10)
+    							writePasteboard(vpnPass)
+    							mSleep(200)
+    							keyDown("RightGUI")
+    							keyDown("v")
+    							keyUp("v")
+    							keyUp("RightGUI")
+    							mSleep(200)
+    							key = "ReturnOrEnter"
+    							keyDown(key)
+    							keyUp(key)
+    							mSleep(200)
+    							writePasteboard(vpnSecretKey)
+    							mSleep(200)
+    							keyDown("RightGUI")
+    							keyDown("v")
+    							keyUp("v")
+    							keyUp("RightGUI")
+    							mSleep(200)
+    							key = "ReturnOrEnter"
+    							keyDown(key)
+    							keyUp(key)
+    							break
+    						end
+    					end
+    					setVPNEnable(false)
+    					goto get_vpn
+    				end
+    			end
+    		end
+    
+    		t2 = ts.ms()
+    
+    		if os.difftime(t2, t1) > 10 then
+    			if networkMode == "0" then
+    				setVPNEnable(false)
+    				setVPNEnable(false)
+    				setVPNEnable(false)
+    			end
+    			mSleep(2000)
+    			self:myToast("ip地址一样，重新打开")
+    			mSleep(2000)
+    			goto get_vpn
+    		end
+    	end
+    elseif selectVPNWay == "1" then
+        self:ajs_vpn()
+    end
 end
 
 function model:timeOutRestart(t1)
@@ -501,8 +589,8 @@ function model:get_mess()
 		t1 = ts.ms()
 		::get_code::
 		t2 = ts.ms()
-		if os.difftime(t2, t1) > 70 then
-			self:myToast("超过70秒获取不到验证码，拉黑获取下一个")
+		if os.difftime(t2, t1) > 60 then
+			self:myToast("超过60秒获取不到验证码，拉黑获取下一个")
 			return false
 		end
 
@@ -704,6 +792,16 @@ function model:toRename()
 			return true
 		end
 	end
+	
+	--你的帐号在其它设备上登录
+	mSleep(50)
+	x,y = findMultiColorInRegionFuzzy(0x007aff, "17|-4|0x007aff,57|-3|0x007aff,53|-17|0x007aff,158|-256|0x000000,166|-249|0x000000,170|-231|0x000000,202|-256|0x000000,188|-245|0x000000,199|-229|0x000000", 90, 0, 0, 750, 1334, { orient = 2 })
+    if x ~= -1 then
+        self:myToast("你的帐号在其它设备上登录")
+		self.subName = "密码错误"
+		self.subNameBool = false
+		return true
+    end
 end
 
 function model:login_button()
@@ -1892,6 +1990,7 @@ function model:mm()
 					break
 				else
 					self:click(60, 84, 2000)
+					getPhoneAgain = false
 					goto get_phone_agagin
 				end
 			else
@@ -1947,7 +2046,7 @@ function model:mm()
 		end
 	else
 		getCodeErr = getCodeErr + 1
-		if getCodeErr > 4 then
+		if getCodeErr > 3 then
 			self:myToast("换号四次都获取不到验证码，切换下一个备份")
 			goto over
 		else
@@ -1986,7 +2085,7 @@ function model:mm()
 
 			self:click(60, 84, 2000)
 			back_again = 0
-			getPhoneAgain =true
+			getPhoneAgain = true
 			goto get_phone_agagin
 		end
 	end
@@ -2620,12 +2719,25 @@ function model:main()
 				["prompt"] = "输入项目id",
 				["text"] = "默认值"
 			},
+			{
+				["type"] = "Label",
+				["text"] = "选择vpn切换方式",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255"
+			},
+			{
+				["type"] = "RadioGroup",
+				["list"] = "以前,爱加速",
+				["select"] = "0",
+				["countperline"] = "4"
+			},
 		}
 	}
 
 	local MyJsonString = json.encode(MyTable)
 
-	ret, old_pass, password, searchFriend, searchAccount, changeHeader, inputPhoneAgain, networkMode, restoreBackup, vpnPass, vpnSecretKey, selectPassWay, openBookWay, selectPlatform, work_id = showUI(MyJsonString)
+	ret, old_pass, password, searchFriend, searchAccount, changeHeader, inputPhoneAgain, networkMode, restoreBackup, vpnPass, vpnSecretKey, selectPassWay, openBookWay, selectPlatform, work_id, selectVPNWay = showUI(MyJsonString)
 	if ret == 0 then
 		dialog("取消运行脚本", 3)
 		luaExit()

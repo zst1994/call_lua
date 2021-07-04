@@ -500,11 +500,8 @@ function model:loginAccount()
 	while (true) do
 		mSleep(50)
 		if getColor(614, 1256) == 0x181818 and getColor(674, 1260) == 0xededed then
-			mSleep(500)
 			for i = 1, #(pwd) do
-				mSleep(200)
 				num = string.sub(pwd,i,i)
-				mSleep(300)
 				if num == "0" then
 					mSleep(500)
 					tap(374, 1262)
@@ -536,7 +533,7 @@ function model:loginAccount()
 					mSleep(500)
 					tap(621, 1107)
 				end
-				mSleep(500)
+				mSleep(200)
 			end
 			mSleep(2000)
 		end
