@@ -2332,6 +2332,14 @@ end
 --end
 
 
- 		ocr_text = ocrText(212, 325, 353, 388, 0) 
-
-dialog(ocr_text, time)
+writePasteboard("str")
+	mSleep(200)
+	keyDown("RightGUI")
+	keyDown("v")
+	keyUp("v")
+	keyUp("RightGUI")
+	mSleep(200)
+	key = "ReturnOrEnter"
+	keyDown(key)
+	keyUp(key)
+	mSleep(200)

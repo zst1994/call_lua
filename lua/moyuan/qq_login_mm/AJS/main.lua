@@ -1213,7 +1213,7 @@ function model:mm(password, sex, searchFriend, searchAccount, changeHeader, nikc
 				runAgain = true
 			end
 		end
-
+        
 		if loginAccountWay == "0" then
 			--qq图标
 			mSleep(50)
@@ -3432,7 +3432,7 @@ function model:main()
 			},
 			{
 				["type"] = "RadioGroup",
-				["list"] = "扣扣注册,美国号码注册",
+				["list"] = "扣扣注册,美国号码注册,wc授权",
 				["select"] = "0",
 				["countperline"] = "3"
 			},
