@@ -1,12 +1,12 @@
--- local ts = require("ts")
--- local plist 			= ts.plist
--- local json = ts.json --使用 JSON 模組前必須插入這一句
--- local sz = require("sz")
--- local socket = require("socket")
--- local http = require("szocket.http")
--- require("TSLib")
--- local sqlite3 = sz.sqlite3
--- local http              = sz.i82.http
+ local ts = require("ts")
+ local plist 			= ts.plist
+ local json = ts.json --使用 JSON 模組前必須插入這一句
+ local sz = require("sz")
+ local socket = require("socket")
+ local http = require("szocket.http")
+ require("TSLib")
+ local sqlite3 = sz.sqlite3
+ local http              = sz.i82.http
 
 --local sz = require("sz")
 --local cjson = sz.json
@@ -2317,6 +2317,21 @@ end
 
 -- dialog(lz.ocrImage(imagefile,yzmtype,timeout),0)
 -- dialog(lz.ocrReportError())
-mSleep(50)
-x,y = findMultiColorInRegionFuzzy( 0x323333, "55|-16|0x323333,50|-25|0x323333,89|-20|0x323333,124|-19|0x323333,149|-20|0x323333,184|-13|0x323333,31|431|0xebebeb,517|422|0xebebeb,409|238|0xebebeb", 90, 0, 0, 749, 1333)
-dialog(x .. y, time)
+--mSleep(50)
+
+--while (true) do
+--	mSleep(50)
+--	x,y = findMultiColorInRegionFuzzy( 0xb0b0b0, "2|12|0xaaaaaa,23|2|0xaaaaaa,24|7|0xafafaf,83|3|0xffffff,205|8|0xaaaaaa,360|12|0xaaaaaa,556|7|0xaaaaaa,589|-15|0xffffff", 90, 0, 0, 749, 1333)
+--	if x~=-1 and y~=-1 then
+--		dialog(x .. y, time)
+--		mSleep(3000)
+--		x,y = findMultiColorInRegionFuzzy( 0x323333, "0|-23|0x323333,-8|-18|0x323333,-1|-9|0x323333,-4|-16|0xffffff,-4|1|0xffffff,3|1|0xffffff,3|-23|0xffffff", 90, x + 40, 0, x + 200, 1333)
+--		dialog(x .. y, time)
+--		break
+--	end
+--end
+
+
+ 		ocr_text = ocrText(212, 325, 353, 388, 0) 
+
+dialog(ocr_text, time)
