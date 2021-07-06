@@ -2094,6 +2094,9 @@ function model:mm()
 						self:lxy_token()
 						self:myToast("token失效,重新获取", 3000)
 						goto addBlack
+					elseif tmp.msg == "您没有获取此号码" then
+					    self:myToast("您没有获取此号码", 3000)
+					    goto over
 					else
 						self:myToast("流星云拉黑失败:" .. tmp.msg, 3000)
 						goto addBlack
