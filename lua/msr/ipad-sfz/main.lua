@@ -1,3 +1,4 @@
+--ipad-sfz
 require("TSLib")
 local ts 				= require('ts')
 local json 				= ts.json
@@ -486,7 +487,16 @@ function model:loginAccount()
 			inputStr(phoneNum)
 			mSleep(1000)
 			tap(x,   y)
-			mSleep(500)
+			mSleep(1000)
+			while (true) do
+				mSleep(50)
+				if getColor(317,  528) == 0xffffff then
+					mSleep(math.random(500, 700))
+					tap(327,  556)
+					mSleep(math.random(500, 700))
+					break
+				end
+			end
 			self:myToast("输入手机号码")
 		end
 
@@ -580,14 +590,14 @@ function model:loginAccount()
 			tap(x + 200, y + 130)
 			mSleep(math.random(500, 700))
 		end
-		
+
 		mSleep(50)
 		if getColor(693,   83) == 0x181818 and getColor(604,   85) == 0xededed then
 			mSleep(math.random(500, 700))
 			tap(693,   83)
 			mSleep(math.random(500, 700))
 		end
-		
+
 		mSleep(50)
 		if getColor(694,   83) == 0x757575 then
 			mSleep(math.random(500, 700))
@@ -597,6 +607,43 @@ function model:loginAccount()
 			mSleep(1000)
 			tap(54, 81)
 			mSleep(math.random(500, 700))
+			self:myToast("收藏完成")
+			break
+		end
+	end
+
+	--退出登录
+	while (true) do
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy( 0x1a1a1a, "7|17|0x1a1a1a,22|5|0x1a1a1a,22|-11|0x1a1a1a,56|-11|0x1a1a1a,56|-5|0x1a1a1a,56|8|0x1a1a1a,56|12|0x1a1a1a,56|17|0x1a1a1a,56|21|0x1a1a1a", 90, 0, 0, 749, 1333)
+		if x~=-1 and y~=-1 then
+			mSleep(math.random(500, 700))
+			tap(x + 200, y)
+			mSleep(math.random(500, 700))
+			break
+		else
+			mSleep(math.random(500, 700))
+			tap(50, 81)
+			mSleep(math.random(500, 700))
+		end
+	end
+
+	while (true) do
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy( 0x1a1a1a, "5|11|0x1a1a1a,12|9|0x1a1a1a,23|-6|0x1a1a1a,55|-6|0x1a1a1a,56|18|0x1a1a1a,93|19|0x1a1a1a,98|-3|0x1a1a1a,139|0|0x1a1a1a,138|16|0x1a1a1a", 90, 0, 0, 749, 1333)
+		if x~=-1 and y~=-1 then
+			mSleep(math.random(500, 700))
+			tap(x, y)
+			mSleep(math.random(500, 700))
+		end
+		
+		mSleep(50)
+		x,y = findMultiColorInRegionFuzzy( 0xe64340, "0|6|0xe64340,0|12|0xe64340,0|31|0xe64340,36|15|0xe64340,76|15|0xe64340,115|13|0xe64340", 90, 0, 0, 749, 1333)
+		if x~=-1 and y~=-1 then
+			mSleep(math.random(500, 700))
+			tap(x, y)
+			mSleep(math.random(500, 700))
+			self:myToast("退出登录")
 			break
 		end
 	end

@@ -2332,14 +2332,8 @@ end
 --end
 
 
-writePasteboard("str")
-	mSleep(200)
-	keyDown("RightGUI")
-	keyDown("v")
-	keyUp("v")
-	keyUp("RightGUI")
-	mSleep(200)
-	key = "ReturnOrEnter"
-	keyDown(key)
-	keyUp(key)
-	mSleep(200)
+mSleep(50)
+		x,y = findMultiColorInRegionFuzzy( 0x1a1a1a, "5|11|0x1a1a1a,12|9|0x1a1a1a,23|-6|0x1a1a1a,55|-6|0x1a1a1a,56|18|0x1a1a1a,93|19|0x1a1a1a,98|-3|0x1a1a1a,139|0|0x1a1a1a,138|16|0x1a1a1a", 90, 0, 0, 749, 1333)
+		if x~=-1 and y~=-1 then
+			dialog(x .. y, time)
+		end
