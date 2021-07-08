@@ -2332,14 +2332,10 @@ end
 --end
 
 mSleep(50)
-x,y = findMultiColorInRegionFuzzy( 0xb0b0b0, "2|12|0xaaaaaa,23|2|0xaaaaaa,24|7|0xafafaf,83|3|0xffffff,205|8|0xaaaaaa,360|12|0xaaaaaa,556|7|0xaaaaaa,589|-15|0xffffff", 90, 0, 0, 749, 1333)
-if x~=-1 and y~=-1 then
-	mSleep(3000)
-	ocr_text = ocrText(x + 102, y - 71, x + 275, y - 10, 1)
-	dialog(ocr_text, time)
-	if tonumber(ocr_text) <= 1 then
-		toast("关注数量是1,继续操作")
-	else
-		toast("关注数量大于1")
-	end
-end
+		x,y = findMultiColorInRegionFuzzy( 0x323333, "0|-37|0x323333,54|-16|0x323333,57|-29|0x323333,88|-29|0x323333,142|-39|0x323333,192|-13|0x323333,-35|429|0xebebeb,584|411|0xebebeb,406|233|0xebebeb", 90, 0, 0, 749, 1333)
+		--x,y = findMultiColorInRegionFuzzy( 0x323333, "55|-16|0x323333,50|-25|0x323333,89|-20|0x323333,124|-19|0x323333,149|-20|0x323333,184|-13|0x323333,31|431|0xebebeb,517|422|0xebebeb,409|238|0xebebeb", 90, 0, 0, 749, 1333)
+		if x~=-1 and y~=-1 then
+			dialog(x .. y, time)
+			click(x + 270, y + 100, 1500)
+			mSleep(500)
+		end

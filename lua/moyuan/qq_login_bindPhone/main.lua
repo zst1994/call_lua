@@ -1387,7 +1387,7 @@ function model:mm()
 		x,y = findMultiColorInRegionFuzzy( 0xb0b0b0, "2|12|0xaaaaaa,23|2|0xaaaaaa,24|7|0xafafaf,83|3|0xffffff,205|8|0xaaaaaa,360|12|0xaaaaaa,556|7|0xaaaaaa,589|-15|0xffffff", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(3000)
-			ocr_text = ocrText(x + 102, y - 71, x + 275, y - 10, 1) 
+			ocr_text = ocrText(x + 102, y - 71, x + 275, y - 10, 1)
 			if tonumber(ocr_text) <= 1 then
 				self:myToast("关注数量是1,继续操作")
 				break
@@ -1863,7 +1863,7 @@ function model:mm()
 	getCodeErr = 0
 
 	::get_phone_agagin::
-	if getPhoneAgain then
+	if getPhoneAgain and selectPlatform == "0" then
 		self:getPhoneAndToken()
 	end
 
@@ -1953,6 +1953,10 @@ function model:mm()
 
 		self:timeOutRestart(t1)
 	end
+	
+	if selectPlatform == "1" then
+		self:getPhoneAndToken()
+	end
 
 	t1 = ts.ms()
 	while (true) do
@@ -1965,7 +1969,7 @@ function model:mm()
 		-- 		end
 
 		mSleep(50)
-		x,y = findMultiColorInRegionFuzzy( 0x323333, "55|-16|0x323333,50|-25|0x323333,89|-20|0x323333,124|-19|0x323333,149|-20|0x323333,184|-13|0x323333,31|431|0xebebeb,517|422|0xebebeb,409|238|0xebebeb", 90, 0, 0, 749, 1333)
+		x,y = findMultiColorInRegionFuzzy( 0x323333, "0|-37|0x323333,54|-16|0x323333,57|-29|0x323333,88|-29|0x323333,142|-39|0x323333,192|-13|0x323333,-35|429|0xebebeb,584|411|0xebebeb,406|233|0xebebeb", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			self:click(x + 270, y + 100, 1500)
 			inputStr(self.phone)
@@ -2516,8 +2520,11 @@ function model:index()
 				--		self:deleteImage(fileName)
 				self:deleteImage(userPath() .. "/res/picFile/" .. fileName)
 			end
-
-			self:getPhoneAndToken()
+			
+			if selectPlatform == "0" then
+				self:getPhoneAndToken()
+			end
+			
 			self:mm()
 		end
 	end
