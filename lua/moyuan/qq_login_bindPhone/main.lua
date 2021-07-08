@@ -2073,7 +2073,7 @@ function model:mm()
 		end
 	else
 		getCodeErr = getCodeErr + 1
-		if getCodeErr > 3 then
+		if getCodeErr > tonumber(changePhoneCount) then
 			self:myToast("换号四次都获取不到验证码，切换下一个备份")
 			goto over
 		else
@@ -2105,6 +2105,9 @@ function model:mm()
 						goto addBlack
 					elseif tmp.msg == "您没有获取此号码" then
 					    self:myToast("您没有获取此号码", 3000)
+					    goto over
+					elseif tmp.msg == "号码已经被释放" then
+					    self:myToast("号码已经被释放", 3000)
 					    goto over
 					else
 						self:myToast("流星云拉黑失败:" .. tmp.msg, 3000)
@@ -2766,12 +2769,24 @@ function model:main()
 				["select"] = "0",
 				["countperline"] = "4"
 			},
+			{
+				["type"] = "Label",
+				["text"] = "设置换号次数",
+				["size"] = 15,
+				["align"] = "center",
+				["color"] = "0,0,255"
+			},
+			{
+				["type"] = "Edit",
+				["prompt"] = "设置换号次数",
+				["text"] = "默认值"
+			},
 		}
 	}
 
 	local MyJsonString = json.encode(MyTable)
 
-	ret, old_pass, password, searchFriend, searchAccount, changeHeader, inputPhoneAgain, networkMode, restoreBackup, vpnPass, vpnSecretKey, selectPassWay, openBookWay, selectPlatform, work_id, selectVPNWay = showUI(MyJsonString)
+	ret, old_pass, password, searchFriend, searchAccount, changeHeader, inputPhoneAgain, networkMode, restoreBackup, vpnPass, vpnSecretKey, selectPassWay, openBookWay, selectPlatform, work_id, selectVPNWay, changePhoneCount = showUI(MyJsonString)
 	if ret == 0 then
 		dialog("取消运行脚本", 3)
 		luaExit()
