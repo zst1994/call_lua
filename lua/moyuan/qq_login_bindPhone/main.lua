@@ -623,6 +623,9 @@ function model:get_mess()
 				self:lxy_token()
 				self:myToast("token失效,重新获取", 3000)
 				goto get_code
+			elseif tmp.msg == "号码已经被释放" then
+				self:myToast("号码已经被释放", 1000)
+				return false
 			else
 				self:myToast("流星云获取验证码失败:" .. tmp.msg, 3000)
 				goto get_code
@@ -1384,7 +1387,7 @@ function model:mm()
 		x,y = findMultiColorInRegionFuzzy( 0xb0b0b0, "2|12|0xaaaaaa,23|2|0xaaaaaa,24|7|0xafafaf,83|3|0xffffff,205|8|0xaaaaaa,360|12|0xaaaaaa,556|7|0xaaaaaa,589|-15|0xffffff", 90, 0, 0, 749, 1333)
 		if x~=-1 and y~=-1 then
 			mSleep(3000)
-			ocr_text = ocrText(x + 102, y - 71, x + 275, y - 10, 0) 
+			ocr_text = ocrText(x + 102, y - 71, x + 275, y - 10, 1) 
 			if tonumber(ocr_text) <= 1 then
 				self:myToast("关注数量是1,继续操作")
 				break

@@ -1,12 +1,12 @@
- local ts = require("ts")
- local plist 			= ts.plist
- local json = ts.json --使用 JSON 模組前必須插入這一句
- local sz = require("sz")
- local socket = require("socket")
- local http = require("szocket.http")
- require("TSLib")
- local sqlite3 = sz.sqlite3
- local http              = sz.i82.http
+local ts = require("ts")
+local plist 			= ts.plist
+local json = ts.json --使用 JSON 模組前必須插入這一句
+local sz = require("sz")
+local socket = require("socket")
+local http = require("szocket.http")
+require("TSLib")
+local sqlite3 = sz.sqlite3
+local http              = sz.i82.http
 
 --local sz = require("sz")
 --local cjson = sz.json
@@ -2331,9 +2331,15 @@ end
 --	end
 --end
 
-
 mSleep(50)
-		x,y = findMultiColorInRegionFuzzy( 0x1a1a1a, "5|11|0x1a1a1a,12|9|0x1a1a1a,23|-6|0x1a1a1a,55|-6|0x1a1a1a,56|18|0x1a1a1a,93|19|0x1a1a1a,98|-3|0x1a1a1a,139|0|0x1a1a1a,138|16|0x1a1a1a", 90, 0, 0, 749, 1333)
-		if x~=-1 and y~=-1 then
-			dialog(x .. y, time)
-		end
+x,y = findMultiColorInRegionFuzzy( 0xb0b0b0, "2|12|0xaaaaaa,23|2|0xaaaaaa,24|7|0xafafaf,83|3|0xffffff,205|8|0xaaaaaa,360|12|0xaaaaaa,556|7|0xaaaaaa,589|-15|0xffffff", 90, 0, 0, 749, 1333)
+if x~=-1 and y~=-1 then
+	mSleep(3000)
+	ocr_text = ocrText(x + 102, y - 71, x + 275, y - 10, 1)
+	dialog(ocr_text, time)
+	if tonumber(ocr_text) <= 1 then
+		toast("关注数量是1,继续操作")
+	else
+		toast("关注数量大于1")
+	end
+end
