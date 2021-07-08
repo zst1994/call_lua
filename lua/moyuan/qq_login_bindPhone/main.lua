@@ -1860,6 +1860,7 @@ function model:mm()
 
 	back_again = 0
 	getPhoneAgain = false
+	lxy_getPhone = true
 	getCodeErr = 0
 
 	::get_phone_agagin::
@@ -1954,7 +1955,7 @@ function model:mm()
 		self:timeOutRestart(t1)
 	end
 	
-	if selectPlatform == "1" then
+	if selectPlatform == "1" and lxy_getPhone then
 		self:getPhoneAndToken()
 	end
 
@@ -2016,6 +2017,7 @@ function model:mm()
 				else
 					self:click(60, 84, 2000)
 					getPhoneAgain = false
+					lxy_getPhone = false
 					goto get_phone_agagin
 				end
 			else
@@ -2114,6 +2116,7 @@ function model:mm()
 			self:click(60, 84, 2000)
 			back_again = 0
 			getPhoneAgain = true
+			lxy_getPhone = true
 			goto get_phone_agagin
 		end
 	end
