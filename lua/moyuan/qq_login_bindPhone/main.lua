@@ -442,22 +442,46 @@ function model:timeOutRestart(t1)
 	end
 end
 
-function model:lxy_token()
-	::login::
-	header_send = {}
-	body_send = {}
-	ts.setHttpsTimeOut(60)
-	status_resp, header_resp,body_resp = ts.httpGet("http://www.liuxing985.com:81/sms/api/login?username=api-M2WfbUgc&password=zz123123", header_send, body_send)
-	if status_resp == 200 then
-		local tmp = json.decode(body_resp)
-		if tmp.code == 0 then
-			token = tmp.token
-			self:myToast(token)
-		else
-			self:myToast("流星云获取token失败，重新获取：" .. tmp.msg, 3000)
+function model:platform_token()
+    if selectPlatform == "1" then
+    	::login::
+    	header_send = {}
+    	body_send = {}
+    	ts.setHttpsTimeOut(60)
+    	status_resp, header_resp,body_resp = ts.httpGet("http://www.liuxing985.com:81/sms/api/login?username=api-M2WfbUgc&password=zz123123", header_send, body_send)
+    	if status_resp == 200 then
+    		local tmp = json.decode(body_resp)
+    		if tmp.code == 0 then
+    			token = tmp.token
+    			self:myToast(token)
+    		else
+    			self:myToast("流星云获取token失败，重新获取：" .. tmp.msg, 3000)
+    			goto login
+    		end
+    	else
+			self:myToast("流星云请求token失败，重新获取", 3000)
 			goto login
-		end
-	end
+    	end
+    elseif selectPlatform == "2" then
+        ::login::
+    	header_send = {}
+    	body_send = {}
+    	ts.setHttpsTimeOut(60)
+    	status_resp, header_resp,body_resp = ts.httpGet("http://119.45.103.202/api/do.php?action=loginIn&name=api-1782-sCQx7ur&password=zz123123", header_send, body_send)
+    	if status_resp == 200 then
+    		local tmp = strSplit(body_resp,"|")
+    		if tmp[1] == "1" then
+    			token = tmp[2]
+    			self:myToast(token)
+    		else
+    			self:myToast("小飞鱼获取token失败，重新获取：" .. body_resp, 3000)
+    			goto login
+    		end
+    	else
+			self:myToast("小飞鱼请求token失败，重新获取", 3000)
+			goto login
+    	end
+    end
 end
 
 function model:getPhoneAndToken()
@@ -483,7 +507,7 @@ function model:getPhoneAndToken()
 			lua_exit()
 		end
 	elseif selectPlatform == "1" then
-		self:lxy_token()
+		self:platform_token()
 
 		::get_phone::
 		header_send = {}
@@ -511,13 +535,34 @@ function model:getPhoneAndToken()
 				self:myToast("上次获取失败,5秒后重试", 5000)
 				goto get_phone
 			elseif tmp.code == 401 then
-				self:lxy_token()
+				self:platform_token()
 				self:myToast("token失效,重新获取", 3000)
 				goto get_phone
 			else
 				self:myToast("流星云获取号码失败:" .. tmp.msg, 3000)
 				goto get_phone
 			end
+		end
+	elseif selectPlatform == "2" then
+	    self:platform_token()
+	    
+	    ::get_phone::
+		header_send = {}
+		body_send = {}
+		ts.setHttpsTimeOut(60)
+		status_resp, header_resp,body_resp = ts.httpGet("http://119.45.103.202/api/do.php?action=getPhone&sid=" .. work_id .. "&token=" .. token, header_send, body_send)
+		if status_resp == 200 then
+		    local tmp = strSplit(body_resp,"|")
+    		if tmp[1] == "1" then
+    			self.phone = tmp[2]
+				self:myToast(self.phone)
+    		else
+    			self:myToast("小飞鱼获取号码失败，重新获取：" .. body_resp, 3000)
+    			goto get_phone
+    		end
+		else
+			self:myToast("小飞鱼请求号码失败，重新获取", 3000)
+			goto get_phone
 		end
 	end
 end
@@ -620,7 +665,7 @@ function model:get_mess()
 				self:myToast("上次获取失败,5秒后重试", 5000)
 				goto get_code
 			elseif tmp.code == 401 then
-				self:lxy_token()
+				self:platform_token()
 				self:myToast("token失效,重新获取", 3000)
 				goto get_code
 			elseif tmp.msg == "号码已经被释放" then
@@ -630,6 +675,33 @@ function model:get_mess()
 				self:myToast("流星云获取验证码失败:" .. tmp.msg, 3000)
 				goto get_code
 			end
+		end
+	elseif selectPlatform == "2" then
+		t1 = ts.ms()
+		::get_code::
+		t2 = ts.ms()
+		if os.difftime(t2, t1) > 60 then
+			self:myToast("超过60秒获取不到验证码，拉黑获取下一个")
+			return false
+		end
+
+		header_send = {}
+		body_send = {}
+		ts.setHttpsTimeOut(60)
+		status_resp, header_resp,body_resp = ts.httpGet("http://119.45.103.202/api/do.php?action=getMessage&sid=" .. work_id .. "&token=" .. token .. "&phone=" .. self.phone, header_send, body_send)
+		if status_resp == 200 then
+		    local tmp = strSplit(body_resp,"|")
+    		if tmp[1] == "1" then
+    			self.mm_yzm = string.match(tmp[2],"%d%d%d%d%d%d")
+				self:myToast(self.mm_yzm, 2000)
+				return true
+    		else
+    			self:myToast("小飞鱼获取验证码失败，重新获取：" .. body_resp, 3000)
+    			goto get_code
+    		end
+    	else
+			self:myToast("小飞鱼请求验证码失败，重新获取", 3000)
+			goto get_code
 		end
 	end
 end
@@ -1017,10 +1089,7 @@ function model:mm()
 
 			mSleep(50)
 			if getColor(239, 629) == 0x12b7f5 then
-				if getColor(677,357) == 0xbbbbbb then
-					self:clear_input()
-				end
-
+				self:clear_input()
 				mSleep(2000)
 				writePasteboard(self.qqAcount)
 				while (true) do
@@ -2089,31 +2158,58 @@ function model:mm()
 				end
 				mSleep(1000)
 				self:remove_phone()
-			else
+			elseif selectPlatform == "1" then
+			    t1 = ts.ms()
 				::addBlack::
-				header_send = {}
-				body_send = {}
-				ts.setHttpsTimeOut(60)
-				status_resp, header_resp,body_resp = ts.httpGet("http://www.liuxing985.com:81/sms/api/addBlacklist?token=" .. token .. "&sid=" .. work_id .. "&phone=" .. self.phone, header_send, body_send)
-				if status_resp == 200 then
-					local tmp = json.decode(body_resp)
-					if tmp.code == 0 then
-						self:myToast("拉黑成功")
-					elseif tmp.code == 401 then
-						self:lxy_token()
-						self:myToast("token失效,重新获取", 3000)
-						goto addBlack
-					elseif tmp.msg == "您没有获取此号码" then
-					    self:myToast("您没有获取此号码", 3000)
-					    goto over
-					elseif tmp.msg == "号码已经被释放" then
-					    self:myToast("号码已经被释放", 3000)
-					    goto over
-					else
-						self:myToast("流星云拉黑失败:" .. tmp.msg, 3000)
-						goto addBlack
-					end
-				end
+				t2 = ts.ms()
+        		if os.difftime(t2, t1) > 30 then
+        			self:myToast("超过30秒拉黑失败，进行下一个")
+        		else
+        		    header_send = {}
+    				body_send = {}
+    				ts.setHttpsTimeOut(60)
+    				status_resp, header_resp,body_resp = ts.httpGet("http://www.liuxing985.com:81/sms/api/addBlacklist?token=" .. token .. "&sid=" .. work_id .. "&phone=" .. self.phone, header_send, body_send)
+    				if status_resp == 200 then
+    					local tmp = json.decode(body_resp)
+    					if tmp.code == 0 then
+    						self:myToast("拉黑成功")
+    					elseif tmp.code == 401 then
+    						self:platform_token()
+    						self:myToast("token失效,重新获取", 3000)
+    						goto addBlack
+    					elseif tmp.msg == "您没有获取此号码" then
+    					    self:myToast("您没有获取此号码", 3000)
+    					    goto over
+    					elseif tmp.msg == "号码已经被释放" then
+    					    self:myToast("号码已经被释放", 3000)
+    					    goto over
+    					else
+    						self:myToast("流星云拉黑失败:" .. tmp.msg, 3000)
+    						goto addBlack
+    					end
+    				end
+        		end
+			elseif selectPlatform == "2" then
+			    t1 = ts.ms()
+    			::addBlack::
+    			t2 = ts.ms()
+        		if os.difftime(t2, t1) > 30 then
+        			self:myToast("超过30秒拉黑失败，进行下一个")
+        		else
+    				header_send = {}
+    				body_send = {}
+    				ts.setHttpsTimeOut(60)
+    				status_resp, header_resp,body_resp = ts.httpGet("http://119.45.103.202/api/do.php?action=addBlacklist&token=" .. token .. "&sid=" .. work_id .. "&phone=" .. self.phone, header_send, body_send)
+    				if status_resp == 200 then
+    					local tmp = strSplit(sbody_resptr,"|")
+    					if tmp[1] == "1" then
+    						self:myToast("拉黑成功")
+    					else
+    						self:myToast("小飞鱼拉黑失败:" .. body_resp, 3000)
+    						goto addBlack
+    					end
+    				end
+    			end
 			end
 
 			self:click(60, 84, 2000)
@@ -2740,7 +2836,7 @@ function model:main()
 			},
 			{
 				["type"] = "RadioGroup",
-				["list"] = "以前,流星云",
+				["list"] = "以前,流星云,小飞鱼",
 				["select"] = "0",
 				["countperline"] = "4"
 			},
