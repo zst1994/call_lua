@@ -1468,7 +1468,7 @@ function model:getPhoneNum(ksUrl,phone_token)
 		::get_token::
 		local sz = require("sz")        --登陆
 		local http = require("szocket.http")
-		local res, code = http.request("http://jm.52yaoji.com/api/do.php?action=loginIn&name=api-73-slU1q6j&password=huqianjin")
+		local res, code = http.request("http://myjm.dzt666.com/api/do.php?action=loginIn&name=api-73-slU1q6j&password=huqianjin")
 		if code == 200 then
 			data = strSplit(urlDecoder(res), "|")
 			if data[1] == "1" then
@@ -1486,7 +1486,7 @@ function model:getPhoneNum(ksUrl,phone_token)
 		::get_balane::
 		local sz = require("sz")        --登陆
 		local http = require("szocket.http")
-		local res, code = http.request("http://jm.52yaoji.com/api/do.php?action=getSummary&token="..server_token)
+		local res, code = http.request("http://myjm.dzt666.com/api/do.php?action=getSummary&token="..server_token)
 		if code == 200 then
 			data = strSplit(urlDecoder(res), "|")
 			if data[1] == "1" then
@@ -1507,7 +1507,7 @@ function model:getPhoneNum(ksUrl,phone_token)
 		::get_phone::
 		local sz = require("sz")        --登陆
 		local http = require("szocket.http")
-		local res, code = http.request("http://jm.52yaoji.com/api/do.php?action=getPhone&sid="..kn_id.."&token="..server_token)
+		local res, code = http.request("http://myjm.dzt666.com/api/do.php?action=getPhone&sid="..kn_id.."&token="..server_token)
 		if code == 200 then
 			data = strSplit(urlDecoder(res), "|")
 			if data[1] == "1" then
@@ -2947,7 +2947,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				::open_phone::
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
-				local res, code = http.request("http://jm.52yaoji.com/api/do.php?action=cancelRecv&sid="..kn_id.."&phone="..phone.."&token="..server_token)
+				local res, code = http.request("http://myjm.dzt666.com/api/do.php?action=cancelRecv&sid="..kn_id.."&phone="..phone.."&token="..server_token)
 				if code == 200 then
 					data = strSplit(urlDecoder(res), "|")
 					if data[1] == "1" then
@@ -2968,7 +2968,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				::addblack::
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
-				local res, code = http.request("http://jm.52yaoji.com/api/do.php?action=addBlacklist&sid="..kn_id.."&phone="..phone.."&token="..server_token)
+				local res, code = http.request("http://myjm.dzt666.com/api/do.php?action=addBlacklist&sid="..kn_id.."&phone="..phone.."&token="..server_token)
 				if code == 200 then
 					data = strSplit(urlDecoder(res), "|")
 					if data[1] == "1" then
@@ -4327,7 +4327,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 				::get_code::
 				local sz = require("sz")        --登陆
 				local http = require("szocket.http")
-				local res, code = http.request("http://jm.52yaoji.com/api/do.php?action=getMessage&sid="..kn_id.."&phone="..telphone.."&token="..server_token)
+				local res, code = http.request("http://myjm.dzt666.com/api/do.php?action=getMessage&sid="..kn_id.."&phone="..telphone.."&token="..server_token)
 				toast(res,1)
 				mSleep(500)
 				if code == 200 then
@@ -4394,7 +4394,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 								::open_phone::
 								local sz = require("sz")        --登陆
 								local http = require("szocket.http")
-								local res, code = http.request("http://jm.52yaoji.com/api/do.php?action=cancelRecv&sid="..kn_id.."&phone="..phone.."&token="..server_token)
+								local res, code = http.request("http://myjm.dzt666.com/api/do.php?action=cancelRecv&sid="..kn_id.."&phone="..phone.."&token="..server_token)
 								if code == 200 then
 									data = strSplit(urlDecoder(res), "|")
 									if data[1] == "1" then
@@ -4415,7 +4415,7 @@ function model:wc(ksUrl,move_type,operator,login_times,content_user,content_coun
 								::addblack::
 								local sz = require("sz")        --登陆
 								local http = require("szocket.http")
-								local res, code = http.request("http://jm.52yaoji.com/api/do.php?action=addBlacklist&sid="..kn_id.."&phone="..phone.."&token="..server_token)
+								local res, code = http.request("http://myjm.dzt666.com/api/do.php?action=addBlacklist&sid="..kn_id.."&phone="..phone.."&token="..server_token)
 								if code == 200 then
 									data = strSplit(urlDecoder(res), "|")
 									if data[1] == "1" then
