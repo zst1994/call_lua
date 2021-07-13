@@ -671,6 +671,9 @@ function model:get_mess()
 				self:myToast("流星云获取验证码失败:" .. tmp.msg, 3000)
 				goto get_code
 			end
+		else
+			self:myToast("流星云请求验证码失败", 3000)
+			goto get_code
 		end
 	elseif selectPlatform == "2" then
 		t1 = ts.ms()
