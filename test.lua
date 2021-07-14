@@ -2330,6 +2330,16 @@ end
 --		break
 --	end
 --end
-
-::login::
-dialog(string.match("cdsfjvfvf11111","%d%d%d%d%d%d"),tab)
+openURL("snssdk1128://search")
+mSleep(10000)
+writePasteboard("服装")
+			keyDown("RightGUI")
+			keyDown("v")
+			keyUp("v")
+			keyUp("RightGUI")
+			mSleep(1000)
+			key = "ReturnOrEnter"
+			keyDown(key)
+			mSleep(200)
+			keyUp(key)
+			mSleep(1000)

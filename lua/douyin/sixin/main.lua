@@ -38,6 +38,8 @@ function model:load_over()
 			self:myToast("加载完成")
 			break
 		end
+		
+		self:click_know()
 	end
 end
 
@@ -127,6 +129,22 @@ function model:doGZSX()
 	end
 end
 
+function model:click_know()
+	--青少年模式，我知道了
+	mSleep(50)
+	x,y = findMultiColorInRegionFuzzy( 0x161823, "98|0|0x161823,-221|0|0xffffff,342|0|0xffffff,-50|-113|0xfe2c55,40|-114|0xfe2c55,119|-107|0xfe2c55", 100, 700, 0, 749, 1333)
+	if x ~= -1 then
+		self:click(x, y)
+	end
+	
+	--发现通讯录好友
+	mSleep(50)
+	x,y = findMultiColorInRegionFuzzy( 0x50525a, "15|0|0x50525a,7|10|0x50525a,27|1|0x50525a,45|1|0x50525a,67|1|0x50525a,276|-2|0x161823,293|2|0x161823,386|0|0x161823,390|-6|0x161823", 100, 0, 0, 749, 1333)
+	if x ~= -1 then
+		self:click(x, y)
+	end
+end
+
 function model:selectUserGZFS(url)
 	openURL(url)
 	mSleep(1000)
@@ -200,6 +218,8 @@ function model:sameCity(url)
 				break
 			end
 		end
+		
+		self:click_know()
 	end
 
 	while (true) do
@@ -240,7 +260,7 @@ function model:serachKeyWord(url)
 		mSleep(50)
 		x,y = findMultiColorInRegionFuzzy( 0xface15, "73|1|0xface15,125|0|0xface15,-18|577|0xe8e8e9,68|579|0xe8e8e9,166|590|0xe8e8e9,152|630|0xface15,187|638|0xface15,203|638|0xface15,229|638|0xface15", 90, 0, 0, 749, 1333)
 		if x ~= -1 then
-			self:click(461,   88, 1000)
+			self:click(461,   88, 5000)
 			keyDown("RightGUI")
 			keyDown("v")
 			keyUp("v")
@@ -248,12 +268,15 @@ function model:serachKeyWord(url)
 			mSleep(1000)
 			key = "ReturnOrEnter"
 			keyDown(key)
-			keyUp(key)
 			mSleep(200)
+			keyUp(key)
+			mSleep(1000)
 			break
 		else
 			self:click(358,  172)
 		end
+		
+		self:click_know()
 	end
 
 	while (true) do
@@ -302,6 +325,8 @@ function model:recommend()
 				moveTowards(404,994,90,900,50)
 				mSleep(2500)
 			end
+			
+			self:click_know()
 		end
 
 
@@ -398,12 +423,14 @@ function model:index()
 			moveTowards(404,1194,90,900,50)
 			mSleep(2500)
 		end
+		
+		self:click_know()
 	end
 
 	selectWay_list = strSplit(selectWay, "@")
 	for i = 1, #selectWay_list do
 		if selectWay_list[i] == "0" then
-			self:selectUserGZFS("snssdk1128://user/profile/"..dy_uid.."?refer=web&gd_label=click_wap_profile_bottom&type=need_follow&needlaunchlog=1")
+			self:selectUserGZFS("snssdk1128://user/profile/" .. dy_uid .. "?refer=web&gd_label=click_wap_profile_bottom&type=need_follow&needlaunchlog=1")
 		elseif selectWay_list[i] == "1" then
 			self:selectUserGZFS("snssdk1128://user/profile/id?refer=web&gd_label=click_wap_profile_follow&type=need_follow&needlaunchlog=1")
 		elseif selectWay_list[i] == "2" then
