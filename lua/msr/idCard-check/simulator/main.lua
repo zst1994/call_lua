@@ -38,46 +38,46 @@ function model:getIdCardNum()
 end
 
 function model:checkIdCard()
-	while (true) do
-		mSleep(50)
-		x,y = findMultiColorInRegionFuzzy( 0x191919, "7|0|0x191919,7|7|0x191919,7|14|0x191919,30|-3|0x191919,30|7|0x191919,30|14|0x191919,24|11|0x191919,36|11|0x191919", 90, 0, 0, 539, 959)
-		if x ~= -1 then
---			self:click(x + 300, y + 10)
-			self:copyInput("杨辉曜")
+--	while (true) do
+--		mSleep(50)
+--		x,y = findMultiColorInRegionFuzzy( 0x191919, "7|0|0x191919,7|7|0x191919,7|14|0x191919,30|-3|0x191919,30|7|0x191919,30|14|0x191919,24|11|0x191919,36|11|0x191919", 90, 0, 0, 539, 959)
+--		if x ~= -1 then
+----			self:click(x + 300, y + 10)
+--			self:copyInput("杨辉曜")
 
-			--性别
-			self:click(x + 300, y + 10 + 80)
-			while (true) do
-				mSleep(50)
-				if getColor(321,  888) == 0x07c160 then
-					self:click(321,  888)
-				end
+--			--性别
+--			self:click(x + 300, y + 10 + 80)
+--			while (true) do
+--				mSleep(50)
+--				if getColor(321,  888) == 0x07c160 then
+--					self:click(321,  888)
+--				end
 
-				mSleep(50)
-				x1,y1 = findMultiColorInRegionFuzzy( 0x191919, "7|0|0x191919,7|7|0x191919,7|14|0x191919,30|-3|0x191919,30|7|0x191919,30|14|0x191919,24|11|0x191919,36|11|0x191919", 90, 0, 0, 539, 959)
-				if x1 ~= -1 then
-					break
-				end
-			end
+--				mSleep(50)
+--				x1,y1 = findMultiColorInRegionFuzzy( 0x191919, "7|0|0x191919,7|7|0x191919,7|14|0x191919,30|-3|0x191919,30|7|0x191919,30|14|0x191919,24|11|0x191919,36|11|0x191919", 90, 0, 0, 539, 959)
+--				if x1 ~= -1 then
+--					break
+--				end
+--			end
 
-			--证件类型
-			self:click(x + 300, y + 10 + 80 * 2)
-			while (true) do
-				mSleep(50)
-				if getColor(321,  888) == 0x07c160 then
-					self:click(101,  739)
-					self:click(321,  888)
-				end
+--			--证件类型
+--			self:click(x + 300, y + 10 + 80 * 2)
+--			while (true) do
+--				mSleep(50)
+--				if getColor(321,  888) == 0x07c160 then
+--					self:click(101,  739)
+--					self:click(321,  888)
+--				end
 
-				mSleep(50)
-				x1,y1 = findMultiColorInRegionFuzzy( 0x191919, "7|0|0x191919,7|7|0x191919,7|14|0x191919,30|-3|0x191919,30|7|0x191919,30|14|0x191919,24|11|0x191919,36|11|0x191919", 90, 0, 0, 539, 959)
-				if x1 ~= -1 then
-					break
-				end
-			end
-			break
-		end
-	end
+--				mSleep(50)
+--				x1,y1 = findMultiColorInRegionFuzzy( 0x191919, "7|0|0x191919,7|7|0x191919,7|14|0x191919,30|-3|0x191919,30|7|0x191919,30|14|0x191919,24|11|0x191919,36|11|0x191919", 90, 0, 0, 539, 959)
+--				if x1 ~= -1 then
+--					break
+--				end
+--			end
+--			break
+--		end
+--	end
 
 	while (true) do
 		mSleep(50)
@@ -87,93 +87,93 @@ function model:checkIdCard()
 --			self:copyInput("H0648209100")
 			self:copyInput(self.id_card_num)
 
-			--证件生效期
-			self:click(x + 300, y + 5 + 80)
-			while (true) do
-				mSleep(50)
-				if getColor(321,  888) == 0x07c160 then
-					self:click(321,  888)
-				end
+--			--证件生效期
+--			self:click(x + 300, y + 5 + 80)
+--			while (true) do
+--				mSleep(50)
+--				if getColor(321,  888) == 0x07c160 then
+--					self:click(321,  888)
+--				end
 
-				mSleep(50)
-				x1,y1 = findMultiColorInRegionFuzzy( 0x191919, "12|0|0x191919,5|5|0x191919,5|10|0x191919,5|-3|0x191919,-14|5|0x191919,-24|8|0x191919,-32|6|0x191919,-36|6|0x191919,-46|7|0x191919", 90, 0, 0, 539, 959)
-				if x1 ~= -1 then
-					break
-				end
-			end
+--				mSleep(50)
+--				x1,y1 = findMultiColorInRegionFuzzy( 0x191919, "12|0|0x191919,5|5|0x191919,5|10|0x191919,5|-3|0x191919,-14|5|0x191919,-24|8|0x191919,-32|6|0x191919,-36|6|0x191919,-46|7|0x191919", 90, 0, 0, 539, 959)
+--				if x1 ~= -1 then
+--					break
+--				end
+--			end
 
-			--证件失效期
-			self:click(x + 300, y + 5 + 80 * 2)
-			while (true) do
-				mSleep(50)
-				if getColor(321,  888) == 0x07c160 then
-					self:click(321,  888)
-				end
+--			--证件失效期
+--			self:click(x + 300, y + 5 + 80 * 2)
+--			while (true) do
+--				mSleep(50)
+--				if getColor(321,  888) == 0x07c160 then
+--					self:click(321,  888)
+--				end
 
-				mSleep(50)
-				x1,y1 = findMultiColorInRegionFuzzy( 0x191919, "12|0|0x191919,5|5|0x191919,5|10|0x191919,5|-3|0x191919,-14|5|0x191919,-24|8|0x191919,-32|6|0x191919,-36|6|0x191919,-46|7|0x191919", 90, 0, 0, 539, 959)
-				if x1 ~= -1 then
-					break
-				end
-			end
+--				mSleep(50)
+--				x1,y1 = findMultiColorInRegionFuzzy( 0x191919, "12|0|0x191919,5|5|0x191919,5|10|0x191919,5|-3|0x191919,-14|5|0x191919,-24|8|0x191919,-32|6|0x191919,-36|6|0x191919,-46|7|0x191919", 90, 0, 0, 539, 959)
+--				if x1 ~= -1 then
+--					break
+--				end
+--			end
 
-			--职业
-			self:click(x + 300, y + 5 + 80 * 3)
-			while (true) do
-				mSleep(50)
-				if getColor(49,  734) == 0x191919 then
-					self:click(349,  734)
-				end
+--			--职业
+--			self:click(x + 300, y + 5 + 80 * 3)
+--			while (true) do
+--				mSleep(50)
+--				if getColor(49,  734) == 0x191919 then
+--					self:click(349,  734)
+--				end
 
-				mSleep(50)
-				x1,y1 = findMultiColorInRegionFuzzy( 0x191919, "12|0|0x191919,5|5|0x191919,5|10|0x191919,5|-3|0x191919,-14|5|0x191919,-24|8|0x191919,-32|6|0x191919,-36|6|0x191919,-46|7|0x191919", 90, 0, 0, 539, 959)
-				if x1 ~= -1 then
-					break
-				end
-			end
+--				mSleep(50)
+--				x1,y1 = findMultiColorInRegionFuzzy( 0x191919, "12|0|0x191919,5|5|0x191919,5|10|0x191919,5|-3|0x191919,-14|5|0x191919,-24|8|0x191919,-32|6|0x191919,-36|6|0x191919,-46|7|0x191919", 90, 0, 0, 539, 959)
+--				if x1 ~= -1 then
+--					break
+--				end
+--			end
 
-			--地址
-			self:click(x + 300, y + 5 + 80 * 4)
-			while (true) do
-				mSleep(50)
-				if getColor(291,  194) == 0x191919 and getColor(211,  803) == 0xf2f2f2 then
-					self:click(306,  323)
-				end
+--			--地址
+--			self:click(x + 300, y + 5 + 80 * 4)
+--			while (true) do
+--				mSleep(50)
+--				if getColor(291,  194) == 0x191919 and getColor(211,  803) == 0xf2f2f2 then
+--					self:click(306,  323)
+--				end
 
-				--允许
-				mSleep(50)
-				x,y = findMultiColorInRegionFuzzy( 0x009688, "-8|-4|0x009688,11|-4|0x009688,27|-1|0x009688,25|-8|0x009688,-104|-2|0x009688,-99|-3|0x009688,-74|-5|0x009688", 90, 0, 0, 539, 959)
-				if x1 ~= -1 then
-					self:click(x,  y)
-				end
+--				--允许
+--				mSleep(50)
+--				x,y = findMultiColorInRegionFuzzy( 0x009688, "-8|-4|0x009688,11|-4|0x009688,27|-1|0x009688,25|-8|0x009688,-104|-2|0x009688,-99|-3|0x009688,-74|-5|0x009688", 90, 0, 0, 539, 959)
+--				if x1 ~= -1 then
+--					self:click(x,  y)
+--				end
 
-				--选择地区
-				if getColor(400,  202) == 0xffffff and getColor(408,  133) == 0xededed then
-					self:click(306,  569)
-					mSleep(500)
-					self:click(306,  569)
-					break
-				end
-			end
+--				--选择地区
+--				if getColor(400,  202) == 0xffffff and getColor(408,  133) == 0xededed then
+--					self:click(306,  569)
+--					mSleep(500)
+--					self:click(306,  569)
+--					break
+--				end
+--			end
 
-			while (true) do
-				mSleep(50)
-				if getColor(291,  194) == 0x191919 and getColor(211,  803) == 0xf2f2f2 then
-					self:copyInput("天门街3巷6号")
-				end
+--			while (true) do
+--				mSleep(50)
+--				if getColor(291,  194) == 0x191919 and getColor(211,  803) == 0xf2f2f2 then
+--					self:copyInput("天门街3巷6号")
+--				end
 
-				--确定
-				mSleep(50)
-				if getColor(211,  803) == 0x07c160 then
-					self:click(211,  803)
-				end
+--				--确定
+--				mSleep(50)
+--				if getColor(211,  803) == 0x07c160 then
+--					self:click(211,  803)
+--				end
 
-				mSleep(50)
-				x1,y1 = findMultiColorInRegionFuzzy( 0x191919, "12|0|0x191919,5|5|0x191919,5|10|0x191919,5|-3|0x191919,-14|5|0x191919,-24|8|0x191919,-32|6|0x191919,-36|6|0x191919,-46|7|0x191919", 90, 0, 0, 539, 959)
-				if x1 ~= -1 then
-					break
-				end
-			end
+--				mSleep(50)
+--				x1,y1 = findMultiColorInRegionFuzzy( 0x191919, "12|0|0x191919,5|5|0x191919,5|10|0x191919,5|-3|0x191919,-14|5|0x191919,-24|8|0x191919,-32|6|0x191919,-36|6|0x191919,-46|7|0x191919", 90, 0, 0, 539, 959)
+--				if x1 ~= -1 then
+--					break
+--				end
+--			end
 			break
 		end
 	end
